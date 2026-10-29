@@ -4,6 +4,7 @@ import SwiftUI
 struct ReminderEditorForm: View {
     @Binding var draft: ReminderDraft
     @Binding var urlText: String
+    @Binding var alertStyle: NotificationAlertStyle?
     let isReadOnly: Bool
     let canDelete: Bool
     let isNew: Bool
@@ -26,6 +27,7 @@ struct ReminderEditorForm: View {
                     ReminderEditorRepeatSection(recurrence: $draft.recurrence, dueDate: draft.dueDate)
                 }
                 ReminderEditorAlertsSection(draft: $draft)
+                NotificationStyleSection(style: $alertStyle, calendarIdentifier: draft.listIdentifier)
             }
             .disabled(isReadOnly)
             Section {

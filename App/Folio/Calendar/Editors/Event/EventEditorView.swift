@@ -4,12 +4,14 @@ import SwiftUI
 struct EventEditorView: View {
     @Environment(CalendarStore.self) private var store
     @Environment(UndoCoordinator.self) private var undoCoordinator
+    @Environment(NotificationScheduler.self) private var notificationScheduler
     @Environment(\.dismiss) private var dismiss
     private let editedEvent: CalendarEvent?
     private let originalDraft: EventDraft?
     private let onSave: (CalendarItemReference, EventDraft) -> Void
     @State private var draft: EventDraft
     @State private var urlText: String
+    @State private var styleDraft: NotificationStyleDraft
     @State private var isSaving = false
     @State private var isChoosingSpan = false
     @State private var errorMessage: String?
@@ -20,6 +22,7 @@ struct EventEditorView: View {
         self.onSave = onSave
         _draft = State(initialValue: .newEvent(on: initialDate, calendarIdentifier: ""))
         _urlText = State(initialValue: "")
+        _styleDraft = State(initialValue: NotificationStyleDraft(reference: nil))
     }
 
     init(event: CalendarEvent, draft: EventDraft, onSave: @escaping (CalendarItemReference, EventDraft) -> Void) {
@@ -28,6 +31,7 @@ struct EventEditorView: View {
         self.onSave = onSave
         _draft = State(initialValue: draft)
         _urlText = State(initialValue: draft.url?.absoluteString ?? "")
+        _styleDraft = State(initialValue: NotificationStyleDraft(reference: event.reference))
     }
 
     private var finalDraft: EventDraft {
@@ -38,7 +42,7 @@ struct EventEditorView: View {
     }
 
     private var hasChanges: Bool {
-        originalDraft.map { finalDraft != $0 } ?? true
+        styleDraft.hasChanges || originalDraft.map { finalDraft != $0 } ?? true
     }
 
     private var canSave: Bool {
@@ -59,7 +63,12 @@ struct EventEditorView: View {
                         description: Text(String(localized: "Editor.NoCalendars.Description", table: "EventEditor"))
                     )
                 } else {
-                    EventEditorForm(draft: $draft, urlText: $urlText, calendars: store.writableEventCalendars)
+                    EventEditorForm(
+                        draft: $draft,
+                        urlText: $urlText,
+                        alertStyle: $styleDraft.style,
+                        calendars: store.writableEventCalendars
+                    )
                 }
             }
             .navigationTitle(editedEvent == nil
@@ -123,6 +132,7 @@ struct EventEditorView: View {
             } else {
                 try await store.createEvent(savedDraft)
             }
+            styleDraft.save(for: reference, in: notificationScheduler)
             onSave(reference, savedDraft)
             dismiss()
         } catch {
