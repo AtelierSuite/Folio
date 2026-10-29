@@ -50,8 +50,15 @@ final class EventQuickActionsTests: XCTestCase {
         // Writable chips lift to drag on a long press, so this uses the read-only sample invitation.
         let app = launch(mode: "month", behavior: "opensDetails", extra: ["-SampleInvitations"])
         let tomorrow = try visibleDay(in: app, offset: 1, containing: "Design Review Day")
-        tomorrow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.38)).press(forDuration: 1.2)
-        XCTAssertTrue(menuItem("EventMenu.Respond", in: app).waitForExistence(timeout: 5))
+        let respond = menuItem("EventMenu.Respond", in: app)
+        // Other tests seed events on these days, so the chip's row varies; try each row in turn.
+        for row in 0..<6 where !respond.exists {
+            let chip = tomorrow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0))
+                .withOffset(CGVector(dx: 0, dy: 32 + CGFloat(row) * 17))
+            chip.press(forDuration: 1.2)
+            _ = respond.waitForExistence(timeout: 2)
+        }
+        XCTAssertTrue(respond.exists)
         XCTAssertFalse(menuItem("EventMenu.Edit", in: app).exists)
         attachScreenshot(named: "details-mode-month-chip-long-press", app: app)
     }
