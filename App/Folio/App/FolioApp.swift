@@ -14,6 +14,8 @@ struct FolioApp: App {
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var sleepStore: SleepStore
     @State private var systemTime = SystemTimeObserver()
+    @State private var undoCoordinator: UndoCoordinator
+    @State private var undoToastHosts = UndoToastHosts()
 
     init() {
         NotificationPresentationDelegate.install()
@@ -24,6 +26,7 @@ struct FolioApp: App {
         let noteNavigator = NoteNavigator()
         _notesLibrary = State(initialValue: notesLibrary)
         _noteNavigator = State(initialValue: noteNavigator)
+        _undoCoordinator = State(initialValue: UndoCoordinator(store: calendarStore, library: notesLibrary))
         AppDependencyManager.shared.add(dependency: notesLibrary)
         AppDependencyManager.shared.add(dependency: noteNavigator)
         let sleepStore = SleepStore(capabilities: .current)
@@ -50,6 +53,8 @@ struct FolioApp: App {
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
                 .environment(searchIndexer)
                 .followsSystemTime(systemTime)
+                .environment(undoCoordinator)
+                .environment(undoToastHosts)
                 .task {
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {
