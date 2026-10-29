@@ -17,6 +17,7 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
     public var meetingLink: MeetingLink?
     public var isCompleted: Bool
     public var isOverdue: Bool
+    public var invitationStyle: InvitationCardStyle
 
     public init(
         id: String,
@@ -32,7 +33,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         hasLink: Bool = false,
         meetingLink: MeetingLink? = nil,
         isCompleted: Bool = false,
-        isOverdue: Bool = false
+        isOverdue: Bool = false,
+        invitationStyle: InvitationCardStyle = .standard
     ) {
         self.id = id
         self.title = title
@@ -48,6 +50,7 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         self.meetingLink = meetingLink
         self.isCompleted = isCompleted
         self.isOverdue = isOverdue
+        self.invitationStyle = invitationStyle
     }
 
     public var hasMeetingLink: Bool {

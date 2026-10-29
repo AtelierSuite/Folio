@@ -16,7 +16,8 @@ extension TimelineEntry {
             kind: .event,
             location: event.location.flatMap { $0.isEmpty ? nil : $0 },
             hasLink: event.url != nil,
-            meetingLink: event.meetingLink
+            meetingLink: event.meetingLink,
+            invitationStyle: event.invitationCardStyle
         )
     }
 
