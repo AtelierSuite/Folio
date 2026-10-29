@@ -3,9 +3,16 @@ import SwiftUI
 
 @main
 struct FolioApp: App {
-    @State private var calendarStore = CalendarStore()
+    @State private var calendarStore: CalendarStore
+    @State private var permissionCenter: PermissionCenter
     @State private var notesLibrary = NotesLibrary()
     @State private var workWeekPreferences = WorkWeekPreferences()
+
+    init() {
+        let calendarStore = CalendarStore()
+        _calendarStore = State(initialValue: calendarStore)
+        _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +21,8 @@ struct FolioApp: App {
                 .environment(calendarStore)
                 .environment(notesLibrary)
                 .environment(workWeekPreferences)
+                .environment(permissionCenter)
+                .refreshesPermissions(of: permissionCenter)
                 .task {
                     calendarStore.startObservingChanges()
                     await seedSampleDataIfRequested()
@@ -28,6 +37,7 @@ struct FolioApp: App {
             .environment(calendarStore)
             .environment(notesLibrary)
             .environment(workWeekPreferences)
+            .environment(permissionCenter)
         }
         #endif
     }
