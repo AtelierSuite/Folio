@@ -26,6 +26,7 @@ public struct JoinMeetingButton: View {
             case .prominent:
                 Link(destination: destination) {
                     Label(title, systemImage: link.provider.systemImage)
+                        .labelStyle(.titleAndIcon)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
