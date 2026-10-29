@@ -10,7 +10,6 @@ struct CalendarMonthPageView: View {
     let onSelectDay: (MonthDay) -> Void
     @State private var buckets = MonthDayBuckets.empty
     @State private var events: [CalendarEvent] = []
-    @State private var remindersByEntryIdentifier: [String: ReminderItem] = [:]
     @State private var weather = WeatherSnapshot.empty
     @State var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
     @State var remindersByEntryIdentifier: [String: ReminderItem] = [:]
