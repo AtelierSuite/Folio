@@ -11,6 +11,7 @@ struct SettingsView: View {
             }
             #if DEBUG
             TimelineDebugSettingsSection()
+            MarkdownDebugSection()
             #endif
         }
         .formStyle(.grouped)
