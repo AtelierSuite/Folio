@@ -93,3 +93,9 @@ final class FakeCalendarDataSource: CalendarDataSource {
         _ = state.withLock { $0.changeContinuation?.yield() }
     }
 }
+
+extension FakeCalendarDataSource {
+    func replaceReminders(_ reminders: [ReminderItem]) {
+        state.withLock { $0.reminders = reminders }
+    }
+}
