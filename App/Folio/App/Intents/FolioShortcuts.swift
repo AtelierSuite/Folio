@@ -86,5 +86,16 @@ struct FolioShortcuts: AppShortcutsProvider {
             shortTitle: LocalizedStringResource("Shortcut.OpenNote", table: "AppIntents"),
             systemImageName: "note.text"
         )
+        #if os(iOS)
+        AppShortcut(
+            intent: StartCountdownIntent(),
+            phrases: [
+                "Start a countdown in \(.applicationName)",
+                "Count down to my next event in \(.applicationName)"
+            ],
+            shortTitle: LocalizedStringResource("Shortcut.Countdown", table: "AppIntents"),
+            systemImageName: "timer"
+        )
+        #endif
     }
 }
