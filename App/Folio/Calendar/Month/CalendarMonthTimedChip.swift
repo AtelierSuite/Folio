@@ -18,5 +18,6 @@ struct CalendarMonthTimedChip: View {
         .lineLimit(1)
         .padding(.horizontal, 2)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .invitationCardStyle(entry.invitationStyle, color: Color(entry.color), in: RoundedRectangle(cornerRadius: 3))
     }
 }

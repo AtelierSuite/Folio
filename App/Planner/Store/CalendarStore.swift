@@ -9,6 +9,7 @@ public final class CalendarStore {
     public private(set) var eventCalendars: [PlannerCalendar] = []
     public private(set) var reminderLists: [PlannerCalendar] = []
     public internal(set) var hiddenCalendarIdentifiers: Set<String>
+    public internal(set) var hidesDeclinedEvents: Bool
     public internal(set) var contentRevision = 0
     public internal(set) var overdueReminderPolicy: OverdueReminderPolicy
     @ObservationIgnored var pendingRemovals: [UUID: PendingRemoval] = [:]
@@ -38,6 +39,7 @@ public final class CalendarStore {
         eventAuthorization = source.authorizationStatus(for: .event)
         reminderAuthorization = source.authorizationStatus(for: .reminder)
         hiddenCalendarIdentifiers = visibilityStorage.hiddenCalendarIdentifiers
+        hidesDeclinedEvents = visibilityStorage.hidesDeclinedEvents
         reloadCalendars()
     }
 
@@ -59,8 +61,7 @@ public final class CalendarStore {
     public func events(in interval: DateInterval) async -> [CalendarEvent] {
         visibleInterval = interval
         let events = await repository.events(in: interval)
-        return applyingPendingChanges(to: events)
-            .filter { !hiddenCalendarIdentifiers.contains($0.calendarIdentifier) }
+        return applyingPendingChanges(to: events).filter(isShown)
     }
 
     func handleExternalChange() async {

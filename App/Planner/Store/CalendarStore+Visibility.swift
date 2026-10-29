@@ -15,6 +15,16 @@ extension CalendarStore {
         contentRevision += 1
     }
 
+    public func setHidesDeclinedEvents(_ hidesDeclinedEvents: Bool) {
+        self.hidesDeclinedEvents = hidesDeclinedEvents
+        visibilityStorage.hidesDeclinedEvents = hidesDeclinedEvents
+        contentRevision += 1
+    }
+
+    func isShown(_ event: CalendarEvent) -> Bool {
+        !hiddenCalendarIdentifiers.contains(event.calendarIdentifier) && !(hidesDeclinedEvents && event.isDeclined)
+    }
+
     public func calendar(withIdentifier identifier: String) -> PlannerCalendar? {
         eventCalendars.first { $0.id == identifier } ?? reminderLists.first { $0.id == identifier }
     }

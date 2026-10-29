@@ -17,6 +17,10 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let hasAttendees: Bool
     public let isReadOnly: Bool
     public let alarms: [CalendarAlarm]
+    public let organizer: EventParticipant?
+    public let attendees: [EventParticipant]
+    /// The current user's response, or `nil` when they aren't an invitee (their own event or no attendees).
+    public let userStatus: ParticipantStatus?
 
     public init(
         reference: CalendarItemReference,
@@ -34,7 +38,10 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         isRecurring: Bool = false,
         hasAttendees: Bool = false,
         isReadOnly: Bool = false,
-        alarms: [CalendarAlarm] = []
+        alarms: [CalendarAlarm] = [],
+        organizer: EventParticipant? = nil,
+        attendees: [EventParticipant] = [],
+        userStatus: ParticipantStatus? = nil
     ) {
         self.reference = reference
         self.calendarIdentifier = calendarIdentifier
@@ -52,6 +59,9 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         self.hasAttendees = hasAttendees
         self.isReadOnly = isReadOnly
         self.alarms = alarms
+        self.organizer = organizer
+        self.attendees = attendees
+        self.userStatus = userStatus
     }
 
     public var id: String {

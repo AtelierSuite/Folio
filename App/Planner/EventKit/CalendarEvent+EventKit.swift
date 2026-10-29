@@ -4,6 +4,8 @@ extension CalendarEvent {
     init(_ event: EKEvent) {
         let isOrganizedBySomeoneElse = event.hasAttendees && !(event.organizer?.isCurrentUser ?? true)
         let isCalendarReadOnly = !(event.calendar?.allowsContentModifications ?? false)
+        let organizer = event.organizer.map(EventParticipant.init)
+        let attendees = (event.attendees ?? []).map(EventParticipant.init)
         self.init(
             reference: CalendarItemReference(event),
             calendarIdentifier: event.calendar?.calendarIdentifier ?? "",
@@ -22,7 +24,10 @@ extension CalendarEvent {
             isRecurring: event.hasRecurrenceRules || event.isDetached,
             hasAttendees: event.hasAttendees,
             isReadOnly: isCalendarReadOnly || isOrganizedBySomeoneElse,
-            alarms: CalendarAlarm.alarms(of: event)
+            alarms: CalendarAlarm.alarms(of: event),
+            organizer: organizer,
+            attendees: attendees,
+            userStatus: .currentUserStatus(organizer: organizer, attendees: attendees)
         )
     }
 }

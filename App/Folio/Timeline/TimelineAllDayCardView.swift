@@ -22,6 +22,7 @@ struct TimelineAllDayCardView: View {
             .padding(.horizontal, 6)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .background(Color(placement.entry.color).opacity(0.3), in: shape)
+            .invitationCardStyle(placement.entry.invitationStyle, color: Color(placement.entry.color), in: shape)
             .padding(1)
             .accessibilityElement(children: .combine)
     }

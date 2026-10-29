@@ -41,7 +41,7 @@ extension EventKitDataSource {
         try eventStore.remove(try event(for: reference), span: span.eventKitSpan, commit: true)
     }
 
-    private func event(for reference: CalendarItemReference) throws -> EKEvent {
+    func event(for reference: CalendarItemReference) throws -> EKEvent {
         guard let occurrenceDate = reference.occurrenceDate else {
             guard let event = eventStore.calendarItem(withIdentifier: reference.localIdentifier) as? EKEvent else {
                 throw CalendarDataSourceError.itemNotFound

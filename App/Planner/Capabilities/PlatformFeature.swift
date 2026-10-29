@@ -7,4 +7,5 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case sleep
     case geofencedNotifications
     case weather
+    case invitationResponses
 }

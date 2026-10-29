@@ -5,6 +5,7 @@ struct CalendarToolbar: ToolbarContent {
     @Binding var composer: CalendarComposer?
     @Binding var isShowingInbox: Bool
     let navigation: CalendarNavigation
+    var pendingInvitationCount = 0
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -22,6 +23,9 @@ struct CalendarToolbar: ToolbarContent {
             }
             CalendarAddMenu(composer: $composer)
             CalendarViewModeMenu(mode: $mode, isShowingInbox: $isShowingInbox, includesInbox: isCompact)
+        }
+        if pendingInvitationCount > 0 {
+            InvitationsToolbarItem(pendingCount: pendingInvitationCount)
         }
         ToolbarItemGroup(placement: .navigation) {
             Button(String(localized: "Toolbar.Previous", table: "Calendar"), systemImage: "chevron.left") {

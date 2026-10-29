@@ -12,6 +12,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.alarms))
         #expect(capabilities.supports(.timeSensitiveNotifications))
         #expect(capabilities.supports(.weather))
+        #expect(capabilities.supports(.invitationResponses))
         #expect(!capabilities.supports(.sleep))
         #expect(!capabilities.supports(.geofencedNotifications))
         #expect(!capabilities.supports(.liveActivityCountdown))

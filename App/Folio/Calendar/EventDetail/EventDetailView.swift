@@ -27,10 +27,14 @@ struct EventDetailView: View {
                 if let meetingLink = event.meetingLink {
                     EventDetailJoinSection(link: meetingLink)
                 }
+                EventResponseSection(event: event) {
+                    pendingRefresh = PendingRefresh(reference: event.reference, date: event.startDate)
+                }
                 if let location = draft?.location {
                     EventDetailLocationSection(location: location)
                 }
                 EventDetailInfoSection(event: event, draft: draft, calendar: eventCalendar)
+                EventDetailAttendeesSection(event: event)
                 Section {
                     EventLinkedNoteButton(event: event) { dismiss() }
                 }

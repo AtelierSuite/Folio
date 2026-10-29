@@ -9,6 +9,7 @@ struct CalendarView: View {
     @State var composer: CalendarComposer?
     @State var routedEvent: CalendarEvent?
     @State var isShowingInbox = false
+    @State private var pendingInvitationCount = 0
 
     var body: some View {
         NavigationStack {
@@ -20,7 +21,11 @@ struct CalendarView: View {
                 #endif
                 .toolbar {
                     CalendarToolbar(
-                        mode: $mode, composer: $composer, isShowingInbox: $isShowingInbox, navigation: navigation
+                        mode: $mode,
+                        composer: $composer,
+                        isShowingInbox: $isShowingInbox,
+                        navigation: navigation,
+                        pendingInvitationCount: pendingInvitationCount
                     )
                 }
                 .inspector(isPresented: $isShowingInbox) {
@@ -36,6 +41,7 @@ struct CalendarView: View {
         }
         .environment(navigation)
         .eventDetailSheet(item: $routedEvent)
+        .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
         .onChange(of: systemTime.calendar, initial: true) {
             navigation.adopt(systemTime.calendar)

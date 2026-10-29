@@ -54,6 +54,7 @@ struct TimelineEventCardView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityTitle)
         .accessibilityValue([timeDescription, entry.location].compactMap { $0 }.joined(separator: ", "))
+        .invitationCardStyle(entry.invitationStyle, color: color, in: shape.inset(by: 1))
     }
 
     private var accessibilityTitle: String {
