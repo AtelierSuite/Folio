@@ -13,13 +13,17 @@ public enum CalendarAppLink {
         } else {
             components.path = "/\(identifier)"
         }
-        components.queryItems = [URLQueryItem(name: "method", value: "show"), URLQueryItem(name: "options", value: "more")]
+        components.queryItems = [
+            URLQueryItem(name: "method", value: "show"),
+            URLQueryItem(name: "options", value: "more")
+        ]
         return components.url
     }
 
-    private static let occurrenceFormat = Date.VerbatimFormatStyle(
-        format: "\(year: .defaultDigits)\(month: .twoDigits)\(day: .twoDigits)T\(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased))\(minute: .twoDigits)\(second: .twoDigits)Z",
-        timeZone: .gmt,
-        calendar: Calendar(identifier: .gregorian)
+    private static let occurrenceFormat = Date.ISO8601FormatStyle(
+        dateSeparator: .omitted,
+        dateTimeSeparator: .standard,
+        timeSeparator: .omitted,
+        timeZone: .gmt
     )
 }

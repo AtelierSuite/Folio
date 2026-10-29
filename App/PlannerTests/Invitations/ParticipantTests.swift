@@ -47,7 +47,9 @@ struct ParticipantTests {
     }
 
     @Test func timelineEntryCarriesCardStyle() {
-        let event = InvitationFixtures.invitation(local: "lunch", start: Fixtures.date(2026, 10, 29), userStatus: .declined)
+        let event = InvitationFixtures.invitation(
+            local: "lunch", start: Fixtures.date(2026, 10, 29), userStatus: .declined
+        )
         let entry = TimelineEntry(event: event)
         #expect(entry.invitationStyle == .dimmed)
         #expect(entry.isReadOnly)
