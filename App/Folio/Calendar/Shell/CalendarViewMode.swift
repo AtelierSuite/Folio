@@ -1,4 +1,5 @@
 import Foundation
+import Planner
 
 enum CalendarViewMode: String, CaseIterable, Identifiable {
     case list
@@ -32,10 +33,10 @@ enum CalendarViewMode: String, CaseIterable, Identifiable {
         }
     }
 
-    var pagingComponent: Calendar.Component {
+    var pageStep: CalendarPageStep {
         switch self {
         case .day, .multiDay: .day
-        case .list, .workWeek, .week: .weekOfYear
+        case .list, .workWeek, .week: .week
         case .month: .month
         }
     }

@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import Planner
 
 @MainActor
 @Observable
@@ -25,10 +26,11 @@ final class CalendarNavigation {
     }
 
     func page(_ mode: CalendarViewMode, forward: Bool) {
-        let step = forward ? 1 : -1
-        if let date = calendar.date(byAdding: mode.pagingComponent, value: step, to: selectedDate) {
-            selectedDate = calendar.startOfDay(for: date)
-        }
+        page(by: mode.pageStep, toward: forward ? .forward : .backward)
+    }
+
+    func page(by step: CalendarPageStep, toward direction: CalendarPageDirection) {
+        selectedDate = step.date(from: selectedDate, toward: direction, in: calendar)
     }
 
     func startOfWeek(containing date: Date) -> Date {
