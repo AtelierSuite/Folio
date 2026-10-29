@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct RootView: View {
+    @Environment(NoteNavigator.self) private var noteNavigator
     @SceneStorage("RootView.selectedTab") private var selectedTab: AppTab = .calendar
 
     var body: some View {
@@ -24,5 +25,10 @@ struct RootView: View {
         }
         .tabViewStyle(.sidebarAdaptable)
         .onboarding()
+        .onChange(of: noteNavigator.requestedNoteURL, initial: true) { _, url in
+            if url != nil {
+                selectedTab = .notes
+            }
+        }
     }
 }
