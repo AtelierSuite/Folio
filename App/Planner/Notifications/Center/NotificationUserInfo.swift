@@ -17,6 +17,7 @@ public enum NotificationUserInfo {
         if let meeting = notification.meeting, let data = try? JSONEncoder().encode(meeting) {
             userInfo[meetingKey] = data
         }
+        userInfo.merge(make(for: notification.actionContext)) { _, new in new }
         return userInfo
     }
 

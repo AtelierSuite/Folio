@@ -40,13 +40,16 @@ public struct NotificationPlanner: Sendable {
 
     private func eventCandidates(_ events: [CalendarEvent], after now: Date) -> [NotificationCandidate] {
         events.flatMap { event in
-            fireDates(for: event.alarms, anchor: event.startDate, after: now).map { fireDate in
+            let eventFireDates = fireDates(for: event.alarms, anchor: event.startDate, after: now)
+            let actionContext = eventFireDates.isEmpty ? .none : NotificationActionContext(event: event)
+            return eventFireDates.map { fireDate in
                 NotificationCandidate(
                     fireDate: fireDate,
                     kind: .event,
                     reference: event.reference,
                     content: formatter.content(for: event, firingAt: fireDate),
-                    meeting: NotificationMeeting(event: event)
+                    meeting: NotificationMeeting(event: event),
+                    actionContext: actionContext
                 )
             }
         }
