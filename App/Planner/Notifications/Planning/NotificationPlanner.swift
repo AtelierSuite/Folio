@@ -53,7 +53,8 @@ public struct NotificationPlanner: Sendable {
 
     private func reminderCandidates(_ reminders: [ReminderItem], after now: Date) -> [NotificationCandidate] {
         reminders.filter { !$0.isCompleted }.flatMap { reminder in
-            fireDates(for: reminder.alarms.map(CalendarAlarm.init), anchor: reminder.dueDate, after: now).map { fireDate in
+            let alarms = reminder.alarms.map(CalendarAlarm.init)
+            return fireDates(for: alarms, anchor: reminder.dueDate, after: now).map { fireDate in
                 NotificationCandidate(
                     fireDate: fireDate,
                     kind: .reminder,
