@@ -627,7 +627,8 @@
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep from the Health app to show it on your calendar. Sleep data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for arrival alerts you turn on, to tell you when you arrive at an event's location. Your location stays on this iPhone.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival alerts, to tell you when you arrive at an event.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIFileSharingEnabled = YES;
@@ -839,7 +840,8 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for arrival alerts you turn on, to tell you when you arrive at an event's location. Your location stays on this iPhone.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival alerts, to tell you when you arrive at an event.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIFileSharingEnabled = YES;
