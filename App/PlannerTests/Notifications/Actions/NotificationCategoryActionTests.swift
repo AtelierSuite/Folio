@@ -4,17 +4,12 @@ import UserNotifications
 @testable import Planner
 
 struct NotificationCategoryActionTests {
-    @Test func eventCategoryFollowsWhatTheEventOffers() throws {
-        let url = try #require(NotificationActionFixtures.zoomURL)
-        let place = NotificationPlace(name: "Room 4", coordinate: nil)
+    @Test func eventCategoryFollowsWhatTheEventOffers() {
         #expect(NotificationCategory(.event) == .event)
-        #expect(NotificationCategory(.event, context: NotificationActionContext(meetingURL: url)) == .eventWithMeeting)
-        #expect(NotificationCategory(.event, context: NotificationActionContext(place: place)) == .eventWithPlace)
-        #expect(
-            NotificationCategory(.event, context: NotificationActionContext(meetingURL: url, place: place))
-                == .eventWithMeetingAndPlace
-        )
-        #expect(NotificationCategory(.reminder, context: NotificationActionContext(meetingURL: url)) == .reminder)
+        #expect(NotificationCategory(.event, hasMeeting: true) == .eventWithMeeting)
+        #expect(NotificationCategory(.event, hasPlace: true) == .eventWithPlace)
+        #expect(NotificationCategory(.event, hasMeeting: true, hasPlace: true) == .eventWithMeetingAndPlace)
+        #expect(NotificationCategory(.reminder, hasMeeting: true, hasPlace: true) == .reminder)
     }
 
     @Test func categoriesOfferMatchingActions() {

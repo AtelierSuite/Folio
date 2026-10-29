@@ -7,19 +7,21 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let reference: CalendarItemReference
     public let content: NotificationContent
     public let meeting: NotificationMeeting?
-    public let actionContext: NotificationActionContext
+    public let place: NotificationPlace?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
 
     public init(_ candidate: NotificationCandidate, style: NotificationAlertStyle = .standard) {
-        let category = NotificationCategory(candidate.kind, context: candidate.actionContext)
+        let category = NotificationCategory(
+            candidate.kind, hasMeeting: candidate.meeting != nil, hasPlace: candidate.place != nil
+        )
         self.id = NotificationIdentifier.make(for: candidate, category: category, style: style)
         self.fireDate = candidate.fireDate
         self.kind = candidate.kind
         self.reference = candidate.reference
         self.content = candidate.content
         self.meeting = candidate.meeting
-        self.actionContext = candidate.actionContext
+        self.place = candidate.place
         self.category = category
         self.style = style
     }

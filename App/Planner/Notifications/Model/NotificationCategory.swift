@@ -8,8 +8,8 @@ public enum NotificationCategory: String, Sendable, CaseIterable {
     case eventWithMeetingAndPlace = "folio.event.meeting.place"
     case reminder = "folio.reminder"
 
-    public init(_ kind: CalendarItemKind, context: NotificationActionContext = .none) {
-        switch (kind, context.meetingURL != nil, context.place != nil) {
+    public init(_ kind: CalendarItemKind, hasMeeting: Bool = false, hasPlace: Bool = false) {
+        switch (kind, hasMeeting, hasPlace) {
         case (.reminder, _, _): self = .reminder
         case (.event, false, false): self = .event
         case (.event, true, false): self = .eventWithMeeting

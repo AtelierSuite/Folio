@@ -6,7 +6,7 @@ public struct NotificationCandidate: Sendable, Hashable {
     public let reference: CalendarItemReference
     public let content: NotificationContent
     public let meeting: NotificationMeeting?
-    public let actionContext: NotificationActionContext
+    public let place: NotificationPlace?
 
     public init(
         fireDate: Date,
@@ -14,13 +14,13 @@ public struct NotificationCandidate: Sendable, Hashable {
         reference: CalendarItemReference,
         content: NotificationContent,
         meeting: NotificationMeeting? = nil,
-        actionContext: NotificationActionContext = .none
+        place: NotificationPlace? = nil
     ) {
         self.fireDate = fireDate
         self.kind = kind
         self.reference = reference
         self.content = content
         self.meeting = meeting
-        self.actionContext = actionContext
+        self.place = place
     }
 }

@@ -2,9 +2,6 @@ import Foundation
 import UserNotifications
 
 public struct NotificationResponseRouter: Sendable {
-    /// Tapping a meeting's alert opens its link from this long before the meeting starts.
-    public static let meetingLeadTime: TimeInterval = 60 * 60
-
     public var now: Date
 
     public init(now: Date) {
@@ -13,25 +10,26 @@ public struct NotificationResponseRouter: Sendable {
 
     public func outcome(actionIdentifier: String, userInfo: [AnyHashable: Any]) -> NotificationResponseOutcome? {
         guard let item = NotificationUserInfo.item(from: userInfo) else { return nil }
-        let context = NotificationUserInfo.actionContext(from: userInfo)
+        let meeting = NotificationUserInfo.meeting(from: userInfo)
         if actionIdentifier == UNNotificationDefaultActionIdentifier {
-            return .open(.item(item.destination, meetingURL: joinableMeetingURL(for: item, context: context)))
+            let joinableURL = meeting.flatMap { $0.isJoinable(at: now) ? $0.link.url : nil }
+            return .open(.item(item.destination, meetingURL: joinableURL))
         }
         guard let action = NotificationAction(rawValue: actionIdentifier) else { return nil }
-        return outcome(for: action, item: item, context: context)
+        return outcome(for: action, item: item, meeting: meeting, place: NotificationUserInfo.place(from: userInfo))
     }
 
     private func outcome(
         for action: NotificationAction,
         item: NotificationItem,
-        context: NotificationActionContext
+        meeting: NotificationMeeting?,
+        place: NotificationPlace?
     ) -> NotificationResponseOutcome? {
         switch action {
         case .joinMeeting:
-            return .open(context.meetingURL.map(NotificationRoute.url) ?? .item(item.destination, meetingURL: nil))
+            return .open(meeting.map { .url($0.link.url) } ?? .item(item.destination, meetingURL: nil))
         case .directions:
-            let directions = context.place?.directionsURL.map(NotificationRoute.url)
-            return .open(directions ?? .item(item.destination, meetingURL: nil))
+            return .open(place?.directionsURL.map(NotificationRoute.url) ?? .item(item.destination, meetingURL: nil))
         case .markDone:
             return item.kind == .reminder ? .markDone(item) : nil
         case .snoozeShort, .snoozeLong:
@@ -43,10 +41,5 @@ public struct NotificationResponseRouter: Sendable {
             case .reminder: return .open(.note(.dailyNote(item.date)))
             }
         }
-    }
-
-    private func joinableMeetingURL(for item: NotificationItem, context: NotificationActionContext) -> URL? {
-        guard item.kind == .event, now >= item.date.addingTimeInterval(-Self.meetingLeadTime) else { return nil }
-        return context.meetingURL
     }
 }

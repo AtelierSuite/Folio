@@ -38,6 +38,16 @@ struct NotificationResponseRouterTests {
         #expect(meetingURL == nil)
     }
 
+    @Test func tappingAfterTheMeetingEndedOnlyOpensTheEvent() throws {
+        let router = NotificationResponseRouter(now: meetingStart.addingTimeInterval(2 * 3600))
+        let outcome = router.outcome(actionIdentifier: UNNotificationDefaultActionIdentifier, userInfo: try meeting())
+        guard case .open(.item(_, let meetingURL)) = outcome else {
+            Issue.record("Expected to open the event")
+            return
+        }
+        #expect(meetingURL == nil)
+    }
+
     @Test func joinOpensTheMeetingLink() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
         let outcome = router.outcome(
