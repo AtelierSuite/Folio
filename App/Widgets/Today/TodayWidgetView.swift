@@ -18,13 +18,13 @@ struct TodayWidgetView: View {
             WidgetAccessRequiredView(kind: .event)
         } else if family == .systemMedium {
             HStack(alignment: .top, spacing: 12) {
-                TodayDateHeader(date: entry.date)
+                TodayDateHeader(date: entry.date, weather: nil)
                     .frame(width: 64, alignment: .leading)
                 TodayAgendaList(entry: entry, rowLimit: 4)
             }
         } else {
             VStack(alignment: .leading, spacing: 8) {
-                TodayDateHeader(date: entry.date)
+                TodayDateHeader(date: entry.date, weather: snapshot.weather(on: entry.date, calendar: .current))
                 TodayAgendaList(entry: entry, rowLimit: family == .systemExtraLarge ? 12 : 9)
             }
         }
@@ -33,6 +33,7 @@ struct TodayWidgetView: View {
 
 struct TodayDateHeader: View {
     let date: Date
+    let weather: DailyWeather?
 
     var body: some View {
         HStack(alignment: .top) {
@@ -45,7 +46,7 @@ struct TodayDateHeader: View {
                     .font(.system(size: 34, weight: .bold, design: .rounded))
             }
             Spacer(minLength: 0)
-            WidgetWeatherSlot(date: date)
+            WidgetWeatherSlot(daily: weather)
         }
     }
 }

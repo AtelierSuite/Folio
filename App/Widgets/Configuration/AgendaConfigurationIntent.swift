@@ -21,7 +21,8 @@ struct AgendaConfigurationIntent: FolioWidgetIntent {
             calendar: calendar,
             calendars: calendars?.identifierSet,
             includesReminders: true,
-            lists: lists?.identifierSet
+            lists: lists?.identifierSet,
+            includesWeather: true
         )
     }
 }

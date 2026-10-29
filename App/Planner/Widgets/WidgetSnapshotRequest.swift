@@ -6,17 +6,20 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
     public var calendars: Set<String>?
     public var includesReminders: Bool
     public var lists: Set<String>?
+    public var includesWeather: Bool
 
     public init(
         eventInterval: DateInterval?,
         calendars: Set<String>? = nil,
         includesReminders: Bool = false,
-        lists: Set<String>? = nil
+        lists: Set<String>? = nil,
+        includesWeather: Bool = false
     ) {
         self.eventInterval = eventInterval
         self.calendars = calendars
         self.includesReminders = includesReminders
         self.lists = lists
+        self.includesWeather = includesWeather
     }
 
     /// Today and tomorrow, enough for Up Next and the agenda to roll over at midnight.
@@ -25,13 +28,15 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
         calendar: Calendar,
         calendars: Set<String>? = nil,
         includesReminders: Bool = false,
-        lists: Set<String>? = nil
+        lists: Set<String>? = nil,
+        includesWeather: Bool = false
     ) -> WidgetSnapshotRequest {
         WidgetSnapshotRequest(
             eventInterval: days(from: now, count: 2, calendar: calendar),
             calendars: calendars,
             includesReminders: includesReminders,
-            lists: lists
+            lists: lists,
+            includesWeather: includesWeather
         )
     }
 
