@@ -22,9 +22,15 @@ struct TimelineAllDayStripView: View {
                     laneHeight: metrics.allDayLaneHeight
                 ) {
                     ForEach(layout.allDayPlacements) { placement in
-                        TimelineAllDayCardView(placement: placement)
-                            .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
-                            .timelineAllDayPlacement(placement)
+                        Group {
+                            if placement.entry.kind == .reminder {
+                                TimelineAllDayReminderCardView(placement: placement, onSelect: onSelectEntry)
+                            } else {
+                                TimelineAllDayCardView(placement: placement)
+                                    .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
+                            }
+                        }
+                        .timelineAllDayPlacement(placement)
                     }
                 }
             }

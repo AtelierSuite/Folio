@@ -29,21 +29,34 @@ struct TimelineCardsView: View {
                     height: slot.height(hourHeight: hourHeight, minimumHeight: minimumCardHeight) - cardInset
                 )
                 let presentation = resolver.presentation(for: size)
-                let showsJoinButton = placement.entry.hasMeetingLink && resolver.showsJoinButton(
-                    for: presentation, cardSize: size, buttonWidth: joinButtonWidth
-                )
-                TimelineEventCardView(
-                    placement: placement,
-                    timeZone: layout.days.calendar.timeZone,
-                    presentation: presentation,
-                    textMetrics: resolver.metrics,
-                    compressesText: compressesText,
-                    trailingInset: showsJoinButton ? joinButtonWidth : 0
-                )
-                .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
-                .timelineJoinButton(
-                    placement.entry.meetingLink, isShown: showsJoinButton, color: Color(placement.entry.color)
-                )
+                Group {
+                    if placement.entry.kind == .reminder {
+                        TimelineReminderCardView(
+                            placement: placement,
+                            timeZone: layout.days.calendar.timeZone,
+                            presentation: presentation,
+                            textMetrics: resolver.metrics,
+                            compressesText: compressesText,
+                            onSelect: onSelectEntry
+                        )
+                    } else {
+                        let showsJoinButton = placement.entry.hasMeetingLink && resolver.showsJoinButton(
+                            for: presentation, cardSize: size, buttonWidth: joinButtonWidth
+                        )
+                        TimelineEventCardView(
+                            placement: placement,
+                            timeZone: layout.days.calendar.timeZone,
+                            presentation: presentation,
+                            textMetrics: resolver.metrics,
+                            compressesText: compressesText,
+                            trailingInset: showsJoinButton ? joinButtonWidth : 0
+                        )
+                        .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
+                        .timelineJoinButton(
+                            placement.entry.meetingLink, isShown: showsJoinButton, color: Color(placement.entry.color)
+                        )
+                    }
+                }
                 .timelineSlot(slot)
             }
         }

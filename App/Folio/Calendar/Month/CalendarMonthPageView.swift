@@ -9,6 +9,7 @@ struct CalendarMonthPageView: View {
     let onSelectDay: (MonthDay) -> Void
     @State private var buckets = MonthDayBuckets.empty
     @State private var events: [CalendarEvent] = []
+    @State private var remindersByEntryIdentifier: [String: ReminderItem] = [:]
     @State private var weather = WeatherSnapshot.empty
 
     var body: some View {
@@ -32,6 +33,7 @@ struct CalendarMonthPageView: View {
             WeatherAttributionFooter(snapshot: weather)
         }
         .environment(\.weatherSnapshot, weather)
+        .reminderCompletion(store: store, remindersByEntryIdentifier: remindersByEntryIdentifier)
         .task(id: LoadKey(revision: store.contentRevision, span: grid.span)) {
             await load()
         }
@@ -44,10 +46,12 @@ struct CalendarMonthPageView: View {
     private func load() async {
         guard let span = grid.span else { return }
         async let events = store.events(in: span)
-        async let reminders = store.reminders(in: span)
+        async let reminders = store.reminders(in: span, calendar: grid.calendar)
         self.events = await events
-        let entries = await events.map(TimelineEntry.init(event:))
-            + reminders.compactMap { TimelineEntry(reminder: $0, calendar: grid.calendar) }
+        let shownReminders = await reminders
+        remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
+        let entries = self.events.map(TimelineEntry.init(event:))
+            + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: grid.calendar) }
         buckets = MonthDayBuckets(grid: grid, entries: entries)
     }
 

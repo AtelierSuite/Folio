@@ -6,7 +6,9 @@ struct CalendarMonthEntryChip: View {
 
     var body: some View {
         Group {
-            if item.isSpanning && item.entry.kind == .event {
+            if item.entry.kind == .reminder {
+                CalendarMonthReminderChip(entry: item.entry)
+            } else if item.isSpanning {
                 CalendarMonthSpanningChip(item: item)
             } else {
                 CalendarMonthTimedChip(entry: item.entry)

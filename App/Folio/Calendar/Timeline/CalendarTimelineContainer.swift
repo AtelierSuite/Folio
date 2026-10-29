@@ -16,7 +16,9 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     let accessory: Accessory
     @State private var entries: [TimelineEntry] = []
     @State private var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
+    @State private var remindersByEntryIdentifier: [String: ReminderItem] = [:]
     @State private var selectedEvent: CalendarEvent?
+    @State private var openedReminder: ReminderItem?
     @State private var events: [CalendarEvent] = []
     @State private var weather = WeatherSnapshot.empty
     @State private var zoom: TimelineZoomController
@@ -49,6 +51,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                 onSelectEntry: select
             )
             .environment(\.weatherSnapshot, weather)
+            .reminderCompletion(store: store, remindersByEntryIdentifier: remindersByEntryIdentifier)
             WeatherAttributionFooter(snapshot: weather)
         }
         .horizontalPaging(isEnabled: isPagingEnabled && !zoom.isPinching) { direction in
@@ -69,22 +72,29 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             for: days.intervals, calendar: days.calendar, events: events, detail: .dailyAndHourly, into: $weather
         )
         .eventDetailSheet(item: $selectedEvent)
+        .sheet(item: $openedReminder) { reminder in
+            ReminderEditorView(reminder: reminder)
+        }
     }
 
     private func select(_ entry: TimelineEntry) {
-        selectedEvent = eventsByEntryIdentifier[entry.id]
+        switch entry.kind {
+        case .event: selectedEvent = eventsByEntryIdentifier[entry.id]
+        case .reminder: openedReminder = remindersByEntryIdentifier[entry.id]
+        }
     }
 
     private func load() async {
         guard let span = days.span else { return }
         async let events = store.events(in: span)
-        async let reminders = store.reminders(in: span)
+        async let reminders = store.reminders(in: span, calendar: days.calendar)
         let shownEvents = await events.filter { !excludedCalendarIdentifiers.contains($0.calendarIdentifier) }
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
         self.events = shownEvents
         entries = shownEvents.map(TimelineEntry.init(event:))
-            + shownReminders.compactMap { TimelineEntry(reminder: $0) }
+            + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: days.calendar) }
     }
 
     private struct LoadKey: Equatable {

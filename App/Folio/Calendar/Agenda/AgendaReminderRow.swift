@@ -29,7 +29,9 @@ struct AgendaReminderRow: View {
                         Text(reminder.title)
                             .strikethrough(reminder.isCompleted)
                             .foregroundStyle(reminder.isCompleted ? .secondary : .primary)
-                        if reminder.hasDueTime, let dueDate = reminder.dueDate {
+                        if reminder.isCarriedForward && !reminder.isCompleted {
+                            ReminderOverdueLabel(reminder: reminder)
+                        } else if reminder.hasDueTime, let dueDate = reminder.dueDate {
                             Text(dueDate, format: .dateTime.hour().minute())
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
