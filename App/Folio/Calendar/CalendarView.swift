@@ -8,6 +8,7 @@ struct CalendarView: View {
     var body: some View {
         NavigationStack {
             content
+                .calendarPermissionGate()
                 .navigationTitle(navigation.selectedDate.formatted(.dateTime.year().month(.wide)))
                 #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
