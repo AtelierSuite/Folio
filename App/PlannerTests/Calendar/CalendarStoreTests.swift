@@ -23,8 +23,12 @@ struct CalendarStoreTests {
         let work = Fixtures.plannerCalendar("work")
         let source = FakeCalendarDataSource(
             events: [
-                Fixtures.event(local: "meeting", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 9)),
-                Fixtures.event(local: "gym", calendarIdentifier: "home", start: Fixtures.date(2026, 10, 29, hour: 18))
+                Fixtures.event(
+                    local: "meeting", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 9)
+                ),
+                Fixtures.event(
+                    local: "gym", calendarIdentifier: "home", start: Fixtures.date(2026, 10, 29, hour: 18)
+                )
             ],
             calendars: [work, Fixtures.plannerCalendar("home")]
         )
