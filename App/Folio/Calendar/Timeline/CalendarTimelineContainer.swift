@@ -15,10 +15,12 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State private var selectedEvent: CalendarEvent?
     @State private var events: [CalendarEvent] = []
     @State private var weather = WeatherSnapshot.empty
+    @State private var zoom: TimelineZoomController
 
     init(
         days: TimelineDays,
         pageStep: CalendarPageStep,
+        zoomScope: TimelineZoomScope,
         excludedCalendarIdentifiers: Set<String> = [],
         isPagingEnabled: Bool = true,
         @ViewBuilder accessory: () -> Accessory
@@ -28,6 +30,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         self.excludedCalendarIdentifiers = excludedCalendarIdentifiers
         self.isPagingEnabled = isPagingEnabled
         self.accessory = accessory()
+        _zoom = State(initialValue: TimelineZoomController(storageKey: TimelineSettings.zoomKey(for: zoomScope)))
     }
 
     var body: some View {
@@ -36,15 +39,22 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             CalendarTimelineView(
                 entries: entries,
                 days: days,
+                zoom: zoom,
                 layers: CalendarTimelineOverlays(capabilities: capabilities, weather: weather).layers(for: days),
                 onSelectEntry: select
             )
             .environment(\.weatherSnapshot, weather)
             WeatherAttributionFooter(snapshot: weather)
         }
-        .horizontalPaging(isEnabled: isPagingEnabled) { direction in
+        .horizontalPaging(isEnabled: isPagingEnabled && !zoom.isPinching) { direction in
             navigation.page(by: pageStep, toward: direction)
         }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                TimelineZoomMenu(zoom: zoom)
+            }
+        }
+        .focusedSceneValue(\.timelineZoom, zoom)
         .task(id: LoadKey(
             revision: store.contentRevision, span: days.span, excluded: excludedCalendarIdentifiers
         )) {
@@ -83,12 +93,14 @@ extension CalendarTimelineContainer where Accessory == EmptyView {
     init(
         days: TimelineDays,
         pageStep: CalendarPageStep,
+        zoomScope: TimelineZoomScope,
         excludedCalendarIdentifiers: Set<String> = [],
         isPagingEnabled: Bool = true
     ) {
         self.init(
             days: days,
             pageStep: pageStep,
+            zoomScope: zoomScope,
             excludedCalendarIdentifiers: excludedCalendarIdentifiers,
             isPagingEnabled: isPagingEnabled
         ) { EmptyView() }
