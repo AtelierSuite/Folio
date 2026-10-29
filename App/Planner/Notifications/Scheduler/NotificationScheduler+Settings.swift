@@ -29,7 +29,6 @@ extension NotificationScheduler {
         authorization = await center.authorization()
     }
 
-    // Swap this for the shared permission layer (#2) once it lands.
     private func requestAuthorizationIfNeeded() async -> NotificationAuthorization {
         let current = await center.authorization()
         guard current == .notDetermined else { return current }

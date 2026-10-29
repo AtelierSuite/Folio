@@ -3,13 +3,17 @@ import SwiftUI
 
 struct NotificationSettingsView: View {
     @Environment(NotificationScheduler.self) private var scheduler
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         Form {
             Section {
                 Toggle(String(localized: "Enabled", table: "Notifications"), isOn: binding(
                     get: { scheduler.isEnabled },
-                    set: { await scheduler.setEnabled($0) }
+                    set: {
+                        await scheduler.setEnabled($0)
+                        await permissionCenter.refresh(.notifications)
+                    }
                 ))
                 .accessibilityIdentifier("NotificationsEnabledToggle")
             } footer: {
