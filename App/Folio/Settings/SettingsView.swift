@@ -4,6 +4,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             NotesStorageSection()
+            LinkedNotesSettingsSection()
             Section {
                 NavigationLink(String(localized: "Title", table: "Notifications")) {
                     NotificationSettingsView()
