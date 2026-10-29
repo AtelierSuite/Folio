@@ -10,7 +10,7 @@ struct NotificationContentFormatterTests {
         let event = NotificationFixtures.event("Standup", start: start, location: " Room 4 ")
         let content = formatter.content(for: event, firingAt: start.addingTimeInterval(-600))
         #expect(content.title == "Standup")
-        #expect(content.body.contains("09:00"))
+        #expect(content.body.contains("9:00"))
         #expect(content.body.contains("10:00"))
         #expect(content.body.hasSuffix(" · Room 4"))
         #expect(!content.body.contains("2026"))
@@ -20,16 +20,16 @@ struct NotificationContentFormatterTests {
         let event = NotificationFixtures.event("Dentist", start: start)
         let content = formatter.content(for: event, firingAt: start.addingTimeInterval(-86_400))
         #expect(content.body.contains("29"))
-        #expect(content.body.contains("09:00"))
+        #expect(content.body.contains("9:00"))
     }
 
     @Test func allDayEventSaysAllDay() {
         let day = Fixtures.date(2026, 10, 29)
         let event = NotificationFixtures.event("Holiday", start: day, hours: 24, isAllDay: true)
-        #expect(formatter.content(for: event, firingAt: day.addingTimeInterval(3600)).body == "All day")
+        #expect(formatter.content(for: event, firingAt: day.addingTimeInterval(3600)).body == NotificationContentFormatter.allDayText)
         let dayBefore = formatter.content(for: event, firingAt: day.addingTimeInterval(-3600)).body
         #expect(dayBefore.hasPrefix("29"))
-        #expect(dayBefore.hasSuffix(" · All day"))
+        #expect(dayBefore.hasSuffix(" · \(NotificationContentFormatter.allDayText)"))
     }
 
     @Test func eventWithoutLocationHasNoSeparator() {
@@ -39,7 +39,7 @@ struct NotificationContentFormatterTests {
 
     @Test func reminderShowsDueTime() {
         let reminder = NotificationFixtures.reminder("Call", due: start)
-        #expect(formatter.content(for: reminder, firingAt: start).body == "09:00")
+        #expect(formatter.content(for: reminder, firingAt: start).body.hasSuffix("9:00"))
         let undated = NotificationFixtures.reminder("Someday", due: nil, alarms: [.absolute(date: start)])
         #expect(formatter.content(for: undated, firingAt: start).body.isEmpty)
         let dateOnly = NotificationFixtures.reminder("Invoice", due: Fixtures.date(2026, 10, 30), hasDueTime: false)

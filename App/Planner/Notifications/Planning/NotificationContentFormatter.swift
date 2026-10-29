@@ -3,6 +3,10 @@ import Foundation
 public struct NotificationContentFormatter: Sendable {
     static let separator = " · "
 
+    static var allDayText: String {
+        String(localized: "AllDay", table: "Notifications", bundle: #bundle)
+    }
+
     public var calendar: Calendar
     public var locale: Locale
 
@@ -26,7 +30,7 @@ public struct NotificationContentFormatter: Sendable {
     private func eventTime(for event: CalendarEvent, firingAt fireDate: Date) -> String {
         let isSameDay = calendar.isDate(event.startDate, inSameDayAs: fireDate)
         if event.isAllDay {
-            let allDay = String(localized: "AllDay", table: "Notifications", bundle: #bundle, locale: locale)
+            let allDay = Self.allDayText
             return isSameDay ? allDay : joined([event.startDate.formatted(dateStyle(date: .abbreviated)), allDay])
         }
         let date: Date.IntervalFormatStyle.DateStyle? = isSameDay ? nil : .abbreviated

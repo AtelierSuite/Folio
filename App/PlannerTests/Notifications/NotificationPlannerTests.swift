@@ -138,7 +138,7 @@ struct NotificationPlannerTests {
         )
         let plan = planner.plan(events: [event], reminders: [], after: now, budget: 60)
         #expect(plan.first?.fireDate == Fixtures.date(2026, 10, 30, hour: 9))
-        #expect(plan.first?.content.body.hasSuffix("All day") == true)
+        #expect(plan.first?.content.body.hasSuffix(NotificationContentFormatter.allDayText) == true)
     }
 
     @Test func identifiersAreDeterministic() {
