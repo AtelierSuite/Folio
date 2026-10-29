@@ -36,10 +36,10 @@ sign() {
     com.apple.developer.weatherkit com.apple.developer.healthkit com.apple.developer.healthkit.access \
     com.apple.developer.usernotifications.time-sensitive com.apple.developer.siri aps-environment \
     com.apple.developer.aps-environment com.apple.application-identifier com.apple.developer.team-identifier; do
-    plutil -remove $key $entitlements 2>/dev/null || true
+    /usr/libexec/PlistBuddy -c "Delete :$key" $entitlements 2>/dev/null || true
   done
-  plutil -insert com.apple.security.app-sandbox -bool YES $entitlements 2>/dev/null || true
-  plutil -insert com.apple.security.get-task-allow -bool YES $entitlements 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :com.apple.security.app-sandbox bool true" $entitlements 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :com.apple.security.get-task-allow bool true" $entitlements 2>/dev/null || true
   find $1/Contents/Frameworks -maxdepth 1 \( -name '*.framework' -o -name '*.dylib' \) 2>/dev/null \
     | while read -r nested; do codesign --force --sign - $nested; done
   codesign --force --sign - --entitlements $entitlements $1
