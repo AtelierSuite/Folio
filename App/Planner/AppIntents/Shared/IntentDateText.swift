@@ -15,11 +15,13 @@ public enum IntentDateText {
         from start: Date,
         to end: Date,
         isAllDay: Bool,
+        now: Date = .now,
         calendar: Calendar = .current
     ) -> String {
         guard !isAllDay else { return day(start, calendar: calendar) }
-        guard end > start else { return time(start, now: .distantPast, calendar: calendar) }
-        var style = Date.IntervalFormatStyle(date: .abbreviated, time: .shortened)
+        guard end > start else { return time(start, now: now, calendar: calendar) }
+        let isToday = calendar.isDate(start, inSameDayAs: now) && calendar.isDate(end, inSameDayAs: now)
+        var style = Date.IntervalFormatStyle(date: isToday ? .omitted : .abbreviated, time: .shortened)
         style.timeZone = calendar.timeZone
         return (start..<end).formatted(style)
     }

@@ -25,3 +25,21 @@ struct EntityTransferTests {
         #expect(note.transferText == "Plan\n\nShip it")
     }
 }
+
+struct IntentDateTextTests {
+    @Test func todaysRangesLeaveOutTheDate() {
+        let start = Fixtures.date(2026, 10, 29, hour: 9)
+        let today = IntentDateText.timeRange(
+            from: start, to: start.addingTimeInterval(3600), isAllDay: false,
+            now: Fixtures.date(2026, 10, 29, hour: 8), calendar: Fixtures.calendar
+        )
+        let tomorrow = IntentDateText.timeRange(
+            from: start, to: start.addingTimeInterval(3600), isAllDay: false,
+            now: Fixtures.date(2026, 10, 28, hour: 8), calendar: Fixtures.calendar
+        )
+
+        #expect(today.count < tomorrow.count)
+        #expect(!today.contains("2026"))
+        #expect(tomorrow.contains("2026"))
+    }
+}
