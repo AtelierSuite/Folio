@@ -23,12 +23,11 @@ final class InvitationsTests: XCTestCase {
     @MainActor
     func testInvitationsListOpensDetailWithAttendeesAndRespondSheet() throws {
         let app = launch(mode: "day")
-        let overflow = app.buttons["OverflowBarButtonItem"]
-        XCTAssertTrue(overflow.waitForExistence(timeout: 15))
-        overflow.tap()
-        let invitationsButton = app.buttons["Invitations"]
-        XCTAssertTrue(invitationsButton.waitForExistence(timeout: 5))
-        invitationsButton.tap()
+        let invitationsButton = app.buttons["InvitationsButton"]
+        if !invitationsButton.waitForExistence(timeout: 15) {
+            app.buttons["OverflowBarButtonItem"].tap()
+        }
+        app.buttons["Invitations"].firstMatch.tap()
 
         let row = app.buttons["InvitationRow"].firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 10))
@@ -58,8 +57,7 @@ final class InvitationsTests: XCTestCase {
         let app = launch(mode: "list")
         let concert = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Concert'")).firstMatch
         XCTAssertTrue(app.staticTexts["Standup"].firstMatch.waitForExistence(timeout: 15))
-        app.swipeUp()
-        XCTAssertTrue(concert.waitForExistence(timeout: 5))
+        XCTAssertTrue(scrollUntilExists(concert, in: app))
         capture(app, "AgendaDeclined")
 
         app.buttons["Settings"].tap()
@@ -76,7 +74,16 @@ final class InvitationsTests: XCTestCase {
         app.buttons["Settings"].tap()
         switchControl(of: toggle).tap()
         app.buttons["Calendar"].tap()
-        XCTAssertTrue(concert.waitForExistence(timeout: 10))
+        XCTAssertTrue(scrollUntilExists(concert, in: app))
+    }
+
+    @MainActor
+    private func scrollUntilExists(_ element: XCUIElement, in app: XCUIApplication) -> Bool {
+        for _ in 0..<5 {
+            if element.waitForExistence(timeout: 2) { return true }
+            app.swipeUp()
+        }
+        return element.exists
     }
 
     @MainActor
