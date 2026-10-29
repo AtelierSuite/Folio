@@ -81,6 +81,7 @@ struct EventDetailView: View {
             }
         }
         .undoToastHost()
+        .onScreenEntity(event)
         #if os(macOS)
         .frame(minWidth: 420, minHeight: 520)
         #endif

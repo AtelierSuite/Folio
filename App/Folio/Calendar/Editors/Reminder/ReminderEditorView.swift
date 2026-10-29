@@ -40,6 +40,7 @@ struct ReminderEditorView: View {
                 #endif
                 .toolbar { toolbar }
         }
+        .onScreenEntity(mode.reminder)
         #if os(macOS)
         .frame(minWidth: 460, minHeight: 600)
         #endif
