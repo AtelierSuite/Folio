@@ -18,8 +18,9 @@ struct SearchView: View {
         NavigationStack {
             SearchContent(
                 filters: filters,
+                searchedFilters: searchedFilters,
                 groups: groups,
-                isSearching: searchedFilters != filters || indexer.isIndexing,
+                isIndexing: indexer.isIndexing,
                 onOpen: { router.open($0.destination) }
             )
             .safeAreaInset(edge: .top, spacing: 0) {

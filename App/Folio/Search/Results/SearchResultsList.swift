@@ -3,7 +3,7 @@ import SwiftUI
 
 struct SearchResultsList: View {
     let groups: [SearchResultGroup]
-    let queryText: String
+    let filters: SearchFilters?
     let onOpen: (SearchDocument) -> Void
 
     var body: some View {
@@ -14,7 +14,7 @@ struct SearchResultsList: View {
                         Button {
                             onOpen(document)
                         } label: {
-                            SearchResultRow(document: document, queryText: queryText)
+                            SearchResultRow(document: document, queryText: filters?.text ?? "")
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("Search.Result")
@@ -24,7 +24,7 @@ struct SearchResultsList: View {
                 }
                 .id(group.id)
             }
-            .onChange(of: groups, initial: true) { _, groups in
+            .onChange(of: filters, initial: true) {
                 scrollToUpcoming(in: groups, proxy: proxy)
             }
         }

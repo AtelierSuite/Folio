@@ -3,8 +3,9 @@ import SwiftUI
 
 struct SearchContent: View {
     let filters: SearchFilters
+    let searchedFilters: SearchFilters?
     let groups: [SearchResultGroup]
-    let isSearching: Bool
+    let isIndexing: Bool
     let onOpen: (SearchDocument) -> Void
 
     private var hasQuery: Bool {
@@ -19,14 +20,14 @@ struct SearchContent: View {
                 description: Text(String(localized: "Empty.Description", table: "Search"))
             )
         } else if groups.isEmpty {
-            if isSearching {
+            if searchedFilters != filters || isIndexing {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ContentUnavailableView.search(text: filters.text)
             }
         } else {
-            SearchResultsList(groups: groups, queryText: filters.text, onOpen: onOpen)
+            SearchResultsList(groups: groups, filters: searchedFilters, onOpen: onOpen)
         }
     }
 }
