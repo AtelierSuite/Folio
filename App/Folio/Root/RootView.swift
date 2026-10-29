@@ -23,5 +23,6 @@ struct RootView: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
+        .onboarding()
     }
 }

@@ -11,9 +11,7 @@ struct AgendaView: View {
 
     var body: some View {
         Group {
-            if !store.eventAuthorization.allowsReading && !store.reminderAuthorization.allowsReading {
-                AgendaAccessView()
-            } else if hasLoaded && days.allSatisfy(\.isEmpty) {
+            if hasLoaded && days.allSatisfy(\.isEmpty) {
                 ContentUnavailableView(
                     String(localized: "Empty.Title", table: "Agenda"),
                     systemImage: "calendar",
