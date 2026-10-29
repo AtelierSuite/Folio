@@ -8,11 +8,18 @@ struct EventCountdownSection: View {
     @Environment(EventCountdownManager.self) private var countdowns
     @Environment(\.platformCapabilities) private var capabilities
     @State private var isShowingStartError = false
+    @State private var now = Date.now
 
     var body: some View {
         if capabilities.supports(.liveActivityCountdown) {
-            TimelineView(.everyMinute) { context in
-                section(at: context.date)
+            Group {
+                section(at: now)
+            }
+            .task(id: event.id) {
+                while !Task.isCancelled {
+                    now = .now
+                    try? await Task.sleep(for: .seconds(30))
+                }
             }
             .alert(String(localized: "Countdown.StartFailed", table: "Countdown"), isPresented: $isShowingStartError) {
                 Button(String(localized: "OK", table: "Countdown"), role: .cancel) {}
