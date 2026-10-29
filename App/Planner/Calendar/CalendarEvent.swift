@@ -15,6 +15,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let isRecurring: Bool
     public let hasAttendees: Bool
     public let isReadOnly: Bool
+    public let alarms: [CalendarAlarm]
 
     public init(
         reference: CalendarItemReference,
@@ -30,7 +31,8 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         color: PlannerColor = .gray,
         isRecurring: Bool = false,
         hasAttendees: Bool = false,
-        isReadOnly: Bool = false
+        isReadOnly: Bool = false,
+        alarms: [CalendarAlarm] = []
     ) {
         self.reference = reference
         self.calendarIdentifier = calendarIdentifier
@@ -46,6 +48,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         self.isRecurring = isRecurring
         self.hasAttendees = hasAttendees
         self.isReadOnly = isReadOnly
+        self.alarms = alarms
     }
 
     public var id: String {

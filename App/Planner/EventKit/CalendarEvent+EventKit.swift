@@ -18,7 +18,8 @@ extension CalendarEvent {
             color: PlannerColor(event.calendar?.cgColor),
             isRecurring: event.hasRecurrenceRules || event.isDetached,
             hasAttendees: event.hasAttendees,
-            isReadOnly: isCalendarReadOnly || isOrganizedBySomeoneElse
+            isReadOnly: isCalendarReadOnly || isOrganizedBySomeoneElse,
+            alarms: CalendarAlarm.alarms(of: event)
         )
     }
 }
