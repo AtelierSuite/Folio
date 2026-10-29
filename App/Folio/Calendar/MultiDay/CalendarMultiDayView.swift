@@ -7,7 +7,8 @@ struct CalendarMultiDayView: View {
 
     var body: some View {
         CalendarTimelineContainer(
-            days: TimelineDays(startingOn: navigation.selectedDate, count: dayCount, calendar: navigation.calendar)
+            days: TimelineDays(startingOn: navigation.selectedDate, count: dayCount, calendar: navigation.calendar),
+            pageStep: .day
         )
     }
 }

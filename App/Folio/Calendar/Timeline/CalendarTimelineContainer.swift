@@ -1,19 +1,43 @@
 import Planner
 import SwiftUI
 
-struct CalendarTimelineContainer: View {
+struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(CalendarNavigation.self) private var navigation
     let days: TimelineDays
-    var excludedCalendarIdentifiers: Set<String> = []
+    let pageStep: CalendarPageStep
+    let excludedCalendarIdentifiers: Set<String>
+    let isPagingEnabled: Bool
+    let accessory: Accessory
     @State private var entries: [TimelineEntry] = []
 
+    init(
+        days: TimelineDays,
+        pageStep: CalendarPageStep,
+        excludedCalendarIdentifiers: Set<String> = [],
+        isPagingEnabled: Bool = true,
+        @ViewBuilder accessory: () -> Accessory
+    ) {
+        self.days = days
+        self.pageStep = pageStep
+        self.excludedCalendarIdentifiers = excludedCalendarIdentifiers
+        self.isPagingEnabled = isPagingEnabled
+        self.accessory = accessory()
+    }
+
     var body: some View {
-        CalendarTimelineView(entries: entries, days: days)
-            .task(id: LoadKey(
-                revision: store.contentRevision, span: days.span, excluded: excludedCalendarIdentifiers
-            )) {
-                await load()
-            }
+        VStack(spacing: 0) {
+            accessory
+            CalendarTimelineView(entries: entries, days: days)
+        }
+        .horizontalPaging(isEnabled: isPagingEnabled) { direction in
+            navigation.page(by: pageStep, toward: direction)
+        }
+        .task(id: LoadKey(
+            revision: store.contentRevision, span: days.span, excluded: excludedCalendarIdentifiers
+        )) {
+            await load()
+        }
     }
 
     private func load() async {
@@ -30,5 +54,21 @@ struct CalendarTimelineContainer: View {
         let revision: Int
         let span: DateInterval?
         let excluded: Set<String>
+    }
+}
+
+extension CalendarTimelineContainer where Accessory == EmptyView {
+    init(
+        days: TimelineDays,
+        pageStep: CalendarPageStep,
+        excludedCalendarIdentifiers: Set<String> = [],
+        isPagingEnabled: Bool = true
+    ) {
+        self.init(
+            days: days,
+            pageStep: pageStep,
+            excludedCalendarIdentifiers: excludedCalendarIdentifiers,
+            isPagingEnabled: isPagingEnabled
+        ) { EmptyView() }
     }
 }
