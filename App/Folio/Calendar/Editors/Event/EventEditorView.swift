@@ -27,6 +27,15 @@ struct EventEditorView: View {
         _styleDraft = State(initialValue: NotificationStyleDraft(reference: nil))
     }
 
+    init(newDraft: EventDraft, onSave: @escaping (CalendarItemReference, EventDraft) -> Void = { _, _ in }) {
+        editedEvent = nil
+        originalDraft = nil
+        self.onSave = onSave
+        _draft = State(initialValue: newDraft)
+        _urlText = State(initialValue: newDraft.url?.absoluteString ?? "")
+        _styleDraft = State(initialValue: NotificationStyleDraft(reference: nil))
+    }
+
     init(event: CalendarEvent, draft: EventDraft, onSave: @escaping (CalendarItemReference, EventDraft) -> Void) {
         editedEvent = event
         originalDraft = draft
