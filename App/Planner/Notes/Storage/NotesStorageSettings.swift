@@ -6,7 +6,7 @@ public struct NotesStorageSettings: @unchecked Sendable {
 
     private let defaults: UserDefaults
 
-    public init(defaults: UserDefaults = AppGroup.userDefaults) {
+    public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
     }
 
