@@ -1,10 +1,16 @@
+import Planner
 import SwiftUI
 
-/// The daily note linked to `date` goes here once notes linking (#24) lands. It stays empty until then.
 struct CalendarDayLinkedNoteSlot: View {
+    @Environment(NotesLibrary.self) private var library
     let date: Date
 
     var body: some View {
-        EmptyView()
+        if library.store != nil {
+            VStack(spacing: 0) {
+                DailyNoteCard(date: date)
+                Divider()
+            }
+        }
     }
 }
