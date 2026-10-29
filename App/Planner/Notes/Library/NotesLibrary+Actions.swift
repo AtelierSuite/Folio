@@ -23,9 +23,11 @@ extension NotesLibrary {
         return newURL
     }
 
-    public func moveToTrash(_ url: URL) async throws {
-        try await requireStore().moveToTrash(url)
+    @discardableResult
+    public func moveToTrash(_ url: URL) async throws -> URL {
+        let trashedURL = try await requireStore().moveToTrash(url)
         await refresh()
+        return trashedURL
     }
 
     @discardableResult
