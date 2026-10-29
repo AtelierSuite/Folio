@@ -11,18 +11,17 @@ public struct MarkdownTextEdit: Sendable, Equatable {
     }
 
     public func applying(_ action: MarkdownFormattingAction) -> MarkdownTextEdit {
-        switch action {
-        case .bold: toggledWrapping(with: "**")
-        case .italic: toggledWrapping(with: "_")
-        case .strikethrough: toggledWrapping(with: "~~")
-        case .inlineCode: toggledWrapping(with: "`")
+        if let marker = action.wrappingMarker {
+            return toggledWrapping(with: marker)
+        }
+        if let prefix = action.linePrefix {
+            return toggledLinePrefix(prefix)
+        }
+        return switch action {
         case .link: insertingLink()
         case .heading: cyclingHeading()
-        case .bulletList: toggledLinePrefix(.bullet)
-        case .numberedList: toggledLinePrefix(.number)
-        case .taskList: toggledLinePrefix(.task)
-        case .blockQuote: toggledLinePrefix(.quote)
         case .codeBlock: wrappingInCodeBlock()
+        default: self
         }
     }
 

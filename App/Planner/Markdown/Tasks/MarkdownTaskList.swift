@@ -11,5 +11,6 @@ public enum MarkdownTaskList {
         return lines.joined(separator: "\n")
     }
 
-    private nonisolated(unsafe) static let taskMarker = #/^(?:[ \t]*>)*[ \t]*(?:[-+*]|\d{1,9}[.)])[ \t]+\[(?<state>[ xX])\]/#
+    private nonisolated(unsafe) static let taskMarker =
+        #/^(?:[ \t]*>)*[ \t]*(?:[-+*]|\d{1,9}[.)])[ \t]+\[(?<state>[ xX])\]/#
 }

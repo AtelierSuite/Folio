@@ -73,7 +73,8 @@ struct MarkdownFrontMatterTests {
 
     @Test func writesDateTimesWithTimeZone() throws {
         var file = MarkdownNoteFile(body: "")
-        let date = try #require(Calendar.current.date(from: DateComponents(year: 2026, month: 3, day: 2, hour: 9, minute: 30)))
+        let components = DateComponents(year: 2026, month: 3, day: 2, hour: 9, minute: 30)
+        let date = try #require(Calendar.current.date(from: components))
         file.frontMatter.date = date
         #expect(MarkdownNoteFile(contents: file.contents).frontMatter.date == date)
         #expect(file.frontMatter.rawValue(forKey: "date")?.contains("T09:30:00") == true)

@@ -13,7 +13,8 @@ extension MarkdownTextEdit {
         }
         if selected.count >= length * 2, selected.hasPrefix(marker), selected.hasSuffix(marker) {
             let inner = String(selected.dropFirst(length).dropLast(length))
-            return replacing(selection, with: inner, selection: selection.lowerBound..<(selection.lowerBound + inner.count))
+            let newSelection = selection.lowerBound..<(selection.lowerBound + inner.count)
+            return replacing(selection, with: inner, selection: newSelection)
         }
         let newSelection = (selection.lowerBound + length)..<(selection.upperBound + length)
         return replacing(selection, with: marker + selected + marker, selection: newSelection)

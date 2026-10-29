@@ -3,13 +3,15 @@ import Markdown
 
 enum MarkdownInlineConverter {
     static func inlines(from children: some Sequence<Markup>) -> [MarkdownInline] {
-        children.compactMap(inline)
+        children.map(inline)
     }
 
-    private static func inline(from markup: Markup) -> MarkdownInline? {
+    private static func inline(from markup: Markup) -> MarkdownInline {
+        containerInline(from: markup) ?? leafInline(from: markup)
+    }
+
+    private static func containerInline(from markup: Markup) -> MarkdownInline? {
         switch markup {
-        case let text as Markdown.Text:
-            .text(text.string)
         case let emphasis as Emphasis:
             .emphasis(inlines(from: emphasis.children))
         case let strong as Strong:
@@ -26,6 +28,15 @@ enum MarkdownInlineConverter {
                 altText: inlines(from: image.children).plainText,
                 title: image.title
             ))
+        default:
+            nil
+        }
+    }
+
+    private static func leafInline(from markup: Markup) -> MarkdownInline {
+        switch markup {
+        case let text as Markdown.Text:
+            .text(text.string)
         case let html as InlineHTML:
             .html(html.rawHTML)
         case is SoftBreak:
