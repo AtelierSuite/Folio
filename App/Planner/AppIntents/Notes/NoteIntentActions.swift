@@ -22,6 +22,19 @@ public struct NoteIntentActions {
         return try await update(url) { NoteTextAppending.appending(text, to: $0) }
     }
 
+    public func attach(_ attachments: [NoteAttachment], to entity: NoteEntity) async throws -> NoteEntity {
+        let url = try await url(for: entity)
+        guard !attachments.isEmpty else { return entity }
+        var links: [String] = []
+        for attachment in attachments {
+            let path = try await Self.rewording {
+                try await library.addAsset(attachment.data, named: attachment.fileName, for: url)
+            }
+            links.append(attachment.markdownLink(to: path))
+        }
+        return try await update(url) { NoteTextAppending.appending(links.joined(separator: "\n"), to: $0) }
+    }
+
     /// Creates the day's note first if there isn't one yet.
     public func appendToDailyNote(_ text: String, on date: Date = .now) async throws -> NoteEntity {
         await library.start()

@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import UniformTypeIdentifiers
 @testable import Planner
 
 @MainActor
@@ -74,5 +75,15 @@ struct NoteIntentActionsTests {
         await #expect(throws: PlannerIntentError.noteNotFound) {
             try await actions.append("More", to: entity)
         }
+    }
+
+    @Test func attachmentsAreSavedAsAssetsAndLinked() async throws {
+        let entity = try await actions.createNote(titled: "Receipts", text: "March")
+        let photo = NoteAttachment(data: Data([1, 2, 3]), fileName: "Taxi receipt.jpg", type: .jpeg)
+
+        let updated = try await actions.attach([photo], to: entity)
+
+        let text = try await library.read(updated.url).text
+        #expect(text == "March\n![Taxi receipt.jpg](assets/Taxi%20receipt.jpg)\n")
     }
 }
