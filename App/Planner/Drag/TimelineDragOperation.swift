@@ -29,10 +29,14 @@ public struct TimelineDragOperation: Sendable, Hashable {
         let minimumLength = snap.hours * 3600
         switch kind {
         case .move:
-            let start = shifted(calendar.wallClockPoint(of: original.start), by: hourDelta, days: dayOffset, isEnd: false)
+            let start = shifted(
+                calendar.wallClockPoint(of: original.start), by: hourDelta, days: dayOffset, isEnd: false
+            )
             return DateInterval(start: start, duration: original.duration)
         case .resizeStart:
-            let start = shifted(calendar.wallClockPoint(of: original.start), by: hourDelta, days: dayOffset, isEnd: false)
+            let start = shifted(
+                calendar.wallClockPoint(of: original.start), by: hourDelta, days: dayOffset, isEnd: false
+            )
             return DateInterval(start: min(start, original.end.addingTimeInterval(-minimumLength)), end: original.end)
         case .resizeEnd:
             let end = shifted(
@@ -40,7 +44,7 @@ public struct TimelineDragOperation: Sendable, Hashable {
             )
             return DateInterval(start: original.start, end: max(end, original.start.addingTimeInterval(minimumLength)))
         case .place(let duration):
-            let start = shifted(TimelineDragPoint(dayStart: pointer.dayStart, hour: pointer.hour), by: 0, days: 0, isEnd: false)
+            let start = shifted(pointer, by: 0, days: 0, isEnd: false)
             return DateInterval(start: start, duration: duration)
         }
     }

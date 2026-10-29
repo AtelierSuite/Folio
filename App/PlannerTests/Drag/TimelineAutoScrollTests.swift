@@ -18,10 +18,16 @@ struct TimelineAutoScrollTests {
         #expect(autoScroll.speed(pointerY: -80, viewportHeight: 600) == -1000)
     }
 
+    private func offset(from offset: CGFloat, speed: CGFloat, for duration: Double) -> CGFloat {
+        autoScroll.offset(
+            afterScrolling: offset, speed: speed, for: duration, contentHeight: 1200, viewportHeight: 600
+        )
+    }
+
     @Test func offsetIsClampedToTheContent() {
-        #expect(autoScroll.offset(afterScrolling: 10, speed: -1000, for: 0.1, contentHeight: 1200, viewportHeight: 600) == 0)
-        #expect(autoScroll.offset(afterScrolling: 590, speed: 1000, for: 0.1, contentHeight: 1200, viewportHeight: 600) == 600)
-        #expect(autoScroll.offset(afterScrolling: 100, speed: 600, for: 0.5, contentHeight: 1200, viewportHeight: 600) == 400)
+        #expect(offset(from: 10, speed: -1000, for: 0.1) == 0)
+        #expect(offset(from: 590, speed: 1000, for: 0.1) == 600)
+        #expect(offset(from: 100, speed: 600, for: 0.5) == 400)
     }
 
     @Test func tinyViewportsDontScroll() {
