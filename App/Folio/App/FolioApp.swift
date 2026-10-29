@@ -4,12 +4,14 @@ import SwiftUI
 @main
 struct FolioApp: App {
     @State private var calendarStore = CalendarStore()
+    @State private var notesLibrary = NotesLibrary()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
+                .environment(notesLibrary)
                 .task {
                     calendarStore.startObservingChanges()
                     await seedSampleDataIfRequested()
@@ -22,6 +24,7 @@ struct FolioApp: App {
             }
             .environment(\.platformCapabilities, .current)
             .environment(calendarStore)
+            .environment(notesLibrary)
         }
         #endif
     }
