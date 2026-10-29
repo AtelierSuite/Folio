@@ -29,9 +29,10 @@ final class InvitationsTests: XCTestCase {
         }
         app.buttons["Invitations"].firstMatch.tap()
 
-        let row = app.buttons["InvitationRow"].firstMatch
+        // "Lunch with Aiko" is a pending invitation too and comes first until it ends, so pick the row by name.
+        let row = app.buttons.matching(identifier: "InvitationRow")
+            .matching(NSPredicate(format: "label CONTAINS %@", "Design Review Day")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 10))
-        XCTAssertTrue(row.label.contains("Design Review Day"))
         capture(app, "InvitationsList")
         row.tap()
 
