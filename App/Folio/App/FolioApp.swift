@@ -10,6 +10,7 @@ struct FolioApp: App {
     @State private var noteNavigator: NoteNavigator
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler = NotificationScheduler()
+    @State private var searchIndexer = SearchIndexer()
 
     init() {
         NotificationPresentationDelegate.install()
@@ -27,6 +28,7 @@ struct FolioApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .updatesSearchIndex()
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
                 .environment(notesLibrary)
@@ -37,6 +39,7 @@ struct FolioApp: App {
                 .environment(notificationScheduler)
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
+                .environment(searchIndexer)
                 .task {
                     calendarStore.startObservingChanges()
                     await notesLibrary.start()
@@ -55,6 +58,7 @@ struct FolioApp: App {
             .environment(workWeekPreferences)
             .environment(permissionCenter)
             .environment(notificationScheduler)
+            .environment(searchIndexer)
         }
         #endif
     }

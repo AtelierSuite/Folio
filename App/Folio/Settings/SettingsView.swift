@@ -18,6 +18,7 @@ struct SettingsView: View {
             }
             MonthSettingsSection()
             PermissionsSettingsSection()
+            SearchSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
