@@ -18,6 +18,7 @@ struct TimelineLayer: Identifiable {
 
     let id: String
     let placement: Placement
+    private(set) var header: AnyView?
     private let makeContent: (TimelineLayerContext) -> AnyView
 
     init<Content: View>(
@@ -32,6 +33,13 @@ struct TimelineLayer: Identifiable {
 
     func content(in context: TimelineLayerContext) -> AnyView {
         makeContent(context)
+    }
+
+    /// Shown above a gutter layer's column, next to the day headers.
+    func header(@ViewBuilder _ content: () -> some View) -> TimelineLayer {
+        var layer = self
+        layer.header = AnyView(content())
+        return layer
     }
 
     var gutterWidth: CGFloat {

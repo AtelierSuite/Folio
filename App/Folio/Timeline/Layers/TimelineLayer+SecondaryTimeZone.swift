@@ -2,9 +2,13 @@ import Planner
 import SwiftUI
 
 extension TimelineLayer {
-    static func secondaryTimeZone(_ timeZone: TimeZone, width: CGFloat = 44) -> TimelineLayer {
-        TimelineLayer(id: "secondaryTimeZone.\(timeZone.identifier)", placement: .gutter(width: width)) { context in
+    static func secondaryTimeZone(_ timeZone: TimeZone, label: String? = nil, width: CGFloat = 44) -> TimelineLayer {
+        let layer = TimelineLayer(id: "secondaryTimeZone.\(timeZone.identifier)", placement: .gutter(width: width)) { context in
             TimelineSecondaryTimeZoneView(timeZone: timeZone, context: context, width: width)
+        }
+        guard let label else { return layer }
+        return layer.header {
+            TimelineSecondaryTimeZoneHeader(label: label)
         }
     }
 }

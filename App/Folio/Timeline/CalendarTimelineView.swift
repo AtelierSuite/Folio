@@ -26,7 +26,7 @@ struct CalendarTimelineView: View {
         let engine = TimelineLayoutEngine(days: days, floatingSourceTimeZone: floatingSourceTimeZone)
         let layout = engine.layout(entries)
         VStack(spacing: 0) {
-            TimelineDayHeaderView(days: days, gutterWidth: gutterWidth)
+            TimelineDayHeaderView(days: days, gutterWidth: gutterWidth, gutterLayers: gutterLayers)
             TimelineAllDayStripView(
                 layout: layout,
                 gutterWidth: gutterWidth,

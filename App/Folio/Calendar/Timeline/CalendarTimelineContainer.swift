@@ -5,6 +5,10 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(CalendarStore.self) private var store
     @Environment(CalendarNavigation.self) private var navigation
     @Environment(\.platformCapabilities) private var capabilities
+    @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
+    var showsSecondaryTimeZone = false
+    @AppStorage(SecondaryTimeZoneSettings.identifierKey, store: AppGroup.userDefaults)
+    var secondaryTimeZoneIdentifier = ""
     let days: TimelineDays
     let pageStep: CalendarPageStep
     let excludedCalendarIdentifiers: Set<String>
@@ -40,7 +44,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                 entries: entries,
                 days: days,
                 zoom: zoom,
-                layers: CalendarTimelineOverlays(capabilities: capabilities, weather: weather).layers(for: days),
+                layers: CalendarTimelineOverlays(capabilities: capabilities, weather: weather).layers(for: days)
+                    + secondaryTimeZoneLayers,
                 onSelectEntry: select
             )
             .environment(\.weatherSnapshot, weather)
