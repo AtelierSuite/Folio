@@ -10,23 +10,31 @@ public final class CalendarStore {
     public private(set) var reminderLists: [PlannerCalendar] = []
     public internal(set) var hiddenCalendarIdentifiers: Set<String>
     public internal(set) var contentRevision = 0
+    public internal(set) var overdueReminderPolicy: OverdueReminderPolicy
     @ObservationIgnored var pendingRemovals: [UUID: PendingRemoval] = [:]
     @ObservationIgnored var pendingEventEdits: [UUID: PendingEventEdit] = [:]
 
     @ObservationIgnored let source: any CalendarDataSource
     @ObservationIgnored let repository: CalendarRepository
     @ObservationIgnored let visibilityStorage: CalendarVisibilityStorage
-    @ObservationIgnored private var visibleInterval: DateInterval?
+    @ObservationIgnored let reminderSettings: ReminderSettings
+    @ObservationIgnored let now: @Sendable () -> Date
+    @ObservationIgnored var visibleInterval: DateInterval?
     @ObservationIgnored private var changeObservation: Task<Void, Never>?
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
         policy: CacheWindowPolicy = CacheWindowPolicy(),
-        visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage()
+        visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
+        reminderSettings: ReminderSettings = ReminderSettings(),
+        now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.source = source
         self.repository = CalendarRepository(source: source, policy: policy)
         self.visibilityStorage = visibilityStorage
+        self.reminderSettings = reminderSettings
+        self.now = now
+        overdueReminderPolicy = reminderSettings.overduePolicy
         eventAuthorization = source.authorizationStatus(for: .event)
         reminderAuthorization = source.authorizationStatus(for: .reminder)
         hiddenCalendarIdentifiers = visibilityStorage.hiddenCalendarIdentifiers
@@ -53,18 +61,6 @@ public final class CalendarStore {
         let events = await repository.events(in: interval)
         return applyingPendingChanges(to: events)
             .filter { !hiddenCalendarIdentifiers.contains($0.calendarIdentifier) }
-    }
-
-    public func reminders(in interval: DateInterval) async -> [ReminderItem] {
-        visibleInterval = interval
-        let reminders = await repository.reminders(in: interval)
-        return applyingPendingChanges(to: reminders)
-            .filter { !hiddenCalendarIdentifiers.contains($0.listIdentifier) }
-    }
-
-    public func setCompleted(_ isCompleted: Bool, for reminder: ReminderItem) async throws {
-        try await source.setCompleted(isCompleted, reminderIdentifier: reminder.reference.localIdentifier)
-        await handleExternalChange()
     }
 
     func handleExternalChange() async {

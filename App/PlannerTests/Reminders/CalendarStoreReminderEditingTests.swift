@@ -21,7 +21,9 @@ struct CalendarStoreReminderEditingTests {
         return CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
-            visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
+            visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
+            reminderSettings: ReminderSettings(defaults: defaults),
+            now: { Fixtures.date(2026, 10, 29, hour: 12) }
         )
     }
 
