@@ -46,6 +46,7 @@ struct FolioApp: App {
                 .environment(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
+                .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
                 .environment(searchIndexer)
                 .task {
                     calendarStore.startObservingChanges()
