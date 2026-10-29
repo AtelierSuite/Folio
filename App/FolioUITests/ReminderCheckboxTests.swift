@@ -30,7 +30,9 @@ final class ReminderCheckboxTests: XCTestCase {
             viewModeMenu.tap()
         }
         let inboxButton = app.buttons
-            .matching(NSPredicate(format: "identifier == %@ OR label == %@", "ReminderInboxButton", "Undated Reminders"))
+            .matching(NSPredicate(
+                format: "identifier == %@ OR label == %@", "ReminderInboxButton", "Undated Reminders"
+            ))
             .firstMatch
         XCTAssertTrue(inboxButton.waitForExistence(timeout: 5))
         inboxButton.tap()

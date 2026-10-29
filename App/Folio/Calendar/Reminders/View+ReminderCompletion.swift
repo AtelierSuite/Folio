@@ -2,12 +2,15 @@ import Planner
 import SwiftUI
 
 extension View {
-    /// Lets reminder checkboxes in this view toggle the reminders behind their timeline entries.
-    func reminderCompletion(store: CalendarStore, remindersByEntryIdentifier: [String: ReminderItem]) -> some View {
+    /// Lets reminder checkboxes in this view toggle the reminders behind their timeline entries, with undo.
+    func reminderCompletion(
+        undoCoordinator: UndoCoordinator,
+        remindersByEntryIdentifier: [String: ReminderItem]
+    ) -> some View {
         environment(\.reminderCompletion, ReminderCompletionAction { isCompleted, entry in
             guard let reminder = remindersByEntryIdentifier[entry.id] else { return false }
             do {
-                try await store.setCompleted(isCompleted, for: reminder)
+                try await undoCoordinator.setCompleted(isCompleted, for: reminder)
                 return true
             } catch {
                 return false

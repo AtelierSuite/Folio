@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CalendarMonthPageView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(UndoCoordinator.self) private var undoCoordinator
     @AppStorage(MonthSettings.showsWeekNumbersKey) private var showsWeekNumbers = false
     @ScaledMetric(relativeTo: .caption2) private var weekNumberWidth: CGFloat = 22
     let grid: MonthGrid
@@ -33,7 +34,7 @@ struct CalendarMonthPageView: View {
             WeatherAttributionFooter(snapshot: weather)
         }
         .environment(\.weatherSnapshot, weather)
-        .reminderCompletion(store: store, remindersByEntryIdentifier: remindersByEntryIdentifier)
+        .reminderCompletion(undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier)
         .task(id: LoadKey(revision: store.contentRevision, span: grid.span)) {
             await load()
         }
