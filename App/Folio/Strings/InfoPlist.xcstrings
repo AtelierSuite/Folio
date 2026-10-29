@@ -66,6 +66,71 @@
         }
       }
     },
+    "NSAlarmKitUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio verwendet Wecker, um dich an Ereignisse und Erinnerungen mit dem Stil „Wecker“ zu erinnern, auch im Stummmodus oder in einem Fokus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio utilise des alarmes pour vous signaler les événements et rappels réglés sur le style Alarme, même en mode silencieux ou avec une concentration."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio usa le sveglie per avvisarti di eventi e promemoria impostati sullo stile Sveglia, anche in modalità silenziosa o con una full immersion attiva."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは、アラームスタイルに設定したイベントやリマインダーを、消音モードや集中モード中でもアラームでお知らせします。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 알람 스타일로 설정한 이벤트와 미리 알림을 무음 모드나 집중 모드에서도 알람으로 알려 줍니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio gebruikt wekkers om je te waarschuwen voor activiteiten en herinneringen met de stijl Wekker, ook in de stille modus of tijdens een focus."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio dùng báo thức để nhắc bạn về các sự kiện và lời nhắc được đặt kiểu Báo thức, kể cả khi ở chế độ im lặng hoặc đang bật Tập trung."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 会使用闹钟提醒你设为“闹钟”样式的日程和提醒事项，即使在静音模式或专注模式下也会响起。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 會使用鬧鐘提醒你設為「鬧鐘」樣式的行程和提醒事項，即使在靜音模式或專注模式下也會響起。"
+          }
+        }
+      }
+    },
     "NSCalendarsFullAccessUsageDescription": {
       "extractionState": "manual",
       "localizations": {
