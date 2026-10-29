@@ -7,5 +7,6 @@ public struct NotificationReplanReport: Sendable, Equatable {
     public let pendingCount: Int
     public let addedCount: Int
     public let removedCount: Int
+    public let alarmCount: Int
     public let nextFireDate: Date?
 }

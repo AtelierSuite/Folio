@@ -4,6 +4,7 @@ import SwiftUI
 struct EventEditorForm: View {
     @Binding var draft: EventDraft
     @Binding var urlText: String
+    @Binding var alertStyle: NotificationAlertStyle?
     let calendars: [PlannerCalendar]
 
     var body: some View {
@@ -18,6 +19,7 @@ struct EventEditorForm: View {
                 EventCalendarPicker(selection: $draft.calendarIdentifier, calendars: calendars)
             }
             EventAlertsSection(alerts: $draft.alerts, isAllDay: draft.isAllDay)
+            NotificationStyleSection(style: $alertStyle, calendarIdentifier: draft.calendarIdentifier)
             EventDetailsSection(urlText: $urlText, notes: $draft.notes)
         }
         .formStyle(.grouped)

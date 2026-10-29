@@ -19,7 +19,11 @@ struct NotificationSchedulerTests {
         return NotificationScheduler(
             source: source,
             center: center,
+            alarmClient: FakeAlarmClient(),
+            alarmLedger: AlarmLedger(defaults: defaults),
             settings: settings,
+            styleSettings: NotificationStyleSettings(defaults: defaults),
+            capabilities: PlatformCapabilities(platform: .iPhone, areLiveActivitiesSupported: true),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             planner: NotificationFixtures.planner(),
             clock: { NotificationFixtures.now }

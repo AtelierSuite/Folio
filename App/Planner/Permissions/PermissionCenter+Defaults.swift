@@ -15,6 +15,9 @@ extension PermissionCenter {
         if let sleepSource = SleepStore.systemSource() {
             providers[.health] = HealthPermissionProvider(source: sleepSource)
         }
+        #if canImport(AlarmKit) && os(iOS)
+        providers[.alarms] = AlarmPermissionProvider()
+        #endif
         return providers
     }
 }

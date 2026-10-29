@@ -18,6 +18,9 @@ extension UNNotificationContent {
         case .standard:
             content.sound = .default
             content.interruptionLevel = .active
+        case .timeSensitive, .alarm:
+            content.sound = .default
+            content.interruptionLevel = .timeSensitive
         }
     }
 }

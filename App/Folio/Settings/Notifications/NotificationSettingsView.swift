@@ -31,6 +31,10 @@ struct NotificationSettingsView: View {
                     get: { scheduler.includesReminders },
                     set: { await scheduler.setIncludesReminders($0) }
                 ))
+                NavigationLink(String(localized: "Defaults.Title", table: "NotificationStyles")) {
+                    NotificationStyleDefaultsView()
+                }
+                .accessibilityIdentifier("NotificationStylesLink")
             }
             .disabled(!scheduler.isEnabled)
             if scheduler.isEnabled {
