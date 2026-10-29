@@ -18,6 +18,7 @@ struct FolioApp: App {
     @State private var systemTime = SystemTimeObserver()
     @State private var undoCoordinator: UndoCoordinator
     @State private var undoToastHosts = UndoToastHosts()
+    @State private var countdowns: EventCountdownManager
 
     init() {
         NotificationPresentationDelegate.install()
@@ -34,6 +35,9 @@ struct FolioApp: App {
         _undoCoordinator = State(initialValue: UndoCoordinator(
             store: calendarStore, library: notesLibrary, toastDuration: Self.undoToastDuration
         ))
+        let countdowns = EventCountdownManager(source: calendarStore)
+        _countdowns = State(initialValue: countdowns)
+        AppDependencyManager.shared.add(dependency: countdowns)
         AppDependencyManager.shared.add(dependency: notesLibrary)
         AppDependencyManager.shared.add(dependency: noteNavigator)
         let sleepStore = SleepStore(capabilities: .current)
@@ -69,6 +73,8 @@ struct FolioApp: App {
                 .environment(undoCoordinator)
                 .environment(undoToastHosts)
                 .reloadsWidgets(on: calendarStore)
+                .environment(countdowns)
+                .reconcilesCountdowns(countdowns, with: calendarStore)
                 .task {
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {
