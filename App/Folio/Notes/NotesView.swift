@@ -3,7 +3,6 @@ import SwiftUI
 
 struct NotesView: View {
     @Environment(NotesLibrary.self) var library
-    @Environment(NoteNavigator.self) private var navigator
     @Environment(\.scenePhase) private var scenePhase
     @State var selection: URL?
     @State var session: NoteEditingSession?
@@ -41,13 +40,6 @@ struct NotesView: View {
             Task {
                 await openNote(at: newSelection)
             }
-        }
-        .onChange(of: navigator.requestedNoteURL, initial: true) { _, url in
-            guard let url else {
-                return
-            }
-            selection = url
-            navigator.requestedNoteURL = nil
         }
         .onChange(of: library.notes) { _, notes in
             session?.reloadIfChangedElsewhere(in: notes)
