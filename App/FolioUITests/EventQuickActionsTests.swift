@@ -40,17 +40,19 @@ final class EventQuickActionsTests: XCTestCase {
     func testTappingAMonthChipShowsQuickActions() throws {
         let app = launch(mode: "month", behavior: "showsQuickActions")
         let today = try visibleToday(in: app)
-        today.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).tap()
+        today.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.72)).tap()
         XCTAssertTrue(menuItem("EventMenu.ShowDetails", in: app).waitForExistence(timeout: 5))
         attachScreenshot(named: "quick-actions-month-chip", app: app)
     }
 
     @MainActor
     func testMonthChipLongPressShowsTheMenuInDetailsMode() throws {
-        let app = launch(mode: "month", behavior: "opensDetails")
-        let today = try visibleToday(in: app)
-        today.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).press(forDuration: 1.2)
-        XCTAssertTrue(menuItem("EventMenu.ShowDetails", in: app).waitForExistence(timeout: 5))
+        // Writable chips lift to drag on a long press, so this uses the read-only sample invitation.
+        let app = launch(mode: "month", behavior: "opensDetails", extra: ["-SampleInvitations"])
+        let tomorrow = try visibleDay(in: app, offset: 1, containing: "Design Review Day")
+        tomorrow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.38)).press(forDuration: 1.2)
+        XCTAssertTrue(menuItem("EventMenu.Respond", in: app).waitForExistence(timeout: 5))
+        XCTAssertFalse(menuItem("EventMenu.Edit", in: app).exists)
         attachScreenshot(named: "details-mode-month-chip-long-press", app: app)
     }
 
@@ -129,16 +131,21 @@ final class EventQuickActionsTests: XCTestCase {
         XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 10))
     }
 
-    /// Neighbouring month pages also show today's date, so this picks the cell on screen.
     @MainActor
     private func visibleToday(in app: XCUIApplication) throws -> XCUIElement {
-        let today = Date.now.formatted(Date.ISO8601FormatStyle(timeZone: .current).year().month().day())
-        let identifier = "MonthDay." + today
+        try visibleDay(in: app, offset: 0, containing: "Standup")
+    }
+
+    /// Neighbouring month pages also show the same dates, so this picks the cell on screen.
+    @MainActor
+    private func visibleDay(in app: XCUIApplication, offset: Int, containing title: String) throws -> XCUIElement {
+        let date = try XCTUnwrap(Calendar.current.date(byAdding: .day, value: offset, to: .now))
+        let identifier = "MonthDay." + date.formatted(Date.ISO8601FormatStyle(timeZone: .current).year().month().day())
         let cells = app.buttons.matching(identifier: identifier)
         XCTAssertTrue(cells.firstMatch.waitForExistence(timeout: 15))
         let width = app.windows.firstMatch.frame.width
         let cell = try XCTUnwrap(cells.allElementsBoundByIndex.first { $0.frame.minX >= 0 && $0.frame.maxX <= width })
-        let loaded = NSPredicate(format: "label CONTAINS 'Standup'")
+        let loaded = NSPredicate(format: "label CONTAINS %@", title)
         expectation(for: loaded, evaluatedWith: cell)
         waitForExpectations(timeout: 15)
         return cell
