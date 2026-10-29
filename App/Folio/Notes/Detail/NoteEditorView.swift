@@ -7,7 +7,7 @@ struct NoteEditorView: View {
         TextEditor(text: $text)
             .font(.body.monospaced())
             .scrollContentBackground(.hidden)
-            .padding(.horizontal)
+            .contentMargins(.horizontal, 12, for: .scrollContent)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

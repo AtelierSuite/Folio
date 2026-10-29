@@ -12,7 +12,6 @@ struct NotesSidebarView: View {
     var body: some View {
         content
             .navigationTitle(String(localized: "Title", table: "Notes"))
-            .navigationSplitViewColumnWidth(min: 220, ideal: 280)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(

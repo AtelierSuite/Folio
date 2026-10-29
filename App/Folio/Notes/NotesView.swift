@@ -12,7 +12,7 @@ struct NotesView: View {
     @State var errorMessage: String?
 
     var body: some View {
-        NavigationSplitView {
+        NotesSplitView {
             NotesSidebarView(
                 selection: $selection,
                 onCreate: createNote,

@@ -19,6 +19,16 @@ struct NotesStorageSection: View {
                 }
             }
             .disabled(library.isMigrating)
+            .fileImporter(isPresented: $isChoosingFolder, allowedContentTypes: [.folder]) { result in
+                if case .success(let url) = result {
+                    pendingChange = NotesStorageChange(mode: .customFolder, folderURL: url)
+                }
+            }
+            .notesStorageMigrationDialog(change: $pendingChange, onConfirm: apply)
+            .notesErrorAlert(message: $errorMessage)
+            .task {
+                await library.start()
+            }
             if library.mode == .customFolder {
                 LabeledContent(
                     String(localized: "Storage.Folder", table: "Notes"),
@@ -36,16 +46,6 @@ struct NotesStorageSection: View {
             Text(String(localized: "Storage.Section", table: "Notes"))
         } footer: {
             NotesStorageFooter(isICloudSignedIn: library.isICloudSignedIn)
-        }
-        .fileImporter(isPresented: $isChoosingFolder, allowedContentTypes: [.folder]) { result in
-            if case .success(let url) = result {
-                pendingChange = NotesStorageChange(mode: .customFolder, folderURL: url)
-            }
-        }
-        .notesStorageMigrationDialog(change: $pendingChange, onConfirm: apply)
-        .notesErrorAlert(message: $errorMessage)
-        .task {
-            await library.start()
         }
     }
 
