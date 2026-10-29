@@ -53,7 +53,12 @@ struct SearchView: View {
     }
 
     private var request: SearchRequest {
-        SearchRequest(filters: filters, hidden: store.hiddenCalendarIdentifiers, revision: indexer.revision)
+        SearchRequest(
+            filters: filters,
+            hidden: store.hiddenCalendarIdentifiers,
+            revision: indexer.revision,
+            contentRevision: store.contentRevision
+        )
     }
 
     private func search() async {
@@ -63,7 +68,7 @@ struct SearchView: View {
         }
         let documents = await indexer.search(filters.query(hiding: store.hiddenCalendarIdentifiers))
         guard !Task.isCancelled else { return }
-        groups = SearchResultGroup.grouped(documents)
+        groups = SearchResultGroup.grouped(documents.filter { !store.isPendingRemoval($0) })
         searchedFilters = filters
     }
 }
@@ -72,4 +77,5 @@ private struct SearchRequest: Hashable {
     let filters: SearchFilters
     let hidden: Set<String>
     let revision: Int
+    let contentRevision: Int
 }
