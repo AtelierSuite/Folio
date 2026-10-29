@@ -3,6 +3,7 @@ import SwiftUI
 struct CalendarView: View {
     @AppStorage("Calendar.ViewMode") private var mode: CalendarViewMode = .day
     @State private var navigation = CalendarNavigation()
+    @State private var composer: CalendarComposer?
 
     var body: some View {
         NavigationStack {
@@ -12,7 +13,13 @@ struct CalendarView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 #endif
                 .toolbar {
-                    CalendarToolbar(mode: $mode, navigation: navigation)
+                    CalendarToolbar(mode: $mode, composer: $composer, navigation: navigation)
+                }
+                .sheet(item: $composer) { composer in
+                    switch composer {
+                    case .newEvent: EventEditorView(initialDate: navigation.selectedDate)
+                    case .newReminder: ReminderEditorView(initialDate: navigation.selectedDate)
+                    }
                 }
         }
         .environment(navigation)

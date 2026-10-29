@@ -2,10 +2,12 @@ import SwiftUI
 
 struct CalendarToolbar: ToolbarContent {
     @Binding var mode: CalendarViewMode
+    @Binding var composer: CalendarComposer?
     let navigation: CalendarNavigation
 
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
+            CalendarAddMenu(composer: $composer)
             Picker(String(localized: "Toolbar.ViewMode", table: "Calendar"), selection: $mode) {
                 ForEach(CalendarViewMode.allCases) { mode in
                     Label(mode.title, systemImage: mode.systemImage)
