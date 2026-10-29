@@ -104,9 +104,10 @@ struct EventDetailView: View {
             let updated = await store.event(matching: pendingRefresh.reference, near: pendingRefresh.date)
             guard !Task.isCancelled else { return }
             self.pendingRefresh = nil
-            if let updated, updated.id != event.id {
+            if let updated {
+                let hasNewIdentifier = updated.id != event.id
                 event = updated
-                return
+                if hasNewIdentifier { return }
             }
         }
         do {
