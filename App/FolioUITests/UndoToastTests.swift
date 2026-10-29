@@ -49,7 +49,12 @@ final class UndoToastTests: XCTestCase {
         try XCTSkipUnless(row.waitForExistence(timeout: 10), "Grant calendar access to seed sample data first")
         row.tap()
         let deleteButton = app.buttons["Delete Event"]
-        XCTAssertTrue(deleteButton.waitForExistence(timeout: 5))
+        var swipes = 0
+        while !deleteButton.waitForExistence(timeout: 2) && swipes < 5 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(deleteButton.exists)
         deleteButton.tap()
     }
 
