@@ -56,10 +56,12 @@ struct TimelineDropHandlingModifier: ViewModifier {
             }
             .task(id: drag.edgeDirection) {
                 guard let direction = drag.edgeDirection else { return }
+                var delay = drag.edgePaging.holdDuration
                 while !Task.isCancelled {
-                    try? await Task.sleep(for: drag.edgePaging.holdDuration)
+                    try? await Task.sleep(for: delay)
                     guard !Task.isCancelled, drag.edgeDirection == direction else { return }
                     onEdgeHold(direction)
+                    delay = drag.edgePaging.repeatInterval
                 }
             }
             .onChange(of: isPinching, initial: true) { _, isPinching in
