@@ -10,25 +10,25 @@ struct ReminderInboxView: View {
     @State private var hasLoaded = false
     @State private var openedReminder: ReminderItem?
     @State private var isComposing = false
+    @State private var isShowingLists = false
 
     var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            ReminderInboxHeader(
+                isPresented: $isPresented, isComposing: $isComposing, isShowingLists: $isShowingLists
+            )
             content
-                .navigationTitle(String(localized: "Inbox.Title", table: "Reminders"))
-                #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
-                #endif
-                .toolbar {
-                    ReminderInboxToolbar(isPresented: $isPresented, isComposing: $isComposing)
-                }
+                .frame(maxHeight: .infinity)
         }
-        .accessibilityIdentifier("ReminderInbox")
         .presentationDetents([.medium, .large])
         .sheet(item: $openedReminder) { reminder in
             ReminderEditorView(reminder: reminder)
         }
         .sheet(isPresented: $isComposing) {
             ReminderEditorView(initialDate: nil)
+        }
+        .sheet(isPresented: $isShowingLists) {
+            ReminderInboxListsSheet()
         }
         .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
             reminders = await store.undatedReminders(calendar: systemTime.calendar)

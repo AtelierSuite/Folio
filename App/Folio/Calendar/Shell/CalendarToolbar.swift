@@ -5,18 +5,23 @@ struct CalendarToolbar: ToolbarContent {
     @Binding var composer: CalendarComposer?
     @Binding var isShowingInbox: Bool
     let navigation: CalendarNavigation
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    private var isCompact: Bool {
+        horizontalSizeClass == .compact
+    }
+    #else
+    private let isCompact = false
+    #endif
 
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
-            ReminderInboxButton(isShowingInbox: $isShowingInbox)
-            CalendarAddMenu(composer: $composer)
-            Picker(String(localized: "Toolbar.ViewMode", table: "Calendar"), selection: $mode) {
-                ForEach(CalendarViewMode.allCases) { mode in
-                    Label(mode.title, systemImage: mode.systemImage)
-                        .tag(mode)
-                }
+            if !isCompact {
+                ReminderInboxButton(isShowingInbox: $isShowingInbox)
             }
-            .pickerStyle(.menu)
+            CalendarAddMenu(composer: $composer)
+            CalendarViewModeMenu(mode: $mode, isShowingInbox: $isShowingInbox, includesInbox: isCompact)
         }
         ToolbarItemGroup(placement: .navigation) {
             Button(String(localized: "Toolbar.Previous", table: "Calendar"), systemImage: "chevron.left") {

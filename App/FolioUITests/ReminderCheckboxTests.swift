@@ -22,11 +22,17 @@ final class ReminderCheckboxTests: XCTestCase {
     @MainActor
     func testInboxListsUndatedRemindersAndReachesListVisibility() throws {
         let app = XCUIApplication()
-        app.launchArguments += ["-Calendar.ViewMode", "day", "-FolioSkipOnboarding"]
+        app.launchArguments += ["-Calendar.ViewMode", "month", "-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
 
-        let inboxButton = app.buttons["ReminderInboxButton"]
-        XCTAssertTrue(inboxButton.waitForExistence(timeout: 10))
+        let viewModeMenu = app.navigationBars.buttons["CalendarViewModeMenu"]
+        if viewModeMenu.waitForExistence(timeout: 10) {
+            viewModeMenu.tap()
+        }
+        let inboxButton = app.buttons
+            .matching(NSPredicate(format: "identifier == %@ OR label == %@", "ReminderInboxButton", "Undated Reminders"))
+            .firstMatch
+        XCTAssertTrue(inboxButton.waitForExistence(timeout: 5))
         inboxButton.tap()
         let undated = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Plan weekend trip")).firstMatch
         try XCTSkipUnless(undated.waitForExistence(timeout: 5), "Seed sample data first")

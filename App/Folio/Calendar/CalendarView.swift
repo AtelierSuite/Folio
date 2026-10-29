@@ -23,16 +23,16 @@ struct CalendarView: View {
                         mode: $mode, composer: $composer, isShowingInbox: $isShowingInbox, navigation: navigation
                     )
                 }
+                .inspector(isPresented: $isShowingInbox) {
+                    ReminderInboxView(isPresented: $isShowingInbox)
+                        .inspectorColumnWidth(min: 260, ideal: 320, max: 420)
+                }
                 .sheet(item: $composer) { composer in
                     switch composer {
                     case .newEvent: EventEditorView(initialDate: navigation.selectedDate)
                     case .newReminder: ReminderEditorView(initialDate: navigation.selectedDate)
                     }
                 }
-        }
-        .inspector(isPresented: $isShowingInbox) {
-            ReminderInboxView(isPresented: $isShowingInbox)
-                .inspectorColumnWidth(min: 260, ideal: 320, max: 420)
         }
         .environment(navigation)
         .eventDetailSheet(item: $routedEvent)
