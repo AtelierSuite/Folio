@@ -39,8 +39,9 @@ final class EventQuickActionsTests: XCTestCase {
     @MainActor
     func testTappingAMonthChipShowsQuickActions() throws {
         let app = launch(mode: "month", behavior: "showsQuickActions")
-        let today = try visibleToday(in: app)
-        today.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.72)).tap()
+        // The Dentist day has two events and no reminders, so its first chip is always an event.
+        let dentistDay = try XCTUnwrap(app.monthCell(for: XCUIApplication.day(2), containing: "Dentist"))
+        dentistDay.monthChipCoordinate(row: 0).tap()
         XCTAssertTrue(menuItem("EventMenu.ShowDetails", in: app).waitForExistence(timeout: 5))
         attachScreenshot(named: "quick-actions-month-chip", app: app)
     }
@@ -49,13 +50,11 @@ final class EventQuickActionsTests: XCTestCase {
     func testMonthChipLongPressShowsTheMenuInDetailsMode() throws {
         // Writable chips lift to drag on a long press, so this uses the read-only sample invitation.
         let app = launch(mode: "month", behavior: "opensDetails", extra: ["-SampleInvitations"])
-        let tomorrow = try visibleDay(in: app, offset: 1, containing: "Design Review Day")
+        let reviewDay = try XCTUnwrap(app.monthCell(for: XCUIApplication.day(1), containing: "Design Review Day"))
         let respond = menuItem("EventMenu.Respond", in: app)
-        // Other tests seed events on these days, so the chip's row varies; try each row in turn.
+        // Other tests can leave events on this day, so the chip's row varies; try each row in turn.
         for row in 0..<6 where !respond.exists {
-            let chip = tomorrow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0))
-                .withOffset(CGVector(dx: 0, dy: 32 + CGFloat(row) * 17))
-            chip.press(forDuration: 1.2)
+            reviewDay.monthChipCoordinate(row: row).press(forDuration: 1.2)
             _ = respond.waitForExistence(timeout: 2)
         }
         XCTAssertTrue(respond.exists)
@@ -80,7 +79,8 @@ final class EventQuickActionsTests: XCTestCase {
 
     @MainActor
     func testCountdownStartsAndStopsFromTheMenu() throws {
-        let app = launch(mode: "day", behavior: "showsQuickActions", extra: ["-SeedCountdownEvent"])
+        // The agenda lists the next week, so the event 30 minutes out shows even late in the evening.
+        let app = launch(mode: "list", behavior: "showsQuickActions", extra: ["-SeedCountdownEvent"])
         let event = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Folio Countdown")).firstMatch
         try XCTSkipUnless(event.waitForExistence(timeout: 15), "Grant calendar access to seed the event")
         event.tap()
@@ -136,26 +136,6 @@ final class EventQuickActionsTests: XCTestCase {
         app.tabBars.buttons["Calendar"].firstMatch.tap()
         eventCard("Lunch with Aiko", in: app).tap()
         XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 10))
-    }
-
-    @MainActor
-    private func visibleToday(in app: XCUIApplication) throws -> XCUIElement {
-        try visibleDay(in: app, offset: 0, containing: "Standup")
-    }
-
-    /// Neighbouring month pages also show the same dates, so this picks the cell on screen.
-    @MainActor
-    private func visibleDay(in app: XCUIApplication, offset: Int, containing title: String) throws -> XCUIElement {
-        let date = try XCTUnwrap(Calendar.current.date(byAdding: .day, value: offset, to: .now))
-        let identifier = "MonthDay." + date.formatted(Date.ISO8601FormatStyle(timeZone: .current).year().month().day())
-        let cells = app.buttons.matching(identifier: identifier)
-        XCTAssertTrue(cells.firstMatch.waitForExistence(timeout: 15))
-        let width = app.windows.firstMatch.frame.width
-        let cell = try XCTUnwrap(cells.allElementsBoundByIndex.first { $0.frame.minX >= 0 && $0.frame.maxX <= width })
-        let loaded = NSPredicate(format: "label CONTAINS %@", title)
-        expectation(for: loaded, evaluatedWith: cell)
-        waitForExpectations(timeout: 15)
-        return cell
     }
 
     @MainActor
