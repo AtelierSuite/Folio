@@ -4,6 +4,7 @@ import SwiftUI
 struct AgendaReminderRow: View {
     @Environment(CalendarStore.self) private var store
     let reminder: ReminderItem
+    let onOpen: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -22,16 +23,29 @@ struct AgendaReminderRow: View {
                 localized: reminder.isCompleted ? "Reminder.MarkIncomplete" : "Reminder.MarkCompleted",
                 table: "Agenda"
             ))
-            VStack(alignment: .leading, spacing: 2) {
-                Text(reminder.title)
-                    .strikethrough(reminder.isCompleted)
-                    .foregroundStyle(reminder.isCompleted ? .secondary : .primary)
-                if reminder.hasDueTime, let dueDate = reminder.dueDate {
-                    Text(dueDate, format: .dateTime.hour().minute())
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+            Button(action: onOpen) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(reminder.title)
+                            .strikethrough(reminder.isCompleted)
+                            .foregroundStyle(reminder.isCompleted ? .secondary : .primary)
+                        if reminder.hasDueTime, let dueDate = reminder.dueDate {
+                            Text(dueDate, format: .dateTime.hour().minute())
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                    if reminder.isReadOnly {
+                        Image(systemName: "lock.fill")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                            .accessibilityLabel(String(localized: "Event.ReadOnly", table: "Agenda"))
+                    }
                 }
+                .contentShape(.rect)
             }
+            .buttonStyle(.plain)
         }
     }
 }
