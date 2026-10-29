@@ -12,6 +12,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
     public var color: TimelineColor
     public var isReadOnly: Bool
     public var kind: TimelineEntryKind
+    public var location: String?
+    public var hasLink: Bool
 
     public init(
         id: String,
@@ -22,7 +24,9 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         timeZone: TimeZone?,
         color: TimelineColor,
         isReadOnly: Bool = false,
-        kind: TimelineEntryKind = .event
+        kind: TimelineEntryKind = .event,
+        location: String? = nil,
+        hasLink: Bool = false
     ) {
         self.id = id
         self.title = title
@@ -33,6 +37,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         self.color = color
         self.isReadOnly = isReadOnly
         self.kind = kind
+        self.location = location
+        self.hasLink = hasLink
     }
 
     public var isFloating: Bool {
