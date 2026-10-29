@@ -43,12 +43,14 @@ extension EventKitDataSource {
 
     private func seedSampleEvents(into eventCalendar: EKCalendar, from today: Date, calendar: Calendar) throws {
         let samples = [
-            SampleEvent(title: "Standup", day: 0, hour: 9, minute: 0, hours: 0.25),
-            SampleEvent(title: "Lunch with Aiko", day: 0, hour: 12, minute: 30, hours: 1),
-            SampleEvent(title: "Design Review Day", day: 1, hour: 0, minute: 0, hours: 24, isAllDay: true),
-            SampleEvent(title: "Dentist", day: 2, hour: 15, minute: 0, hours: 1),
+            SampleEvent(title: "Standup", day: 0, hour: 9, minute: 0, hours: 0.25, alarmMinutes: [-5]),
+            SampleEvent(title: "Lunch with Aiko", day: 0, hour: 12, minute: 30, hours: 1, alarmMinutes: [-15]),
+            SampleEvent(
+                title: "Design Review Day", day: 1, hour: 0, minute: 0, hours: 24, isAllDay: true, alarmMinutes: [-900]
+            ),
+            SampleEvent(title: "Dentist", day: 2, hour: 15, minute: 0, hours: 1, alarmMinutes: [-60, -1440]),
             SampleEvent(title: "Team Offsite", day: 3, hour: 10, minute: 0, hours: 6),
-            SampleEvent(title: "Concert", day: 5, hour: 19, minute: 0, hours: 2.5)
+            SampleEvent(title: "Concert", day: 5, hour: 19, minute: 0, hours: 2.5, alarmMinutes: [-120])
         ]
         for sample in samples {
             let event = EKEvent(eventStore: eventStore)
@@ -59,6 +61,9 @@ extension EventKitDataSource {
             event.startDate = start
             event.endDate = start.addingTimeInterval(sample.hours * 3600)
             event.isAllDay = sample.isAllDay
+            for minutes in sample.alarmMinutes {
+                event.addAlarm(EKAlarm(relativeOffset: TimeInterval(minutes * 60)))
+            }
             if sample.title == "Standup" {
                 event.addRecurrenceRule(EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil))
             }
@@ -81,6 +86,9 @@ extension EventKitDataSource {
             components.hour = sample.hour
             components.minute = sample.hour == nil ? nil : 0
             reminder.dueDateComponents = components
+            if sample.hour != nil, let dueDate = calendar.date(from: components) {
+                reminder.addAlarm(EKAlarm(absoluteDate: dueDate))
+            }
             try eventStore.save(reminder, commit: false)
         }
     }
@@ -93,6 +101,7 @@ private struct SampleEvent {
     let minute: Int
     let hours: Double
     var isAllDay = false
+    var alarmMinutes: [Int] = []
 }
 
 private struct SampleReminder {
