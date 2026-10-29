@@ -13,6 +13,7 @@
 		6D81656FDFD2C6209E74502B /* Planner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EE4F42DAE8856F1A2AC4A4AB /* FolioWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2D1776F9E773F75107F07B2C /* FolioWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F08A7111160B1A3738CF5A3B /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
+		A1D0C0DE0000000000000001 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = A1D0C0DE0000000000000003 /* Markdown */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +194,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1D0C0DE0000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1D0C0DE0000000000000001 /* Markdown in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -279,6 +288,7 @@
 			buildPhases = (
 				AA93C78E7B70AC411D976131 /* Sources */,
 				CD8BE34E50D05E439A06A4C8 /* Resources */,
+				A1D0C0DE0000000000000002 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -289,6 +299,7 @@
 			);
 			name = Planner;
 			packageProductDependencies = (
+				A1D0C0DE0000000000000003 /* Markdown */,
 			);
 			productName = Planner;
 			productReference = 2FB50B7C60308378A0D2FDFB /* Planner.framework */;
@@ -380,6 +391,9 @@
 			);
 			mainGroup = 167E3E30A49919FD8D56D74D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A1D0C0DE0000000000000004 /* XCRemoteSwiftPackageReference "swift-markdown" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 62523BE78BDC40FAA03B8BBD /* Products */;
 			projectDirPath = "";
@@ -990,6 +1004,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1D0C0DE0000000000000004 /* XCRemoteSwiftPackageReference "swift-markdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftlang/swift-markdown.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1D0C0DE0000000000000003 /* Markdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1D0C0DE0000000000000004 /* XCRemoteSwiftPackageReference "swift-markdown" */;
+			productName = Markdown;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 383A8F7C70F35B855AA13D98 /* Project object */;
 }
