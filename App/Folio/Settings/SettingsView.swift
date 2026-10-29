@@ -18,7 +18,6 @@ struct SettingsView: View {
             }
             TimelineSettingsSection()
             MonthSettingsSection()
-            InvitationSettingsSection()
             WeatherSettingsSection()
             SleepSettingsSection()
             SecondaryTimeZoneSection()
@@ -26,6 +25,7 @@ struct SettingsView: View {
             SearchSettingsSection()
             LinkedNotesSettingsSection()
             ReminderSettingsSection()
+            InvitationSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
