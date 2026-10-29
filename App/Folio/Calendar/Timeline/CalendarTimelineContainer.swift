@@ -6,7 +6,6 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(UndoCoordinator.self) var undoCoordinator
     @Environment(CalendarNavigation.self) var navigation
     @Environment(\.platformCapabilities) private var capabilities
-    @Environment(UndoCoordinator.self) var undoCoordinator
     @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
     @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
     var showsSecondaryTimeZone = false
