@@ -8,7 +8,7 @@ public enum AppGroup {
             ?? URL.applicationSupportDirectory
     }
 
-    public static var userDefaults: UserDefaults {
-        UserDefaults(suiteName: identifier) ?? .standard
-    }
+    /// One shared instance so `@AppStorage` views using this store see each other's changes.
+    /// `UserDefaults` is thread-safe.
+    nonisolated(unsafe) public static let userDefaults = UserDefaults(suiteName: identifier) ?? .standard
 }
