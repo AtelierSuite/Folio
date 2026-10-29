@@ -38,6 +38,11 @@ extension CalendarStore {
         await handleExternalChange()
     }
 
+    func saveReminder(identifier: String, with draft: ReminderDraft) async throws {
+        try await source.updateReminder(identifier: identifier, with: draft.normalized())
+        await handleExternalChange()
+    }
+
     private func validate(_ draft: ReminderDraft) throws {
         guard draft.isValid else { throw ReminderEditingError.invalidDraft }
         guard let list = reminderLists.first(where: { $0.id == draft.listIdentifier }) else {

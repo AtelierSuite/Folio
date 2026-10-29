@@ -26,6 +26,8 @@ struct RootView: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
+        .undoToastHost()
+        .connectsUndo()
         .onboarding()
         .environment(router)
         .onChange(of: router.pendingDestination) { _, destination in

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NotesView: View {
     @Environment(NotesLibrary.self) var library
+    @Environment(UndoCoordinator.self) var undoCoordinator
     @Environment(\.scenePhase) private var scenePhase
     @State var selection: URL?
     @State var session: NoteEditingSession?

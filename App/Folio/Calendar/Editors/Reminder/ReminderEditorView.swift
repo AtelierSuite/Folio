@@ -3,12 +3,12 @@ import SwiftUI
 
 struct ReminderEditorView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(\.dismiss) private var dismiss
     let mode: ReminderEditorMode
     @State private var draft: ReminderDraft
     @State private var originalDraft: ReminderDraft
     @State private var urlText: String
-    @State private var isConfirmingDelete = false
     @State private var isWorking = false
     @State private var failure: ReminderEditorFailure?
 
@@ -72,20 +72,9 @@ struct ReminderEditorView: View {
                 canDelete: mode.reminder.map { !$0.isReadOnly } ?? false,
                 isNew: mode.reminder == nil,
                 defaultDate: mode.reminder?.dueDate ?? .now,
-                onDelete: { isConfirmingDelete = true }
+                onDelete: { Task { await delete() } }
             )
             .disabled(isWorking)
-            .confirmationDialog(
-                String(localized: "Delete.Title", table: "ReminderEditor"),
-                isPresented: $isConfirmingDelete,
-                titleVisibility: .visible
-            ) {
-                Button(String(localized: "Action.Delete", table: "ReminderEditor"), role: .destructive) {
-                    Task { await delete() }
-                }
-            } message: {
-                Text(String(localized: "Delete.Message", table: "ReminderEditor"))
-            }
         }
     }
 
@@ -113,7 +102,7 @@ struct ReminderEditorView: View {
         defer { isWorking = false }
         do {
             if let reminder = mode.reminder {
-                try await store.updateReminder(reminder, with: draft)
+                try await undoCoordinator.updateReminder(reminder, with: draft)
             } else {
                 try await store.createReminder(draft)
             }
@@ -128,7 +117,7 @@ struct ReminderEditorView: View {
         isWorking = true
         defer { isWorking = false }
         do {
-            try await store.deleteReminder(reminder)
+            try await undoCoordinator.deleteReminder(reminder)
             dismiss()
         } catch {
             failure = .delete

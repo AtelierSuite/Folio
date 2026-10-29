@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EventDetailView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(\.dismiss) private var dismiss
     @State private var event: CalendarEvent
     @State private var draft: EventDraft?
@@ -35,7 +36,11 @@ struct EventDetailView: View {
                 } else {
                     Section {
                         Button(String(localized: "Detail.Delete", table: "EventEditor"), role: .destructive) {
-                            isConfirmingDelete = true
+                            if event.isRecurring {
+                                isConfirmingDelete = true
+                            } else {
+                                Task { await delete(span: .thisEvent) }
+                            }
                         }
                     }
                 }
@@ -67,6 +72,7 @@ struct EventDetailView: View {
                 }
             }
         }
+        .undoToastHost()
         #if os(macOS)
         .frame(minWidth: 420, minHeight: 520)
         #endif
@@ -125,7 +131,7 @@ struct EventDetailView: View {
 
     private func delete(span: EventEditSpan) async {
         do {
-            try await store.deleteEvent(event, span: span)
+            try await undoCoordinator.deleteEvent(event, span: span)
             dismiss()
         } catch {
             errorMessage = error.localizedDescription
