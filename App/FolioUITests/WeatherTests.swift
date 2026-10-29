@@ -37,8 +37,10 @@ final class WeatherTests: XCTestCase {
     @MainActor
     private func setToggle(_ toggle: XCUIElement, isOn: Bool) {
         let expectedValue = isOn ? "1" : "0"
-        if toggle.value as? String != expectedValue {
+        let hasExpectedValue = NSPredicate(format: "value == %@", expectedValue)
+        for _ in 0..<3 where toggle.value as? String != expectedValue {
             toggle.switches.firstMatch.tap()
+            _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: hasExpectedValue, object: toggle)], timeout: 2)
         }
         XCTAssertEqual(toggle.value as? String, expectedValue)
     }
