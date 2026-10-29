@@ -10,6 +10,7 @@ struct SettingsView: View {
                 }
                 .accessibilityIdentifier("CalendarVisibilityLink")
             }
+            MonthSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
