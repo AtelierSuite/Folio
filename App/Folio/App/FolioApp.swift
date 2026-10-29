@@ -5,6 +5,7 @@ import SwiftUI
 struct FolioApp: App {
     @State private var calendarStore = CalendarStore()
     @State private var notesLibrary = NotesLibrary()
+    @State private var workWeekPreferences = WorkWeekPreferences()
 
     var body: some Scene {
         WindowGroup {
@@ -12,6 +13,7 @@ struct FolioApp: App {
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
                 .environment(notesLibrary)
+                .environment(workWeekPreferences)
                 .task {
                     calendarStore.startObservingChanges()
                     await seedSampleDataIfRequested()
@@ -25,6 +27,7 @@ struct FolioApp: App {
             .environment(\.platformCapabilities, .current)
             .environment(calendarStore)
             .environment(notesLibrary)
+            .environment(workWeekPreferences)
         }
         #endif
     }
