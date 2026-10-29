@@ -14,11 +14,14 @@ public enum CalendarDeepLink {
     }
 
     public static func url(for event: CalendarEvent) -> URL {
-        let reference = event.reference
+        url(forEvent: event.reference, startingAt: event.startDate)
+    }
+
+    public static func url(forEvent reference: CalendarItemReference, startingAt startDate: Date) -> URL {
         var queryItems = [
             URLQueryItem(name: "calendar", value: reference.calendarIdentifier),
             URLQueryItem(name: "title", value: reference.title),
-            URLQueryItem(name: "start", value: timestamp(event.startDate))
+            URLQueryItem(name: "start", value: timestamp(startDate))
         ]
         if let externalIdentifier = reference.externalIdentifier {
             queryItems.append(URLQueryItem(name: "external", value: externalIdentifier))

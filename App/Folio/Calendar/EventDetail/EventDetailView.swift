@@ -34,6 +34,7 @@ struct EventDetailView: View {
                 Section {
                     EventLinkedNoteButton(event: event) { dismiss() }
                 }
+                EventCountdownSection(event: event)
                 if event.isReadOnly {
                     EventDetailReadOnlySection(event: event, calendar: eventCalendar)
                 } else {
