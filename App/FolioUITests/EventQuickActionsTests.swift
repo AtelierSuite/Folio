@@ -89,6 +89,25 @@ final class EventQuickActionsTests: XCTestCase {
     }
 
     @MainActor
+    func testRespondOpensTheInvitationFromAnAgendaRow() throws {
+        let app = launch(mode: "list", behavior: "showsQuickActions", extra: ["-SampleInvitations"])
+        let row = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH 'Invitation' AND label CONTAINS 'Lunch with Aiko'")
+        ).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 15))
+        row.tap()
+        let respond = menuItem("EventMenu.Respond", in: app)
+        XCTAssertTrue(respond.waitForExistence(timeout: 5))
+        XCTAssertFalse(menuItem("EventMenu.Edit", in: app).exists)
+        attachScreenshot(named: "quick-actions-invitation", app: app)
+        respond.tap()
+        // The sample invitation's attendees are decorations Folio adds, so Apple's sheet shows the
+        // event without Accept and Decline here; with a real invitation it shows them too.
+        XCTAssertTrue(app.navigationBars["Event Details"].waitForExistence(timeout: 10))
+        attachScreenshot(named: "quick-actions-respond-sheet", app: app)
+    }
+
+    @MainActor
     func testSettingSwitchesTheTapBehavior() throws {
         let app = launch(mode: "day", behavior: nil)
         app.tabBars.buttons["Settings"].firstMatch.tap()
