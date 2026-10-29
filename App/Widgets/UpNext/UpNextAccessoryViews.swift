@@ -59,8 +59,9 @@ struct UpNextCircularView: View {
                     .font(.caption)
                     .widgetAccentable()
                 if let event = upNext?.event {
-                    Text(event.startDate, format: .dateTime.hour().minute())
+                    Text(event.startDate, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
                         .font(.caption2.weight(.semibold))
+                        .lineLimit(1)
                         .minimumScaleFactor(0.6)
                 } else {
                     Text(verbatim: "–")
