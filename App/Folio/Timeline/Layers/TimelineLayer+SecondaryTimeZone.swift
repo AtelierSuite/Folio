@@ -3,7 +3,8 @@ import SwiftUI
 
 extension TimelineLayer {
     static func secondaryTimeZone(_ timeZone: TimeZone, label: String? = nil, width: CGFloat = 44) -> TimelineLayer {
-        let layer = TimelineLayer(id: "secondaryTimeZone.\(timeZone.identifier)", placement: .gutter(width: width)) { context in
+        let id = "secondaryTimeZone.\(timeZone.identifier)"
+        let layer = TimelineLayer(id: id, placement: .gutter(width: width)) { context in
             TimelineSecondaryTimeZoneView(timeZone: timeZone, context: context, width: width)
         }
         guard let label else { return layer }
