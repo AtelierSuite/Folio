@@ -32,6 +32,11 @@ struct NotesView: View {
         .task {
             await library.start()
         }
+        .handlesAppDestinations { destination in
+            guard case .note(let url) = destination else { return false }
+            selection = url
+            return true
+        }
         .onChange(of: selection) { _, newSelection in
             Task {
                 await openNote(at: newSelection)

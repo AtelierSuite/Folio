@@ -1,3 +1,4 @@
+import Planner
 import SwiftUI
 
 struct CalendarView: View {
@@ -24,6 +25,16 @@ struct CalendarView: View {
                 }
         }
         .environment(navigation)
+        .handlesAppDestinations(show)
+    }
+
+    private func show(_ destination: AppDestination) -> Bool {
+        guard case .calendarDay(let date, _) = destination else { return false }
+        if mode == .list {
+            mode = .day
+        }
+        navigation.show(date)
+        return true
     }
 
     @ViewBuilder
