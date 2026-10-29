@@ -4,11 +4,18 @@ import SwiftUI
 struct AgendaDaySection: View {
     let day: AgendaDay
     let onOpenReminder: (ReminderItem) -> Void
+    let onSelectEvent: (CalendarEvent) -> Void
 
     var body: some View {
         Section {
             ForEach(day.events) { event in
-                AgendaEventRow(event: event)
+                Button {
+                    onSelectEvent(event)
+                } label: {
+                    AgendaEventRow(event: event)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
             }
             ForEach(day.reminders) { reminder in
                 AgendaReminderRow(reminder: reminder) { onOpenReminder(reminder) }

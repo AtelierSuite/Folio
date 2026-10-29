@@ -11,6 +11,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     let isPagingEnabled: Bool
     let accessory: Accessory
     @State private var entries: [TimelineEntry] = []
+    @State private var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
+    @State private var selectedEvent: CalendarEvent?
 
     init(
         days: TimelineDays,
@@ -32,7 +34,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             CalendarTimelineView(
                 entries: entries,
                 days: days,
-                layers: CalendarTimelineOverlays(capabilities: capabilities).layers(for: days)
+                layers: CalendarTimelineOverlays(capabilities: capabilities).layers(for: days),
+                onSelectEntry: select
             )
         }
         .horizontalPaging(isEnabled: isPagingEnabled) { direction in
@@ -43,6 +46,11 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         )) {
             await load()
         }
+        .eventDetailSheet(item: $selectedEvent)
+    }
+
+    private func select(_ entry: TimelineEntry) {
+        selectedEvent = eventsByEntryIdentifier[entry.id]
     }
 
     private func load() async {
@@ -51,6 +59,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         async let reminders = store.reminders(in: span)
         let shownEvents = await events.filter { !excludedCalendarIdentifiers.contains($0.calendarIdentifier) }
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
+        eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         entries = shownEvents.map(TimelineEntry.init(event:))
             + shownReminders.compactMap { TimelineEntry(reminder: $0) }
     }
