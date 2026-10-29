@@ -12,6 +12,7 @@ struct SettingsView: View {
                 NavigationLink(String(localized: "WorkWeek.Title", table: "Week")) { WorkWeekSettingsView() }
                     .accessibilityIdentifier("WorkWeekLink")
             }
+            MonthSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
