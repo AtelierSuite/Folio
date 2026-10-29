@@ -61,6 +61,7 @@ extension EventKitDataSource {
             event.startDate = start
             event.endDate = start.addingTimeInterval(sample.hours * 3600)
             event.isAllDay = sample.isAllDay
+            Self.applySamplePlace(to: event)
             for minutes in sample.alarmMinutes {
                 event.addAlarm(EKAlarm(relativeOffset: TimeInterval(minutes * 60)))
             }
