@@ -36,12 +36,14 @@ struct WidgetSnapshotTests {
             calendarIdentifier: "calendar-1",
             title: "Sync",
             location: "Room 4",
-            notes: "Join at https://meet.example.com/abc today",
+            notes: "Join at https://zoom.us/j/123456789 today",
             startDate: Fixtures.date(2026, 10, 29, hour: 11),
             endDate: Fixtures.date(2026, 10, 29, hour: 12)
         )
         let upNext = try #require(WidgetSnapshot(events: [meeting]).upNext(at: now))
-        #expect(upNext.joinURL == URL(string: "https://meet.example.com/abc"))
+        let link = try #require(meeting.meetingLink)
+        #expect(link.url == URL(string: "https://zoom.us/j/123456789"))
+        #expect(upNext.joinURL == link.joinDeepLink)
     }
 
     @Test func todayShowsAllDayThenRemainingTimedEvents() {

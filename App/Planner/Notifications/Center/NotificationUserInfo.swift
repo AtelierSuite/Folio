@@ -4,6 +4,7 @@ public enum NotificationUserInfo {
     static let kindKey = "kind"
     static let referenceKey = "reference"
     static let fireDateKey = "fireDate"
+    static let meetingKey = "meeting"
 
     static func make(for notification: PlannedNotification) -> [String: Any] {
         var userInfo: [String: Any] = [
@@ -12,6 +13,9 @@ public enum NotificationUserInfo {
         ]
         if let data = try? JSONEncoder().encode(notification.reference) {
             userInfo[referenceKey] = data
+        }
+        if let meeting = notification.meeting, let data = try? JSONEncoder().encode(meeting) {
+            userInfo[meetingKey] = data
         }
         return userInfo
     }
@@ -23,6 +27,11 @@ public enum NotificationUserInfo {
     public static func reference(from userInfo: [AnyHashable: Any]) -> CalendarItemReference? {
         guard let data = userInfo[referenceKey] as? Data else { return nil }
         return try? JSONDecoder().decode(CalendarItemReference.self, from: data)
+    }
+
+    public static func meeting(from userInfo: [AnyHashable: Any]) -> NotificationMeeting? {
+        guard let data = userInfo[meetingKey] as? Data else { return nil }
+        return try? JSONDecoder().decode(NotificationMeeting.self, from: data)
     }
 
     public static func fireDate(from userInfo: [AnyHashable: Any]) -> Date? {

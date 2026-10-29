@@ -27,6 +27,7 @@ struct AgendaEventRow: View {
                         .foregroundStyle(.secondary)
                 }
             }
+            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             Spacer(minLength: 0)
             if event.isReadOnly {
                 Image(systemName: "lock.fill")

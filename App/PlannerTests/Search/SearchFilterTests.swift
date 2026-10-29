@@ -6,14 +6,14 @@ struct SearchFilterTests {
     private let index = SearchFixtures.index([
         SearchDocument(event: SearchFixtures.event(
             "Team sync", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 9),
-            notes: "Join at https://meet.example.com/abc"
+            notes: "Join at https://meet.google.com/abc-defg-hij"
         )),
         SearchDocument(event: SearchFixtures.event(
             "Family sync", calendarIdentifier: "home", start: Fixtures.date(2026, 12, 24, hour: 18)
         )),
         SearchDocument(event: SearchFixtures.event(
             "Vendor sync", calendarIdentifier: "work", start: Fixtures.date(2026, 11, 3, hour: 9),
-            url: URL(string: "https://zoom.example.com/j/1")
+            url: URL(string: "https://acme.zoom.us/j/1")
         )),
         SearchDocument(reminder: SearchFixtures.reminder(
             "Sync photos", listIdentifier: "chores", due: Fixtures.date(2026, 10, 29, hour: 12)
@@ -58,9 +58,9 @@ struct SearchFilterTests {
         #expect(titles(SearchQuery(kinds: [.event], requiresMeetingLink: true)) == ["Team sync", "Vendor sync"])
     }
 
-    @Test func meetingLinkCheckLooksForWebLinks() {
-        #expect(MeetingLink.isPresent(in: ["Dial in: HTTPS://Example.com"]))
-        #expect(MeetingLink.isPresent(in: [nil], url: URL(string: "https://example.com")))
-        #expect(!MeetingLink.isPresent(in: ["Room 4", nil], url: URL(string: "mailto:someone@example.com")))
+    @Test func meetingLinkCheckLooksForKnownProviders() {
+        #expect(MeetingLink.isPresent(in: ["Dial in: HTTPS://Meet.Google.com/abc-defg-hij"]))
+        #expect(MeetingLink.isPresent(in: [nil], url: URL(string: "https://zoom.us/j/123")))
+        #expect(!MeetingLink.isPresent(in: ["Room 4", "https://example.com"], url: URL(string: "mailto:a@example.com")))
     }
 }

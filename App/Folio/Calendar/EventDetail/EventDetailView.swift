@@ -24,6 +24,9 @@ struct EventDetailView: View {
         NavigationStack {
             List {
                 EventDetailHeader(event: event, recurrence: draft?.recurrence)
+                if let meetingLink = event.meetingLink {
+                    EventDetailJoinSection(link: meetingLink)
+                }
                 if let location = draft?.location {
                     EventDetailLocationSection(location: location)
                 }

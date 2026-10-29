@@ -63,6 +63,7 @@ struct FolioApp: App {
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
+                .opensMeetingJoinDeepLinks()
                 .environment(searchIndexer)
                 .followsSystemTime(systemTime)
                 .environment(undoCoordinator)

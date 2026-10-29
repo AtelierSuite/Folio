@@ -20,7 +20,7 @@ struct SearchPerformanceTests {
                 calendarIdentifier: "calendar-\(number % 8)",
                 start: start.addingTimeInterval(Double(number) * 3600 * 2),
                 location: "Room \(number % 40)",
-                notes: number.isMultiple(of: 5) ? "Join https://meet.example.com/\(number)" : "Agenda item \(number)"
+                notes: number.isMultiple(of: 5) ? "Join https://meet.google.com/\(number)" : "Agenda item \(number)"
             )
         }
     }

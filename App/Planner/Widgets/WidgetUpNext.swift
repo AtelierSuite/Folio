@@ -6,7 +6,7 @@ public struct WidgetUpNext: Sendable, Hashable {
     public let following: [CalendarEvent]
 
     public var joinURL: URL? {
-        MeetingLink.joinURL(in: [event.location, event.notes], url: event.url)
+        event.meetingLink?.joinDeepLink
     }
 }
 

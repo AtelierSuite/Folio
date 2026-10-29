@@ -9,13 +9,18 @@ struct AgendaDaySection: View {
     var body: some View {
         Section {
             ForEach(day.events) { event in
-                Button {
-                    onSelectEvent(event)
-                } label: {
-                    AgendaEventRow(event: event)
-                        .contentShape(Rectangle())
+                HStack(spacing: 8) {
+                    Button {
+                        onSelectEvent(event)
+                    } label: {
+                        AgendaEventRow(event: event)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    if let meetingLink = event.meetingLink {
+                        JoinMeetingButton(link: meetingLink, style: .capsule)
+                    }
                 }
-                .buttonStyle(.plain)
             }
             ForEach(day.reminders) { reminder in
                 AgendaReminderRow(reminder: reminder) { onOpenReminder(reminder) }
