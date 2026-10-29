@@ -7,7 +7,7 @@ struct CalendarView: View {
     @AppStorage("Calendar.ViewMode") var mode: CalendarViewMode = .day
     @State var navigation = CalendarNavigation()
     @State var composer: CalendarComposer?
-    @State var routedEvent: CalendarEvent?
+    @State var itemRequest: CalendarItemRequest?
     @State var isShowingInbox = false
     @State private var pendingInvitationCount = 0
 
@@ -39,8 +39,8 @@ struct CalendarView: View {
                     }
                 }
         }
+        .calendarItemSheet(request: $itemRequest)
         .environment(navigation)
-        .eventDetailSheet(item: $routedEvent)
         .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
         .onChange(of: systemTime.calendar, initial: true) {

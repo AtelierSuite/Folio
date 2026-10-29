@@ -7,7 +7,7 @@ extension UNNotificationContent {
         content.title = notification.content.title
         content.body = notification.content.body
         content.categoryIdentifier = notification.category.rawValue
-        content.threadIdentifier = notification.category.rawValue
+        content.threadIdentifier = notification.category.threadIdentifier
         content.userInfo = NotificationUserInfo.make(for: notification)
         apply(notification.style, to: content)
         return content

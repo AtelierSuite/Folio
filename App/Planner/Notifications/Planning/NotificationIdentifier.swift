@@ -15,7 +15,7 @@ public enum NotificationIdentifier {
         let fireSeconds = Int(candidate.fireDate.timeIntervalSince1970.rounded(.down))
         let meetingURL = candidate.meeting.map { [$0.link.url.absoluteString] } ?? []
         let fingerprint = ([candidate.content.title, candidate.content.body, category.rawValue, style.rawValue]
-            + meetingURL).joined(separator: "\u{1F}")
+            + meetingURL + (candidate.place?.fingerprint ?? [])).joined(separator: "\u{1F}")
         let item = "\(candidate.kind.rawValue).\(candidate.reference.storageKey)"
         return "\(prefix)\(item)@\(fireSeconds).\(stableDigest(of: fingerprint))"
     }
