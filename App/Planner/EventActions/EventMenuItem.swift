@@ -4,6 +4,7 @@ public enum EventMenuItem: Sendable, Hashable {
     case showDetails
     case joinMeeting(MeetingLink)
     case startCountdown
+    case stopCountdown
     case respond
     case edit
     case duplicate

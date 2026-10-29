@@ -78,6 +78,18 @@ struct EventMenuTests {
         #expect(items.prefix(2) == [.showDetails, .startCountdown])
     }
 
+    @Test func runningCountdownOffersStopInstead() {
+        let items = EventMenu.items(for: event(), context: context(canStartCountdown: true, isCountingDown: true))
+        #expect(items.prefix(2) == [.showDetails, .stopCountdown])
+        #expect(!items.contains(.startCountdown))
+    }
+
+    @Test func noCountdownOutsideTheWindow() {
+        let items = EventMenu.items(for: event(), context: context())
+        #expect(!items.contains(.startCountdown))
+        #expect(!items.contains(.stopCountdown))
+    }
+
     @Test func respondOnlyForInvitationsInWritableCalendars() {
         let invitation = event(isReadOnly: true, hasAttendees: true)
         let items = EventMenu.items(for: invitation, context: context(canRespondToInvitations: true))
@@ -100,6 +112,7 @@ struct EventMenuTests {
         extraCalendars: [PlannerCalendar] = [],
         hasLinkedNote: Bool = false,
         canStartCountdown: Bool = false,
+        isCountingDown: Bool = false,
         canRespondToInvitations: Bool = false
     ) -> EventMenuContext {
         EventMenuContext(
@@ -107,6 +120,7 @@ struct EventMenuTests {
             writableCalendars: [calendar("home"), calendar("work")] + extraCalendars,
             hasLinkedNote: hasLinkedNote,
             canStartCountdown: canStartCountdown,
+            isCountingDown: isCountingDown,
             canRespondToInvitations: canRespondToInvitations
         )
     }

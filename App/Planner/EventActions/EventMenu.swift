@@ -9,7 +9,9 @@ public enum EventMenu {
         if let link = event.meetingLink {
             primary.append(.joinMeeting(link))
         }
-        if context.canStartCountdown {
+        if context.isCountingDown {
+            primary.append(.stopCountdown)
+        } else if context.canStartCountdown {
             primary.append(.startCountdown)
         }
         if context.canRespondToInvitations && isInvitation(event, calendar: context.eventCalendar) {
