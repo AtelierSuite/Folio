@@ -27,6 +27,9 @@ struct EventDetailView: View {
                     EventDetailLocationSection(location: location)
                 }
                 EventDetailInfoSection(event: event, draft: draft, calendar: eventCalendar)
+                Section {
+                    EventLinkedNoteButton(event: event) { dismiss() }
+                }
                 if event.isReadOnly {
                     EventDetailReadOnlySection(event: event, calendar: eventCalendar)
                 } else {
