@@ -120,6 +120,13 @@ struct FolioApp: App {
         if arguments.contains(EventKitDataSource.testAlertLaunchArgument) {
             try? EventKitDataSource.shared.seedTestAlertEvent()
         }
+        if arguments.contains(EventKitDataSource.arrivalTestLaunchArgument),
+           let reference = try? EventKitDataSource.shared.seedArrivalTestEvent() {
+            await arrivalAlerts.setEnabled(true, for: reference)
+            if arguments.contains(ArrivalAlertCenter.simulateArrivalLaunchArgument) {
+                await arrivalAlerts.simulateArrival(at: EventKitDataSource.arrivalTestCoordinate)
+            }
+        }
         await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif
     }
