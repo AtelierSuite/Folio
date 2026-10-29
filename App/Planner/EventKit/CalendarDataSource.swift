@@ -8,4 +8,8 @@ public protocol CalendarDataSource: Sendable {
     @concurrent func reminders(completedIn interval: DateInterval) async -> [ReminderItem]
     func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws
     func changes() -> AsyncStream<Void>
+    func defaultReminderListIdentifier() -> String?
+    func createReminder(_ draft: ReminderDraft) async throws -> String
+    func updateReminder(identifier: String, with draft: ReminderDraft) async throws
+    func deleteReminder(identifier: String) async throws
 }

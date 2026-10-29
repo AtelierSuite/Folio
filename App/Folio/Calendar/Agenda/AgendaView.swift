@@ -5,6 +5,7 @@ struct AgendaView: View {
     @Environment(CalendarStore.self) private var store
     @State private var days: [AgendaDay] = []
     @State private var hasLoaded = false
+    @State private var openedReminder: ReminderItem?
 
     private static let dayCount = 7
 
@@ -20,9 +21,12 @@ struct AgendaView: View {
                 )
             } else {
                 List(days.filter { !$0.isEmpty }) { day in
-                    AgendaDaySection(day: day)
+                    AgendaDaySection(day: day) { openedReminder = $0 }
                 }
             }
+        }
+        .sheet(item: $openedReminder) { reminder in
+            ReminderEditorView(reminder: reminder)
         }
         .task(id: store.contentRevision) {
             await load()

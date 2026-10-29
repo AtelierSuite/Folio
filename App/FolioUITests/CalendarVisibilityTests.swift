@@ -4,6 +4,7 @@ final class CalendarVisibilityTests: XCTestCase {
     @MainActor
     func testHidingCalendarRemovesItsEventsFromAgenda() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["-Calendar.ViewMode", "list"]
         app.launch()
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
@@ -16,7 +17,8 @@ final class CalendarVisibilityTests: XCTestCase {
         sampleToggle.switches.firstMatch.tap()
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForNonExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Buy groceries"].exists)
+        let reminderRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Buy groceries")).firstMatch
+        XCTAssertTrue(reminderRow.exists)
 
         app.tabBars.buttons.element(boundBy: 2).tap()
         sampleToggle.switches.firstMatch.tap()

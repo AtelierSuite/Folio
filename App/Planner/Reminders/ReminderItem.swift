@@ -13,6 +13,9 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
     public let color: PlannerColor
     public let isRecurring: Bool
     public let isReadOnly: Bool
+    public let url: URL?
+    public let alarms: [ReminderAlarm]
+    public let recurrence: ReminderRecurrence?
 
     public init(
         reference: CalendarItemReference,
@@ -26,7 +29,10 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
         priority: Int = 0,
         color: PlannerColor = .gray,
         isRecurring: Bool = false,
-        isReadOnly: Bool = false
+        isReadOnly: Bool = false,
+        url: URL? = nil,
+        alarms: [ReminderAlarm] = [],
+        recurrence: ReminderRecurrence? = nil
     ) {
         self.reference = reference
         self.listIdentifier = listIdentifier
@@ -40,6 +46,9 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
         self.color = color
         self.isRecurring = isRecurring
         self.isReadOnly = isReadOnly
+        self.url = url
+        self.alarms = alarms
+        self.recurrence = recurrence
     }
 
     public var id: String {
