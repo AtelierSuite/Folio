@@ -40,6 +40,7 @@ sign() {
   done
   /usr/libexec/PlistBuddy -c "Add :com.apple.security.app-sandbox bool true" $entitlements 2>/dev/null || true
   /usr/libexec/PlistBuddy -c "Add :com.apple.security.get-task-allow bool true" $entitlements 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c "Add :com.apple.security.files.user-selected.read-write bool true" $entitlements 2>/dev/null || true
   find $1/Contents/Frameworks -maxdepth 1 \( -name '*.framework' -o -name '*.dylib' \) 2>/dev/null \
     | while read -r nested; do codesign --force --sign - $nested; done
   codesign --force --sign - --entitlements $entitlements $1
