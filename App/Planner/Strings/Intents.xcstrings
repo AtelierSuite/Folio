@@ -66,392 +66,197 @@
         }
       }
     },
-    "NewItemKind.Event": {
+    "NewEventIntent.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Termin"
+            "value": "Neuer Termin in Folio"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Event"
+            "value": "New Event in Folio"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Évènement"
+            "value": "Nouvel évènement dans Folio"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Evento"
+            "value": "Nuovo evento in Folio"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベント"
+            "value": "Folioで新規イベント"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트"
+            "value": "Folio에서 새로운 이벤트"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activiteit"
+            "value": "Nieuwe activiteit in Folio"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sự kiện"
+            "value": "Sự kiện mới trong Folio"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日程"
+            "value": "在 Folio 中新建日程"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "行程"
+            "value": "在 Folio 中新增行程"
           }
         }
       }
     },
-    "NewItemKind.Note": {
+    "NewNoteIntent.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notiz"
+            "value": "Neue Notiz in Folio"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Note"
+            "value": "New Note in Folio"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Note"
+            "value": "Nouvelle note dans Folio"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nota"
+            "value": "Nuova nota in Folio"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "メモ"
+            "value": "Folioで新規メモ"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "메모"
+            "value": "Folio에서 새로운 메모"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notitie"
+            "value": "Nieuwe notitie in Folio"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ghi chú"
+            "value": "Ghi chú mới trong Folio"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "笔记"
+            "value": "在 Folio 中新建笔记"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "筆記"
+            "value": "在 Folio 中新增筆記"
           }
         }
       }
     },
-    "NewItemKind.Reminder": {
+    "NewReminderIntent.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erinnerung"
+            "value": "Neue Erinnerung in Folio"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reminder"
+            "value": "New Reminder in Folio"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rappel"
+            "value": "Nouveau rappel dans Folio"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Promemoria"
+            "value": "Nuovo promemoria in Folio"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リマインダー"
+            "value": "Folioで新規リマインダー"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "미리 알림"
+            "value": "Folio에서 새로운 미리 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Herinnering"
+            "value": "Nieuwe herinnering in Folio"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lời nhắc"
+            "value": "Lời nhắc mới trong Folio"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事项"
+            "value": "在 Folio 中新建提醒事项"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事項"
-          }
-        }
-      }
-    },
-    "NewItemKind.TypeName": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objekttyp"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Item Type"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type d'élément"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo di elemento"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "項目の種類"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "항목 유형"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Soort onderdeel"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loại mục"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "项目类型"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "項目類型"
-          }
-        }
-      }
-    },
-    "OpenComposerIntent.Kind": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Typ"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipo"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "種類"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "유형"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Soort"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loại"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "类型"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "類型"
-          }
-        }
-      }
-    },
-    "OpenComposerIntent.Title": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In Folio erstellen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create in Folio"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Créer dans Folio"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crea in Folio"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioで作成"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio에서 만들기"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aanmaken in Folio"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tạo trong Folio"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在 Folio 中新建"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "在 Folio 中新增"
+            "value": "在 Folio 中新增提醒事項"
           }
         }
       }

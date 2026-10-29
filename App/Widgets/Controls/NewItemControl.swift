@@ -1,3 +1,4 @@
+import AppIntents
 import Planner
 import SwiftUI
 import WidgetKit
@@ -6,7 +7,7 @@ struct NewEventControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         NewItemControlConfiguration.make(
             kind: "NewEventControl",
-            item: .event,
+            action: NewEventIntent(),
             title: "Control.NewEvent",
             systemImage: "calendar.badge.plus"
         )
@@ -17,7 +18,7 @@ struct NewReminderControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         NewItemControlConfiguration.make(
             kind: "NewReminderControl",
-            item: .reminder,
+            action: NewReminderIntent(),
             title: "Control.NewReminder",
             systemImage: "checklist"
         )
@@ -28,7 +29,7 @@ struct NewNoteControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         NewItemControlConfiguration.make(
             kind: "NewNoteControl",
-            item: .note,
+            action: NewNoteIntent(),
             title: "Control.NewNote",
             systemImage: "square.and.pencil"
         )
@@ -36,15 +37,15 @@ struct NewNoteControl: ControlWidget {
 }
 
 enum NewItemControlConfiguration {
-    static func make(
+    static func make<Action: AppIntent>(
         kind: String,
-        item: NewItemKind,
+        action: Action,
         title: String.LocalizationValue,
         systemImage: String
     ) -> some ControlWidgetConfiguration {
         let label = String(localized: title, table: "Widgets")
         return StaticControlConfiguration(kind: kind) {
-            ControlWidgetButton(action: OpenComposerIntent(kind: item)) {
+            ControlWidgetButton(action: action) {
                 Label(label, systemImage: systemImage)
             }
         }
