@@ -94,6 +94,7 @@ final class NotificationActionTests: XCTestCase {
         let hasScheduled = NSPredicate { _, _ in !scheduledCount.label.hasSuffix(" 0") && scheduledCount.label != "0" }
         expectation(for: hasScheduled, evaluatedWith: nil)
         waitForExpectations(timeout: 15)
+        app.tabBars.buttons.element(boundBy: 0).tap()
     }
 
     @MainActor
