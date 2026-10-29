@@ -17,21 +17,12 @@ struct TimelineGridContentView: View {
             ZStack(alignment: .topLeading) {
                 TimelineHourGridView(dayCount: layout.days.count, hourHeight: hourHeight)
                 TimelineLayersView(layers: layers.filter { $0.placement == .belowEntries }, context: context)
-                TimelineSlotLayout(
-                    dayCount: layout.days.count,
+                TimelineCardsView(
+                    layout: layout,
                     hourHeight: hourHeight,
-                    minimumHeight: metrics.minimumCardHeight
-                ) {
-                    ForEach(layout.timedPlacements) { placement in
-                        TimelineEventCardView(
-                            placement: placement,
-                            timeZone: layout.days.calendar.timeZone,
-                            hourHeight: hourHeight
-                        )
-                        .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
-                        .timelineSlot(TimelineSlot(placement))
-                    }
-                }
+                    minimumCardHeight: metrics.minimumCardHeight(hourHeight: hourHeight),
+                    onSelectEntry: onSelectEntry
+                )
                 TimelineLayersView(layers: layers.filter { $0.placement == .aboveEntries }, context: context)
                 TimelineCurrentTimeIndicatorView(days: layout.days, hourHeight: hourHeight)
             }
