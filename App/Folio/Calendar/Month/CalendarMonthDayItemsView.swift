@@ -2,6 +2,7 @@ import Planner
 import SwiftUI
 
 struct CalendarMonthDayItemsView: View {
+    @Environment(\.eventActions) private var actions
     @ScaledMetric(relativeTo: .caption2) private var rowHeight: CGFloat = 15
     let items: [MonthDayItem]
     let day: Date
@@ -18,6 +19,7 @@ struct CalendarMonthDayItemsView: View {
                 ForEach(items.prefix(overflow.visibleCount)) { item in
                     CalendarMonthEntryChip(item: item)
                         .frame(height: rowHeight)
+                        .eventInteractions(for: item.entry, actions: actions)
                         .calendarMonthDraggable(item.entry, from: day)
                 }
                 if overflow.hiddenCount > 0 {
@@ -26,6 +28,17 @@ struct CalendarMonthDayItemsView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func eventInteractions(for entry: TimelineEntry, actions: EventActions?) -> some View {
+        if let actions, let event = actions.event(for: entry) {
+            eventInteractions(event, actions: actions, placement: .monthCell)
+        } else {
+            self
         }
     }
 }
