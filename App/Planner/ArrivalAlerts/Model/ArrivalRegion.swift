@@ -18,7 +18,7 @@ public struct ArrivalRegion: Sendable, Hashable, Identifiable {
     public static func identifier(for coordinate: PlannerCoordinate) -> String {
         let latitude = String(format: "%.4f", coordinate.latitude)
         let longitude = String(format: "%.4f", coordinate.longitude)
-        return "\(identifierPrefix)\(latitude),\(longitude)"
+        return "\(identifierPrefix)\(latitude)_\(longitude)"
     }
 
     public func candidates(arrivingAt date: Date) -> [ArrivalCandidate] {

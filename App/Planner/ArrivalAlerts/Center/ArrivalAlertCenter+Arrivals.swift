@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 extension ArrivalAlertCenter {
     public func start() {
@@ -17,6 +18,7 @@ extension ArrivalAlertCenter {
     }
 
     func handle(_ arrival: RegionArrival) async {
+        arrivalLog.info("Arrived in \(arrival.identifier)")
         if !monitoredRegions.contains(where: { $0.id == arrival.identifier }) {
             await replan()
         }

@@ -1,5 +1,8 @@
 import Foundation
 import Observation
+import os
+
+let arrivalLog = Logger(subsystem: "com.tsubuzaki.Folio", category: "ArrivalAlerts")
 
 @MainActor
 @Observable
@@ -102,6 +105,7 @@ public final class ArrivalAlertCenter {
             await regionMonitor.startMonitoring(region)
         }
         monitoredRegions = regions
+        arrivalLog.info("Monitoring \(regions.count) arrival regions")
     }
 
     private func candidates(after now: Date) async -> [ArrivalCandidate] {
