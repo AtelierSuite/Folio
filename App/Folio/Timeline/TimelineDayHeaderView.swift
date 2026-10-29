@@ -35,7 +35,7 @@ struct TimelineDayHeaderLabel: View {
                 .fixedSize()
                 .padding(.horizontal, 6)
                 .frame(minWidth: 26, minHeight: 26)
-                .background(isToday ? Color.red : Color.clear, in: Capsule())
+                .background(isToday ? Color.accentColor : Color.clear, in: Capsule())
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(day.start.formatted(Date.FormatStyle(date: .complete, timeZone: calendar.timeZone)))
