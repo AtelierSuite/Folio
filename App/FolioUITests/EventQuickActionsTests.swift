@@ -10,10 +10,11 @@ final class EventQuickActionsTests: XCTestCase {
         app.buttons["Done"].tap()
 
         card.press(forDuration: 1.2)
-        XCTAssertTrue(app.buttons["Show Details"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Delete"].exists)
+        let showDetails = menuItem("EventMenu.ShowDetails", title: "Show Details", in: app)
+        XCTAssertTrue(showDetails.waitForExistence(timeout: 5))
+        XCTAssertTrue(menuItem("EventMenu.Delete", title: "Delete", in: app).exists)
         attachScreenshot(named: "details-mode-long-press", app: app)
-        app.buttons["Show Details"].tap()
+        showDetails.tap()
         XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 10))
     }
 
@@ -115,6 +116,15 @@ final class EventQuickActionsTests: XCTestCase {
     @MainActor
     private func menuItem(_ identifier: String, in app: XCUIApplication) -> XCUIElement {
         app.descendants(matching: .any).matching(identifier: identifier).firstMatch
+    }
+
+    /// SwiftUI context menus drop identifiers, while menus opened at a tap point keep them.
+    @MainActor
+    private func menuItem(_ identifier: String, title: String, in app: XCUIApplication) -> XCUIElement {
+        app.descendants(matching: .any)
+            .matching(NSPredicate(format: "identifier == %@ OR (label == %@ AND elementType == %d)",
+                                  identifier, title, XCUIElement.ElementType.button.rawValue))
+            .firstMatch
     }
 
     @MainActor
