@@ -23,6 +23,7 @@ final class TimelineDragController {
     @ObservationIgnored private var pointer: CGPoint = .zero
     @ObservationIgnored private var startPointer: CGPoint = .zero
     @ObservationIgnored private var lastEndDate = Date.distantPast
+    @ObservationIgnored private var hasEnteredGrid = false
     @ObservationIgnored private let autoScroll = TimelineAutoScroll()
     @ObservationIgnored let edgePaging = TimelineEdgePaging()
 
@@ -117,6 +118,7 @@ final class TimelineDragController {
     private func start(entry: TimelineEntry, operation: TimelineDragOperation, at location: CGPoint) {
         pointer = location
         startPointer = location
+        hasEnteredGrid = false
         session = TimelineDragSession(entry: entry, operation: operation)
         refresh()
     }
@@ -135,8 +137,13 @@ final class TimelineDragController {
             session.proposal = proposal
             self.session = session
         }
-        let speed = (isPlacing && isAboveGrid)
-            ? 0 : autoScroll.speed(pointerY: pointer.y - viewportFrame.minY, viewportHeight: viewportFrame.height)
+        let pointerY = pointer.y - viewportFrame.minY
+        if pointerY > autoScroll.edgeHeight {
+            hasEnteredGrid = true
+        }
+        // A reminder dragged down from the all-day strip crosses the top band on its way in.
+        let speed = (isPlacing && !hasEnteredGrid)
+            ? 0 : autoScroll.speed(pointerY: pointerY, viewportHeight: viewportFrame.height)
         setAutoScrollSpeed(speed)
         setEdgeDirection(edgeDirection(for: pointer))
     }
