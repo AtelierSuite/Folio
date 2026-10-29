@@ -6,6 +6,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let kind: CalendarItemKind
     public let reference: CalendarItemReference
     public let content: NotificationContent
+    public let meeting: NotificationMeeting?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
 
@@ -16,6 +17,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.kind = candidate.kind
         self.reference = candidate.reference
         self.content = candidate.content
+        self.meeting = candidate.meeting
         self.category = category
         self.style = style
     }

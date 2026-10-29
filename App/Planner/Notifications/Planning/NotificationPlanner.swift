@@ -45,7 +45,8 @@ public struct NotificationPlanner: Sendable {
                     fireDate: fireDate,
                     kind: .event,
                     reference: event.reference,
-                    content: formatter.content(for: event, firingAt: fireDate)
+                    content: formatter.content(for: event, firingAt: fireDate),
+                    meeting: NotificationMeeting(event: event)
                 )
             }
         }
