@@ -7,7 +7,7 @@ struct PermissionGateStateTests {
     }
 
     @Test func waitsForEveryStatus() {
-        #expect(state([.calendar: .granted, .reminders: .some(nil)]) == .loading)
+        #expect(state([.calendar: .granted, .reminders: nil]) == .loading)
     }
 
     @Test func unavailableWhenNoPermissionApplies() {
