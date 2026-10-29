@@ -3,15 +3,20 @@ import SwiftUI
 
 struct CalendarWeekView: View {
     @Environment(CalendarNavigation.self) private var navigation
+    @Environment(WorkWeekPreferences.self) private var workWeek
     let isWorkWeek: Bool
 
     var body: some View {
-        let weekStart = navigation.startOfWeek(containing: navigation.selectedDate)
-        let start = isWorkWeek
-            ? navigation.calendar.date(byAdding: .day, value: 1, to: weekStart) ?? weekStart
-            : weekStart
         CalendarTimelineContainer(
-            days: TimelineDays(startingOn: start, count: isWorkWeek ? 5 : 7, calendar: navigation.calendar)
+            days: TimelineDays(dates: dates, calendar: navigation.calendar),
+            excludedCalendarIdentifiers: isWorkWeek ? workWeek.excludedCalendarIdentifiers : []
         )
+    }
+
+    private var dates: [Date] {
+        let calendar = navigation.calendar
+        return isWorkWeek
+            ? calendar.workdayDates(inWeekContaining: navigation.selectedDate, workdays: workWeek.workdays)
+            : calendar.weekDates(containing: navigation.selectedDate)
     }
 }

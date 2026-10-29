@@ -13,6 +13,11 @@ public struct TimelineDays: Sendable, Equatable {
         intervals = zip(dayStarts, dayStarts.dropFirst()).map { DateInterval(start: $0, end: $1) }
     }
 
+    init(intervals: [DateInterval], calendar: Calendar) {
+        self.calendar = calendar
+        self.intervals = intervals
+    }
+
     public var count: Int {
         intervals.count
     }
