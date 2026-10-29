@@ -4,6 +4,10 @@ import SwiftUI
 struct AgendaEventRow: View {
     let event: CalendarEvent
 
+    private var outline: some InsettableShape {
+        RoundedRectangle(cornerRadius: 6).inset(by: -4)
+    }
+
     var body: some View {
         HStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 2)
@@ -36,5 +40,6 @@ struct AgendaEventRow: View {
                     .accessibilityLabel(String(localized: "Event.ReadOnly", table: "Agenda"))
             }
         }
+        .invitationCardStyle(event.invitationCardStyle, color: event.color.color, in: outline)
     }
 }
