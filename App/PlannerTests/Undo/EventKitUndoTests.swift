@@ -10,7 +10,9 @@ struct EventKitUndoTests {
     private let source = EventKitDataSource.shared
     private let calendar = Calendar.current
 
-    private func withSeries(_ body: (CalendarStore, UndoCoordinator, [CalendarEvent]) async throws -> Void) async throws {
+    private func withSeries(
+        _ body: (CalendarStore, UndoCoordinator, [CalendarEvent]) async throws -> Void
+    ) async throws {
         let eventStore = source.eventStore
         let temporaryCalendar = EKCalendar(for: .event, eventStore: eventStore)
         temporaryCalendar.title = "Folio Undo Tests \(UUID().uuidString)"

@@ -40,7 +40,9 @@ struct UndoTestContext {
     }
 
     static func event(_ local: String, day: Int = 29, hour: Int = 9) -> CalendarEvent {
-        FakeCalendarDataSource.event(from: draft(title: local, day: day, hour: hour), localIdentifier: local, occurrenceDate: nil)
+        FakeCalendarDataSource.event(
+            from: draft(title: local, day: day, hour: hour), localIdentifier: local, occurrenceDate: nil
+        )
     }
 
     static func series(_ local: String, days: ClosedRange<Int>) -> [CalendarEvent] {
@@ -55,7 +57,9 @@ struct UndoTestContext {
 
     static func draft(title: String, day: Int, hour: Int) -> EventDraft {
         let start = Fixtures.date(2026, 10, day, hour: hour)
-        return EventDraft(title: title, calendarIdentifier: "work", startDate: start, endDate: start.addingTimeInterval(3600))
+        return EventDraft(
+            title: title, calendarIdentifier: "work", startDate: start, endDate: start.addingTimeInterval(3600)
+        )
     }
 
     static func draft(of event: CalendarEvent) -> EventDraft {
@@ -72,6 +76,14 @@ struct UndoTestContext {
 
     func visibleReminderTitles() async -> [String] {
         await store.reminders(in: week).map(\.title)
+    }
+
+    static func makeSource() -> FakeCalendarDataSource {
+        FakeCalendarDataSource(events: [event("Lunch")], calendars: [Fixtures.plannerCalendar("work")])
+    }
+
+    static func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) -> CalendarStore {
+        CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
     }
 
     var deleteCalls: [FakeEventWriting.Call] {

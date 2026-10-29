@@ -80,7 +80,9 @@ struct UndoEventEditTests {
     @Test func futureEventsFromTheFirstOccurrenceSavesTheSeriesAtOnce() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
         let context = try UndoTestContext(events: series)
-        try await context.coordinator.updateEvent(series[0], with: moved(series[0], hours: 0, title: "Sync"), span: .futureEvents)
+        try await context.coordinator.updateEvent(
+            series[0], with: moved(series[0], hours: 0, title: "Sync"), span: .futureEvents
+        )
 
         #expect(!context.coordinator.hasPendingCommit)
         #expect(context.source.currentEvents.map(\.title) == Array(repeating: "Sync", count: 5))

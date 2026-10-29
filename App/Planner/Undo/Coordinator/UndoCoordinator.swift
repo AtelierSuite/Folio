@@ -99,7 +99,9 @@ public final class UndoCoordinator {
             }
             return UndoStep.Outcome(inverse: restaging(change), work: nil)
         }
-        pending = PendingCommit(stepIdentifier: step.id, stagedIdentifier: stagedIdentifier, target: target, change: change)
+        pending = PendingCommit(
+            stepIdentifier: step.id, stagedIdentifier: stagedIdentifier, target: target, change: change
+        )
         return step
     }
 

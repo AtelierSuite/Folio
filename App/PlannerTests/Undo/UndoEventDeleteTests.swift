@@ -4,8 +4,10 @@ import Testing
 
 @MainActor
 struct UndoEventDeleteTests {
+    private let lunchAndGym = [UndoTestContext.event("Lunch"), UndoTestContext.event("Gym", hour: 18)]
+
     @Test func deleteHidesTheEventWithoutDeletingIt() async throws {
-        let context = try UndoTestContext(events: [UndoTestContext.event("Lunch"), UndoTestContext.event("Gym", hour: 18)])
+        let context = try UndoTestContext(events: lunchAndGym)
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
 
         #expect(await context.visibleEventTitles() == ["Gym"])
@@ -42,9 +44,9 @@ struct UndoEventDeleteTests {
     }
 
     @Test func assistiveTechnologiesKeepTheToastUpLonger() async throws {
-        let source = FakeCalendarDataSource(events: [UndoTestContext.event("Lunch")], calendars: [Fixtures.plannerCalendar("work")])
+        let source = UndoTestContext.makeSource()
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
-        let store = CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
+        let store = UndoTestContext.makeStore(source: source, defaults: defaults)
         let coordinator = UndoCoordinator(
             store: store, toastDuration: .milliseconds(20), assistiveToastDuration: .seconds(60)
         )
@@ -80,7 +82,7 @@ struct UndoEventDeleteTests {
     }
 
     @Test func theNextActionCommitsThePreviousDelete() async throws {
-        let context = try UndoTestContext(events: [UndoTestContext.event("Lunch"), UndoTestContext.event("Gym", hour: 18)])
+        let context = try UndoTestContext(events: lunchAndGym)
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
         try await context.coordinator.deleteEvent(UndoTestContext.event("Gym", hour: 18))
 
@@ -90,15 +92,15 @@ struct UndoEventDeleteTests {
     }
 
     @Test func quittingWithinTheWindowDeletesNothing() async throws {
-        let source = FakeCalendarDataSource(events: [UndoTestContext.event("Lunch")], calendars: [Fixtures.plannerCalendar("work")])
+        let source = UndoTestContext.makeSource()
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
-        var store: CalendarStore? = CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
+        var store: CalendarStore? = UndoTestContext.makeStore(source: source, defaults: defaults)
         var coordinator: UndoCoordinator? = UndoCoordinator(store: try #require(store))
         try await coordinator?.deleteEvent(UndoTestContext.event("Lunch"))
         coordinator = nil
         store = nil
 
-        let relaunchedStore = CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
+        let relaunchedStore = UndoTestContext.makeStore(source: source, defaults: defaults)
         let week = DateInterval(start: Fixtures.date(2026, 10, 25), end: Fixtures.date(2026, 11, 1))
         #expect(await relaunchedStore.events(in: week).map(\.title) == ["Lunch"])
         #expect(source.eventWriteCalls.isEmpty)
