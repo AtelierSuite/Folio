@@ -27,6 +27,7 @@ public final class NotificationScheduler {
     @ObservationIgnored var changeObservation: Task<Void, Never>?
     @ObservationIgnored var debouncedReplan: Task<Void, Never>?
     @ObservationIgnored var periodicReplanning: Task<Void, Never>?
+    @ObservationIgnored public var didReplan: (@MainActor () async -> Void)?
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
@@ -103,6 +104,7 @@ public final class NotificationScheduler {
             alarmCount: alarmCount,
             nextFireDate: plan.nextFireDate
         )
+        await didReplan?()
     }
 
     private func plan(after now: Date, budget: Int) async -> NotificationPlan {
