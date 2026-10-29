@@ -5,6 +5,10 @@ struct SettingsView: View {
         Form {
             NotesStorageSection()
             Section {
+                NavigationLink(String(localized: "Title", table: "Notifications")) {
+                    NotificationSettingsView()
+                }
+                .accessibilityIdentifier("NotificationSettingsLink")
                 NavigationLink(String(localized: "Title", table: "CalendarVisibility")) {
                     CalendarVisibilityView()
                 }
