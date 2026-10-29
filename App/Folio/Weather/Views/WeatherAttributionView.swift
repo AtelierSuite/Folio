@@ -16,7 +16,6 @@ struct WeatherAttributionView: View {
         .foregroundStyle(.secondary)
         .frame(maxWidth: .infinity)
         .padding(.vertical, 4)
-        .accessibilityIdentifier("WeatherAttribution")
     }
 
     @ViewBuilder
