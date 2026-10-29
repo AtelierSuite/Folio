@@ -8,9 +8,13 @@ struct WidgetSnapshotLoaderTests {
     private func makeSource() -> FakeCalendarDataSource {
         FakeCalendarDataSource(
             events: [
-                Fixtures.event(local: "work", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 11)),
+                Fixtures.event(
+                    local: "work", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 11)
+                ),
                 Fixtures.event(local: "home", calendarIdentifier: "home", start: Fixtures.date(2026, 10, 29, hour: 18)),
-                Fixtures.event(local: "next week", calendarIdentifier: "home", start: Fixtures.date(2026, 11, 5, hour: 9))
+                Fixtures.event(
+                    local: "next week", calendarIdentifier: "home", start: Fixtures.date(2026, 11, 5, hour: 9)
+                )
             ],
             reminders: [
                 Fixtures.reminder(local: "errand", listIdentifier: "personal", due: now),
@@ -27,7 +31,8 @@ struct WidgetSnapshotLoaderTests {
     }
 
     @Test func showsVisibleCalendarsByDefault() async throws {
-        let loader = WidgetSnapshotLoader(source: makeSource(), visibilityStorage: try makeStorage(hidden: ["home", "office"]))
+        let storage = try makeStorage(hidden: ["home", "office"])
+        let loader = WidgetSnapshotLoader(source: makeSource(), visibilityStorage: storage)
         let request = WidgetSnapshotRequest.upcoming(from: now, calendar: Fixtures.calendar, includesReminders: true)
         let snapshot = await loader.load(request, at: now)
         #expect(snapshot.events.map(\.title) == ["work"])

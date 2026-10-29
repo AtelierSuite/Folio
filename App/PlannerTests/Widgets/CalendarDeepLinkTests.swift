@@ -6,13 +6,16 @@ struct CalendarDeepLinkTests {
     @Test func dayLinksRoundTrip() {
         let url = CalendarDeepLink.url(forDay: Fixtures.date(2026, 10, 29, hour: 15), calendar: Fixtures.calendar)
         #expect(url.absoluteString == "folio://day/2026-10-29")
-        #expect(CalendarDeepLink.destination(from: url, calendar: Fixtures.calendar) == .calendarDay(Fixtures.date(2026, 10, 29)))
+        let destination = CalendarDeepLink.destination(from: url, calendar: Fixtures.calendar)
+        #expect(destination == .calendarDay(Fixtures.date(2026, 10, 29)))
     }
 
     @Test func eventLinksCarryTheReference() throws {
         let occurrence = Fixtures.date(2026, 10, 29, hour: 9)
         let event = CalendarEvent(
-            reference: Fixtures.reference(external: "ext/1", local: "ABC:123/x", occurrence: occurrence, title: "Stand up & sync"),
+            reference: Fixtures.reference(
+                external: "ext/1", local: "ABC:123/x", occurrence: occurrence, title: "Stand up & sync"
+            ),
             calendarIdentifier: "calendar-1",
             title: "Stand up & sync",
             startDate: occurrence,
@@ -39,7 +42,11 @@ struct CalendarDeepLinkTests {
     }
 
     @Test func ignoresUnknownLinks() throws {
-        for string in ["folio://note/abc", "folio://day/tomorrow", "folio://event/abc", "https://day/2026-10-29", "folio://new/task"] {
+        let strings = [
+            "folio://note/abc", "folio://day/tomorrow", "folio://event/abc",
+            "https://day/2026-10-29", "folio://new/task"
+        ]
+        for string in strings {
             #expect(CalendarDeepLink.destination(from: try #require(URL(string: string))) == nil)
         }
     }

@@ -35,7 +35,11 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
         )
     }
 
-    public static func month(containing now: Date, calendar: Calendar, calendars: Set<String>? = nil) -> WidgetSnapshotRequest {
+    public static func month(
+        containing now: Date,
+        calendar: Calendar,
+        calendars: Set<String>? = nil
+    ) -> WidgetSnapshotRequest {
         let grid = MonthGrid(containing: now, calendar: calendar)
         return WidgetSnapshotRequest(
             eventInterval: grid.span ?? days(from: now, count: 1, calendar: calendar),
@@ -49,7 +53,8 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
 
     static func days(from now: Date, count: Int, calendar: Calendar) -> DateInterval {
         let start = calendar.startOfDay(for: now)
-        let end = calendar.date(byAdding: .day, value: count, to: start) ?? start.addingTimeInterval(Double(count) * 86_400)
+        let end = calendar.date(byAdding: .day, value: count, to: start)
+            ?? start.addingTimeInterval(Double(count) * 86_400)
         return DateInterval(start: start, end: end)
     }
 }

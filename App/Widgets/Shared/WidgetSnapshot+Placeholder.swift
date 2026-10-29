@@ -18,10 +18,15 @@ nonisolated extension WidgetSnapshot {
         return WidgetSnapshot(events: events, reminders: reminders)
     }
 
-    private static func sampleEvent(_ key: String.LocalizationValue, start: Date, hours: Double, color: PlannerColor) -> CalendarEvent {
+    private static func sampleEvent(
+        _ key: String.LocalizationValue,
+        start: Date,
+        hours: Double,
+        color: PlannerColor
+    ) -> CalendarEvent {
         let title = String(localized: key, table: "Widgets")
         return CalendarEvent(
-            reference: CalendarItemReference(externalIdentifier: nil, localIdentifier: title, calendarIdentifier: "", title: title),
+            reference: sampleReference(title: title),
             calendarIdentifier: "",
             title: title,
             startDate: start,
@@ -33,13 +38,17 @@ nonisolated extension WidgetSnapshot {
     private static func sampleReminder(_ key: String.LocalizationValue, due: Date?) -> ReminderItem {
         let title = String(localized: key, table: "Widgets")
         return ReminderItem(
-            reference: CalendarItemReference(externalIdentifier: nil, localIdentifier: title, calendarIdentifier: "", title: title),
+            reference: sampleReference(title: title),
             listIdentifier: "",
             title: title,
             dueDate: due,
             hasDueTime: due != nil,
             color: .orange
         )
+    }
+
+    private static func sampleReference(title: String) -> CalendarItemReference {
+        CalendarItemReference(externalIdentifier: nil, localIdentifier: title, calendarIdentifier: "", title: title)
     }
 }
 

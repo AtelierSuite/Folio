@@ -16,7 +16,10 @@ public struct WidgetSnapshotLoader: Sendable {
         let hidden = visibilityStorage.hiddenCalendarIdentifiers
         let calendarFilter = WidgetCalendarFilter(selectedIdentifiers: request.calendars, hiddenIdentifiers: hidden)
         let listFilter = WidgetCalendarFilter(selectedIdentifiers: request.lists, hiddenIdentifiers: hidden)
-        let events = if let interval = request.eventInterval { await source.events(in: interval) } else { [CalendarEvent]() }
+        var events: [CalendarEvent] = []
+        if let interval = request.eventInterval {
+            events = await source.events(in: interval)
+        }
         let reminders = request.includesReminders
             ? await source.reminders(completedIn: DateInterval(start: now, duration: 0))
             : []

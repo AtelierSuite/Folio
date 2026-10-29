@@ -8,7 +8,7 @@ struct WidgetReminderRow: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            Button(intent: ToggleReminderIntent(reminderIdentifier: reminder.reference.localIdentifier, isCompleted: true)) {
+            Button(intent: completeIntent) {
                 Image(systemName: "circle")
                     .font(.body)
                     .foregroundStyle(reminder.color.color)
@@ -29,5 +29,9 @@ struct WidgetReminderRow: View {
             }
             Spacer(minLength: 0)
         }
+    }
+
+    private var completeIntent: ToggleReminderIntent {
+        ToggleReminderIntent(reminderIdentifier: reminder.reference.localIdentifier, isCompleted: true)
     }
 }

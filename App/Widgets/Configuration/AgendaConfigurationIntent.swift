@@ -3,7 +3,9 @@ import Planner
 
 struct AgendaConfigurationIntent: FolioWidgetIntent {
     static let title = LocalizedStringResource("Configuration.Agenda.Title", table: "Widgets")
-    static let description = IntentDescription(LocalizedStringResource("Configuration.Agenda.Description", table: "Widgets"))
+    static let description = IntentDescription(
+        LocalizedStringResource("Configuration.Agenda.Description", table: "Widgets")
+    )
 
     @Parameter(title: LocalizedStringResource("Configuration.Calendars", table: "Widgets"))
     var calendars: [CalendarEntity]?

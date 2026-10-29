@@ -78,7 +78,9 @@ struct WidgetSnapshotTests {
     }
 
     @Test func checklistListsDatedRemindersFirstThenByPriority() {
-        let urgent = ReminderItem(reference: Fixtures.reference(local: "b"), listIdentifier: "list-1", title: "b", priority: 1)
+        let urgent = ReminderItem(
+            reference: Fixtures.reference(local: "b"), listIdentifier: "list-1", title: "b", priority: 1
+        )
         let plain = ReminderItem(reference: Fixtures.reference(local: "a"), listIdentifier: "list-1", title: "a")
         let snapshot = WidgetSnapshot(reminders: [
             plain,

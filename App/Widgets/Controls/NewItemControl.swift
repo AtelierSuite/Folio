@@ -4,19 +4,34 @@ import WidgetKit
 
 struct NewEventControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        NewItemControlConfiguration.make(kind: "NewEventControl", item: .event, title: "Control.NewEvent", systemImage: "calendar.badge.plus")
+        NewItemControlConfiguration.make(
+            kind: "NewEventControl",
+            item: .event,
+            title: "Control.NewEvent",
+            systemImage: "calendar.badge.plus"
+        )
     }
 }
 
 struct NewReminderControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        NewItemControlConfiguration.make(kind: "NewReminderControl", item: .reminder, title: "Control.NewReminder", systemImage: "checklist")
+        NewItemControlConfiguration.make(
+            kind: "NewReminderControl",
+            item: .reminder,
+            title: "Control.NewReminder",
+            systemImage: "checklist"
+        )
     }
 }
 
 struct NewNoteControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
-        NewItemControlConfiguration.make(kind: "NewNoteControl", item: .note, title: "Control.NewNote", systemImage: "square.and.pencil")
+        NewItemControlConfiguration.make(
+            kind: "NewNoteControl",
+            item: .note,
+            title: "Control.NewNote",
+            systemImage: "square.and.pencil"
+        )
     }
 }
 

@@ -3,7 +3,9 @@ import Planner
 
 struct UpNextConfigurationIntent: FolioWidgetIntent {
     static let title = LocalizedStringResource("Configuration.Calendars.Title", table: "Widgets")
-    static let description = IntentDescription(LocalizedStringResource("Configuration.Calendars.Description", table: "Widgets"))
+    static let description = IntentDescription(
+        LocalizedStringResource("Configuration.Calendars.Description", table: "Widgets")
+    )
 
     @Parameter(title: LocalizedStringResource("Configuration.Calendars", table: "Widgets"))
     var calendars: [CalendarEntity]?

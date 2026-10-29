@@ -15,7 +15,10 @@ struct RemainingRemindersView: View {
         } else {
             switch family {
             case .accessoryInline:
-                Label(String(localized: "RemainingReminders.Count \(reminders.count)", table: "Widgets"), systemImage: "checklist")
+                Label(
+                    String(localized: "RemainingReminders.Count \(reminders.count)", table: "Widgets"),
+                    systemImage: "checklist"
+                )
             case .accessoryRectangular:
                 VStack(alignment: .leading, spacing: 0) {
                     Label(String(localized: "Reminders.Title", table: "Widgets"), systemImage: "checklist")

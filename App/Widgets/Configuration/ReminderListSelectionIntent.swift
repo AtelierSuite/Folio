@@ -3,7 +3,9 @@ import Planner
 
 struct ReminderListSelectionIntent: FolioWidgetIntent {
     static let title = LocalizedStringResource("Configuration.Lists.Title", table: "Widgets")
-    static let description = IntentDescription(LocalizedStringResource("Configuration.Lists.Description", table: "Widgets"))
+    static let description = IntentDescription(
+        LocalizedStringResource("Configuration.Lists.Description", table: "Widgets")
+    )
 
     @Parameter(title: LocalizedStringResource("Configuration.Lists", table: "Widgets"))
     var lists: [ReminderListEntity]?
