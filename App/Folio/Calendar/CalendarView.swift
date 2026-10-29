@@ -2,10 +2,12 @@ import Planner
 import SwiftUI
 
 struct CalendarView: View {
-    @AppStorage("Calendar.ViewMode") private var mode: CalendarViewMode = .day
+    @Environment(CalendarStore.self) var store
     @Environment(SystemTimeObserver.self) private var systemTime
-    @State private var navigation = CalendarNavigation()
-    @State private var composer: CalendarComposer?
+    @AppStorage("Calendar.ViewMode") var mode: CalendarViewMode = .day
+    @State var navigation = CalendarNavigation()
+    @State var composer: CalendarComposer?
+    @State var routedEvent: CalendarEvent?
 
     var body: some View {
         NavigationStack {
@@ -26,19 +28,11 @@ struct CalendarView: View {
                 }
         }
         .environment(navigation)
+        .eventDetailSheet(item: $routedEvent)
         .handlesAppDestinations(show)
         .onChange(of: systemTime.calendar, initial: true) {
             navigation.adopt(systemTime.calendar)
         }
-    }
-
-    private func show(_ destination: AppDestination) -> Bool {
-        guard case .calendarDay(let date, _) = destination else { return false }
-        if mode == .list {
-            mode = .day
-        }
-        navigation.show(date)
-        return true
     }
 
     @ViewBuilder

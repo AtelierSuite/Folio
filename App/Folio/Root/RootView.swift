@@ -30,6 +30,7 @@ struct RootView: View {
         .connectsUndo()
         .onboarding()
         .environment(router)
+        .opensCalendarDeepLinks(with: router)
         .onChange(of: router.pendingDestination) { _, destination in
             if let destination {
                 selectedTab = destination.tab

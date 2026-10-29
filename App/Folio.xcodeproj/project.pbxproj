@@ -683,6 +683,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -872,6 +874,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

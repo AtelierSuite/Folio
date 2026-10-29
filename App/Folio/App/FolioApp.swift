@@ -8,6 +8,7 @@ struct FolioApp: App {
     @State private var permissionCenter: PermissionCenter
     @State private var notesLibrary: NotesLibrary
     @State private var noteNavigator: NoteNavigator
+    @State private var destinationRequests: AppDestinationRequests
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler = NotificationScheduler()
     @State private var searchIndexer = SearchIndexer()
@@ -34,6 +35,9 @@ struct FolioApp: App {
         let sleepStore = SleepStore(capabilities: .current)
         sleepStore.startObservingChanges()
         _sleepStore = State(initialValue: sleepStore)
+        let destinationRequests = AppDestinationRequests()
+        _destinationRequests = State(initialValue: destinationRequests)
+        AppDependencyManager.shared.add(dependency: destinationRequests)
     }
 
     var body: some Scene {
@@ -44,6 +48,7 @@ struct FolioApp: App {
                 .environment(calendarStore)
                 .environment(notesLibrary)
                 .environment(noteNavigator)
+                .environment(destinationRequests)
                 .environment(workWeekPreferences)
                 .environment(permissionCenter)
                 .refreshesPermissions(of: permissionCenter)
@@ -57,6 +62,7 @@ struct FolioApp: App {
                 .followsSystemTime(systemTime)
                 .environment(undoCoordinator)
                 .environment(undoToastHosts)
+                .reloadsWidgets(on: calendarStore)
                 .task {
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {

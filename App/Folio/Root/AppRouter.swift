@@ -16,8 +16,8 @@ final class AppRouter {
 extension AppDestination {
     var tab: AppTab {
         switch self {
-        case .calendarDay: .calendar
-        case .note: .notes
+        case .calendarDay, .newEvent, .newReminder: .calendar
+        case .note, .newNote: .notes
         }
     }
 }
