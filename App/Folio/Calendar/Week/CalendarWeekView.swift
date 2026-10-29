@@ -9,6 +9,7 @@ struct CalendarWeekView: View {
     var body: some View {
         CalendarTimelineContainer(
             days: TimelineDays(dates: dates, calendar: navigation.calendar),
+            pageStep: .week,
             excludedCalendarIdentifiers: isWorkWeek ? workWeek.excludedCalendarIdentifiers : []
         )
     }

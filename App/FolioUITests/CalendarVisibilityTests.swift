@@ -18,7 +18,7 @@ final class CalendarVisibilityTests: XCTestCase {
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForNonExistence(timeout: 5))
         let reminderRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Buy groceries")).firstMatch
-        XCTAssertTrue(reminderRow.exists)
+        XCTAssertTrue(reminderRow.waitForExistence(timeout: 5))
 
         app.tabBars.buttons.element(boundBy: 2).tap()
         sampleToggle.switches.firstMatch.tap()
