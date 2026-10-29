@@ -47,7 +47,7 @@ public struct EventEntity: AppEntity, Identifiable, Sendable {
         isAllDay = event.isAllDay
         location = event.location
         notes = event.notes
-        meetingLink = MeetingLink.joinURL(in: [event.location, event.notes], url: event.url)
+        meetingLink = IntentMeetingLink.url(for: event)
     }
 
     public var displayRepresentation: DisplayRepresentation {
