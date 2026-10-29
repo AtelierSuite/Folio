@@ -26,7 +26,7 @@ struct SearchResultGroupTests {
 
     @Test func notesUseTheirFrontMatterDate() {
         let note = SearchFixtures.note("Log", text: "---\ndate: 2026-03-04\n---\nBody")
-        #expect(Fixtures.calendar.dateComponents([.year, .month, .day], from: note.date ?? .distantPast)
+        #expect(Calendar.current.dateComponents([.year, .month, .day], from: note.date ?? .distantPast)
             == DateComponents(year: 2026, month: 3, day: 4))
         #expect(note.body.contains("Body"))
     }
