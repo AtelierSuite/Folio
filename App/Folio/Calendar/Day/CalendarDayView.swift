@@ -7,7 +7,8 @@ struct CalendarDayView: View {
     var body: some View {
         CalendarTimelineContainer(
             days: TimelineDays(startingOn: navigation.selectedDate, count: 1, calendar: navigation.calendar),
-            pageStep: .day
+            pageStep: .day,
+            zoomScope: .day
         ) {
             CalendarDayLinkedNoteSlot(date: navigation.selectedDate)
         }

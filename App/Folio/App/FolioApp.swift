@@ -55,6 +55,9 @@ struct FolioApp: App {
                 }
         }
         .notificationRefreshTask(notificationScheduler)
+        .commands {
+            TimelineZoomCommands()
+        }
         #if os(macOS)
         Settings {
             NavigationStack {

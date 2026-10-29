@@ -6,6 +6,10 @@ struct TimelineSlot: Equatable {
     var endHour: Double
     var leadingFraction: Double = 0
     var widthFraction: Double = 1
+
+    nonisolated func height(hourHeight: CGFloat, minimumHeight: CGFloat) -> CGFloat {
+        max(minimumHeight, CGFloat(endHour - startHour) * hourHeight)
+    }
 }
 
 nonisolated private struct TimelineSlotKey: LayoutValueKey {
@@ -34,7 +38,7 @@ struct TimelineSlotLayout: Layout {
         for subview in subviews {
             guard let slot = subview[TimelineSlotKey.self] else { continue }
             let width = dayWidth * slot.widthFraction
-            let height = max(minimumHeight, CGFloat(slot.endHour - slot.startHour) * hourHeight)
+            let height = slot.height(hourHeight: hourHeight, minimumHeight: minimumHeight)
             let origin = CGPoint(
                 x: bounds.minX + dayWidth * (CGFloat(slot.dayIndex) + slot.leadingFraction),
                 y: bounds.minY + CGFloat(slot.startHour) * hourHeight

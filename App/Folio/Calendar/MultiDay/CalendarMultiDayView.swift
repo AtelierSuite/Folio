@@ -12,7 +12,8 @@ struct CalendarMultiDayView: View {
                 count: dayCount.rawValue,
                 calendar: navigation.calendar
             ),
-            pageStep: .day
+            pageStep: .day,
+            zoomScope: .multiDay
         )
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

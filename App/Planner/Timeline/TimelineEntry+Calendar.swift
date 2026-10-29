@@ -13,7 +13,9 @@ extension TimelineEntry {
             timeZone: event.isAllDay ? nil : event.timeZone,
             color: TimelineColor(event.color),
             isReadOnly: event.isReadOnly,
-            kind: .event
+            kind: .event,
+            location: event.location.flatMap { $0.isEmpty ? nil : $0 },
+            hasLink: event.url != nil
         )
     }
 

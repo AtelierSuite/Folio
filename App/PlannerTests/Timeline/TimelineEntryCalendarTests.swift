@@ -36,6 +36,35 @@ struct TimelineEntryCalendarTests {
         #expect(entry.kind == .event)
     }
 
+    @Test func eventCarriesItsLocationAndLink() {
+        let event = CalendarEvent(
+            reference: reference("located"),
+            calendarIdentifier: "calendar",
+            title: "Lunch",
+            location: "Cafe",
+            url: URL(string: "https://example.com"),
+            startDate: start,
+            endDate: start.addingTimeInterval(3600)
+        )
+        let entry = TimelineEntry(event: event)
+        #expect(entry.location == "Cafe")
+        #expect(entry.hasLink)
+    }
+
+    @Test func emptyLocationIsDropped() {
+        let event = CalendarEvent(
+            reference: reference("blank"),
+            calendarIdentifier: "calendar",
+            title: "Call",
+            location: "",
+            startDate: start,
+            endDate: start.addingTimeInterval(3600)
+        )
+        let entry = TimelineEntry(event: event)
+        #expect(entry.location == nil)
+        #expect(!entry.hasLink)
+    }
+
     @Test func allDayEventIsFloating() {
         let event = CalendarEvent(
             reference: reference("holiday"),

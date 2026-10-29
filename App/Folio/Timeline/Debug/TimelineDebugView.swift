@@ -6,7 +6,7 @@ struct TimelineDebugView: View {
     @State private var dayCount = 7
     @State private var scenario = TimelineDebugScenario.fallBack
     @State private var dayOffset = 0
-    @State private var hourHeight: CGFloat = 48
+    @State private var zoom = TimelineZoomController(storageKey: nil)
 
     var body: some View {
         let calendar = scenario.calendar
@@ -21,12 +21,12 @@ struct TimelineDebugView: View {
                 dayCount: $dayCount,
                 scenario: $scenario,
                 dayOffset: $dayOffset,
-                hourHeight: $hourHeight
+                hourHeight: Binding(get: { zoom.hourHeight }, set: { zoom.setHourHeight($0) })
             )
             CalendarTimelineView(
                 entries: sampleWeek.entries,
                 days: TimelineDays(startingOn: firstDay, count: dayCount, calendar: calendar),
-                hourHeight: hourHeight,
+                zoom: zoom,
                 layers: [
                     .timeBlocks(id: "sleep", intervals: sampleWeek.sleepIntervals, style: Color.indigo.opacity(0.08)),
                     .secondaryTimeZone(TimeZone(identifier: "Asia/Tokyo") ?? .gmt)
