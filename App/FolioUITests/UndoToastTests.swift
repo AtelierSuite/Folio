@@ -40,13 +40,26 @@ final class UndoToastTests: XCTestCase {
         app.terminate()
 
         let relaunched = launch(seeding: false)
-        XCTAssertTrue(relaunched.staticTexts[eventTitle].waitForExistence(timeout: 10))
+        XCTAssertTrue(relaunched.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10))
+        reveal(relaunched.staticTexts[eventTitle], in: relaunched)
+        XCTAssertTrue(relaunched.staticTexts[eventTitle].exists)
+    }
+
+    @MainActor
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
+        for _ in 0..<6 where !(element.exists && element.isHittable) {
+            app.swipeUp()
+        }
     }
 
     @MainActor
     private func deleteEvent(in app: XCUIApplication) throws {
         let row = app.staticTexts[eventTitle]
-        try XCTSkipUnless(row.waitForExistence(timeout: 10), "Grant calendar access to seed sample data first")
+        try XCTSkipUnless(
+            app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10),
+            "Grant calendar access to seed sample data first"
+        )
+        reveal(row, in: app)
         row.tap()
         let deleteButton = app.buttons["Delete Event"]
         var swipes = 0
