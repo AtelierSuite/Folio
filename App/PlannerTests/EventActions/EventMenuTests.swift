@@ -90,14 +90,18 @@ struct EventMenuTests {
         #expect(!items.contains(.stopCountdown))
     }
 
-    @Test func respondOnlyForInvitationsInWritableCalendars() {
-        let invitation = event(isReadOnly: true, hasAttendees: true)
+    @Test func respondOnlyForInvitations() {
+        let invitation = InvitationFixtures.invitation(
+            local: "Review", calendarIdentifier: "home", start: start, userStatus: .pending
+        )
         let items = EventMenu.items(for: invitation, context: context(canRespondToInvitations: true))
-        #expect(items.contains(.respond))
+        #expect(items.prefix(2) == [.showDetails, .respond])
         #expect(!items.contains(.edit))
         #expect(!items.contains(.delete))
         let organized = EventMenu.items(for: event(hasAttendees: true), context: context(canRespondToInvitations: true))
         #expect(!organized.contains(.respond))
+        let elsewhere = EventMenu.items(for: invitation, context: context(canRespondToInvitations: false))
+        #expect(!elsewhere.contains(.respond))
     }
 
     private func calendar(_ identifier: String, source: String = "local", isReadOnly: Bool = false) -> PlannerCalendar {

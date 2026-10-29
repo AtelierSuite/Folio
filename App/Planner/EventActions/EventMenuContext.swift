@@ -8,6 +8,7 @@ public struct EventMenuContext: Sendable {
     /// Whether a countdown could start now, which the 8-hour `CountdownWindow` decides.
     public var canStartCountdown: Bool
     public var isCountingDown: Bool
+    /// Whether this device can answer an invitation, in the app or by handing over to Calendar.
     public var canRespondToInvitations: Bool
 
     public init(

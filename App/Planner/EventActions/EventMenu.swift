@@ -14,7 +14,7 @@ public enum EventMenu {
         } else if context.canStartCountdown {
             primary.append(.startCountdown)
         }
-        if context.canRespondToInvitations && isInvitation(event, calendar: context.eventCalendar) {
+        if context.canRespondToInvitations && event.isInvitation {
             primary.append(.respond)
         }
         var editing: [EventMenuItem] = []
@@ -45,9 +45,5 @@ public enum EventMenu {
         return context.writableCalendars.filter {
             $0.sourceIdentifier == source && $0.id != event.calendarIdentifier
         }
-    }
-
-    static func isInvitation(_ event: CalendarEvent, calendar: PlannerCalendar?) -> Bool {
-        event.hasAttendees && event.isReadOnly && calendar?.isReadOnly == false
     }
 }
