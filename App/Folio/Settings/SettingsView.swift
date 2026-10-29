@@ -4,6 +4,12 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section {
+                NavigationLink(String(localized: "Title", table: "CalendarVisibility")) {
+                    CalendarVisibilityView()
+                }
+                .accessibilityIdentifier("CalendarVisibilityLink")
+            }
+            Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
                     value: Bundle.main.versionDescription
