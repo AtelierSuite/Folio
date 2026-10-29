@@ -5,7 +5,8 @@ import UserNotifications
 struct PermissionStatusTests {
     @Test func onlyGrantedAndUnknownAllowAccess() {
         let allowing = Set([PermissionStatus.granted, .unknown])
-        for status in [PermissionStatus.notDetermined, .limited, .granted, .denied, .restricted, .unknown, .unavailable] {
+        let all: [PermissionStatus] = [.notDetermined, .limited, .granted, .denied, .restricted, .unknown, .unavailable]
+        for status in all {
             #expect(status.allowsAccess == allowing.contains(status))
         }
     }
