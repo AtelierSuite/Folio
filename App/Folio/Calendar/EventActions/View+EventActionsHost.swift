@@ -67,6 +67,7 @@ private struct EventActionsHostModifier: ViewModifier {
                     EventEditorView(newDraft: request.draft)
                 }
             }
+            .eventResponseSheet(event: $controller.respondingEvent)
             .eventSpanDialog(
                 isPresented: isPresented($controller.pendingDelete),
                 action: .delete,

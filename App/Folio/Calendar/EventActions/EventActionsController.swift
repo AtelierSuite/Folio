@@ -10,6 +10,7 @@ final class EventActionsController {
     var editorRequest: EventEditorRequest?
     var pendingDelete: CalendarEvent?
     var pendingMove: EventMoveRequest?
+    var respondingEvent: CalendarEvent?
     var menuRequest: EventMenuRequest?
     /// Asks the card showing this event to open its menu, for gestures that don't know the
     /// card's position, such as a long press that lifted a card for dragging and let go in place.

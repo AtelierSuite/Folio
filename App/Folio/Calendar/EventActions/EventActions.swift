@@ -27,14 +27,15 @@ struct EventActions {
     }
 
     func sections(for event: CalendarEvent) -> [[EventMenuItem]] {
-        // Respond… (#15) switches on here with `canRespondToInvitations` once invitations land.
+        let canRespond = capabilities.supports(.invitationResponses) || CalendarAppLink.url(for: event) != nil
         let supportsCountdowns = capabilities.supports(.liveActivityCountdown)
         return EventMenu.sections(for: event, context: EventMenuContext(
             eventCalendar: store.calendar(withIdentifier: event.calendarIdentifier),
             writableCalendars: store.writableEventCalendars,
             hasLinkedNote: library.linkedNote(for: event) != nil,
             canStartCountdown: supportsCountdowns && countdowns.availability(for: event).state != nil,
-            isCountingDown: supportsCountdowns && countdowns.isCountingDown(event)
+            isCountingDown: supportsCountdowns && countdowns.isCountingDown(event),
+            canRespondToInvitations: canRespond
         ))
     }
 

@@ -4,8 +4,10 @@ import SwiftUI
 extension EventActions {
     func perform(_ item: EventMenuItem, on event: CalendarEvent) {
         switch item {
-        case .showDetails, .respond:
+        case .showDetails:
             controller.detailEvent = event
+        case .respond:
+            respond(to: event)
         case .startCountdown:
             startCountdown(for: event)
         case .stopCountdown:
@@ -65,6 +67,15 @@ extension EventActions {
 
     func delete(_ event: CalendarEvent, span: EventEditSpan) {
         run { try await undoCoordinator.deleteEvent(event, span: span) }
+    }
+
+    /// Apple's event view answers invitations where it exists; elsewhere Calendar does.
+    private func respond(to event: CalendarEvent) {
+        if capabilities.supports(.invitationResponses) {
+            controller.respondingEvent = event
+        } else if let url = CalendarAppLink.url(for: event) {
+            openURL(url)
+        }
     }
 
     private func startCountdown(for event: CalendarEvent) {
