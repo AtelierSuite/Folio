@@ -17,6 +17,21 @@ extension CalendarStore {
         try await source.eventDraft(for: event.reference)
     }
 
+    public func event(
+        matching reference: CalendarItemReference,
+        near date: Date,
+        calendar: Calendar = .current
+    ) async -> CalendarEvent? {
+        let day = calendar.startOfDay(for: date)
+        let interval = DateInterval(
+            start: calendar.date(byAdding: .day, value: -1, to: day) ?? day,
+            end: calendar.date(byAdding: .day, value: 2, to: day) ?? day
+        )
+        let candidates = await repository.events(in: interval)
+        guard let match = reference.bestMatch(in: candidates.map(\.reference)) else { return nil }
+        return candidates.first { $0.reference == match }
+    }
+
     @discardableResult
     public func createEvent(_ draft: EventDraft) async throws -> CalendarItemReference {
         try validate(draft)

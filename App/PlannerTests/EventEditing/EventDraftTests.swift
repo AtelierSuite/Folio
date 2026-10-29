@@ -110,6 +110,13 @@ struct EventDraftTests {
         #expect(EventLocation(text: "Office")?.address == nil)
     }
 
+    @Test func urlTextGetsAScheme() {
+        #expect(EventDraft.url(fromText: " folio.app ")?.absoluteString == "https://folio.app")
+        #expect(EventDraft.url(fromText: "mailto:hello@folio.app")?.scheme == "mailto")
+        #expect(EventDraft.url(fromText: "") == nil)
+        #expect(EventDraft.url(fromText: "not a url") == nil)
+    }
+
     @Test func recurrenceIntervalIsAtLeastOne() {
         #expect(EventRecurrence(frequency: .weekly, interval: 0).interval == 1)
     }

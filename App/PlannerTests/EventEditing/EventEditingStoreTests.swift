@@ -66,6 +66,8 @@ struct EventEditingStoreTests {
         #expect(source.eventWriteCalls == [.create(draft)])
         let day = DateInterval(start: Fixtures.date(2026, 10, 29), end: Fixtures.date(2026, 10, 30))
         #expect(await store.events(in: day).map(\.reference) == [reference])
+        let found = await store.event(matching: reference, near: draft.startDate, calendar: Fixtures.calendar)
+        #expect(found?.title == "Dentist")
     }
 
     @Test func createRejectsInvalidDatesAndReadOnlyCalendars() async throws {
