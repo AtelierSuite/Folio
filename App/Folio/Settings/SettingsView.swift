@@ -9,6 +9,7 @@ struct SettingsView: View {
                     CalendarVisibilityView()
                 }
                 .accessibilityIdentifier("CalendarVisibilityLink")
+                NavigationLink(String(localized: "WorkWeek.Title", table: "Week")) { WorkWeekSettingsView() }
             }
             Section {
                 LabeledContent(
