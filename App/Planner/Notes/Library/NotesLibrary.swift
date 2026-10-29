@@ -13,14 +13,17 @@ public final class NotesLibrary {
     public internal(set) var isICloudSignedIn = NotesLocation.isICloudSignedIn
 
     let settings: NotesStorageSettings
+    let searchIndexer: NoteSpotlightIndexer?
     var customFolder: SecurityScopedFolder?
     @ObservationIgnored private var metadataQuery: NotesMetadataQuery?
     @ObservationIgnored private var folderPresenter: NotesFolderPresenter?
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
-    @ObservationIgnored private var hasStarted = false
+    @ObservationIgnored private var startTask: Task<Void, Never>?
+    @ObservationIgnored var indexingTask: Task<Void, Never>?
 
-    public init(settings: NotesStorageSettings = NotesStorageSettings()) {
+    public init(settings: NotesStorageSettings = NotesStorageSettings(), searchIndexer: NoteSpotlightIndexer? = nil) {
         self.settings = settings
+        self.searchIndexer = searchIndexer
         let mode = settings.mode ?? (NotesLocation.isICloudSignedIn ? .iCloudDrive : .onMyDevice)
         settings.mode = mode
         self.mode = mode
@@ -31,11 +34,12 @@ public final class NotesLibrary {
     }
 
     public func start() async {
-        guard !hasStarted else {
-            return
+        if startTask == nil {
+            startTask = Task {
+                await activateCurrentMode()
+            }
         }
-        hasStarted = true
-        await activateCurrentMode()
+        await startTask?.value
     }
 
     public func refresh() async {
@@ -43,10 +47,12 @@ public final class NotesLibrary {
         guard let store else {
             notes = []
             trashedNotes = []
+            scheduleIndexing()
             return
         }
         if metadataQuery == nil {
             notes = (try? await store.notes()) ?? []
+            scheduleIndexing()
         }
         trashedNotes = (try? await store.trashedNotes()) ?? []
     }
@@ -124,6 +130,7 @@ public final class NotesLibrary {
     private func receiveQueryResults(_ files: [NoteFile]) {
         notes = files.sorted { $0.modifiedDate > $1.modifiedDate }
         scheduleRefresh()
+        scheduleIndexing()
         guard let store else {
             return
         }
