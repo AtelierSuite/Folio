@@ -19,7 +19,11 @@ struct CountdownReconcilerTests {
         )
     }
 
-    private func reconcile(_ running: [RunningCountdown], events: [CalendarEvent], pending: Bool = false) -> [CountdownReconciliation] {
+    private func reconcile(
+        _ running: [RunningCountdown],
+        events: [CalendarEvent],
+        pending: Bool = false
+    ) -> [CountdownReconciliation] {
         reconciler.reconcile(running, with: events, isPendingRemoval: { _ in pending }, now: now)
     }
 

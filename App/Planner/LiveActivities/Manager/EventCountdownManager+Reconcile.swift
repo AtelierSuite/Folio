@@ -8,7 +8,9 @@ extension EventCountdownManager {
         let changes: [CountdownReconciliation]
         if !countdowns.isEmpty && source.canReadEvents {
             let events = await source.countdownEvents(in: reconciler.lookupInterval(at: now))
-            changes = reconciler.reconcile(countdowns, with: events, isPendingRemoval: source.isPendingRemoval, now: now)
+            changes = reconciler.reconcile(
+                countdowns, with: events, isPendingRemoval: source.isPendingRemoval, now: now
+            )
         } else {
             changes = reconciler.endingFinished(countdowns, at: now)
         }

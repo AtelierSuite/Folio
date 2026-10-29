@@ -9,7 +9,8 @@ final class FakeCountdownController: CountdownActivityControlling {
 
     func start(_ attributes: EventCountdownAttributes, state: EventCountdownAttributes.ContentState) throws {
         nextIdentifier += 1
-        runningCountdowns.append(RunningCountdown(id: "activity-\(nextIdentifier)", attributes: attributes, state: state))
+        let countdown = RunningCountdown(id: "activity-\(nextIdentifier)", attributes: attributes, state: state)
+        runningCountdowns.append(countdown)
     }
 
     func update(id: String, state: EventCountdownAttributes.ContentState) async {

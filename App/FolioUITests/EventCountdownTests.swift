@@ -9,7 +9,7 @@ final class EventCountdownTests: XCTestCase {
         ]
         app.launch()
         let event = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Folio Countdown")).firstMatch
-        try XCTSkipUnless(event.waitForExistence(timeout: 10), "Grant calendar access; the event is 30 minutes from now")
+        try XCTSkipUnless(event.waitForExistence(timeout: 10), "Grant calendar access to seed the event")
         event.tap()
 
         let button = app.buttons["EventCountdownButton"]

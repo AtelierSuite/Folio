@@ -12,7 +12,8 @@ struct CountdownWindowTests {
 
     @Test func opensEightHoursBeforeStart() {
         let event = Fixtures.countdownEvent(local: "dinner", start: start)
-        #expect(window.availability(for: event, at: hoursBeforeStart(8.5)) == .notYet(availableFrom: hoursBeforeStart(8)))
+        let opensAt = hoursBeforeStart(8)
+        #expect(window.availability(for: event, at: hoursBeforeStart(8.5)) == .notYet(availableFrom: opensAt))
         #expect(window.availability(for: event, at: hoursBeforeStart(8)).state != nil)
         #expect(window.availability(for: event, at: hoursBeforeStart(1)).state != nil)
     }
