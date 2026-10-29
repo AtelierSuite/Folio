@@ -9,6 +9,9 @@ struct SettingsView: View {
                     value: Bundle.main.versionDescription
                 )
             }
+            #if DEBUG
+            TimelineDebugSettingsSection()
+            #endif
         }
         .formStyle(.grouped)
         .navigationTitle(String(localized: "Title", table: "Settings"))
