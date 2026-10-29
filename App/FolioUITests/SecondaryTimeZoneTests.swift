@@ -9,12 +9,11 @@ final class SecondaryTimeZoneTests: XCTestCase {
 
         app.tabBars.buttons.element(boundBy: 2).tap()
         let toggle = app.switches.matching(identifier: "SecondaryTimeZoneToggle").firstMatch
-        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
-        app.swipeUp()
+        scrollIntoView(toggle, in: app)
         setToggle(toggle, isOn: true)
 
         let link = app.buttons["SecondaryTimeZoneLink"]
-        app.swipeUp()
+        scrollIntoView(link, in: app)
         link.tap()
         let searchField = app.searchFields.firstMatch
         XCTAssertTrue(searchField.waitForExistence(timeout: 5))
@@ -33,8 +32,18 @@ final class SecondaryTimeZoneTests: XCTestCase {
         XCTAssertTrue(header.waitForExistence(timeout: 5))
         attachScreenshot(named: "SecondaryTimeZoneDay")
 
+        let event = app.buttons["Standup"].firstMatch
+        if event.waitForExistence(timeout: 5) {
+            event.tap()
+            let secondaryTime = app.descendants(matching: .any)["EventDetailSecondaryTime"].firstMatch
+            XCTAssertTrue(secondaryTime.waitForExistence(timeout: 5))
+            XCTAssertTrue(secondaryTime.label.contains("Reykjavik"))
+            attachScreenshot(named: "SecondaryTimeZoneEventDetail")
+            app.buttons["Done"].firstMatch.tap()
+        }
+
         app.tabBars.buttons.element(boundBy: 2).tap()
-        app.swipeUp()
+        scrollIntoView(toggle, in: app)
         setToggle(toggle, isOn: false)
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(header.waitForNonExistence(timeout: 5))
@@ -43,10 +52,30 @@ final class SecondaryTimeZoneTests: XCTestCase {
     @MainActor
     private func setToggle(_ toggle: XCUIElement, isOn: Bool) {
         let expectedValue = isOn ? "1" : "0"
-        if toggle.value as? String != expectedValue {
+        var attempts = 0
+        while toggle.value as? String != expectedValue && attempts < 3 {
             toggle.switches.firstMatch.tap()
+            let predicate = NSPredicate(format: "value == %@", expectedValue)
+            let expectation = XCTNSPredicateExpectation(predicate: predicate, object: toggle)
+            _ = XCTWaiter.wait(for: [expectation], timeout: 2)
+            attempts += 1
         }
         XCTAssertEqual(toggle.value as? String, expectedValue)
+    }
+
+    @MainActor
+    private func scrollIntoView(_ element: XCUIElement, in app: XCUIApplication) {
+        let top = app.navigationBars.firstMatch.frame.maxY
+        let bottom = app.tabBars.firstMatch.frame.minY
+        for _ in 0..<8 {
+            if element.exists && element.frame.minY < top {
+                app.swipeDown()
+            } else if !element.exists || element.frame.maxY > bottom {
+                app.swipeUp()
+            } else {
+                return
+            }
+        }
     }
 
     @MainActor
