@@ -9,7 +9,8 @@ extension PermissionCenter {
         [
             .calendar: CalendarPermissionProvider(store: calendarStore, kind: .event),
             .reminders: CalendarPermissionProvider(store: calendarStore, kind: .reminder),
-            .notifications: NotificationPermissionProvider()
+            .notifications: NotificationPermissionProvider(),
+            .location: LocationPermissionProvider()
         ]
     }
 }

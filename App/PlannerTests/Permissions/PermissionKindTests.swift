@@ -7,15 +7,15 @@ struct PermissionKindTests {
         #expect(PermissionKind.allCases.allSatisfy { capabilities.supports(permission: $0) })
     }
 
-    @Test func iPadHasNoLocationOrHealth() {
+    @Test func iPadHasNoHealth() {
         let capabilities = PlatformCapabilities(platform: .iPad, areLiveActivitiesSupported: false)
         let supported = PermissionKind.allCases.filter { capabilities.supports(permission: $0) }
-        #expect(supported == [.calendar, .reminders, .notifications, .alarms])
+        #expect(supported == [.calendar, .reminders, .notifications, .location, .alarms])
     }
 
-    @Test func macOnlyHasCalendarRemindersAndNotifications() {
+    @Test func macHasCalendarRemindersNotificationsAndLocationForWeather() {
         let capabilities = PlatformCapabilities(platform: .mac, areLiveActivitiesSupported: false)
         let supported = PermissionKind.allCases.filter { capabilities.supports(permission: $0) }
-        #expect(supported == [.calendar, .reminders, .notifications])
+        #expect(supported == [.calendar, .reminders, .notifications, .location])
     }
 }
