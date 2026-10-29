@@ -6,7 +6,9 @@ public struct TimelineCardPresentation: Sendable, Equatable {
     public var titleLineLimit: Int
     public var showsPadding: Bool
 
-    public init(detail: TimelineCardDetail, textScale: CGFloat = 1, titleLineLimit: Int = 1, showsPadding: Bool = true) {
+    public init(
+        detail: TimelineCardDetail, textScale: CGFloat = 1, titleLineLimit: Int = 1, showsPadding: Bool = true
+    ) {
         self.detail = detail
         self.textScale = textScale
         self.titleLineLimit = titleLineLimit

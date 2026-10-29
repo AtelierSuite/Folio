@@ -5,7 +5,9 @@ import Testing
 struct TimelineCardDetailResolverTests {
     let metrics = TimelineCardTextMetrics(titlePointSize: 12, detailPointSize: 11)
 
-    private func resolver(compressing: Bool = false, metrics: TimelineCardTextMetrics? = nil) -> TimelineCardDetailResolver {
+    private func resolver(
+        compressing: Bool = false, metrics: TimelineCardTextMetrics? = nil
+    ) -> TimelineCardDetailResolver {
         TimelineCardDetailResolver(metrics: metrics ?? self.metrics, compressesText: compressing)
     }
 

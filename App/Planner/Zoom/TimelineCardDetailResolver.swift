@@ -18,11 +18,12 @@ public struct TimelineCardDetailResolver: Sendable, Equatable {
         for detail in TimelineCardDetail.allCases.reversed() where detail != .bar {
             let scale = textScale(for: detail, height: size.height)
             guard scale >= lowestScale else { continue }
+            let paddedTitleHeight = requiredHeight(for: .title, textScale: scale, padded: true)
             return TimelineCardPresentation(
                 detail: detail,
                 textScale: scale,
                 titleLineLimit: titleLineLimit(for: detail, height: size.height, textScale: scale),
-                showsPadding: detail != .title || size.height >= requiredHeight(for: .title, textScale: scale, padded: true)
+                showsPadding: detail != .title || size.height >= paddedTitleHeight
             )
         }
         return .bar
