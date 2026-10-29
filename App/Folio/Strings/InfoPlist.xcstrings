@@ -65,6 +65,136 @@
           }
         }
       }
+    },
+    "NSCalendarsFullAccessUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio zeigt, erstellt und bearbeitet die Termine in deinen Kalendern."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio shows, creates and edits the events in your calendars."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio affiche, crée et modifie les évènements de vos calendriers."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio mostra, crea e modifica gli eventi nei tuoi calendari."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioはカレンダーの予定を表示、作成、編集します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 캘린더의 일정을 표시하고 생성 및 편집합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio toont, maakt en wijzigt de afspraken in je agenda's."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio hiển thị, tạo và sửa các sự kiện trong lịch của bạn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 会显示、创建和编辑你日历中的日程。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 會顯示、建立和編輯你行事曆中的活動。"
+          }
+        }
+      }
+    },
+    "NSRemindersFullAccessUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio zeigt, erstellt und erledigt die Erinnerungen in deinen Listen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio shows, creates and completes the reminders in your lists."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio affiche, crée et termine les rappels de vos listes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio mostra, crea e completa i promemoria nei tuoi elenchi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioはリストのリマインダーを表示、作成、完了します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 목록의 미리 알림을 표시하고 생성 및 완료합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio toont, maakt en voltooit de herinneringen in je lijsten."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio hiển thị, tạo và hoàn thành các lời nhắc trong danh sách của bạn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 会显示、创建和完成你列表中的提醒事项。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 會顯示、建立和完成你列表中的提醒事項。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
