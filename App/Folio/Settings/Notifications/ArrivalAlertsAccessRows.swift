@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ArrivalAlertsAccessRows: View {
     let authorization: ArrivalAuthorization
+    let isMonitoringAvailable: Bool
 
     var body: some View {
         if let message {
@@ -10,6 +11,10 @@ struct ArrivalAlertsAccessRows: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             PermissionSettingsButton(kind: .location)
+        } else if !isMonitoringAvailable {
+            Text(String(localized: "Settings.Unavailable", table: "ArrivalAlerts"))
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
     }
 

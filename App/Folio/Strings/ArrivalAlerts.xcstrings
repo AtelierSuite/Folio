@@ -521,6 +521,71 @@
         }
       }
     },
+    "Settings.Unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses iPhone kann gerade keine Orte überwachen, daher kommen keine Ankunftshinweise."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This iPhone can't monitor locations right now, so arrival alerts won't arrive."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet iPhone ne peut pas surveiller les lieux pour le moment : les alertes d'arrivée ne seront pas envoyées."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo iPhone al momento non può monitorare i luoghi, quindi gli avvisi di arrivo non arriveranno."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このiPhoneは現在位置の監視ができないため、到着通知は届きません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 iPhone은 현재 위치를 모니터링할 수 없어 도착 알림을 받을 수 없습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze iPhone kan nu geen locaties volgen, dus aankomstmeldingen komen niet binnen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone này hiện không thể theo dõi vị trí, nên bạn sẽ không nhận được cảnh báo khi đến nơi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这台 iPhone 目前无法监测位置，因此不会收到到达提醒。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這部 iPhone 目前無法監測位置，因此不會收到抵達提醒。"
+          }
+        }
+      }
+    },
     "Settings.WhenInUse": {
       "extractionState": "manual",
       "localizations": {

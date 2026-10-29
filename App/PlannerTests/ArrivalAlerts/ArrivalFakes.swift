@@ -77,6 +77,7 @@ final class RecordingArrivalNotifier: ArrivalNotifying {
 final class FakeRegionMonitor: RegionMonitoring {
     var authorization: ArrivalAuthorization
     var lastKnownCoordinate: PlannerCoordinate?
+    var isMonitoringAvailable = true
     var onAuthorizationChange: (@MainActor () -> Void)?
     private(set) var monitored: [String: ArrivalRegion] = [:]
     private(set) var maximumMonitoredCount = 0

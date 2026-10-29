@@ -14,7 +14,10 @@ struct ArrivalAlertsSection: View {
             .disabled(!arrivalAlerts.isSupported || !scheduler.isEnabled)
             .accessibilityIdentifier("ArrivalAlertsToggle")
             if arrivalAlerts.isSupported && arrivalAlerts.isEnabled {
-                ArrivalAlertsAccessRows(authorization: arrivalAlerts.authorization)
+                ArrivalAlertsAccessRows(
+                    authorization: arrivalAlerts.authorization,
+                    isMonitoringAvailable: arrivalAlerts.isMonitoringAvailable
+                )
             }
         } header: {
             Text(String(localized: "Settings.Section", table: "ArrivalAlerts"))

@@ -20,6 +20,10 @@ extension ArrivalAlertCenter {
         await replan()
     }
 
+    public var isMonitoringAvailable: Bool {
+        regionMonitor?.isMonitoringAvailable ?? false
+    }
+
     public func refreshAuthorization() {
         authorization = regionMonitor?.authorization ?? .notDetermined
     }

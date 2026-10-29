@@ -13,6 +13,7 @@ public struct RegionArrival: Sendable, Equatable {
 @MainActor
 public protocol RegionMonitoring: AnyObject {
     var authorization: ArrivalAuthorization { get }
+    var isMonitoringAvailable: Bool { get }
     var lastKnownCoordinate: PlannerCoordinate? { get }
     var onAuthorizationChange: (@MainActor () -> Void)? { get set }
     func requestAuthorization()
