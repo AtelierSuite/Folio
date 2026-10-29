@@ -7,6 +7,7 @@ struct TimelineGridContentView: View {
     let layers: [TimelineLayer]
     let gutterLayers: [TimelineLayer]
     let metrics: TimelineMetrics
+    var onSelectEntry: ((TimelineEntry) -> Void)?
 
     var body: some View {
         let context = TimelineLayerContext(days: layout.days, hourHeight: hourHeight)
@@ -27,6 +28,7 @@ struct TimelineGridContentView: View {
                             timeZone: layout.days.calendar.timeZone,
                             hourHeight: hourHeight
                         )
+                        .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
                         .timelineSlot(TimelineSlot(placement))
                     }
                 }

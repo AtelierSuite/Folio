@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol CalendarDataSource: Sendable {
+public protocol CalendarDataSource: EventWritingDataSource {
     func authorizationStatus(for kind: CalendarItemKind) -> CalendarAuthorizationStatus
     func requestFullAccess(to kind: CalendarItemKind) async throws -> Bool
     func calendars(for kind: CalendarItemKind) -> [PlannerCalendar]

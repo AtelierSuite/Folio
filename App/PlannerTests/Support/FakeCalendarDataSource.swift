@@ -13,6 +13,7 @@ final class FakeCalendarDataSource: CalendarDataSource {
         var changeContinuation: AsyncStream<Void>.Continuation?
         var authorization: [CalendarItemKind: CalendarAuthorizationStatus] = [:]
         var requestedKinds: [CalendarItemKind] = []
+        var eventWriting = FakeEventWriting()
     }
 
     let state = Mutex(State())

@@ -5,6 +5,7 @@ struct TimelineAllDayStripView: View {
     let layout: TimelineLayout
     let gutterWidth: CGFloat
     let metrics: TimelineMetrics
+    var onSelectEntry: ((TimelineEntry) -> Void)?
 
     var body: some View {
         let laneCount = max(layout.allDayLaneCount, 1)
@@ -22,6 +23,7 @@ struct TimelineAllDayStripView: View {
                 ) {
                     ForEach(layout.allDayPlacements) { placement in
                         TimelineAllDayCardView(placement: placement)
+                            .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
                             .timelineAllDayPlacement(placement)
                     }
                 }

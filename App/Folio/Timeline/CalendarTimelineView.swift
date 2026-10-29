@@ -11,6 +11,7 @@ struct CalendarTimelineView: View {
     var floatingSourceTimeZone: TimeZone = .current
     var initialHour: Double = 8
     var metrics = TimelineMetrics()
+    var onSelectEntry: ((TimelineEntry) -> Void)?
 
     private var gutterLayers: [TimelineLayer] {
         layers.filter { $0.gutterWidth > 0 }
@@ -25,7 +26,12 @@ struct CalendarTimelineView: View {
         let layout = engine.layout(entries)
         VStack(spacing: 0) {
             TimelineDayHeaderView(days: days, gutterWidth: gutterWidth)
-            TimelineAllDayStripView(layout: layout, gutterWidth: gutterWidth, metrics: metrics)
+            TimelineAllDayStripView(
+                layout: layout,
+                gutterWidth: gutterWidth,
+                metrics: metrics,
+                onSelectEntry: onSelectEntry
+            )
             Divider()
             ScrollView(.vertical) {
                 TimelineGridContentView(
@@ -33,7 +39,8 @@ struct CalendarTimelineView: View {
                     hourHeight: hourHeight,
                     layers: layers,
                     gutterLayers: gutterLayers,
-                    metrics: metrics
+                    metrics: metrics,
+                    onSelectEntry: onSelectEntry
                 )
             }
             .defaultScrollAnchor(UnitPoint(x: 0, y: initialHour / 24))
