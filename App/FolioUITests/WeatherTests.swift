@@ -26,12 +26,12 @@ final class WeatherTests: XCTestCase {
 
     @MainActor
     private func scrollUntilHittable(_ element: XCUIElement, in app: XCUIApplication) {
-        XCTAssertTrue(element.waitForExistence(timeout: 5))
         var attempts = 0
-        while !element.isHittable && attempts < 5 {
+        while !(element.waitForExistence(timeout: 2) && element.isHittable) && attempts < 6 {
             app.swipeUp()
             attempts += 1
         }
+        XCTAssertTrue(element.exists)
     }
 
     @MainActor
