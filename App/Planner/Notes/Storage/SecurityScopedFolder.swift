@@ -16,7 +16,8 @@ public final class SecurityScopedFolder: Sendable {
     }
 
     public var displayName: String {
-        FileManager.default.displayName(atPath: url.path(percentEncoded: false))
+        (try? url.resourceValues(forKeys: [.localizedNameKey]).localizedName)
+            ?? FileManager.default.displayName(atPath: url.path(percentEncoded: false))
     }
 
     public func bookmarkData() throws -> Data {

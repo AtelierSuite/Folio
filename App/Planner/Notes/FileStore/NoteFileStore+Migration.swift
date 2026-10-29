@@ -26,7 +26,23 @@ extension NoteFileStore {
             summary.copiedFileCount += 1
             try removeIfNeeded(sourceURL, removingSource: removingSource)
         }
+        if removingSource {
+            removeEmptyFolders()
+        }
         return summary
+    }
+
+    func removeEmptyFolders() {
+        let folders = (FileManager.default.enumerator(at: rootURL, includingPropertiesForKeys: [.isDirectoryKey])?
+            .compactMap { $0 as? URL }
+            .filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true } ?? [])
+            .sorted { $0.pathComponents.count > $1.pathComponents.count }
+        for folder in folders {
+            let contents = try? FileManager.default.contentsOfDirectory(atPath: folder.path(percentEncoded: false))
+            if contents?.isEmpty == true {
+                try? FileCoordination.delete(at: folder)
+            }
+        }
     }
 
     func migratableRelativePaths() throws -> [String] {

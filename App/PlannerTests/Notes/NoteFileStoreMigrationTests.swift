@@ -23,6 +23,7 @@ struct NoteFileStoreMigrationTests {
         #expect(FileManager.default.fileExists(atPath: folderRoot.appending(path: "assets/photo.png").path()))
         #expect(try await source.notes().isEmpty)
         #expect(try await source.trashedNotes().isEmpty)
+        #expect(try FileManager.default.contentsOfDirectory(atPath: deviceRoot.path()) == [".DS_Store"])
     }
 
     @Test func copyingKeepsTheSourceAndNeverOverwritesExistingFiles() async throws {
