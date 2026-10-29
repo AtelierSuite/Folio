@@ -4,6 +4,7 @@ import Foundation
 public enum NoteDeepLink {
     public static let scheme = "folio"
     public static let host = "note"
+    public static let prefix = "\(scheme)://\(host)/"
 
     public static func url(forRelativePath relativePath: String) -> URL? {
         guard !relativePath.isEmpty,
