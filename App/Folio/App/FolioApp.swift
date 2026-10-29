@@ -50,8 +50,13 @@ struct FolioApp: App {
 
     private func seedSampleDataIfRequested() async {
         #if DEBUG
-        guard ProcessInfo.processInfo.arguments.contains(EventKitDataSource.sampleDataLaunchArgument) else { return }
-        try? await EventKitDataSource.shared.seedSampleData()
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains(EventKitDataSource.sampleDataLaunchArgument) {
+            try? await EventKitDataSource.shared.seedSampleData()
+        }
+        if arguments.contains(EventKitDataSource.testAlertLaunchArgument) {
+            try? EventKitDataSource.shared.seedTestAlertEvent()
+        }
         #endif
     }
 }
