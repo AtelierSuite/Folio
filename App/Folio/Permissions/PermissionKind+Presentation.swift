@@ -24,7 +24,8 @@ extension PermissionKind {
     var deniedDescription: String { localized("Denied.Description") }
 
     private func localized(_ suffix: String) -> String {
-        String(localized: String.LocalizationValue("\(keyPrefix).\(suffix)"), table: "Permissions")
+        let key = "\(keyPrefix).\(suffix)"
+        return String(localized: String.LocalizationValue(key), table: "Permissions")
     }
 
     private var keyPrefix: String {

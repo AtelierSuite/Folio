@@ -18,11 +18,11 @@ enum OnboardingPage: String, CaseIterable, Identifiable {
     }
 
     var title: String {
-        String(localized: String.LocalizationValue("Page.\(keyName).Title"), table: "Onboarding")
+        localized("Title")
     }
 
     var description: String {
-        String(localized: String.LocalizationValue("Page.\(keyName).Description"), table: "Onboarding")
+        localized("Description")
     }
 
     var next: OnboardingPage? {
@@ -37,7 +37,8 @@ enum OnboardingPage: String, CaseIterable, Identifiable {
         return pages[index - 1]
     }
 
-    private var keyName: String {
-        rawValue.prefix(1).uppercased() + rawValue.dropFirst()
+    private func localized(_ suffix: String) -> String {
+        let key = "Page.\(rawValue.prefix(1).uppercased() + rawValue.dropFirst()).\(suffix)"
+        return String(localized: String.LocalizationValue(key), table: "Onboarding")
     }
 }
