@@ -10,10 +10,6 @@ struct SearchView: View {
     @State private var groups: [SearchResultGroup] = []
     @State private var searchedFilters: SearchFilters?
 
-    private var hasCalendarAccess: Bool {
-        store.eventAuthorization.allowsReading && store.reminderAuthorization.allowsReading
-    }
-
     var body: some View {
         NavigationStack {
             SearchContent(
@@ -26,9 +22,7 @@ struct SearchView: View {
             .safeAreaInset(edge: .top, spacing: 0) {
                 VStack(spacing: 0) {
                     SearchFilterBar(filters: $filters)
-                    if !hasCalendarAccess {
-                        SearchAccessNotice()
-                    }
+                    SearchPermissionBanner()
                 }
                 .background(.bar)
             }
