@@ -6,11 +6,15 @@ extension PermissionCenter {
     }
 
     public static func defaultProviders(calendarStore: CalendarStore) -> [PermissionKind: any PermissionProvider] {
-        [
+        var providers: [PermissionKind: any PermissionProvider] = [
             .calendar: CalendarPermissionProvider(store: calendarStore, kind: .event),
             .reminders: CalendarPermissionProvider(store: calendarStore, kind: .reminder),
             .notifications: NotificationPermissionProvider(),
             .location: LocationPermissionProvider()
         ]
+        if let sleepSource = SleepStore.systemSource() {
+            providers[.health] = HealthPermissionProvider(source: sleepSource)
+        }
+        return providers
     }
 }

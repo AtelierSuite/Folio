@@ -11,7 +11,8 @@ struct SleepSourceRankingTests {
     }
 
     @Test func preferredSourceComesFirst() {
-        let ranked = SleepSourceRanking(preferredSourceIdentifier: Fixture.ring.id).ranked([Fixture.phone, Fixture.watch, Fixture.ring])
+        let ranking = SleepSourceRanking(preferredSourceIdentifier: Fixture.ring.id)
+        let ranked = ranking.ranked([Fixture.phone, Fixture.watch, Fixture.ring])
         #expect(ranked == [Fixture.ring, Fixture.watch, Fixture.phone])
     }
 
