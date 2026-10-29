@@ -12,7 +12,8 @@ public struct ReminderSettings: @unchecked Sendable {
 
     public var overduePolicy: OverdueReminderPolicy {
         get {
-            defaults.string(forKey: Self.overduePolicyKey).flatMap(OverdueReminderPolicy.init) ?? Self.defaultOverduePolicy
+            defaults.string(forKey: Self.overduePolicyKey).flatMap(OverdueReminderPolicy.init(rawValue:))
+                ?? Self.defaultOverduePolicy
         }
         nonmutating set { defaults.set(newValue.rawValue, forKey: Self.overduePolicyKey) }
     }
