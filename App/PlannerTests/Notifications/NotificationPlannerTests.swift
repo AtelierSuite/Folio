@@ -56,7 +56,9 @@ struct NotificationPlannerTests {
             events: [
                 NotificationFixtures.event("past", start: NotificationFixtures.hours(-1)),
                 NotificationFixtures.event("firingNow", start: now, alarms: [.relative(offset: 0)]),
-                NotificationFixtures.event("soon", start: NotificationFixtures.hours(0.1), alarms: [.relative(offset: -300)]),
+                NotificationFixtures.event(
+                    "soon", start: NotificationFixtures.hours(0.1), alarms: [.relative(offset: -300)]
+                ),
                 NotificationFixtures.event("missedButStarted", start: NotificationFixtures.hours(0.1))
             ],
             reminders: [],
@@ -98,16 +100,23 @@ struct NotificationPlannerTests {
                 NotificationFixtures.event(
                     "duplicateAlarms",
                     start: NotificationFixtures.hours(5),
-                    alarms: [.relative(offset: -600), .absolute(date: NotificationFixtures.hours(5).addingTimeInterval(-600))]
+                    alarms: [
+                        .relative(offset: -600),
+                        .absolute(date: NotificationFixtures.hours(5).addingTimeInterval(-600))
+                    ]
                 )
             ],
-            reminders: [NotificationFixtures.reminder("noReminderAlarm", due: NotificationFixtures.hours(1), alarms: [])],
+            reminders: [
+                NotificationFixtures.reminder("noReminderAlarm", due: NotificationFixtures.hours(1), alarms: [])
+            ],
             after: now,
             budget: 60
         )
         #expect(plan.map(\.content.title) == ["twoAlarms", "duplicateAlarms", "twoAlarms"])
         #expect(plan.map(\.fireDate) == [
-            NotificationFixtures.hours(2), NotificationFixtures.hours(5).addingTimeInterval(-600), NotificationFixtures.hours(23)
+            NotificationFixtures.hours(2),
+            NotificationFixtures.hours(5).addingTimeInterval(-600),
+            NotificationFixtures.hours(23)
         ])
     }
 
@@ -133,7 +142,9 @@ struct NotificationPlannerTests {
     }
 
     @Test func identifiersAreDeterministic() {
-        let events = (0..<20).map { NotificationFixtures.event("event-\($0)", start: NotificationFixtures.hours(Double($0) + 1)) }
+        let events = (0..<20).map { index in
+            NotificationFixtures.event("event-\(index)", start: NotificationFixtures.hours(Double(index) + 1))
+        }
         let first = planner.plan(events: events, reminders: [], after: now, budget: 60)
         let second = NotificationFixtures.planner().plan(
             events: events.reversed(), reminders: [], after: now.addingTimeInterval(60), budget: 60

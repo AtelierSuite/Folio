@@ -8,16 +8,15 @@ public enum NotificationIdentifier {
     }
 
     static func make(
-        kind: CalendarItemKind,
-        reference: CalendarItemReference,
-        fireDate: Date,
-        content: NotificationContent,
+        for candidate: NotificationCandidate,
         category: NotificationCategory,
         style: NotificationAlertStyle
     ) -> String {
-        let fireSeconds = Int(fireDate.timeIntervalSince1970.rounded(.down))
-        let fingerprint = [content.title, content.body, category.rawValue, style.rawValue].joined(separator: "\u{1F}")
-        return "\(prefix)\(kind.rawValue).\(reference.storageKey)@\(fireSeconds).\(stableDigest(of: fingerprint))"
+        let fireSeconds = Int(candidate.fireDate.timeIntervalSince1970.rounded(.down))
+        let fingerprint = [candidate.content.title, candidate.content.body, category.rawValue, style.rawValue]
+            .joined(separator: "\u{1F}")
+        let item = "\(candidate.kind.rawValue).\(candidate.reference.storageKey)"
+        return "\(prefix)\(item)@\(fireSeconds).\(stableDigest(of: fingerprint))"
     }
 
     // Swift's Hasher is seeded per launch, so identifiers use FNV-1a to stay stable across launches.

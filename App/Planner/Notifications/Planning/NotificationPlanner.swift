@@ -32,15 +32,7 @@ public struct NotificationPlanner: Sendable {
         let candidates = eventCandidates(events, after: now) + reminderCandidates(reminders, after: now)
         var seenIdentifiers = Set<String>()
         let planned = candidates
-            .map { candidate in
-                PlannedNotification(
-                    fireDate: candidate.fireDate,
-                    kind: candidate.kind,
-                    reference: candidate.reference,
-                    content: candidate.content,
-                    style: styleResolver(candidate)
-                )
-            }
+            .map { PlannedNotification($0, style: styleResolver($0)) }
             .filter { seenIdentifiers.insert($0.id).inserted }
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         return Array(planned.prefix(max(0, budget)))

@@ -53,7 +53,11 @@ enum NotificationFixtures {
     ) -> ReminderItem {
         ReminderItem(
             reference: Fixtures.reference(
-                external: "external-\(local)", local: local, calendarIdentifier: listIdentifier, title: local, start: due
+                external: "external-\(local)",
+                local: local,
+                calendarIdentifier: listIdentifier,
+                title: local,
+                start: due
             ),
             listIdentifier: listIdentifier,
             title: local,

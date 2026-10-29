@@ -9,21 +9,13 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
 
-    public init(
-        fireDate: Date,
-        kind: CalendarItemKind,
-        reference: CalendarItemReference,
-        content: NotificationContent,
-        style: NotificationAlertStyle = .standard
-    ) {
-        let category = NotificationCategory(kind)
-        self.id = NotificationIdentifier.make(
-            kind: kind, reference: reference, fireDate: fireDate, content: content, category: category, style: style
-        )
-        self.fireDate = fireDate
-        self.kind = kind
-        self.reference = reference
-        self.content = content
+    public init(_ candidate: NotificationCandidate, style: NotificationAlertStyle = .standard) {
+        let category = NotificationCategory(candidate.kind)
+        self.id = NotificationIdentifier.make(for: candidate, category: category, style: style)
+        self.fireDate = candidate.fireDate
+        self.kind = candidate.kind
+        self.reference = candidate.reference
+        self.content = candidate.content
         self.category = category
         self.style = style
     }

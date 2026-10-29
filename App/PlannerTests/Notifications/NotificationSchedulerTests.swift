@@ -27,13 +27,18 @@ struct NotificationSchedulerTests {
     }
 
     private func events(_ count: Int, prefix: String = "event") -> [CalendarEvent] {
-        (0..<count).map { NotificationFixtures.event("\(prefix)-\($0)", start: NotificationFixtures.hours(Double($0) + 1)) }
+        (0..<count).map { index in
+            NotificationFixtures.event("\(prefix)-\(index)", start: NotificationFixtures.hours(Double(index) + 1))
+        }
     }
 
     @Test func disabledSchedulerSchedulesNothingAndNeverAsksForPermission() async throws {
         let center = FakeNotificationCenter(authorization: .notDetermined)
         let scheduler = makeScheduler(
-            source: FakeCalendarDataSource(events: events(5)), center: center, defaults: try makeDefaults(), isEnabled: false
+            source: FakeCalendarDataSource(events: events(5)),
+            center: center,
+            defaults: try makeDefaults(),
+            isEnabled: false
         )
         await scheduler.replan()
         #expect(center.pendingCount == 0)
@@ -73,10 +78,14 @@ struct NotificationSchedulerTests {
     }
 
     @Test func hundredsOfItemsNeverExceedTheLimit() async throws {
-        let reminders = (0..<200).map { NotificationFixtures.reminder("reminder-\($0)", due: NotificationFixtures.hours(Double($0) + 0.5)) }
+        let reminders = (0..<200).map { index in
+            NotificationFixtures.reminder("reminder-\(index)", due: NotificationFixtures.hours(Double(index) + 0.5))
+        }
         let center = FakeNotificationCenter()
         let scheduler = makeScheduler(
-            source: FakeCalendarDataSource(events: events(400), reminders: reminders), center: center, defaults: try makeDefaults()
+            source: FakeCalendarDataSource(events: events(400), reminders: reminders),
+            center: center,
+            defaults: try makeDefaults()
         )
         await scheduler.replan()
         #expect(center.pendingCount == 60)

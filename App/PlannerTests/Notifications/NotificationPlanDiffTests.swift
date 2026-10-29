@@ -10,8 +10,14 @@ struct NotificationPlanDiffTests {
         planner.plan(events: events, reminders: [], after: now, budget: 60)
     }
 
+    private func events(_ count: Int) -> [CalendarEvent] {
+        (0..<count).map { index in
+            NotificationFixtures.event("event-\(index)", start: NotificationFixtures.hours(Double(index) + 1))
+        }
+    }
+
     @Test func addsOnlyWhatIsMissingAndKeepsForeignRequests() {
-        let planned = plan((0..<3).map { NotificationFixtures.event("event-\($0)", start: NotificationFixtures.hours(Double($0) + 1)) })
+        let planned = plan(events(3))
         let stale = "\(NotificationIdentifier.prefix)event.old@1.abc"
         let diff = NotificationPlanDiff(
             planned: planned,
@@ -52,9 +58,9 @@ struct NotificationPlanDiffTests {
     }
 
     @Test func soonerItemPushesTheLatestOutWhenFull() {
-        let events = (0..<60).map { NotificationFixtures.event("event-\($0)", start: NotificationFixtures.hours(Double($0) + 1)) }
-        let full = plan(events)
-        let withNewcomer = plan(events + [NotificationFixtures.event("newcomer", start: NotificationFixtures.hours(0.5))])
+        let full = plan(events(60))
+        let newcomer = NotificationFixtures.event("newcomer", start: NotificationFixtures.hours(0.5))
+        let withNewcomer = plan(events(60) + [newcomer])
         let diff = NotificationPlanDiff(planned: withNewcomer, pendingIdentifiers: full.map(\.id))
         #expect(diff.identifiersToRemove == [full[59].id])
         #expect(diff.notificationsToAdd.map(\.content.title) == ["newcomer"])
