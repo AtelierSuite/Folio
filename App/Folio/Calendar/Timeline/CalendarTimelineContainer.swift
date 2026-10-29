@@ -2,10 +2,12 @@ import Planner
 import SwiftUI
 
 struct CalendarTimelineContainer<Accessory: View>: View {
-    @Environment(CalendarStore.self) private var store
-    @Environment(UndoCoordinator.self) private var undoCoordinator
-    @Environment(CalendarNavigation.self) private var navigation
+    @Environment(CalendarStore.self) var store
+    @Environment(UndoCoordinator.self) var undoCoordinator
+    @Environment(CalendarNavigation.self) var navigation
     @Environment(\.platformCapabilities) private var capabilities
+    @Environment(UndoCoordinator.self) var undoCoordinator
+    @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
     @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
     var showsSecondaryTimeZone = false
     @AppStorage(SecondaryTimeZoneSettings.identifierKey, store: AppGroup.userDefaults)
@@ -16,13 +18,16 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     let isPagingEnabled: Bool
     let accessory: Accessory
     @State private var entries: [TimelineEntry] = []
-    @State private var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
-    @State private var remindersByEntryIdentifier: [String: ReminderItem] = [:]
+    @State var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
+    @State var remindersByEntryIdentifier: [String: ReminderItem] = [:]
+    @State var drag = TimelineDragController()
+    @State var dropHandler = CalendarDropHandler()
+    @State var dragSource: CalendarDragSource?
     @State private var selectedEvent: CalendarEvent?
     @State private var openedReminder: ReminderItem?
     @State private var events: [CalendarEvent] = []
     @State private var weather = WeatherSnapshot.empty
-    @State private var zoom: TimelineZoomController
+    @State var zoom: TimelineZoomController
 
     init(
         days: TimelineDays,
@@ -51,15 +56,17 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                     + secondaryTimeZoneLayers,
                 onSelectEntry: select
             )
+            .environment(drag)
             .environment(\.weatherSnapshot, weather)
             .reminderCompletion(
                 undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier
             )
             WeatherAttributionFooter(snapshot: weather)
         }
-        .horizontalPaging(isEnabled: isPagingEnabled && !zoom.isPinching) { direction in
+        .horizontalPaging(isEnabled: isPagingEnabled && !zoom.isPinching && !drag.isActive) { direction in
             navigation.page(by: pageStep, toward: direction)
         }
+        .modifier(dragHandling)
         .toolbar {
             ToolbarItem(placement: .secondaryAction) {
                 TimelineZoomMenu(zoom: zoom)
@@ -81,13 +88,14 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     }
 
     private func select(_ entry: TimelineEntry) {
+        guard !drag.suppressesSelection else { return }
         switch entry.kind {
         case .event: selectedEvent = eventsByEntryIdentifier[entry.id]
         case .reminder: openedReminder = remindersByEntryIdentifier[entry.id]
         }
     }
 
-    private func load() async {
+    func load() async {
         guard let span = days.span else { return }
         async let events = store.events(in: span)
         async let reminders = store.reminders(in: span, calendar: days.calendar)

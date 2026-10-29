@@ -5,6 +5,7 @@ struct TimelineCardsView: View {
     let layout: TimelineLayout
     let hourHeight: CGFloat
     let minimumCardHeight: CGFloat
+    var draggedEntryIdentifier: String?
     var onSelectEntry: ((TimelineEntry) -> Void)?
     @AppStorage(TimelineSettings.compressesTextKey) private var compressesText = false
     @ScaledMetric(relativeTo: .caption) private var titlePointSize = TimelineMetrics.cardTitlePointSize
@@ -57,6 +58,7 @@ struct TimelineCardsView: View {
                         )
                     }
                 }
+                .opacity(placement.entry.id == draggedEntryIdentifier ? 0.35 : 1)
                 .timelineSlot(slot)
             }
         }
