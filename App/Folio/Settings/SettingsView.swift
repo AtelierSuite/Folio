@@ -20,6 +20,7 @@ struct SettingsView: View {
             MonthSettingsSection()
             WeatherSettingsSection()
             SleepSettingsSection()
+            SecondaryTimeZoneSection()
             PermissionsSettingsSection()
             SearchSettingsSection()
             LinkedNotesSettingsSection()
