@@ -3,12 +3,21 @@ import SwiftUI
 
 struct CalendarMultiDayView: View {
     @Environment(CalendarNavigation.self) private var navigation
-    var dayCount = 3
+    @AppStorage("Calendar.MultiDayCount") private var dayCount: MultiDayCount = .three
 
     var body: some View {
         CalendarTimelineContainer(
-            days: TimelineDays(startingOn: navigation.selectedDate, count: dayCount, calendar: navigation.calendar),
+            days: TimelineDays(
+                startingOn: navigation.selectedDate,
+                count: dayCount.rawValue,
+                calendar: navigation.calendar
+            ),
             pageStep: .day
         )
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                MultiDayCountPicker(dayCount: $dayCount)
+            }
+        }
     }
 }
