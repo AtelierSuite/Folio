@@ -134,6 +134,9 @@ struct FolioApp: App {
                 await arrivalAlerts.simulateArrival(at: EventKitDataSource.arrivalTestCoordinate)
             }
         }
+        if arguments.contains(EventKitDataSource.countdownSampleLaunchArgument) {
+            try? EventKitDataSource.shared.seedCountdownSampleEvent()
+        }
         await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif
     }
