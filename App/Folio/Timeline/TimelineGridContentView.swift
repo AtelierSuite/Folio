@@ -25,6 +25,7 @@ struct TimelineGridContentView: View {
                     draggedEntryIdentifier: drag?.session?.entry.id,
                     onSelectEntry: onSelectEntry
                 )
+                .environment(\.eventCardsLiftToDrag, drag != nil)
                 TimelineLayersView(layers: layers.filter { $0.placement == .aboveEntries }, context: context)
                 TimelineCurrentTimeIndicatorView(days: layout.days, hourHeight: hourHeight)
                 TimelineDragPreviewView(
