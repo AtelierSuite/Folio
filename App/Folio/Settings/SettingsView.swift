@@ -18,6 +18,7 @@ struct SettingsView: View {
             }
             TimelineSettingsSection()
             MonthSettingsSection()
+            ReminderSettingsSection()
             WeatherSettingsSection()
             SleepSettingsSection()
             SecondaryTimeZoneSection()
