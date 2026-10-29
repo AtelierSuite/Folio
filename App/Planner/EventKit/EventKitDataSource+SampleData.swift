@@ -44,10 +44,13 @@ extension EventKitDataSource {
     private func seedSampleEvents(into eventCalendar: EKCalendar, from today: Date, calendar: Calendar) throws {
         let samples = [
             SampleEvent(title: "Standup", day: 0, hour: 9, minute: 0, hours: 0.25, alarmMinutes: [-5]),
+            SampleEvent(title: "Design Sync", day: 0, hour: 10, minute: 0, hours: 1, alarmMinutes: [-5]),
             SampleEvent(title: "Lunch with Aiko", day: 0, hour: 12, minute: 30, hours: 1, alarmMinutes: [-15]),
+            SampleEvent(title: "1:1 with Ken", day: 0, hour: 15, minute: 0, hours: 0.5),
             SampleEvent(
                 title: "Design Review Day", day: 1, hour: 0, minute: 0, hours: 24, isAllDay: true, alarmMinutes: [-900]
             ),
+            SampleEvent(title: "Vendor Call", day: 1, hour: 11, minute: 0, hours: 1),
             SampleEvent(title: "Dentist", day: 2, hour: 15, minute: 0, hours: 1, alarmMinutes: [-60, -1440]),
             SampleEvent(title: "Team Offsite", day: 3, hour: 10, minute: 0, hours: 6),
             SampleEvent(title: "Concert", day: 5, hour: 19, minute: 0, hours: 2.5, alarmMinutes: [-120])
@@ -62,6 +65,7 @@ extension EventKitDataSource {
             event.endDate = start.addingTimeInterval(sample.hours * 3600)
             event.isAllDay = sample.isAllDay
             Self.applySamplePlace(to: event)
+            Self.applySampleMeeting(to: event)
             for minutes in sample.alarmMinutes {
                 event.addAlarm(EKAlarm(relativeOffset: TimeInterval(minutes * 60)))
             }
