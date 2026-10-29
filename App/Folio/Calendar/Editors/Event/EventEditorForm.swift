@@ -5,6 +5,8 @@ struct EventEditorForm: View {
     @Binding var draft: EventDraft
     @Binding var urlText: String
     @Binding var alertStyle: NotificationAlertStyle?
+    @Binding var arrivalAlert: EventArrivalAlertChoice
+    let reference: CalendarItemReference?
     let calendars: [PlannerCalendar]
 
     var body: some View {
@@ -13,6 +15,7 @@ struct EventEditorForm: View {
                 TextField(String(localized: "Field.Title", table: "EventEditor"), text: $draft.title)
                 EventLocationRow(location: $draft.location)
             }
+            EventArrivalAlertSection(choice: $arrivalAlert, reference: reference, hasLocation: draft.location != nil)
             EventDateSection(draft: $draft)
             EventRecurrenceSection(recurrence: $draft.recurrence, startDate: draft.startDate)
             Section {
