@@ -12,6 +12,8 @@ struct EventActions {
     let undoCoordinator: UndoCoordinator
     let library: NotesLibrary
     let router: AppRouter
+    let countdowns: EventCountdownManager
+    let capabilities: PlatformCapabilities
     let openURL: OpenURLAction
     let tapBehavior: EventTapBehavior
     let usesPointerSelection: Bool
@@ -25,11 +27,14 @@ struct EventActions {
     }
 
     func sections(for event: CalendarEvent) -> [[EventMenuItem]] {
-        // Start Countdown (#30) and Respond… (#15) switch on here once those features land.
-        EventMenu.sections(for: event, context: EventMenuContext(
+        // Respond… (#15) switches on here with `canRespondToInvitations` once invitations land.
+        let supportsCountdowns = capabilities.supports(.liveActivityCountdown)
+        return EventMenu.sections(for: event, context: EventMenuContext(
             eventCalendar: store.calendar(withIdentifier: event.calendarIdentifier),
             writableCalendars: store.writableEventCalendars,
-            hasLinkedNote: library.linkedNote(for: event) != nil
+            hasLinkedNote: library.linkedNote(for: event) != nil,
+            canStartCountdown: supportsCountdowns && countdowns.availability(for: event).state != nil,
+            isCountingDown: supportsCountdowns && countdowns.isCountingDown(event)
         ))
     }
 

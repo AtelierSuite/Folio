@@ -18,6 +18,7 @@ private struct EventActionsHostModifier: ViewModifier {
     @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(NotesLibrary.self) private var library
     @Environment(AppRouter.self) private var router
+    @Environment(EventCountdownManager.self) private var countdowns
     @Environment(\.openURL) private var openURL
     @Environment(\.platformCapabilities) private var capabilities
     @AppStorage(EventTapSettings.behaviorKey, store: AppGroup.userDefaults)
@@ -38,6 +39,8 @@ private struct EventActionsHostModifier: ViewModifier {
             undoCoordinator: undoCoordinator,
             library: library,
             router: router,
+            countdowns: countdowns,
+            capabilities: capabilities,
             openURL: openURL,
             tapBehavior: tapBehavior,
             usesPointerSelection: capabilities.usesPointerSelection,

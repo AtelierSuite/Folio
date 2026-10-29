@@ -6,7 +6,8 @@ extension EventMenuItem {
         switch self {
         case .showDetails: String(localized: "Menu.ShowDetails", table: "EventActions")
         case .joinMeeting(let link): String(localized: "Menu.Join \(link.displayName)", table: "EventActions")
-        case .startCountdown: String(localized: "Menu.StartCountdown", table: "EventActions")
+        case .startCountdown: String(localized: "Countdown.Start", table: "Countdown")
+        case .stopCountdown: String(localized: "Countdown.Stop", table: "Countdown")
         case .respond: String(localized: "Menu.Respond", table: "EventActions")
         case .edit: String(localized: "Menu.Edit", table: "EventActions")
         case .duplicate: String(localized: "Menu.Duplicate", table: "EventActions")
@@ -24,6 +25,7 @@ extension EventMenuItem {
         case .showDetails: "info.circle"
         case .joinMeeting(let link): link.provider.systemImage
         case .startCountdown: "timer"
+        case .stopCountdown: "stop.circle"
         case .respond: "envelope.open"
         case .edit: "pencil"
         case .duplicate: "plus.square.on.square"
@@ -45,6 +47,7 @@ extension EventMenuItem {
         case .showDetails: "EventMenu.ShowDetails"
         case .joinMeeting: "EventMenu.JoinMeeting"
         case .startCountdown: "EventMenu.StartCountdown"
+        case .stopCountdown: "EventMenu.StopCountdown"
         case .respond: "EventMenu.Respond"
         case .edit: "EventMenu.Edit"
         case .duplicate: "EventMenu.Duplicate"

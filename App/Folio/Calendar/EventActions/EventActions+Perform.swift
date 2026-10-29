@@ -4,8 +4,12 @@ import SwiftUI
 extension EventActions {
     func perform(_ item: EventMenuItem, on event: CalendarEvent) {
         switch item {
-        case .showDetails, .startCountdown, .respond:
+        case .showDetails, .respond:
             controller.detailEvent = event
+        case .startCountdown:
+            startCountdown(for: event)
+        case .stopCountdown:
+            Task { await countdowns.stop(event) }
         case .joinMeeting(let link):
             openURL(link.url)
         case .getDirections(let url):
@@ -61,6 +65,14 @@ extension EventActions {
 
     func delete(_ event: CalendarEvent, span: EventEditSpan) {
         run { try await undoCoordinator.deleteEvent(event, span: span) }
+    }
+
+    private func startCountdown(for event: CalendarEvent) {
+        do {
+            try countdowns.start(event)
+        } catch {
+            controller.errorMessage = String(localized: "Countdown.TurnedOff", table: "Countdown")
+        }
     }
 
     private func duplicate(_ event: CalendarEvent) async throws {
