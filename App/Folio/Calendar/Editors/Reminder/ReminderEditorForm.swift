@@ -6,6 +6,7 @@ struct ReminderEditorForm: View {
     @Binding var urlText: String
     let isReadOnly: Bool
     let canDelete: Bool
+    let isNew: Bool
     let defaultDate: Date
     let onDelete: () -> Void
 
@@ -18,7 +19,7 @@ struct ReminderEditorForm: View {
                 }
             }
             Group {
-                ReminderEditorDetailsSection(draft: $draft, urlText: $urlText)
+                ReminderEditorDetailsSection(draft: $draft, urlText: $urlText, focusesTitle: isNew)
                 ReminderEditorListSection(draft: $draft)
                 ReminderEditorDateSection(draft: $draft, defaultDate: defaultDate)
                 if draft.canRepeat {

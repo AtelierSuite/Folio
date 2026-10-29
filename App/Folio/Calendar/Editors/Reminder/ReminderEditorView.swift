@@ -6,6 +6,7 @@ struct ReminderEditorView: View {
     @Environment(\.dismiss) private var dismiss
     let mode: ReminderEditorMode
     @State private var draft: ReminderDraft
+    @State private var originalDraft: ReminderDraft
     @State private var urlText: String
     @State private var isConfirmingDelete = false
     @State private var isWorking = false
@@ -23,6 +24,7 @@ struct ReminderEditorView: View {
         self.mode = mode
         let draft = mode.initialDraft
         _draft = State(initialValue: draft)
+        _originalDraft = State(initialValue: draft)
         _urlText = State(initialValue: draft.url?.absoluteString ?? "")
     }
 
@@ -38,9 +40,11 @@ struct ReminderEditorView: View {
         #if os(macOS)
         .frame(minWidth: 460, minHeight: 600)
         #endif
+        .interactiveDismissDisabled(draft != originalDraft)
         .onChange(of: store.defaultReminderListIdentifier, initial: true) { _, identifier in
             if draft.listIdentifier.isEmpty, let identifier {
                 draft.listIdentifier = identifier
+                originalDraft.listIdentifier = identifier
             }
         }
         .onChange(of: urlText) { _, text in
@@ -66,6 +70,7 @@ struct ReminderEditorView: View {
                 urlText: $urlText,
                 isReadOnly: mode.isReadOnly,
                 canDelete: mode.reminder.map { !$0.isReadOnly } ?? false,
+                isNew: mode.reminder == nil,
                 defaultDate: mode.reminder?.dueDate ?? .now,
                 onDelete: { isConfirmingDelete = true }
             )
