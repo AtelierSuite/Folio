@@ -68,7 +68,7 @@ final class CalendarDayPagingTests: XCTestCase {
     }
 
     private func baseArguments(mode: String) -> [String] {
-        ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-Calendar.ViewMode", mode]
+        ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-Calendar.ViewMode", mode, "-FolioSkipOnboarding"]
     }
 
     @MainActor
