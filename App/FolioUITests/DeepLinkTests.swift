@@ -15,6 +15,14 @@ final class DeepLinkTests: XCTestCase {
     }
 
     @MainActor
+    func testNewNoteLinkCreatesANote() throws {
+        let app = launchApp()
+        try open("folio://new/note", in: app)
+        XCTAssertTrue(app.tabBars.buttons["Notes"].wait(for: \.isSelected, toEqual: true, timeout: 10))
+        XCTAssertTrue(app.textViews.firstMatch.waitForExistence(timeout: 10))
+    }
+
+    @MainActor
     func testDayLinkShowsThatDay() throws {
         let app = launchApp()
         try open("folio://day/2026-03-14", in: app)
