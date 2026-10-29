@@ -24,7 +24,13 @@ extension NotesLibrary {
         }
     }
 
+    /// Waits until indexing settles, including runs rescheduled by refreshes that arrive meanwhile.
     public func waitForIndexing() async {
-        await indexingTask?.value
+        while let task = indexingTask {
+            await task.value
+            if indexingTask == task {
+                return
+            }
+        }
     }
 }
