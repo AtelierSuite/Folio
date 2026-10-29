@@ -6,7 +6,10 @@ import Observation
 public final class NotesLibrary {
     public internal(set) var mode: NotesStorageMode
     public internal(set) var status = NotesLibraryStatus.loading
-    public internal(set) var notes: [NoteFile] = []
+    public internal(set) var notes: [NoteFile] = [] {
+        didSet { updateLinkedNotes() }
+    }
+    public internal(set) var linkedNotes = LinkedNoteIndex()
     public internal(set) var trashedNotes: [NoteFile] = []
     public internal(set) var store: NoteFileStore?
     public internal(set) var isMigrating = false
@@ -20,6 +23,7 @@ public final class NotesLibrary {
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
     @ObservationIgnored private var startTask: Task<Void, Never>?
     @ObservationIgnored var indexingTask: Task<Void, Never>?
+    @ObservationIgnored var linkingTask: Task<Void, Never>?
 
     public init(settings: NotesStorageSettings = NotesStorageSettings(), searchIndexer: NoteSpotlightIndexer? = nil) {
         self.settings = settings

@@ -25,7 +25,7 @@ public struct CalendarItemReference: Sendable, Hashable, Codable {
     }
 
     public var storageKey: String {
-        let identity = externalIdentifier ?? "local:\(localIdentifier)"
+        let identity = externalIdentifier ?? "\(Self.localIdentityPrefix)\(localIdentifier)"
         guard let occurrenceDate else { return identity }
         return "\(identity)@\(Int(occurrenceDate.timeIntervalSince1970.rounded()))"
     }

@@ -49,7 +49,7 @@ extension NotesLibrary {
         try await requireStore().addAsset(data, named: fileName, for: noteURL)
     }
 
-    private func requireStore() throws -> NoteFileStore {
+    func requireStore() throws -> NoteFileStore {
         guard let store else {
             throw mode == .iCloudDrive ? NotesStorageError.iCloudUnavailable : NotesStorageError.folderNotChosen
         }
