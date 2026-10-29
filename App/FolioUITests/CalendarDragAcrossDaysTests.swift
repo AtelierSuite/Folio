@@ -4,12 +4,15 @@ final class CalendarDragAcrossDaysTests: XCTestCase {
     @MainActor
     func testDraggingAMonthChipToAnotherDayMovesIt() throws {
         let app = launch(mode: "month")
-        let today = Calendar.current.startOfDay(for: .now)
-        let sourceDay = app.buttons["MonthDay.\(identifier(of: today, addingDays: 2))"]
-        try XCTSkipUnless(sourceDay.waitForExistence(timeout: 10), "The seeded day isn't in this month")
-        let targetDay = app.buttons["MonthDay.\(identifier(of: today, addingDays: 1))"]
-        let chip = app.staticTexts["Dentist"].firstMatch
-        try XCTSkipUnless(chip.waitForExistence(timeout: 10), "Grant calendar access to seed sample data first")
+        let sourceDate = XCUIApplication.day(2)
+        let sourceDay = try XCTUnwrap(app.monthCell(for: sourceDate, containing: "Dentist"))
+        // The day after has the fewest seeded items, but at the end of a page only the day before is on it.
+        let targetDay = try XCTUnwrap(
+            app.onScreenMonthCell(for: XCUIApplication.day(3)) ?? app.onScreenMonthCell(for: XCUIApplication.day(1))
+        )
+        let chip = try XCTUnwrap(app.staticTexts.matching(NSPredicate(format: "label == %@", "Dentist"))
+            .allElementsBoundByIndex
+            .first { sourceDay.frame.contains(CGPoint(x: $0.frame.midX, y: $0.frame.midY)) })
 
         chip.press(forDuration: 1, thenDragTo: targetDay, withVelocity: 300, thenHoldForDuration: 0.6)
 
@@ -50,11 +53,6 @@ final class CalendarDragAcrossDaysTests: XCTestCase {
         let placed = NSPredicate { _, _ in reminder.exists && abs(reminder.frame.minY - dropY) < 40 }
         XCTAssertEqual(XCTWaiter.wait(for: [expectation(for: placed, evaluatedWith: nil)], timeout: 5), .completed)
         add(screenshotAttachment(named: "Reminder placed", of: app))
-    }
-
-    private func identifier(of date: Date, addingDays days: Int) -> String {
-        let day = Calendar.current.date(byAdding: .day, value: days, to: date) ?? date
-        return day.formatted(Date.ISO8601FormatStyle(timeZone: .current).year().month().day())
     }
 
     @MainActor
