@@ -26,7 +26,8 @@ struct NotificationContentFormatterTests {
     @Test func allDayEventSaysAllDay() {
         let day = Fixtures.date(2026, 10, 29)
         let event = NotificationFixtures.event("Holiday", start: day, hours: 24, isAllDay: true)
-        #expect(formatter.content(for: event, firingAt: day.addingTimeInterval(3600)).body == NotificationContentFormatter.allDayText)
+        let sameDay = formatter.content(for: event, firingAt: day.addingTimeInterval(3600)).body
+        #expect(sameDay == NotificationContentFormatter.allDayText)
         let dayBefore = formatter.content(for: event, firingAt: day.addingTimeInterval(-3600)).body
         #expect(dayBefore.hasPrefix("29"))
         #expect(dayBefore.hasSuffix(" · \(NotificationContentFormatter.allDayText)"))
