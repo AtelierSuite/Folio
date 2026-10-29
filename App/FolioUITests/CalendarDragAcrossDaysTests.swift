@@ -38,7 +38,7 @@ final class CalendarDragAcrossDaysTests: XCTestCase {
     @MainActor
     func testDroppingAnAllDayReminderOnTheTimelineGivesItATime() throws {
         let app = launch(mode: "multiDay", extra: ["-Calendar.MultiDayCount", "3"])
-        let reminder = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Send invoice")).firstMatch
+        let reminder = app.buttons["Send invoice"].firstMatch
         try XCTSkipUnless(reminder.waitForExistence(timeout: 10), "Grant reminders access to seed sample data first")
         let timeline = app.descendants(matching: .any)["TimelineScrollView"].firstMatch
         let start = reminder.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
@@ -46,7 +46,8 @@ final class CalendarDragAcrossDaysTests: XCTestCase {
         start.press(forDuration: 0.8, thenDragTo: end, withVelocity: 200, thenHoldForDuration: 0.5)
 
         XCTAssertTrue(app.buttons["UndoToast.Undo"].waitForExistence(timeout: 5))
-        let placed = NSPredicate { _, _ in reminder.exists && reminder.frame.minY > timeline.frame.minY }
+        let dropY = timeline.frame.minY + timeline.frame.height * 0.4
+        let placed = NSPredicate { _, _ in reminder.exists && abs(reminder.frame.minY - dropY) < 40 }
         XCTAssertEqual(XCTWaiter.wait(for: [expectation(for: placed, evaluatedWith: nil)], timeout: 5), .completed)
         add(screenshotAttachment(named: "Reminder placed", of: app))
     }

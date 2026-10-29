@@ -49,7 +49,25 @@ final class TimelineDragTests: XCTestCase {
     private func eventCard(in app: XCUIApplication) throws -> XCUIElement {
         let card = app.buttons[eventTitle].firstMatch
         try XCTSkipUnless(card.waitForExistence(timeout: 10), "Grant calendar access to seed sample data first")
+        scrollNearTop(card, in: app)
         return card
+    }
+
+    /// Keeps the drag clear of the auto-scroll bands and the tab bar, whatever the header height.
+    /// The scroll starts on the hour labels, so it can't lift a card.
+    @MainActor
+    private func scrollNearTop(_ card: XCUIElement, in app: XCUIApplication) {
+        let timeline = app.descendants(matching: .any)["TimelineScrollView"].firstMatch
+        for _ in 0..<3 {
+            let height = timeline.frame.height
+            let distance = card.frame.minY - (timeline.frame.minY + height * 0.25)
+            guard abs(distance) > 20 else { return }
+            let travel = min(max(distance, -height * 0.6), height * 0.6)
+            let start = timeline.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: travel > 0 ? 0.8 : 0.2))
+                .withOffset(CGVector(dx: 20, dy: 0))
+            start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: 0, dy: -travel)),
+                        withVelocity: 300, thenHoldForDuration: 0.5)
+        }
     }
 
     @MainActor
