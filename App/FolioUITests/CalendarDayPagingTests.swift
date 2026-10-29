@@ -46,6 +46,9 @@ final class CalendarDayPagingTests: XCTestCase {
     @MainActor
     private func selectDayCount(_ title: String, in app: XCUIApplication) {
         let picker = app.buttons["Number of Days"]
+        if !picker.waitForExistence(timeout: 5) {
+            app.buttons["OverflowBarButtonItem"].firstMatch.tap()
+        }
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
         picker.tap()
         app.buttons[title].tap()

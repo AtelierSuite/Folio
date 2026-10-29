@@ -50,7 +50,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             navigation.page(by: pageStep, toward: direction)
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .secondaryAction) {
                 TimelineZoomMenu(zoom: zoom)
             }
         }

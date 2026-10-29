@@ -1,14 +1,12 @@
 import XCTest
 
 /// Pinching out with XCUITest puts the touches on the corners of the timeline, where the floating
-/// tab bar is on iPhone, so these tests pinch in and zoom out with the zoom menu.
+/// tab bar is on iPhone, so these tests pinch in and zoom out with the zoom controls.
 final class TimelineZoomTests: XCTestCase {
     @MainActor
     func testPinchingInLeavesTheWholeDayFit() throws {
         let app = launch(arguments: ["-Calendar.Timeline.Zoom.day", "0"])
-        let zoomMenu = app.buttons["TimelineZoomMenu"]
-        XCTAssertTrue(zoomMenu.waitForExistence(timeout: 10))
-        zoomMenu.tap()
+        openZoomControls(in: app)
         XCTAssertTrue(app.buttons["Fit Whole Day"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["Fit Whole Day"].isEnabled)
         XCTAssertFalse(app.buttons["Zoom Out"].isEnabled)
@@ -16,7 +14,7 @@ final class TimelineZoomTests: XCTestCase {
 
         timeline(in: app).pinch(withScale: 3, velocity: 2)
 
-        zoomMenu.tap()
+        openZoomControls(in: app)
         XCTAssertTrue(app.buttons["Fit Whole Day"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Fit Whole Day"].isEnabled)
         XCTAssertTrue(app.buttons["Zoom Out"].isEnabled)
@@ -25,27 +23,30 @@ final class TimelineZoomTests: XCTestCase {
     @MainActor
     func testFittingTheWholeDayIsRemembered() throws {
         let app = launch(arguments: [])
-        let zoomMenu = app.buttons["TimelineZoomMenu"]
-        XCTAssertTrue(zoomMenu.waitForExistence(timeout: 10))
-        zoomMenu.tap()
+        openZoomControls(in: app)
         let fitButton = app.buttons["Fit Whole Day"]
         XCTAssertTrue(fitButton.waitForExistence(timeout: 5))
         if !fitButton.isEnabled {
             app.buttons["Zoom In"].tap()
+            openZoomControls(in: app)
         }
+        XCTAssertTrue(fitButton.waitForExistence(timeout: 5))
         XCTAssertTrue(fitButton.isEnabled)
         fitButton.tap()
+        openZoomControls(in: app)
+        XCTAssertTrue(fitButton.waitForExistence(timeout: 5))
         XCTAssertFalse(fitButton.isEnabled)
         XCTAssertFalse(app.buttons["Zoom Out"].isEnabled)
 
         app.terminate()
         app.launch()
-        XCTAssertTrue(zoomMenu.waitForExistence(timeout: 10))
-        zoomMenu.tap()
-        XCTAssertTrue(app.buttons["Fit Whole Day"].waitForExistence(timeout: 5))
-        XCTAssertFalse(app.buttons["Fit Whole Day"].isEnabled)
+        openZoomControls(in: app)
+        XCTAssertTrue(fitButton.waitForExistence(timeout: 5))
+        XCTAssertFalse(fitButton.isEnabled)
         app.buttons["Zoom In"].tap()
-        XCTAssertTrue(app.buttons["Fit Whole Day"].isEnabled)
+        openZoomControls(in: app)
+        XCTAssertTrue(fitButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(fitButton.isEnabled)
     }
 
     private let baseArguments = [
@@ -65,6 +66,14 @@ final class TimelineZoomTests: XCTestCase {
         let timeline = app.descendants(matching: .any)["TimelineScrollView"].firstMatch
         XCTAssertTrue(timeline.waitForExistence(timeout: 10))
         return timeline
+    }
+
+    /// On iPhone the zoom controls are in the toolbar's overflow menu.
+    @MainActor
+    private func openZoomControls(in app: XCUIApplication) {
+        let overflow = app.buttons["OverflowBarButtonItem"].firstMatch
+        XCTAssertTrue(overflow.waitForExistence(timeout: 10))
+        overflow.tap()
     }
 
     @MainActor
