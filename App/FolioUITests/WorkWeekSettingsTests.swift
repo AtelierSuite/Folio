@@ -4,7 +4,7 @@ final class WorkWeekSettingsTests: XCTestCase {
     @MainActor
     func testExcludedCalendarIsHiddenFromTheWorkingWeek() throws {
         let app = XCUIApplication()
-        app.launchArguments += ["-Calendar.ViewMode", "workWeek"]
+        app.launchArguments += ["-Calendar.ViewMode", "workWeek", "-FolioSkipOnboarding"]
         app.launch()
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
