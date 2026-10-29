@@ -14,7 +14,10 @@ extension CalendarStore {
     }
 
     public func eventDraft(for event: CalendarEvent) async throws -> EventDraft {
-        try await source.eventDraft(for: event.reference)
+        if let edit = pendingEdit(covering: event) {
+            return edit.draft(for: event)
+        }
+        return try await source.eventDraft(for: event.reference)
     }
 
     public func event(
@@ -27,7 +30,7 @@ extension CalendarStore {
             start: calendar.date(byAdding: .day, value: -1, to: day) ?? day,
             end: calendar.date(byAdding: .day, value: 2, to: day) ?? day
         )
-        let candidates = await repository.events(in: interval)
+        let candidates = applyingPendingChanges(to: await repository.events(in: interval))
         guard let match = reference.bestMatch(in: candidates.map(\.reference)) else { return nil }
         return candidates.first { $0.reference == match }
     }
@@ -77,7 +80,17 @@ extension CalendarStore {
         await handleExternalChange()
     }
 
-    private func validate(_ draft: EventDraft) throws {
+    func saveEvent(
+        at reference: CalendarItemReference,
+        with draft: EventDraft,
+        span: EventEditSpan
+    ) async throws -> CalendarItemReference {
+        let savedReference = try await source.updateEvent(reference, with: draft, span: span)
+        await handleExternalChange()
+        return savedReference
+    }
+
+    func validate(_ draft: EventDraft) throws {
         guard draft.hasValidDates else { throw EventEditingError.invalidDates }
         guard writableEventCalendars.contains(where: { $0.id == draft.calendarIdentifier }) else {
             throw EventEditingError.noWritableCalendar

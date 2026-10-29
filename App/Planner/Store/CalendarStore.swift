@@ -10,6 +10,8 @@ public final class CalendarStore {
     public private(set) var reminderLists: [PlannerCalendar] = []
     public internal(set) var hiddenCalendarIdentifiers: Set<String>
     public internal(set) var contentRevision = 0
+    @ObservationIgnored var pendingRemovals: [UUID: PendingRemoval] = [:]
+    @ObservationIgnored var pendingEventEdits: [UUID: PendingEventEdit] = [:]
 
     @ObservationIgnored let source: any CalendarDataSource
     @ObservationIgnored let repository: CalendarRepository
@@ -49,13 +51,15 @@ public final class CalendarStore {
     public func events(in interval: DateInterval) async -> [CalendarEvent] {
         visibleInterval = interval
         let events = await repository.events(in: interval)
-        return events.filter { !hiddenCalendarIdentifiers.contains($0.calendarIdentifier) }
+        return applyingPendingChanges(to: events)
+            .filter { !hiddenCalendarIdentifiers.contains($0.calendarIdentifier) }
     }
 
     public func reminders(in interval: DateInterval) async -> [ReminderItem] {
         visibleInterval = interval
         let reminders = await repository.reminders(in: interval)
-        return reminders.filter { !hiddenCalendarIdentifiers.contains($0.listIdentifier) }
+        return applyingPendingChanges(to: reminders)
+            .filter { !hiddenCalendarIdentifiers.contains($0.listIdentifier) }
     }
 
     public func setCompleted(_ isCompleted: Bool, for reminder: ReminderItem) async throws {
