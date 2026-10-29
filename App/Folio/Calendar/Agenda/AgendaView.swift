@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AgendaView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(SystemTimeObserver.self) private var systemTime
     @State private var days: [AgendaDay] = []
     @State private var hasLoaded = false
     @State private var openedReminder: ReminderItem?
@@ -32,16 +33,22 @@ struct AgendaView: View {
             ReminderEditorView(reminder: reminder)
         }
         .eventDetailSheet(item: $selectedEvent)
-        .task(id: store.contentRevision) {
+        .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
             await load()
         }
     }
 
     private func load() async {
-        let interval = AgendaDay.upcomingInterval(dayCount: Self.dayCount)
+        let calendar = systemTime.calendar
+        let interval = AgendaDay.upcomingInterval(dayCount: Self.dayCount, calendar: calendar)
         async let events = store.events(in: interval)
         async let reminders = store.reminders(in: interval)
-        days = await AgendaDay.days(in: interval, events: events, reminders: reminders)
+        days = await AgendaDay.days(in: interval, events: events, reminders: reminders, calendar: calendar)
         hasLoaded = true
+    }
+
+    private struct LoadKey: Equatable {
+        let revision: Int
+        let calendar: Calendar
     }
 }

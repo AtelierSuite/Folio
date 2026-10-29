@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CalendarView: View {
     @AppStorage("Calendar.ViewMode") private var mode: CalendarViewMode = .day
+    @Environment(SystemTimeObserver.self) private var systemTime
     @State private var navigation = CalendarNavigation()
     @State private var composer: CalendarComposer?
 
@@ -26,6 +27,9 @@ struct CalendarView: View {
         }
         .environment(navigation)
         .handlesAppDestinations(show)
+        .onChange(of: systemTime.calendar, initial: true) {
+            navigation.adopt(systemTime.calendar)
+        }
     }
 
     private func show(_ destination: AppDestination) -> Bool {

@@ -37,6 +37,9 @@ struct CalendarMonthView: View {
         .onChange(of: visibleMonth) {
             selectVisibleMonth()
         }
+        .onChange(of: navigation.calendar) {
+            recenter()
+        }
     }
 
     private func recenter() {

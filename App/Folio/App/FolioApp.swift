@@ -13,6 +13,7 @@ struct FolioApp: App {
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var sleepStore: SleepStore
+    @State private var systemTime = SystemTimeObserver()
 
     init() {
         NotificationPresentationDelegate.install()
@@ -48,8 +49,13 @@ struct FolioApp: App {
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
                 .environment(searchIndexer)
+                .followsSystemTime(systemTime)
                 .task {
                     calendarStore.startObservingChanges()
+                    systemTime.startObserving {
+                        await calendarStore.reloadAfterSystemTimeChange()
+                        await notificationScheduler.replan()
+                    }
                     await notesLibrary.start()
                     await seedSampleDataIfRequested()
                 }
@@ -72,6 +78,7 @@ struct FolioApp: App {
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(sleepStore)
+            .followsSystemTime(systemTime)
         }
         #endif
     }
