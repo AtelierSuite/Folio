@@ -25,7 +25,7 @@ final class NotificationSchedulingTests: XCTestCase {
         attachScreenshot(named: "NotificationSettings")
 
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let banner = springboard.otherElements["Notification"].descendants(matching: .any)
+        let banner = springboard.descendants(matching: .any)
             .matching(NSPredicate(format: "label CONTAINS[c] %@", "Folio Test Alert")).firstMatch
         XCTAssertTrue(banner.waitForExistence(timeout: 120))
         attachScreenshot(named: "DeliveredAlert")
