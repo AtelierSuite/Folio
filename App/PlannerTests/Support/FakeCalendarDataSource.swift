@@ -11,6 +11,8 @@ final class FakeCalendarDataSource: CalendarDataSource {
         var reminderFetchCount = 0
         var completedReminderIdentifiers: [String: Bool] = [:]
         var changeContinuation: AsyncStream<Void>.Continuation?
+        var authorization: [CalendarItemKind: CalendarAuthorizationStatus] = [:]
+        var requestedKinds: [CalendarItemKind] = []
     }
 
     let state = Mutex(State())
@@ -35,12 +37,24 @@ final class FakeCalendarDataSource: CalendarDataSource {
         state.withLock { $0.reminderFetchCount }
     }
 
+    var requestedKinds: [CalendarItemKind] {
+        state.withLock { $0.requestedKinds }
+    }
+
     func authorizationStatus(for kind: CalendarItemKind) -> CalendarAuthorizationStatus {
-        .fullAccess
+        state.withLock { $0.authorization[kind] ?? .fullAccess }
+    }
+
+    func setAuthorization(_ status: CalendarAuthorizationStatus, for kind: CalendarItemKind) {
+        state.withLock { $0.authorization[kind] = status }
     }
 
     func requestFullAccess(to kind: CalendarItemKind) async throws -> Bool {
-        true
+        state.withLock {
+            $0.requestedKinds.append(kind)
+            $0.authorization[kind] = .fullAccess
+        }
+        return true
     }
 
     func calendars(for kind: CalendarItemKind) -> [PlannerCalendar] {
