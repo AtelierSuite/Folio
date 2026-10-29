@@ -15,7 +15,10 @@ extension ReminderItem {
             priority: reminder.priority,
             color: PlannerColor(reminder.calendar?.cgColor),
             isRecurring: reminder.hasRecurrenceRules,
-            isReadOnly: !(reminder.calendar?.allowsContentModifications ?? false)
+            isReadOnly: !(reminder.calendar?.allowsContentModifications ?? false),
+            url: reminder.url,
+            alarms: (reminder.alarms ?? []).compactMap(ReminderAlarm.init),
+            recurrence: reminder.recurrenceRules?.first.map(ReminderRecurrence.init)
         )
     }
 }
