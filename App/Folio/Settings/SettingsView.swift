@@ -21,6 +21,7 @@ struct SettingsView: View {
             SleepSettingsSection()
             PermissionsSettingsSection()
             SearchSettingsSection()
+            LinkedNotesSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
