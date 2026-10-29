@@ -14,5 +14,6 @@ struct CountdownIslandFooter: View {
         }
         .font(.caption)
         .foregroundStyle(.secondary)
+        .padding(.horizontal, 8)
     }
 }
