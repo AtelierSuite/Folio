@@ -26,8 +26,13 @@ public actor CalendarRepository {
     }
 
     public func reminders(in interval: DateInterval) async -> [ReminderItem] {
+        await reminders(around: interval).filter { $0.isDue(in: interval) }
+    }
+
+    /// Every incomplete reminder, dated or not, plus those completed in a window around `interval`.
+    public func reminders(around interval: DateInterval) async -> [ReminderItem] {
         if let reminderWindow, reminderWindow.covers(interval) {
-            return reminderWindow.items.filter { $0.isDue(in: interval) }
+            return reminderWindow.items
         }
         let fetchGeneration = generation
         let window = policy.window(around: interval)
@@ -35,7 +40,7 @@ public actor CalendarRepository {
         if fetchGeneration == generation {
             reminderWindow = CachedWindow(interval: window, items: items)
         }
-        return items.filter { $0.isDue(in: interval) }
+        return items
     }
 
     public func invalidate() {

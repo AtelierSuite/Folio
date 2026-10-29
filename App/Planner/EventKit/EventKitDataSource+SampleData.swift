@@ -80,13 +80,23 @@ extension EventKitDataSource {
         let samples = [
             SampleReminder(title: "Buy groceries", day: 0, hour: 17),
             SampleReminder(title: "Send invoice", day: 1, hour: nil),
-            SampleReminder(title: "Call the plumber", day: 3, hour: 10)
+            SampleReminder(title: "Call the plumber", day: 3, hour: 10),
+            SampleReminder(title: "Renew passport", day: -2, hour: nil),
+            SampleReminder(title: "Water the plants", day: 0, hour: 8, repeatsDaily: true),
+            SampleReminder(title: "Plan weekend trip", day: nil, hour: nil)
         ]
         for sample in samples {
             let reminder = EKReminder(eventStore: eventStore)
             reminder.calendar = reminderList
             reminder.title = sample.title
-            let day = calendar.date(byAdding: .day, value: sample.day, to: today) ?? today
+            if sample.repeatsDaily {
+                reminder.addRecurrenceRule(EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil))
+            }
+            guard let dayOffset = sample.day else {
+                try eventStore.save(reminder, commit: false)
+                continue
+            }
+            let day = calendar.date(byAdding: .day, value: dayOffset, to: today) ?? today
             var components = calendar.dateComponents([.year, .month, .day], from: day)
             components.hour = sample.hour
             components.minute = sample.hour == nil ? nil : 0
@@ -111,7 +121,8 @@ private struct SampleEvent {
 
 private struct SampleReminder {
     let title: String
-    let day: Int
+    let day: Int?
     let hour: Int?
+    var repeatsDaily = false
 }
 #endif

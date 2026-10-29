@@ -20,22 +20,30 @@ extension TimelineEntry {
         )
     }
 
+    public static func reminderIdentifier(for reminder: ReminderItem) -> String {
+        "reminder:\(reminder.id)"
+    }
+
+    /// Carried forward reminders go in today's all-day strip, whatever time they were due.
     public init?(reminder: ReminderItem, calendar: Calendar = .current) {
-        guard let dueDate = reminder.dueDate else { return nil }
-        let start = reminder.hasDueTime ? dueDate : calendar.startOfDay(for: dueDate)
-        let end = reminder.hasDueTime
-            ? dueDate.addingTimeInterval(Self.reminderDuration)
+        guard let scheduledDate = reminder.scheduledDate else { return nil }
+        let isTimed = reminder.hasDueTime && !reminder.isCarriedForward
+        let start = isTimed ? scheduledDate : calendar.startOfDay(for: scheduledDate)
+        let end = isTimed
+            ? scheduledDate.addingTimeInterval(Self.reminderDuration)
             : calendar.date(byAdding: .day, value: 1, to: start) ?? start
         self.init(
-            id: "reminder:\(reminder.id)",
+            id: Self.reminderIdentifier(for: reminder),
             title: reminder.title,
             start: start,
             end: end,
-            isAllDay: !reminder.hasDueTime,
+            isAllDay: !isTimed,
             timeZone: nil,
             color: TimelineColor(reminder.color),
             isReadOnly: reminder.isReadOnly,
-            kind: .reminder
+            kind: .reminder,
+            isCompleted: reminder.isCompleted,
+            isOverdue: reminder.isCarriedForward && !reminder.isCompleted
         )
     }
 }

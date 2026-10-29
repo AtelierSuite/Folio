@@ -15,6 +15,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
     public var location: String?
     public var hasLink: Bool
     public var meetingLink: MeetingLink?
+    public var isCompleted: Bool
+    public var isOverdue: Bool
 
     public init(
         id: String,
@@ -28,7 +30,9 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         kind: TimelineEntryKind = .event,
         location: String? = nil,
         hasLink: Bool = false,
-        meetingLink: MeetingLink? = nil
+        meetingLink: MeetingLink? = nil,
+        isCompleted: Bool = false,
+        isOverdue: Bool = false
     ) {
         self.id = id
         self.title = title
@@ -42,6 +46,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         self.location = location
         self.hasLink = hasLink
         self.meetingLink = meetingLink
+        self.isCompleted = isCompleted
+        self.isOverdue = isOverdue
     }
 
     public var hasMeetingLink: Bool {

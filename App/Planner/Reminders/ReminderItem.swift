@@ -16,6 +16,8 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
     public let url: URL?
     public let alarms: [ReminderAlarm]
     public let recurrence: ReminderRecurrence?
+    /// Set on overdue reminders shown on a later day instead of their due date.
+    public internal(set) var carriedForwardDate: Date?
 
     public init(
         reference: CalendarItemReference,
@@ -55,8 +57,16 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
         reference.localIdentifier
     }
 
+    public var scheduledDate: Date? {
+        carriedForwardDate ?? dueDate
+    }
+
+    public var isCarriedForward: Bool {
+        carriedForwardDate != nil
+    }
+
     public func isDue(in interval: DateInterval) -> Bool {
-        guard let dueDate else { return false }
-        return interval.start <= dueDate && dueDate < interval.end
+        guard let scheduledDate else { return false }
+        return interval.start <= scheduledDate && scheduledDate < interval.end
     }
 }

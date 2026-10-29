@@ -42,7 +42,7 @@ struct AgendaView: View {
         let calendar = systemTime.calendar
         let interval = AgendaDay.upcomingInterval(dayCount: Self.dayCount, calendar: calendar)
         async let events = store.events(in: interval)
-        async let reminders = store.reminders(in: interval)
+        async let reminders = store.reminders(in: interval, calendar: calendar)
         days = await AgendaDay.days(in: interval, events: events, reminders: reminders, calendar: calendar)
         hasLoaded = true
     }

@@ -2,7 +2,7 @@ import Foundation
 import Planner
 
 enum ReminderEditorMode {
-    case create(initialDate: Date)
+    case create(initialDate: Date?)
     case edit(ReminderItem)
 
     var reminder: ReminderItem? {
