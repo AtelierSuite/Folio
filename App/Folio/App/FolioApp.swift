@@ -10,7 +10,8 @@ struct FolioApp: App {
     @State private var noteNavigator: NoteNavigator
     @State private var destinationRequests: AppDestinationRequests
     @State private var workWeekPreferences = WorkWeekPreferences()
-    @State private var notificationScheduler = NotificationScheduler()
+    @State private var notificationScheduler: NotificationScheduler
+    @State private var arrivalAlerts: ArrivalAlertCenter
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var sleepStore: SleepStore
@@ -20,6 +21,9 @@ struct FolioApp: App {
 
     init() {
         NotificationPresentationDelegate.install()
+        let notificationScheduler = NotificationScheduler()
+        _notificationScheduler = State(initialValue: notificationScheduler)
+        _arrivalAlerts = State(initialValue: .makeForApp(following: notificationScheduler))
         let calendarStore = CalendarStore()
         _calendarStore = State(initialValue: calendarStore)
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
@@ -53,6 +57,7 @@ struct FolioApp: App {
                 .environment(permissionCenter)
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
+                .environment(arrivalAlerts)
                 .environment(weatherStore)
                 .environment(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
@@ -88,6 +93,7 @@ struct FolioApp: App {
             .environment(workWeekPreferences)
             .environment(permissionCenter)
             .environment(notificationScheduler)
+            .environment(arrivalAlerts)
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(sleepStore)

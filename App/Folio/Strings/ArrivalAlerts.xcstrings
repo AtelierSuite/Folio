@@ -1,0 +1,656 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Editor.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte einen Hinweis, wenn du ab 2 Stunden vor Beginn an diesem Ort ankommst."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get an alert when you arrive at this location, from 2 hours before the event starts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recevez une alerte quand vous arrivez à ce lieu, dès 2 heures avant le début de l'événement."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricevi un avviso quando arrivi in questo luogo, da 2 ore prima dell'inizio dell'evento."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イベント開始2時間前から、この場所に到着したときに通知します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이벤트 시작 2시간 전부터 이 장소에 도착하면 알려 줍니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krijg een melding als je vanaf 2 uur voor de start op deze locatie aankomt."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận cảnh báo khi bạn đến địa điểm này, từ 2 giờ trước khi sự kiện bắt đầu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "从活动开始前 2 小时起，到达此地点时提醒你。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從活動開始前 2 小時起，抵達此地點時提醒你。"
+          }
+        }
+      }
+    },
+    "Editor.NoLocation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge einen Ort hinzu, um bei Ankunft einen Hinweis zu erhalten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a location to get an alert when you arrive."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez un lieu pour recevoir une alerte à votre arrivée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un luogo per ricevere un avviso all'arrivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着時に通知を受け取るには、場所を追加してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착 시 알림을 받으려면 위치를 추가하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voeg een locatie toe om een melding te krijgen als je aankomt."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm địa điểm để nhận cảnh báo khi bạn đến nơi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加地点即可在到达时收到提醒。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加入地點即可在抵達時收到提醒。"
+          }
+        }
+      }
+    },
+    "Editor.Toggle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei Ankunft benachrichtigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notify on Arrival"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "M'avertir à l'arrivée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvisami all'arrivo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着時に通知"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착 시 알림"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melden bij aankomst"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo khi đến nơi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到达时通知"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抵達時通知"
+          }
+        }
+      }
+    },
+    "Editor.TurnedOff": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviere in den Einstellungen Mitteilungen und Ankunftshinweise, um diesen Hinweis zu erhalten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Notifications and Arrival Alerts in Settings to get this alert."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez les notifications et les alertes d'arrivée dans les réglages pour recevoir cette alerte."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attiva le notifiche e gli avvisi di arrivo nelle impostazioni per ricevere questo avviso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この通知を受け取るには、設定で「通知」と「到着通知」をオンにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 알림을 받으려면 설정에서 알림과 도착 알림을 켜세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet meldingen en aankomstmeldingen aan in de instellingen om deze melding te krijgen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bật Thông báo và Cảnh báo khi đến nơi trong Cài đặt để nhận cảnh báo này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在“设置”中打开“通知”和“到达提醒”以接收此提醒。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在「設定」中開啟「通知」和「抵達提醒」以接收此提醒。"
+          }
+        }
+      }
+    },
+    "Settings.Denied": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann deinen Standort nicht verwenden. Erlaube in den Einstellungen den Standortzugriff, um Ankunftshinweise zu erhalten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can't use your location. Allow location access in Settings to get arrival alerts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio ne peut pas utiliser votre position. Autorisez l'accès à la position dans Réglages pour recevoir les alertes d'arrivée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio non può usare la tua posizione. Consenti l'accesso alla posizione in Impostazioni per ricevere gli avvisi di arrivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは位置情報を使用できません。到着通知を受け取るには、設定で位置情報へのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 위치를 사용할 수 없습니다. 도착 알림을 받으려면 설정에서 위치 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan je locatie niet gebruiken. Sta locatietoegang toe in Instellingen om aankomstmeldingen te krijgen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio không thể dùng vị trí của bạn. Hãy cho phép truy cập vị trí trong Cài đặt để nhận cảnh báo khi đến nơi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 无法使用你的位置。请在“设置”中允许访问位置以接收到达提醒。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 無法使用你的位置。請在「設定」中允許取用位置以接收抵達提醒。"
+          }
+        }
+      }
+    },
+    "Settings.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte einen Hinweis, wenn du am Ort eines Termins ankommst – von 2 Stunden vor Beginn bis 2 Stunden danach. Aktiviere ihn für jeden Termin im Termineditor."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get an alert when you arrive at an event's location, from 2 hours before it starts until 2 hours after. Turn it on for each event in the event editor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recevez une alerte quand vous arrivez au lieu d'un événement, de 2 heures avant son début à 2 heures après. Activez-la pour chaque événement dans l'éditeur."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricevi un avviso quando arrivi nel luogo di un evento, da 2 ore prima dell'inizio a 2 ore dopo. Attivalo per ogni evento nell'editor degli eventi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イベントの場所に到着したとき、開始2時間前から開始2時間後までの間に通知します。イベントごとにイベント編集画面でオンにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이벤트 시작 2시간 전부터 시작 2시간 후까지 이벤트 장소에 도착하면 알려 줍니다. 이벤트 편집기에서 이벤트마다 켜세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krijg een melding als je aankomt op de locatie van een activiteit, van 2 uur voor de start tot 2 uur erna. Zet het per activiteit aan in de activiteiteneditor."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận cảnh báo khi bạn đến địa điểm của sự kiện, từ 2 giờ trước khi bắt đầu đến 2 giờ sau. Bật cho từng sự kiện trong trình chỉnh sửa sự kiện."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在活动开始前 2 小时到开始后 2 小时内到达活动地点时提醒你。请在活动编辑器中为每个活动单独打开。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在活動開始前 2 小時到開始後 2 小時內抵達活動地點時提醒你。請在活動編輯器中為每個活動個別開啟。"
+          }
+        }
+      }
+    },
+    "Settings.Section": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ankunft"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrival"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrivée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrivo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aankomst"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi đến nơi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到达"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抵達"
+          }
+        }
+      }
+    },
+    "Settings.Toggle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ankunftshinweise"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrival Alerts"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes d'arrivée"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvisi di arrivo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着通知"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착 알림"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aankomstmeldingen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cảnh báo khi đến nơi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到达提醒"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抵達提醒"
+          }
+        }
+      }
+    },
+    "Settings.WhenInUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle den Standortzugriff auf „Immer“, damit Ankunftshinweise auch funktionieren, wenn Folio geschlossen ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set location access to Always so arrival alerts also work while Folio is closed."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglez l'accès à la position sur « Toujours » pour que les alertes d'arrivée fonctionnent aussi quand Folio est fermé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imposta l'accesso alla posizione su \"Sempre\" perché gli avvisi di arrivo funzionino anche quando Folio è chiuso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioを閉じているときも到着通知が届くように、位置情報へのアクセスを「常に」に設定してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 닫혀 있을 때도 도착 알림을 받으려면 위치 접근을 '항상'으로 설정하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet locatietoegang op 'Altijd' zodat aankomstmeldingen ook werken als Folio gesloten is."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt quyền truy cập vị trí thành Luôn luôn để cảnh báo khi đến nơi vẫn hoạt động khi Folio đã đóng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请将位置访问设为“始终”，这样 Folio 关闭时也能收到到达提醒。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請將位置取用權限設為「永遠」，這樣 Folio 關閉時也能收到抵達提醒。"
+          }
+        }
+      }
+    },
+    "Unsupported": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ankunftshinweise funktionieren auf dem iPhone."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrival alerts work on iPhone."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les alertes d'arrivée fonctionnent sur iPhone."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli avvisi di arrivo funzionano su iPhone."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到着通知はiPhoneで利用できます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착 알림은 iPhone에서 작동합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aankomstmeldingen werken op de iPhone."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cảnh báo khi đến nơi hoạt động trên iPhone."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "到达提醒适用于 iPhone。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抵達提醒適用於 iPhone。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
