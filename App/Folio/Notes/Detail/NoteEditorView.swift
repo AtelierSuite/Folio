@@ -8,5 +8,6 @@ struct NoteEditorView: View {
             .font(.body.monospaced())
             .scrollContentBackground(.hidden)
             .padding(.horizontal)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

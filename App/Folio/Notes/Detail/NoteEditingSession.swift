@@ -11,6 +11,7 @@ final class NoteEditingSession {
     }
 
     private(set) var url: URL
+    let focusesEditorOnOpen: Bool
     private(set) var state = State.loading
     private(set) var savedNote: Note?
     var conflictedCopyURL: URL?
@@ -26,8 +27,9 @@ final class NoteEditingSession {
     @ObservationIgnored private var saveTask: Task<Void, Never>?
     @ObservationIgnored private var isClosed = false
 
-    init(url: URL, library: NotesLibrary) {
+    init(url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false) {
         self.url = url
+        self.focusesEditorOnOpen = focusesEditorOnOpen
         self.library = library
     }
 

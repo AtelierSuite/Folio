@@ -7,6 +7,7 @@ struct NotesView: View {
     @State var selection: URL?
     @State var session: NoteEditingSession?
     @State var renamingURL: URL?
+    @State var createdNoteURL: URL?
     @State var isShowingRecentlyDeleted = false
     @State var errorMessage: String?
 

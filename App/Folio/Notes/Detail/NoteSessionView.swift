@@ -5,6 +5,7 @@ struct NoteSessionView: View {
     @Bindable var session: NoteEditingSession
     let onRename: (URL) -> Void
     let onTrash: (URL) -> Void
+    @FocusState private var isEditorFocused: Bool
 
     var body: some View {
         content
@@ -39,6 +40,10 @@ struct NoteSessionView: View {
             ProgressView(String(localized: "Detail.Loading", table: "Notes"))
         case .ready:
             NoteEditorView(text: $session.text)
+                .focused($isEditorFocused)
+                .onAppear {
+                    isEditorFocused = session.focusesEditorOnOpen
+                }
         case .failed(let message):
             ContentUnavailableView(
                 String(localized: "Detail.LoadFailed.Title", table: "Notes"),

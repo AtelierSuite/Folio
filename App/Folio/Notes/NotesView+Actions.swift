@@ -11,7 +11,7 @@ extension NotesView {
             session = nil
             return
         }
-        let newSession = NoteEditingSession(url: url, library: library)
+        let newSession = NoteEditingSession(url: url, library: library, focusesEditorOnOpen: url == createdNoteURL)
         session = newSession
         await newSession.load()
     }
@@ -22,6 +22,7 @@ extension NotesView {
                 let note = try await library.createNote(
                     titled: String(localized: "NewNote.DefaultTitle", table: "Notes")
                 )
+                createdNoteURL = note.url
                 selection = note.url
             } catch {
                 errorMessage = error.localizedDescription

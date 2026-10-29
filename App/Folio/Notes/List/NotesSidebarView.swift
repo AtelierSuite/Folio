@@ -12,6 +12,7 @@ struct NotesSidebarView: View {
     var body: some View {
         content
             .navigationTitle(String(localized: "Title", table: "Notes"))
+            .navigationSplitViewColumnWidth(min: 220, ideal: 280)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(
@@ -21,14 +22,6 @@ struct NotesSidebarView: View {
                     )
                         .disabled(library.store == nil)
                         .keyboardShortcut("n", modifiers: [.command])
-                }
-                ToolbarItem(placement: .secondaryAction) {
-                    Button(
-                        String(localized: "List.RecentlyDeleted", table: "Notes"),
-                        systemImage: "trash",
-                        action: onShowRecentlyDeleted
-                    )
-                    .disabled(library.store == nil)
                 }
             }
     }
@@ -42,6 +35,9 @@ struct NotesSidebarView: View {
             NotesUnavailableView(status: library.status)
         case .ready:
             NotesListView(selection: $selection, onRename: onRename, onTrash: onTrash)
+                .safeAreaInset(edge: .bottom) {
+                    RecentlyDeletedButton(count: library.trashedNotes.count, action: onShowRecentlyDeleted)
+                }
         }
     }
 }
