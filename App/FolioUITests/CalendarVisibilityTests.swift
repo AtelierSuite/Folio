@@ -4,6 +4,7 @@ final class CalendarVisibilityTests: XCTestCase {
     @MainActor
     func testHidingCalendarRemovesItsEventsFromAgenda() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["-Calendar.ViewMode", "list"]
         app.launch()
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
