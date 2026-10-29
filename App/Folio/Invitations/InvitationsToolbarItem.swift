@@ -2,8 +2,7 @@ import Planner
 import SwiftUI
 
 struct InvitationsToolbarItem: ToolbarContent {
-    @Environment(CalendarStore.self) private var store
-    @State private var pendingCount = 0
+    let pendingCount: Int
     @State private var isPresented = false
 
     var body: some ToolbarContent {
@@ -13,12 +12,8 @@ struct InvitationsToolbarItem: ToolbarContent {
             }
             .badge(pendingCount)
             .accessibilityIdentifier("InvitationsButton")
-            .accessibilityValue(pendingCount > 0 ? "\(pendingCount)" : "")
             .sheet(isPresented: $isPresented) {
                 InvitationsView()
-            }
-            .task(id: store.contentRevision) {
-                pendingCount = await store.pendingInvitations().count
             }
         }
     }
