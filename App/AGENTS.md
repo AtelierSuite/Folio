@@ -14,6 +14,8 @@ Shared identifiers:
 - Bundle ID `com.tsubuzaki.Folio`, widgets `com.tsubuzaki.Folio.Widgets`, framework `com.tsubuzaki.Folio.Planner`.
 - App Group `group.com.tsubuzaki.Folio` (`AppGroup` in `Planner`).
 - URL scheme `folio://`.
+- Entitlements: `Folio/Folio.entitlements` is used on macOS and `Folio/Folio-iOS.entitlements` on iOS and iPadOS (it adds HealthKit). Add shared entitlements to both files.
+- Signed macOS builds need the iCloud container registered on the team, so build macOS with `CODE_SIGNING_ALLOWED=NO` when you only need to compile.
 - Feature availability per device goes through `PlatformCapabilities` (in `Planner`, injected as `\.platformCapabilities`). Never check the platform ad hoc to hide a feature.
 
 # Rules
