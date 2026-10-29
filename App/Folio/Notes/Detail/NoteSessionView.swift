@@ -2,6 +2,7 @@ import Planner
 import SwiftUI
 
 struct NoteSessionView: View {
+    @Environment(NotesLibrary.self) private var library
     @Bindable var session: NoteEditingSession
     let onRename: (URL) -> Void
     let onTrash: (URL) -> Void
@@ -9,6 +10,7 @@ struct NoteSessionView: View {
 
     var body: some View {
         content
+            .onScreenNote(at: session.url, in: library)
             .navigationTitle(session.title)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
