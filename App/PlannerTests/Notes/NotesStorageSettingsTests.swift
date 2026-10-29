@@ -56,4 +56,20 @@ struct NotesStorageSettingsTests {
             try await library.createNote(titled: "Nowhere")
         }
     }
+
+    @Test func showsAnUnavailableStateWhenTheChosenFolderIsGone() async throws {
+        let directory = try TemporaryDirectory()
+        let folderURL = try directory.makeSubdirectory("Removed")
+        let settings = try makeSettings()
+        settings.mode = .onMyDevice
+        let library = NotesLibrary(settings: settings)
+        await library.start()
+        try await library.switchMode(to: .customFolder, folderURL: folderURL, migratingNotes: false)
+        try FileManager.default.removeItem(at: folderURL)
+
+        let relaunched = NotesLibrary(settings: settings)
+        await relaunched.start()
+
+        #expect(relaunched.status == .folderUnavailable)
+    }
 }

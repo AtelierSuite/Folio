@@ -57,7 +57,7 @@ public final class NotesLibrary {
         if mode == .customFolder, customFolder == nil {
             customFolder = resolveSavedFolder()
         }
-        guard let rootURL = await rootURL(for: mode, folder: customFolder) else {
+        guard let rootURL = await rootURL(for: mode, folder: customFolder), isReachable(rootURL) else {
             store = nil
             status = mode == .iCloudDrive ? .iCloudUnavailable : .folderUnavailable
             await refresh()
@@ -79,6 +79,14 @@ public final class NotesLibrary {
         case .customFolder:
             folder?.url
         }
+    }
+
+    private func isReachable(_ url: URL) -> Bool {
+        var isDirectory: ObjCBool = false
+        let path = url.path(percentEncoded: false)
+        return FileManager.default.fileExists(atPath: path, isDirectory: &isDirectory)
+            ? isDirectory.boolValue && FileManager.default.isReadableFile(atPath: path)
+            : mode != .customFolder
     }
 
     private func resolveSavedFolder() -> SecurityScopedFolder? {
