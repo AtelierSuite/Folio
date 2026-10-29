@@ -18,7 +18,7 @@ struct CalendarMonthDayCellView: View {
                 Spacer(minLength: 0)
                 CalendarMonthWeatherSlot(date: day.date)
             }
-            CalendarMonthDayItemsView(items: items)
+            CalendarMonthDayItemsView(items: items, day: day.date)
         }
         .padding(.horizontal, 2)
         .padding(.vertical, 3)
