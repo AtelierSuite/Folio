@@ -47,11 +47,12 @@ struct MarkdownBlockConverter {
         case .unchecked: .unchecked
         case nil: nil
         }
-        return MarkdownListItem(
-            checkbox: checkbox,
-            blocks: blocks(from: item.children),
-            sourceLine: (item.range?.lowerBound.line ?? 0) + lineOffset
-        )
+        let sourceLine = (item.range?.lowerBound.line ?? 0) + lineOffset
+        let itemBlocks = blocks(from: item.children)
+        if checkbox == nil, let task = MarkdownListItem(literalTaskBlocks: itemBlocks, sourceLine: sourceLine) {
+            return task
+        }
+        return MarkdownListItem(checkbox: checkbox, blocks: itemBlocks, sourceLine: sourceLine)
     }
 
     private func table(_ table: Markdown.Table) -> MarkdownTable {

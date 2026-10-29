@@ -34,6 +34,18 @@ struct MarkdownDocumentTests {
         #expect(document.frontMatter.tags == ["home"])
     }
 
+    @Test func parsesTasksInsideBlockQuotes() throws {
+        let document = MarkdownDocument(parsing: "> Quote\n>\n> - [ ] Quoted task\n> - [x] Done")
+        guard case .blockQuote(let blocks) = try #require(document.blocks.first),
+              case .list(let list) = try #require(blocks.last) else {
+            Issue.record("Expected a quoted list")
+            return
+        }
+        #expect(list.items.map(\.checkbox) == [.unchecked, .checked])
+        #expect(list.items.first?.blocks == [.paragraph([.text("Quoted task")])])
+        #expect(list.items.map(\.sourceLine) == [3, 4])
+    }
+
     @Test func parsesOrderedListStart() throws {
         let document = MarkdownDocument(parsing: "3. Three\n4. Four")
         guard case .list(let list) = try #require(document.blocks.first) else {
