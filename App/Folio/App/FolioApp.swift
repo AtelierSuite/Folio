@@ -81,6 +81,7 @@ struct FolioApp: App {
         if arguments.contains(EventKitDataSource.testAlertLaunchArgument) {
             try? EventKitDataSource.shared.seedTestAlertEvent()
         }
+        await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif
     }
 }
