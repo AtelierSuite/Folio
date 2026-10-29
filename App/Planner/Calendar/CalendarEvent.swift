@@ -5,6 +5,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let calendarIdentifier: String
     public let title: String
     public let location: String?
+    public let coordinate: PlannerCoordinate?
     public let notes: String?
     public let url: URL?
     public let startDate: Date
@@ -22,6 +23,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         calendarIdentifier: String,
         title: String,
         location: String? = nil,
+        coordinate: PlannerCoordinate? = nil,
         notes: String? = nil,
         url: URL? = nil,
         startDate: Date,
@@ -38,6 +40,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         self.calendarIdentifier = calendarIdentifier
         self.title = title
         self.location = location
+        self.coordinate = coordinate
         self.notes = notes
         self.url = url
         self.startDate = startDate

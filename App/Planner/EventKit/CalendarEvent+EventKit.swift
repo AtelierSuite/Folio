@@ -9,6 +9,9 @@ extension CalendarEvent {
             calendarIdentifier: event.calendar?.calendarIdentifier ?? "",
             title: event.title ?? "",
             location: event.location,
+            coordinate: event.structuredLocation?.geoLocation.map {
+                PlannerCoordinate(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude)
+            },
             notes: event.notes,
             url: event.url,
             startDate: event.startDate,

@@ -13,7 +13,7 @@ public enum PermissionKind: String, Sendable, CaseIterable, Identifiable {
     public var requiredFeature: PlatformFeature? {
         switch self {
         case .calendar, .reminders, .notifications: nil
-        case .location: .geofencedNotifications
+        case .location: .weather
         case .health: .sleep
         case .alarms: .alarms
         }

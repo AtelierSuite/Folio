@@ -131,6 +131,136 @@
         }
       }
     },
+    "NSLocationUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio uses your location to show the weather where you are."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio utilise votre position pour afficher la météo là où vous êtes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは現在地の天気を表示するために位置情報を使用します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 현재 위치의 날씨를 보여 주기 위해 위치 정보를 사용합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 使用你的位置来显示你所在地的天气。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 使用你的位置來顯示你所在地的天氣。"
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio uses your location to show the weather where you are."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio utilise votre position pour afficher la météo là où vous êtes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは現在地の天気を表示するために位置情報を使用します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 현재 위치의 날씨를 보여 주기 위해 위치 정보를 사용합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 使用你的位置来显示你所在地的天气。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 使用你的位置來顯示你所在地的天氣。"
+          }
+        }
+      }
+    },
     "NSRemindersFullAccessUsageDescription": {
       "extractionState": "manual",
       "localizations": {

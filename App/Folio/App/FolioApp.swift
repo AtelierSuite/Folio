@@ -11,6 +11,7 @@ struct FolioApp: App {
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler = NotificationScheduler()
     @State private var searchIndexer = SearchIndexer()
+    @State private var weatherStore = WeatherStore.makeForApp()
 
     init() {
         NotificationPresentationDelegate.install()
@@ -37,6 +38,7 @@ struct FolioApp: App {
                 .environment(permissionCenter)
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
+                .environment(weatherStore)
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .environment(searchIndexer)
@@ -59,6 +61,7 @@ struct FolioApp: App {
             .environment(permissionCenter)
             .environment(notificationScheduler)
             .environment(searchIndexer)
+            .environment(weatherStore)
         }
         #endif
     }
