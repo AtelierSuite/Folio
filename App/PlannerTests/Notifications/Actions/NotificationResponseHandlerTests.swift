@@ -54,7 +54,8 @@ struct NotificationResponseHandlerTests {
     @Test func tappingOpensTheItem() async throws {
         let (notification, content) = try reminderContent()
         await makeHandler().handle(actionIdentifier: UNNotificationDefaultActionIdentifier, content: content)
-        #expect(target.routes == [.item(.calendarDay(notification.fireDate, item: notification.reference), meetingURL: nil)])
+        let destination = AppDestination.calendarDay(notification.fireDate, item: notification.reference)
+        #expect(target.routes == [.item(destination, meetingURL: nil)])
         #expect(target.replanCount == 1)
     }
 

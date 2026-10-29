@@ -22,7 +22,9 @@ public struct UserNotificationSnoozeClient: NotificationSnoozeClient {
         let request = UNNotificationRequest(
             identifier: snooze.identifier,
             content: content,
-            trigger: UNTimeIntervalNotificationTrigger(timeInterval: max(1, snooze.fireDate.timeIntervalSince(now)), repeats: false)
+            trigger: UNTimeIntervalNotificationTrigger(
+                timeInterval: max(1, snooze.fireDate.timeIntervalSince(now)), repeats: false
+            )
         )
         try await center.add(request)
     }

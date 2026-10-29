@@ -40,7 +40,9 @@ struct NotificationResponseRouterTests {
 
     @Test func joinOpensTheMeetingLink() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
-        let outcome = router.outcome(actionIdentifier: NotificationAction.joinMeeting.identifier, userInfo: try meeting())
+        let outcome = router.outcome(
+            actionIdentifier: NotificationAction.joinMeeting.identifier, userInfo: try meeting()
+        )
         #expect(outcome == .open(.url(try #require(NotificationActionFixtures.zoomURL))))
     }
 
@@ -59,19 +61,21 @@ struct NotificationResponseRouterTests {
     @Test func markDoneCompletesReminders() throws {
         let notification = try #require(NotificationActionFixtures.plannedReminder())
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
-        let outcome = router.outcome(actionIdentifier: NotificationAction.markDone.identifier, userInfo: try userInfo(notification))
+        let markDone = NotificationAction.markDone.identifier
+        let outcome = router.outcome(actionIdentifier: markDone, userInfo: try userInfo(notification))
         guard case .markDone(let item) = outcome else {
             Issue.record("Expected Mark Done")
             return
         }
         #expect(item.reference == notification.reference)
-        #expect(router.outcome(actionIdentifier: NotificationAction.markDone.identifier, userInfo: try meeting()) == nil)
+        #expect(router.outcome(actionIdentifier: markDone, userInfo: try meeting()) == nil)
     }
 
     @Test func snoozeFiresAgainAfterItsDuration() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
-        let short = router.outcome(actionIdentifier: NotificationAction.snoozeShort.identifier, userInfo: try meeting())
-        let long = router.outcome(actionIdentifier: NotificationAction.snoozeLong.identifier, userInfo: try meeting())
+        let userInfo = try meeting()
+        let short = router.outcome(actionIdentifier: NotificationAction.snoozeShort.identifier, userInfo: userInfo)
+        let long = router.outcome(actionIdentifier: NotificationAction.snoozeLong.identifier, userInfo: userInfo)
         guard case .snooze(let shortSnooze) = short, case .snooze(let longSnooze) = long else {
             Issue.record("Expected snoozes")
             return
@@ -85,7 +89,8 @@ struct NotificationResponseRouterTests {
 
     @Test func openNoteOpensTheEventNoteOrTheDailyNote() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
-        let eventOutcome = router.outcome(actionIdentifier: NotificationAction.openNote.identifier, userInfo: try meeting())
+        let openNote = NotificationAction.openNote.identifier
+        let eventOutcome = router.outcome(actionIdentifier: openNote, userInfo: try meeting())
         guard case .open(.note(.event(let reference, let date))) = eventOutcome else {
             Issue.record("Expected the event's note")
             return
@@ -94,14 +99,15 @@ struct NotificationResponseRouterTests {
         #expect(date == meetingStart)
         let due = NotificationFixtures.hours(1)
         let reminder = try userInfo(NotificationActionFixtures.plannedReminder(due: due))
-        let reminderOutcome = router.outcome(actionIdentifier: NotificationAction.openNote.identifier, userInfo: reminder)
+        let reminderOutcome = router.outcome(actionIdentifier: openNote, userInfo: reminder)
         #expect(reminderOutcome == .open(.note(.dailyNote(due))))
     }
 
     @Test func dismissalsAndForeignAlertsAreIgnored() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
-        #expect(router.outcome(actionIdentifier: UNNotificationDismissActionIdentifier, userInfo: try meeting()) == nil)
+        let userInfo = try meeting()
+        #expect(router.outcome(actionIdentifier: UNNotificationDismissActionIdentifier, userInfo: userInfo) == nil)
         #expect(router.outcome(actionIdentifier: UNNotificationDefaultActionIdentifier, userInfo: [:]) == nil)
-        #expect(router.outcome(actionIdentifier: "folio.action.unknown", userInfo: try meeting()) == nil)
+        #expect(router.outcome(actionIdentifier: "folio.action.unknown", userInfo: userInfo) == nil)
     }
 }

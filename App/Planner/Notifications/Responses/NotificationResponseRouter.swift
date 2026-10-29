@@ -30,7 +30,8 @@ public struct NotificationResponseRouter: Sendable {
         case .joinMeeting:
             return .open(context.meetingURL.map(NotificationRoute.url) ?? .item(item.destination, meetingURL: nil))
         case .directions:
-            return .open(context.place?.directionsURL.map(NotificationRoute.url) ?? .item(item.destination, meetingURL: nil))
+            let directions = context.place?.directionsURL.map(NotificationRoute.url)
+            return .open(directions ?? .item(item.destination, meetingURL: nil))
         case .markDone:
             return item.kind == .reminder ? .markDone(item) : nil
         case .snoozeShort, .snoozeLong:

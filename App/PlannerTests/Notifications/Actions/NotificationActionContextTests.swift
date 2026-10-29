@@ -11,7 +11,8 @@ struct NotificationActionContextTests {
 
     @Test func meetingLinkIsFoundInNotesOrLocation() {
         let inNotes = NotificationActionFixtures.event(notes: "Dial in: https://meet.google.com/abc-defg-hij thanks")
-        #expect(NotificationActionContext(event: inNotes).meetingURL?.absoluteString == "https://meet.google.com/abc-defg-hij")
+        let notesLink = NotificationActionContext(event: inNotes).meetingURL
+        #expect(notesLink?.absoluteString == "https://meet.google.com/abc-defg-hij")
         let inLocation = NotificationActionFixtures.event(location: "https://teams.microsoft.com/l/meetup")
         #expect(NotificationActionContext(event: inLocation).meetingURL?.host() == "teams.microsoft.com")
     }
@@ -22,7 +23,8 @@ struct NotificationActionContextTests {
     }
 
     @Test func addressOrCoordinateMakesAPlace() {
-        let address = NotificationActionContext(event: NotificationActionFixtures.event(location: "  1 Infinite Loop  "))
+        let addressEvent = NotificationActionFixtures.event(location: "  1 Infinite Loop  ")
+        let address = NotificationActionContext(event: addressEvent)
         #expect(address.place?.name == "1 Infinite Loop")
         #expect(address.meetingURL == nil)
         let pinned = NotificationActionContext(
@@ -33,7 +35,9 @@ struct NotificationActionContextTests {
     }
 
     @Test func directionsUseCoordinatesWhenKnown() throws {
-        let place = try #require(NotificationPlace(name: "Tokyo Station", coordinate: NotificationActionFixtures.office))
+        let place = try #require(
+            NotificationPlace(name: "Tokyo Station", coordinate: NotificationActionFixtures.office)
+        )
         let url = try #require(place.directionsURL)
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         #expect(url.host() == "maps.apple.com")
@@ -43,7 +47,8 @@ struct NotificationActionContextTests {
 
     @Test func directionsFallBackToTheAddress() throws {
         let place = try #require(NotificationPlace(name: "1 Infinite Loop, Cupertino", coordinate: nil))
-        let items = try #require(place.directionsURL.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?.queryItems)
+        let url = try #require(place.directionsURL)
+        let items = try #require(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems)
         #expect(items == [URLQueryItem(name: "daddr", value: "1 Infinite Loop, Cupertino")])
     }
 
@@ -55,7 +60,8 @@ struct NotificationActionContextTests {
     }
 
     @Test func addingALinkReschedulesTheAlert() throws {
-        let plain = try #require(NotificationActionFixtures.planned(NotificationActionFixtures.event(location: "Room 4")))
+        let plainEvent = NotificationActionFixtures.event(location: "Room 4")
+        let plain = try #require(NotificationActionFixtures.planned(plainEvent))
         let linked = try #require(NotificationActionFixtures.planned(
             NotificationActionFixtures.event(location: "Room 4", url: NotificationActionFixtures.zoomURL)
         ))
@@ -73,7 +79,9 @@ struct NotificationActionContextTests {
 
     @Test func userInfoRoundTripsTheContext() throws {
         let event = NotificationActionFixtures.event(
-            location: "Tokyo Station", coordinate: NotificationActionFixtures.office, url: NotificationActionFixtures.zoomURL
+            location: "Tokyo Station",
+            coordinate: NotificationActionFixtures.office,
+            url: NotificationActionFixtures.zoomURL
         )
         let planned = try #require(NotificationActionFixtures.planned(event))
         let userInfo = NotificationUserInfo.make(for: planned)

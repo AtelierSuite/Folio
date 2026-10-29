@@ -4,7 +4,10 @@ import Testing
 
 struct NotificationSnoozePlannerTests {
     private func snooze(_ name: String, minutes: Double) -> NotificationSnooze {
-        NotificationSnooze(identifier: "folio.snooze.\(name)", fireDate: NotificationFixtures.now.addingTimeInterval(minutes * 60))
+        NotificationSnooze(
+            identifier: "folio.snooze.\(name)",
+            fireDate: NotificationFixtures.now.addingTimeInterval(minutes * 60)
+        )
     }
 
     @Test func snoozesWithinTheReservedSlotsAreKept() {
@@ -15,7 +18,8 @@ struct NotificationSnoozePlannerTests {
 
     @Test func snoozingTheSameItemAgainReplacesIt() {
         let planner = NotificationSnoozePlanner(limit: 1)
-        #expect(planner.identifiersToRemove(pending: [snooze("a", minutes: 5)], adding: snooze("a", minutes: 15)).isEmpty)
+        let pending = [snooze("a", minutes: 5)]
+        #expect(planner.identifiersToRemove(pending: pending, adding: snooze("a", minutes: 15)).isEmpty)
     }
 
     @Test func tooManySnoozesDropTheOnesDueSoonest() {

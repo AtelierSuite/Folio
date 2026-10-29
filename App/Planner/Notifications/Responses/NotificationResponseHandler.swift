@@ -47,7 +47,8 @@ public final class NotificationResponseHandler {
 
     private func schedule(_ snooze: NotificationSnooze, content: UNNotificationContent, now: Date) async {
         let pending = await snoozes.pendingSnoozes()
-        await snoozes.removeSnoozes(withIdentifiers: snoozePlanner.identifiersToRemove(pending: pending, adding: snooze))
+        let overflow = snoozePlanner.identifiersToRemove(pending: pending, adding: snooze)
+        await snoozes.removeSnoozes(withIdentifiers: overflow)
         try? await snoozes.schedule(snooze, content: content, now: now)
     }
 }

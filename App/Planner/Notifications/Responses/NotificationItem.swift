@@ -24,6 +24,7 @@ public struct NotificationItem: Sendable, Hashable {
 extension NotificationUserInfo {
     public static func item(from userInfo: [AnyHashable: Any]) -> NotificationItem? {
         guard let kind = kind(from: userInfo), let reference = reference(from: userInfo) else { return nil }
-        return NotificationItem(kind: kind, reference: reference, fireDate: fireDate(from: userInfo) ?? reference.startDate ?? .now)
+        let fireDate = fireDate(from: userInfo) ?? reference.startDate ?? .now
+        return NotificationItem(kind: kind, reference: reference, fireDate: fireDate)
     }
 }

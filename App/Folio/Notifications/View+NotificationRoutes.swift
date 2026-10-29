@@ -18,12 +18,15 @@ private struct NotificationRouteHandler: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .onChange(of: RouteRequest(route: navigator.pendingRoute, isActive: scenePhase == .active), initial: true) {
-                _, request in
+            .onChange(of: request, initial: true) { _, request in
                 guard request.isActive, let route = request.route else { return }
                 navigator.pendingRoute = nil
                 show(route)
             }
+    }
+
+    private var request: RouteRequest {
+        RouteRequest(route: navigator.pendingRoute, isActive: scenePhase == .active)
     }
 
     private func show(_ route: NotificationRoute) {

@@ -37,7 +37,12 @@ enum NotificationActionFixtures {
 
     static func plannedReminder(due: Date = NotificationFixtures.hours(1)) -> PlannedNotification? {
         NotificationFixtures.planner()
-            .plan(events: [], reminders: [NotificationFixtures.reminder("milk", due: due)], after: NotificationFixtures.now, budget: 10)
+            .plan(
+                events: [],
+                reminders: [NotificationFixtures.reminder("milk", due: due)],
+                after: NotificationFixtures.now,
+                budget: 10
+            )
             .first
     }
 
