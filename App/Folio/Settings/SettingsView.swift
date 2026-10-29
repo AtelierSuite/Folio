@@ -13,6 +13,7 @@ struct SettingsView: View {
                     .accessibilityIdentifier("WorkWeekLink")
             }
             MonthSettingsSection()
+            PermissionsSettingsSection()
             Section {
                 LabeledContent(
                     String(localized: "About.Version", table: "Settings"),
