@@ -70,6 +70,25 @@ final class EventQuickActionsTests: XCTestCase {
     }
 
     @MainActor
+    func testCountdownStartsAndStopsFromTheMenu() throws {
+        let app = launch(mode: "day", behavior: "showsQuickActions", extra: ["-SeedCountdownEvent"])
+        let event = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Folio Countdown")).firstMatch
+        try XCTSkipUnless(event.waitForExistence(timeout: 15), "Grant calendar access to seed the event")
+        event.tap()
+        let start = menuItem("EventMenu.StartCountdown", in: app)
+        XCTAssertTrue(start.waitForExistence(timeout: 5))
+        start.tap()
+        event.tap()
+        let stop = menuItem("EventMenu.StopCountdown", in: app)
+        XCTAssertTrue(stop.waitForExistence(timeout: 5))
+        attachScreenshot(named: "quick-actions-stop-countdown", app: app)
+        stop.tap()
+        event.tap()
+        XCTAssertTrue(menuItem("EventMenu.StartCountdown", in: app).waitForExistence(timeout: 5))
+        menuItem("EventMenu.Copy", in: app).tap()
+    }
+
+    @MainActor
     func testSettingSwitchesTheTapBehavior() throws {
         let app = launch(mode: "day", behavior: nil)
         app.tabBars.buttons["Settings"].firstMatch.tap()
