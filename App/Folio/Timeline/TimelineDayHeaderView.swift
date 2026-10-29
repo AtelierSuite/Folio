@@ -4,11 +4,16 @@ import SwiftUI
 struct TimelineDayHeaderView: View {
     let days: TimelineDays
     let gutterWidth: CGFloat
+    var gutterLayers: [TimelineLayer] = []
 
     var body: some View {
         HStack(spacing: 0) {
+            ForEach(gutterLayers) { layer in
+                (layer.header ?? AnyView(Color.clear))
+                    .frame(width: layer.gutterWidth)
+            }
             Color.clear
-                .frame(width: gutterWidth, height: 1)
+                .frame(width: gutterWidth - gutterLayers.reduce(0) { $0 + $1.gutterWidth }, height: 1)
             ForEach(days.intervals, id: \.start) { day in
                 VStack(spacing: 2) {
                     TimelineDayHeaderLabel(day: day, calendar: days.calendar)

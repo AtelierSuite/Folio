@@ -2,6 +2,7 @@ import Planner
 import SwiftUI
 
 struct TimelineCurrentTimeIndicatorView: View {
+    @Environment(SystemTimeObserver.self) private var systemTime: SystemTimeObserver?
     let days: TimelineDays
     let hourHeight: CGFloat
 
@@ -14,6 +15,7 @@ struct TimelineCurrentTimeIndicatorView: View {
                 }
             }
         }
+        .id(systemTime?.changeCount)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }

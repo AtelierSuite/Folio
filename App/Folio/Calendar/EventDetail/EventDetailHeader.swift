@@ -16,6 +16,7 @@ struct EventDetailHeader: View {
                     Text(line)
                         .foregroundStyle(.secondary)
                 }
+                EventDetailSecondaryTimeZoneLabel(event: event)
                 if let recurrence {
                     Label(recurrence.summary, systemImage: "repeat")
                         .font(.subheadline)

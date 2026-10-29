@@ -33,6 +33,12 @@ final class CalendarNavigation {
         selectedDate = step.date(from: selectedDate, toward: direction, in: calendar)
     }
 
+    func adopt(_ newCalendar: Calendar) {
+        guard newCalendar != calendar else { return }
+        selectedDate = newCalendar.startOfSameDay(as: selectedDate, in: calendar)
+        calendar = newCalendar
+    }
+
     func startOfWeek(containing date: Date) -> Date {
         calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? calendar.startOfDay(for: date)
     }
