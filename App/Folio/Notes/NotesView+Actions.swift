@@ -59,7 +59,7 @@ extension NotesView {
                 if selection == url {
                     selection = nil
                 }
-                try await library.moveToTrash(url)
+                try await undoCoordinator.moveNoteToTrash(url)
             } catch {
                 errorMessage = error.localizedDescription
             }

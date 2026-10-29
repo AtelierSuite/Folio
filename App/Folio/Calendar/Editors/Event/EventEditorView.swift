@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EventEditorView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(\.dismiss) private var dismiss
     private let editedEvent: CalendarEvent?
     private let originalDraft: EventDraft?
@@ -118,7 +119,7 @@ struct EventEditorView: View {
         let savedDraft = finalDraft
         do {
             let reference = if let editedEvent {
-                try await store.updateEvent(editedEvent, with: savedDraft, span: span)
+                try await undoCoordinator.updateEvent(editedEvent, with: savedDraft, span: span)
             } else {
                 try await store.createEvent(savedDraft)
             }

@@ -2,7 +2,7 @@ import Planner
 import SwiftUI
 
 struct AgendaReminderRow: View {
-    @Environment(CalendarStore.self) private var store
+    @Environment(UndoCoordinator.self) private var undoCoordinator
     let reminder: ReminderItem
     let onOpen: () -> Void
 
@@ -10,7 +10,7 @@ struct AgendaReminderRow: View {
         HStack(spacing: 12) {
             Button {
                 Task {
-                    try? await store.setCompleted(!reminder.isCompleted, for: reminder)
+                    try? await undoCoordinator.setCompleted(!reminder.isCompleted, for: reminder)
                 }
             } label: {
                 Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
