@@ -63,7 +63,7 @@ struct ReminderEditorView: View {
     @ViewBuilder
     private var content: some View {
         if mode.reminder == nil && !store.reminderAuthorization.allowsReading {
-            ReminderEditorAccessView()
+            PermissionBlockedView(kind: .reminders, requestable: [])
         } else {
             ReminderEditorForm(
                 draft: $draft,
