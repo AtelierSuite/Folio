@@ -4,7 +4,7 @@ final class NotificationSchedulingTests: XCTestCase {
     @MainActor
     func testEnablingNotificationsSchedulesAndDeliversAnAlert() throws {
         let app = XCUIApplication()
-        app.launchArguments += ["-SeedTestAlertEvent"]
+        app.launchArguments += ["-SeedTestAlertEvent", "-FolioSkipOnboarding"]
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
 
