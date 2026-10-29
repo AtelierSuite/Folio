@@ -19,6 +19,7 @@ extension NotesLibrary {
 
     /// Returns the note already linked to `event` if there is one.
     public func createNote(for event: CalendarEvent) async throws -> URL {
+        await waitForLinkedNotes()
         if let existing = linkedNote(for: event) {
             return existing.url
         }
@@ -30,6 +31,7 @@ extension NotesLibrary {
 
     /// Returns the day's note already in the library if there is one.
     public func createDailyNote(on date: Date) async throws -> URL {
+        await waitForLinkedNotes()
         if let existing = dailyNote(on: date) {
             return existing.url
         }
