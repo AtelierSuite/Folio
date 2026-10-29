@@ -64,11 +64,20 @@ enum NotificationFixtures {
             dueDate: due,
             hasDueTime: hasDueTime,
             isCompleted: isCompleted,
-            alarms: alarms ?? due.map { [.absolute(date: $0)] } ?? []
+            alarms: (alarms ?? due.map { [.absolute(date: $0)] } ?? []).map(ReminderAlarm.init)
         )
     }
 
     static func hours(_ hours: Double, after date: Date = now) -> Date {
         date.addingTimeInterval(hours * 3600)
+    }
+}
+
+extension ReminderAlarm {
+    init(_ alarm: CalendarAlarm) {
+        switch alarm {
+        case .relative(let offset): self = .relative(offset)
+        case .absolute(let date): self = .absolute(date)
+        }
     }
 }
