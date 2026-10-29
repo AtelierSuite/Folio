@@ -33,8 +33,12 @@ struct SearchView: View {
                 .background(.bar)
             }
             .navigationTitle(String(localized: "Title", table: "Search"))
+            .searchable(
+                text: $filters.text,
+                placement: Self.searchFieldPlacement,
+                prompt: String(localized: "Prompt", table: "Search")
+            )
         }
-        .searchable(text: $filters.text, prompt: String(localized: "Prompt", table: "Search"))
         .task {
             await library.start()
             await indexer.activate()
@@ -43,6 +47,15 @@ struct SearchView: View {
         .task(id: request) {
             await search()
         }
+    }
+
+    /// The filter bar inset otherwise makes the navigation bar hide the search field until the list scrolls.
+    private static var searchFieldPlacement: SearchFieldPlacement {
+        #if os(iOS)
+        .navigationBarDrawer(displayMode: .always)
+        #else
+        .automatic
+        #endif
     }
 
     private var request: SearchRequest {
