@@ -131,6 +131,136 @@
         }
       }
     },
+    "NSHealthShareUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio liest deinen Schlaf aus der Health-App, um ihn in deinem Kalender anzuzeigen. Schlafdaten bleiben auf diesem iPhone und werden nie hochgeladen oder synchronisiert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio reads your sleep from the Health app to show it on your calendar. Sleep data stays on this iPhone and is never uploaded or synced."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio lit votre sommeil dans l’app Santé pour l’afficher dans votre calendrier. Les données de sommeil restent sur cet iPhone et ne sont jamais envoyées ni synchronisées."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio legge il tuo sonno dall’app Salute per mostrarlo nel calendario. I dati sul sonno restano su questo iPhone e non vengono mai caricati né sincronizzati."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioはヘルスケアから睡眠を読み取り、カレンダーに表示します。睡眠データはこのiPhoneにのみ保存され、アップロードや同期はされません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 건강 앱에서 수면 데이터를 읽어 캘린더에 표시합니다. 수면 데이터는 이 iPhone에만 남아 있으며 업로드되거나 동기화되지 않습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio leest je slaap uit de Gezondheid-app om deze in je agenda te tonen. Slaapgegevens blijven op deze iPhone en worden nooit geüpload of gesynchroniseerd."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio đọc dữ liệu giấc ngủ từ ứng dụng Sức khỏe để hiển thị trên lịch của bạn. Dữ liệu giấc ngủ chỉ nằm trên iPhone này và không bao giờ được tải lên hay đồng bộ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 会从“健康”中读取你的睡眠数据并显示在日历上。睡眠数据只保留在这台 iPhone 上，绝不会上传或同步。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 會從「健康」讀取你的睡眠資料並顯示在行事曆上。睡眠資料只保留在這部 iPhone 上，絕不會上傳或同步。"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug-Builds von Folio schreiben Beispiel-Schlafdaten zum Testen in die Health-App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug builds of Folio write sample sleep to the Health app for testing."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les versions de débogage de Folio écrivent des exemples de sommeil dans l’app Santé pour les tests."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le build di debug di Folio scrivono dati di sonno di esempio nell’app Salute per i test."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioのデバッグビルドは、テスト用のサンプル睡眠データをヘルスケアに書き込みます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 디버그 빌드는 테스트를 위해 샘플 수면 데이터를 건강 앱에 기록합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debugversies van Folio schrijven voorbeeldslaapgegevens naar de Gezondheid-app om te testen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản gỡ lỗi của Folio ghi dữ liệu giấc ngủ mẫu vào ứng dụng Sức khỏe để thử nghiệm."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 的调试版本会将示例睡眠数据写入“健康”以供测试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 的除錯版本會將範例睡眠資料寫入「健康」以供測試。"
+          }
+        }
+      }
+    },
     "NSLocationUsageDescription": {
       "extractionState": "manual",
       "localizations": {
