@@ -4,6 +4,20 @@ import WidgetKit
 @main
 struct FolioWidgetsBundle: WidgetBundle {
     var body: some Widget {
-        TodayDateWidget()
+        UpNextWidget()
+        TodayWidget()
+        MiniMonthWidget()
+        RemindersWidget()
+        lockScreenWidgets
+        NewEventControl()
+        NewReminderControl()
+        NewNoteControl()
+    }
+
+    @WidgetBundleBuilder
+    private var lockScreenWidgets: some Widget {
+        #if os(iOS)
+        RemainingRemindersWidget()
+        #endif
     }
 }
