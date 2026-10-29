@@ -9,11 +9,7 @@ extension CalendarView {
                 mode = .day
             }
             navigation.show(date)
-            if let item {
-                Task {
-                    routedEvent = await store.event(matching: item, on: date)
-                }
-            }
+            itemRequest = item.map { CalendarItemRequest(reference: $0, date: date) }
             return true
         case .newEvent:
             composer = .newEvent
