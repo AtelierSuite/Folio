@@ -4,4 +4,7 @@ import Foundation
 public enum AppDestination: Hashable, Sendable {
     case calendarDay(Date, item: CalendarItemReference? = nil)
     case note(URL)
+    case newEvent
+    case newReminder
+    case newNote
 }
