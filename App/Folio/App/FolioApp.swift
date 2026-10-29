@@ -12,6 +12,7 @@ struct FolioApp: App {
     @State private var notificationScheduler = NotificationScheduler()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
+    @State private var sleepStore: SleepStore
 
     init() {
         NotificationPresentationDelegate.install()
@@ -24,6 +25,9 @@ struct FolioApp: App {
         _noteNavigator = State(initialValue: noteNavigator)
         AppDependencyManager.shared.add(dependency: notesLibrary)
         AppDependencyManager.shared.add(dependency: noteNavigator)
+        let sleepStore = SleepStore(capabilities: .current)
+        sleepStore.startObservingChanges()
+        _sleepStore = State(initialValue: sleepStore)
     }
 
     var body: some Scene {
@@ -39,6 +43,7 @@ struct FolioApp: App {
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
                 .environment(weatherStore)
+                .environment(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .environment(searchIndexer)
@@ -62,6 +67,7 @@ struct FolioApp: App {
             .environment(notificationScheduler)
             .environment(searchIndexer)
             .environment(weatherStore)
+            .environment(sleepStore)
         }
         #endif
     }
@@ -75,6 +81,7 @@ struct FolioApp: App {
         if arguments.contains(EventKitDataSource.testAlertLaunchArgument) {
             try? EventKitDataSource.shared.seedTestAlertEvent()
         }
+        await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif
     }
 }
