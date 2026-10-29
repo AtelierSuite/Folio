@@ -24,16 +24,12 @@ struct SleepTimelineLayerView: View {
 
     private var blocks: [SleepBlock] {
         sessions.flatMap { session in
-            session.segments.enumerated().flatMap { index, segment in
+            let daySegments = session.segments.flatMap { segment in
                 context.days.segments(from: segment.interval.start, to: segment.interval.end)
-                    .enumerated()
-                    .map { dayIndex, daySegment in
-                        SleepBlock(
-                            stage: segment.stage,
-                            segment: daySegment,
-                            isSessionStart: index == 0 && dayIndex == 0
-                        )
-                    }
+                    .map { (stage: segment.stage, daySegment: $0) }
+            }
+            return daySegments.enumerated().map { index, item in
+                SleepBlock(stage: item.stage, segment: item.daySegment, isSessionStart: index == 0)
             }
         }
     }
