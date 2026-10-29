@@ -28,7 +28,8 @@ struct SearchResultGroupTests {
         let note = SearchFixtures.note("Log", text: "---\ndate: 2026-03-04\n---\nBody")
         #expect(Calendar.current.dateComponents([.year, .month, .day], from: note.date ?? .distantPast)
             == DateComponents(year: 2026, month: 3, day: 4))
-        #expect(note.body.contains("Body"))
+        #expect(note.body.hasPrefix("Body"))
+        #expect(note.snippet(matching: "") == "Body date: 2026-03-04")
     }
 
     @Test func snippetShowsTextAroundTheMatch() {

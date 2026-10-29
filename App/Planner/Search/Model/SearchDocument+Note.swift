@@ -10,7 +10,7 @@ extension SearchDocument {
             kind: .note,
             title: file.title,
             detail: file.folderPath.isEmpty ? nil : file.folderPath,
-            body: [frontMatterText, body].filter { !$0.isEmpty }.joined(separator: "\n"),
+            body: [body, frontMatterText].filter { !$0.isEmpty }.joined(separator: "\n"),
             date: markdown?.frontMatter.date ?? file.modifiedDate,
             hasMeetingLink: MeetingLink.isPresent(in: [text]),
             destination: .note(file.url)
