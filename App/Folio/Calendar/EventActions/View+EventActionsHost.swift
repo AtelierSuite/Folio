@@ -4,8 +4,12 @@ import SwiftUI
 extension View {
     /// Gives the cards inside quick actions for `events`, and presents what they open:
     /// details, the editor, span and error dialogs and the menu a tap opens.
-    func eventActionsHost(events: [CalendarEvent]) -> some View {
-        modifier(EventActionsHostModifier(events: events))
+    func eventActionsHost(
+        events: [CalendarEvent],
+        controller: EventActionsController? = nil,
+        ignoresTaps: @escaping () -> Bool = { false }
+    ) -> some View {
+        modifier(EventActionsHostModifier(events: events, externalController: controller, ignoresTaps: ignoresTaps))
     }
 }
 
@@ -18,8 +22,14 @@ private struct EventActionsHostModifier: ViewModifier {
     @Environment(\.platformCapabilities) private var capabilities
     @AppStorage(EventTapSettings.behaviorKey, store: AppGroup.userDefaults)
     private var tapBehavior = EventTapSettings.defaultBehavior
-    @State private var controller = EventActionsController()
+    @State private var ownController = EventActionsController()
     let events: [CalendarEvent]
+    let externalController: EventActionsController?
+    let ignoresTaps: () -> Bool
+
+    private var controller: EventActionsController {
+        externalController ?? ownController
+    }
 
     private var actions: EventActions {
         EventActions(
@@ -31,7 +41,8 @@ private struct EventActionsHostModifier: ViewModifier {
             openURL: openURL,
             tapBehavior: tapBehavior,
             usesPointerSelection: capabilities.usesPointerSelection,
-            eventsByIdentifier: Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+            eventsByIdentifier: Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }),
+            ignoresTaps: ignoresTaps
         )
     }
 

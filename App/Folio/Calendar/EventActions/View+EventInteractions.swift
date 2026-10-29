@@ -60,6 +60,11 @@ private struct EventInteractionsModifier: ViewModifier {
                 event: event, actions: actions, opensMenuAtCard: placement == .monthCell, center: { center }
             ))
             .onGeometryChange(for: CGRect.self) { $0.frame(in: EventActions.coordinateSpace) } action: { frame = $0 }
+            .onChange(of: actions.controller.cardMenuEventID) { _, eventID in
+                guard eventID == event.id else { return }
+                actions.controller.cardMenuEventID = nil
+                actions.presentMenu(for: event, at: center)
+            }
             .modifier(EventAccessibilityModifier(
                 event: event, actions: actions, placement: placement, center: center
             ))
@@ -88,26 +93,6 @@ private struct EventAccessibilityModifier: ViewModifier {
                 .accessibilityActions {
                     EventMenuAccessibilityActions(event: event, actions: actions, namesEvent: true)
                 }
-        }
-    }
-}
-
-/// A context menu with a preview. Month chips sit in a paging scroll view where `.contextMenu`
-/// doesn't open on a long press, so on touch screens they open the menu at the chip instead.
-private struct EventLongPressModifier: ViewModifier {
-    let event: CalendarEvent
-    let actions: EventActions
-    let opensMenuAtCard: Bool
-    let center: () -> CGPoint
-
-    func body(content: Content) -> some View {
-        if opensMenuAtCard && !actions.usesPointerSelection {
-            content.onLongPressGesture {
-                actions.controller.selectedEventID = event.id
-                actions.presentMenu(for: event, at: center())
-            }
-        } else {
-            content.eventContextMenu(event, actions: actions)
         }
     }
 }
