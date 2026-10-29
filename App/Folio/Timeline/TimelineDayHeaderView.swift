@@ -10,8 +10,11 @@ struct TimelineDayHeaderView: View {
             Color.clear
                 .frame(width: gutterWidth, height: 1)
             ForEach(days.intervals, id: \.start) { day in
-                TimelineDayHeaderLabel(day: day, calendar: days.calendar)
-                    .frame(maxWidth: .infinity)
+                VStack(spacing: 2) {
+                    TimelineDayHeaderLabel(day: day, calendar: days.calendar)
+                    TimelineDayHeaderWeather(dayStart: day.start)
+                }
+                .frame(maxWidth: .infinity)
             }
         }
         .padding(.vertical, 6)

@@ -13,6 +13,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State private var entries: [TimelineEntry] = []
     @State private var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
     @State private var selectedEvent: CalendarEvent?
+    @State private var events: [CalendarEvent] = []
+    @State private var weather = WeatherSnapshot.empty
 
     init(
         days: TimelineDays,
@@ -34,9 +36,11 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             CalendarTimelineView(
                 entries: entries,
                 days: days,
-                layers: CalendarTimelineOverlays(capabilities: capabilities).layers(for: days),
+                layers: CalendarTimelineOverlays(capabilities: capabilities, weather: weather).layers(for: days),
                 onSelectEntry: select
             )
+            .environment(\.weatherSnapshot, weather)
+            WeatherAttributionFooter(snapshot: weather)
         }
         .horizontalPaging(isEnabled: isPagingEnabled) { direction in
             navigation.page(by: pageStep, toward: direction)
@@ -46,6 +50,9 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         )) {
             await load()
         }
+        .loadsWeather(
+            for: days.intervals, calendar: days.calendar, events: events, detail: .dailyAndHourly, into: $weather
+        )
         .eventDetailSheet(item: $selectedEvent)
     }
 
@@ -60,6 +67,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         let shownEvents = await events.filter { !excludedCalendarIdentifiers.contains($0.calendarIdentifier) }
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        self.events = shownEvents
         entries = shownEvents.map(TimelineEntry.init(event:))
             + shownReminders.compactMap { TimelineEntry(reminder: $0) }
     }
