@@ -28,6 +28,9 @@ struct TimelineZoomScrollView<Content: View>: View {
                 .simultaneousGesture(magnifyGesture, isEnabled: zoom != nil)
         }
         .scrollPosition($position)
+        .modifier(TimelineDragAutoScrollModifier(
+            position: $position, pinch: pinch, contentHeight: hourHeight * 24 + verticalInset * 2
+        ))
         .accessibilityIdentifier("TimelineScrollView")
         .defaultScrollAnchor(UnitPoint(x: 0, y: initialHour / 24), for: .initialOffset)
         .onScrollGeometryChange(for: CGFloat.self) { geometry in

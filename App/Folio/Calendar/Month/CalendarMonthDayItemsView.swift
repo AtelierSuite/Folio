@@ -4,6 +4,7 @@ import SwiftUI
 struct CalendarMonthDayItemsView: View {
     @ScaledMetric(relativeTo: .caption2) private var rowHeight: CGFloat = 15
     let items: [MonthDayItem]
+    let day: Date
 
     private static let spacing: CGFloat = 2
 
@@ -17,6 +18,7 @@ struct CalendarMonthDayItemsView: View {
                 ForEach(items.prefix(overflow.visibleCount)) { item in
                     CalendarMonthEntryChip(item: item)
                         .frame(height: rowHeight)
+                        .calendarMonthDraggable(item.entry, from: day)
                 }
                 if overflow.hiddenCount > 0 {
                     CalendarMonthMoreLabel(count: overflow.hiddenCount)

@@ -50,5 +50,6 @@ struct CalendarTimelineView: View {
                 )
             }
         }
+        .coordinateSpace(TimelineDragController.coordinateSpace)
     }
 }

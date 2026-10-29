@@ -17,6 +17,7 @@ struct SettingsView: View {
                     .accessibilityIdentifier("WorkWeekLink")
             }
             TimelineSettingsSection()
+            DragSettingsSection()
             MonthSettingsSection()
             WeatherSettingsSection()
             SleepSettingsSection()

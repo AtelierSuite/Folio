@@ -2,6 +2,7 @@ import Planner
 import SwiftUI
 
 struct TimelineAllDayStripView: View {
+    @Environment(TimelineDragController.self) private var drag: TimelineDragController?
     let layout: TimelineLayout
     let gutterWidth: CGFloat
     let metrics: TimelineMetrics
@@ -30,6 +31,8 @@ struct TimelineAllDayStripView: View {
                                     .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
                             }
                         }
+                        .opacity(placement.entry.id == drag?.session?.entry.id ? 0.35 : 1)
+                        .timelineReminderPlacing(placement.entry, drag: drag)
                         .timelineAllDayPlacement(placement)
                     }
                 }
