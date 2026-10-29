@@ -23,6 +23,7 @@ struct CalendarToolbar: ToolbarContent {
             CalendarAddMenu(composer: $composer)
             CalendarViewModeMenu(mode: $mode, isShowingInbox: $isShowingInbox, includesInbox: isCompact)
         }
+        InvitationsToolbarItem()
         ToolbarItemGroup(placement: .navigation) {
             Button(String(localized: "Toolbar.Previous", table: "Calendar"), systemImage: "chevron.left") {
                 navigation.page(mode, forward: false)
