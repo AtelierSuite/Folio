@@ -5,6 +5,7 @@ struct EventEditorView: View {
     @Environment(CalendarStore.self) private var store
     @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(NotificationScheduler.self) private var notificationScheduler
+    @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
     @Environment(\.dismiss) private var dismiss
     private let editedEvent: CalendarEvent?
     private let originalDraft: EventDraft?
@@ -12,6 +13,7 @@ struct EventEditorView: View {
     @State private var draft: EventDraft
     @State private var urlText: String
     @State private var styleDraft: NotificationStyleDraft
+    @State private var arrivalAlert = EventArrivalAlertChoice()
     @State private var isSaving = false
     @State private var isChoosingSpan = false
     @State private var errorMessage: String?
@@ -42,7 +44,7 @@ struct EventEditorView: View {
     }
 
     private var hasChanges: Bool {
-        styleDraft.hasChanges || originalDraft.map { finalDraft != $0 } ?? true
+        styleDraft.hasChanges || arrivalAlert.hasChanges || originalDraft.map { finalDraft != $0 } ?? true
     }
 
     private var canSave: Bool {
@@ -67,6 +69,8 @@ struct EventEditorView: View {
                         draft: $draft,
                         urlText: $urlText,
                         alertStyle: $styleDraft.style,
+                        arrivalAlert: $arrivalAlert,
+                        reference: editedEvent?.reference,
                         calendars: store.writableEventCalendars
                     )
                 }
@@ -133,6 +137,7 @@ struct EventEditorView: View {
                 try await store.createEvent(savedDraft)
             }
             styleDraft.save(for: reference, in: notificationScheduler)
+            await arrivalAlert.save(for: reference, to: arrivalAlerts)
             onSave(reference, savedDraft)
             dismiss()
         } catch {
