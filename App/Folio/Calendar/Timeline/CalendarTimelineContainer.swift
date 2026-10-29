@@ -4,6 +4,7 @@ import SwiftUI
 struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(CalendarStore.self) private var store
     @Environment(CalendarNavigation.self) private var navigation
+    @Environment(\.platformCapabilities) private var capabilities
     let days: TimelineDays
     let pageStep: CalendarPageStep
     let excludedCalendarIdentifiers: Set<String>
@@ -28,7 +29,11 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             accessory
-            CalendarTimelineView(entries: entries, days: days)
+            CalendarTimelineView(
+                entries: entries,
+                days: days,
+                layers: CalendarTimelineOverlays(capabilities: capabilities).layers(for: days)
+            )
         }
         .horizontalPaging(isEnabled: isPagingEnabled) { direction in
             navigation.page(by: pageStep, toward: direction)
