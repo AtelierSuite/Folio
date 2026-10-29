@@ -8,6 +8,7 @@ struct CalendarView: View {
     @State var navigation = CalendarNavigation()
     @State var composer: CalendarComposer?
     @State var routedEvent: CalendarEvent?
+    @State var isShowingInbox = false
 
     var body: some View {
         NavigationStack {
@@ -18,7 +19,9 @@ struct CalendarView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 #endif
                 .toolbar {
-                    CalendarToolbar(mode: $mode, composer: $composer, navigation: navigation)
+                    CalendarToolbar(
+                        mode: $mode, composer: $composer, isShowingInbox: $isShowingInbox, navigation: navigation
+                    )
                 }
                 .sheet(item: $composer) { composer in
                     switch composer {
@@ -26,6 +29,10 @@ struct CalendarView: View {
                     case .newReminder: ReminderEditorView(initialDate: navigation.selectedDate)
                     }
                 }
+        }
+        .inspector(isPresented: $isShowingInbox) {
+            ReminderInboxView(isPresented: $isShowingInbox)
+                .inspectorColumnWidth(min: 260, ideal: 320, max: 420)
         }
         .environment(navigation)
         .eventDetailSheet(item: $routedEvent)

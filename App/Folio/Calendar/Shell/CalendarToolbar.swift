@@ -3,10 +3,12 @@ import SwiftUI
 struct CalendarToolbar: ToolbarContent {
     @Binding var mode: CalendarViewMode
     @Binding var composer: CalendarComposer?
+    @Binding var isShowingInbox: Bool
     let navigation: CalendarNavigation
 
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
+            ReminderInboxButton(isShowingInbox: $isShowingInbox)
             CalendarAddMenu(composer: $composer)
             Picker(String(localized: "Toolbar.ViewMode", table: "Calendar"), selection: $mode) {
                 ForEach(CalendarViewMode.allCases) { mode in

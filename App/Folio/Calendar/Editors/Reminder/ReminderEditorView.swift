@@ -14,7 +14,7 @@ struct ReminderEditorView: View {
     @State private var isWorking = false
     @State private var failure: ReminderEditorFailure?
 
-    init(initialDate: Date) {
+    init(initialDate: Date?) {
         self.init(mode: .create(initialDate: initialDate))
     }
 
