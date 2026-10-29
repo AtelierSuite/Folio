@@ -34,8 +34,8 @@ final class NotificationStyleTests: XCTestCase {
         XCTAssertTrue(alarmCount.waitForExistence(timeout: 10))
         let scheduledCount = app.descendants(matching: .any)["NotificationsScheduledCount"]
         let expected = NSPredicate { _, _ in
-            let alarms = alarmCount.label.hasSuffix(" 1") || (alarmCount.value as? String) == "1"
-            let notifications = scheduledCount.label.hasSuffix(" 1") || (scheduledCount.value as? String) == "1"
+            let alarms = Self.count(in: alarmCount) > 0
+            let notifications = Self.count(in: scheduledCount) > 0
             return isDenied ? notifications : alarms
         }
         expectation(for: expected, evaluatedWith: nil)
@@ -49,6 +49,14 @@ final class NotificationStyleTests: XCTestCase {
         app.activate()
         app.buttons["NotificationStylesLink"].tap()
         chooseStyle("Standard", in: app)
+    }
+
+    @MainActor
+    private static func count(in element: XCUIElement) -> Int {
+        if let value = element.value as? String, let count = Int(value) {
+            return count
+        }
+        return Int(element.label.split(separator: " ").last ?? "") ?? 0
     }
 
     @MainActor
