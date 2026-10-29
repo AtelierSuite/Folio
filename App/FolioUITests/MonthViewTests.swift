@@ -4,7 +4,7 @@ final class MonthViewTests: XCTestCase {
     @MainActor
     func testSwipingPagesMonthsAndTappingADaySelectsIt() throws {
         let app = XCUIApplication()
-        app.launchArguments += ["-Calendar.ViewMode", "month"]
+        app.launchArguments += ["-Calendar.ViewMode", "month", "-FolioSkipOnboarding"]
         app.launch()
 
         let title = app.navigationBars.firstMatch.staticTexts.firstMatch
