@@ -48,7 +48,8 @@ struct WorkWeekDatesTests {
     }
 
     @Test func eventOnASkippedDayIsHidden() {
-        let days = TimelineDays(dates: [Support.date(2026, 10, 27), Support.date(2026, 10, 29)], calendar: Support.calendar())
+        let dates = [Support.date(2026, 10, 27), Support.date(2026, 10, 29)]
+        let days = TimelineDays(dates: dates, calendar: Support.calendar())
         let engine = TimelineLayoutEngine(days: days, floatingSourceTimeZone: Support.newYork)
         let layout = engine.layout([
             Support.entry("skipped", from: Support.date(2026, 10, 28, 9), to: Support.date(2026, 10, 28, 10)),
