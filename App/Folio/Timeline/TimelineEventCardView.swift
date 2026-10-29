@@ -7,6 +7,7 @@ struct TimelineEventCardView: View {
     let presentation: TimelineCardPresentation
     let textMetrics: TimelineCardTextMetrics
     let compressesText: Bool
+    var trailingInset: CGFloat = 0
 
     private var entry: TimelineEntry {
         placement.entry
@@ -37,7 +38,7 @@ struct TimelineEventCardView: View {
                     compressesText: compressesText
                 )
                 .padding(.leading, 6)
-                .padding(.trailing, 3)
+                .padding(.trailing, 3 + trailingInset)
                 .padding(.vertical, presentation.showsPadding ? textMetrics.verticalPadding / 2 : 0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .background(color.opacity(0.22), in: shape)

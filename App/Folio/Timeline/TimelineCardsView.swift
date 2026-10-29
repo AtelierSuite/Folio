@@ -9,6 +9,7 @@ struct TimelineCardsView: View {
     @AppStorage(TimelineSettings.compressesTextKey) private var compressesText = false
     @ScaledMetric(relativeTo: .caption) private var titlePointSize = TimelineMetrics.cardTitlePointSize
     @ScaledMetric(relativeTo: .caption2) private var detailPointSize = TimelineMetrics.cardDetailPointSize
+    @ScaledMetric(relativeTo: .caption2) private var joinButtonWidth = TimelineMetrics.joinButtonWidth
     @State private var width: CGFloat = 0
 
     /// The card's own `padding(1)` on each side.
@@ -27,14 +28,22 @@ struct TimelineCardsView: View {
                     width: dayWidth * slot.widthFraction - cardInset,
                     height: slot.height(hourHeight: hourHeight, minimumHeight: minimumCardHeight) - cardInset
                 )
+                let presentation = resolver.presentation(for: size)
+                let showsJoinButton = placement.entry.hasMeetingLink && resolver.showsJoinButton(
+                    for: presentation, cardSize: size, buttonWidth: joinButtonWidth
+                )
                 TimelineEventCardView(
                     placement: placement,
                     timeZone: layout.days.calendar.timeZone,
-                    presentation: resolver.presentation(for: size),
+                    presentation: presentation,
                     textMetrics: resolver.metrics,
-                    compressesText: compressesText
+                    compressesText: compressesText,
+                    trailingInset: showsJoinButton ? joinButtonWidth : 0
                 )
                 .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
+                .timelineJoinButton(
+                    placement.entry.meetingLink, isShown: showsJoinButton, color: Color(placement.entry.color)
+                )
                 .timelineSlot(slot)
             }
         }
