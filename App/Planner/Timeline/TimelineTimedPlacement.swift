@@ -2,6 +2,7 @@ import Foundation
 
 public struct TimelineTimedPlacement: Sendable, Hashable, Identifiable {
     public let entry: TimelineEntry
+    public let interval: DateInterval
     public let dayIndex: Int
     public let startHour: Double
     public let endHour: Double

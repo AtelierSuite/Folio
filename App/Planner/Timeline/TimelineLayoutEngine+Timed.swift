@@ -1,11 +1,18 @@
 import Foundation
 
 extension TimelineLayoutEngine {
+    private struct TimedSegment {
+        let entry: TimelineEntry
+        let interval: DateInterval
+        let segment: TimelineDaySegment
+    }
+
     func timedPlacements(for entries: [(entry: TimelineEntry, interval: DateInterval)]) -> [TimelineTimedPlacement] {
-        var segmentsByDay = [[(entry: TimelineEntry, segment: TimelineDaySegment)]](repeating: [], count: days.count)
+        var segmentsByDay = [[TimedSegment]](repeating: [], count: days.count)
         for (entry, interval) in entries {
             for segment in days.segments(from: interval.start, to: interval.end) {
-                segmentsByDay[segment.dayIndex].append((entry, visible(segment)))
+                let timedSegment = TimedSegment(entry: entry, interval: interval, segment: visible(segment))
+                segmentsByDay[segment.dayIndex].append(timedSegment)
             }
         }
         return segmentsByDay.flatMap { daySegments in
@@ -16,6 +23,7 @@ extension TimelineLayoutEngine {
             return zip(daySegments, assignments).map { daySegment, assignment in
                 TimelineTimedPlacement(
                     entry: daySegment.entry,
+                    interval: daySegment.interval,
                     dayIndex: daySegment.segment.dayIndex,
                     startHour: daySegment.segment.startHour,
                     endHour: daySegment.segment.endHour,

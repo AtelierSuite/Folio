@@ -81,6 +81,7 @@ struct TimelineLayoutEngineTimedTests {
         #expect(layout.timedPlacements[0].dayIndex == 0)
         #expect(layout.timedPlacements[0].startHour == 7)
         #expect(layout.timedPlacements[0].endHour == 7.5)
+        #expect(layout.timedPlacements[0].interval.start == Support.date(2026, 10, 28, 7))
     }
 
     @Test func eventsAfterSpringForwardKeepTheirClockTime() {
