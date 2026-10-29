@@ -24,6 +24,7 @@ final class EventMenuAnchorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         button.showsMenuAsPrimaryAction = true
+        button.preferredMenuElementOrder = .fixed
         button.isAccessibilityElement = false
         addSubview(button)
     }
