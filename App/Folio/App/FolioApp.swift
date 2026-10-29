@@ -12,6 +12,7 @@ struct FolioApp: App {
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler: NotificationScheduler
     @State private var arrivalAlerts: ArrivalAlertCenter
+    @State private var notificationNavigator = NotificationNavigator()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var sleepStore: SleepStore
@@ -21,12 +22,18 @@ struct FolioApp: App {
     @State private var countdowns: EventCountdownManager
 
     init() {
-        NotificationPresentationDelegate.install()
-        let notificationScheduler = NotificationScheduler()
-        _notificationScheduler = State(initialValue: notificationScheduler)
-        _arrivalAlerts = State(initialValue: .makeForApp(following: notificationScheduler))
         let calendarStore = CalendarStore()
         _calendarStore = State(initialValue: calendarStore)
+        let notificationScheduler = NotificationScheduler()
+        let notificationNavigator = NotificationNavigator()
+        _notificationScheduler = State(initialValue: notificationScheduler)
+        _notificationNavigator = State(initialValue: notificationNavigator)
+        _arrivalAlerts = State(initialValue: .makeForApp(following: notificationScheduler))
+        NotificationPresentationDelegate.install(responseHandler: NotificationResponseHandler(
+            reminders: calendarStore,
+            routing: notificationNavigator,
+            replan: { await notificationScheduler.replan() }
+        ))
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
         let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer())
         let noteNavigator = NoteNavigator()
@@ -62,6 +69,7 @@ struct FolioApp: App {
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
                 .environment(arrivalAlerts)
+                .environment(notificationNavigator)
                 .environment(weatherStore)
                 .environment(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
@@ -136,6 +144,12 @@ struct FolioApp: App {
         }
         if arguments.contains(EventKitDataSource.countdownSampleLaunchArgument) {
             try? EventKitDataSource.shared.seedCountdownSampleEvent()
+        }
+        if arguments.contains(EventKitDataSource.testMeetingAlertLaunchArgument) {
+            try? EventKitDataSource.shared.seedTestMeetingAlert()
+        }
+        if arguments.contains(EventKitDataSource.testReminderAlertLaunchArgument) {
+            try? await EventKitDataSource.shared.seedTestAlertReminder()
         }
         await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif

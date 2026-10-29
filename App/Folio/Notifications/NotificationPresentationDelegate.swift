@@ -4,7 +4,11 @@ import UserNotifications
 final class NotificationPresentationDelegate: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationPresentationDelegate()
 
-    static func install() {
+    private var responseHandler: NotificationResponseHandler?
+
+    static func install(responseHandler: NotificationResponseHandler) {
+        shared.responseHandler = responseHandler
+        NotificationCategoryRegistry.register()
         UNUserNotificationCenter.current().delegate = shared
     }
 
@@ -15,14 +19,13 @@ final class NotificationPresentationDelegate: NSObject, UNUserNotificationCenter
         [.banner, .list, .sound]
     }
 
-    /// Tapping an event's alert joins its meeting while it's close enough to join.
-    nonisolated func userNotificationCenter(
+    func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
-        guard response.actionIdentifier == UNNotificationDefaultActionIdentifier,
-              let meeting = NotificationUserInfo.meeting(from: response.notification.request.content.userInfo),
-              meeting.isJoinable(at: .now) else { return }
-        await MeetingURLOpener.open(meeting.link.url)
+        await responseHandler?.handle(
+            actionIdentifier: response.actionIdentifier,
+            content: response.notification.request.content
+        )
     }
 }
