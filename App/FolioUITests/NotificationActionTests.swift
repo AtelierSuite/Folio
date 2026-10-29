@@ -29,7 +29,12 @@ final class NotificationActionTests: XCTestCase {
         app.launch()
         app.tabBars.buttons.element(boundBy: 0).tap()
         let row = app.cells.containing(.staticText, identifier: "Folio Test Reminder").firstMatch
-        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        var swipes = 0
+        while !row.waitForExistence(timeout: swipes == 0 ? 10 : 2), swipes < 8 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(row.exists)
         XCTAssertTrue(row.buttons["Mark as Not Completed"].waitForExistence(timeout: 10))
     }
 
