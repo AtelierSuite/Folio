@@ -39,7 +39,7 @@ struct NoteSessionView: View {
         case .loading:
             ProgressView(String(localized: "Detail.Loading", table: "Notes"))
         case .ready:
-            NoteEditorView(text: $session.text)
+            NoteEditorView(text: $session.text, noteURL: session.url)
                 .focused($isEditorFocused)
                 .onAppear {
                     isEditorFocused = session.focusesEditorOnOpen

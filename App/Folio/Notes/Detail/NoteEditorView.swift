@@ -2,12 +2,10 @@ import SwiftUI
 
 struct NoteEditorView: View {
     @Binding var text: String
+    let noteURL: URL
 
     var body: some View {
-        TextEditor(text: $text)
-            .font(.body.monospaced())
-            .scrollContentBackground(.hidden)
-            .contentMargins(.horizontal, 12, for: .scrollContent)
+        MarkdownEditor(text: $text, baseURL: noteURL.deletingLastPathComponent())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
