@@ -49,7 +49,7 @@ public struct AgendaBriefingLoader: Sendable {
     /// The meeting with a link that starts or started closest to now, among those not yet over.
     public func nextMeeting(at now: Date = .now) async -> CalendarEvent? {
         await events.visibleEvents(in: DateInterval(start: now, duration: Self.upNextHorizon))
-            .filter { !$0.isAllDay && $0.endDate > now && IntentMeetingLink.url(for: $0) != nil }
+            .filter { !$0.isAllDay && $0.endDate > now && $0.meetingLink != nil }
             .min { abs($0.startDate.timeIntervalSince(now)) < abs($1.startDate.timeIntervalSince(now)) }
     }
 }

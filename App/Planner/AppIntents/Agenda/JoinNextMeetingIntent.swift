@@ -17,7 +17,7 @@ public struct JoinNextMeetingIntent: AppIntent {
             throw PlannerIntentError.noCalendarAccess
         }
         guard let meeting = await AgendaBriefingLoader().nextMeeting(),
-              let url = IntentMeetingLink.url(for: meeting) else {
+              let url = meeting.meetingLink?.url else {
             return .result(dialog: IntentDialog(stringLiteral: IntentStrings.string("Dialog.NoMeetingToJoin")))
         }
         let dialog = IntentStrings.string("Dialog.JoiningMeeting \(meeting.title)")
