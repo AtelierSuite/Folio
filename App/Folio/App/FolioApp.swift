@@ -57,6 +57,7 @@ struct FolioApp: App {
                 .followsSystemTime(systemTime)
                 .environment(undoCoordinator)
                 .environment(undoToastHosts)
+                .reloadsWidgets(on: calendarStore)
                 .task {
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {
