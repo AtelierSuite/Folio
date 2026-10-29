@@ -60,6 +60,10 @@ struct TimelineWeatherBandHourView: View {
     let hour: HourlyWeather
     let showsTemperature: Bool
 
+    private var rainOpacity: Double {
+        hour.precipitationChance < 0.2 ? 0 : hour.precipitationChance * 0.35
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 2) {
             if showsTemperature {
@@ -70,8 +74,8 @@ struct TimelineWeatherBandHourView: View {
                     .padding(.top, 1)
             }
             Rectangle()
-                .fill(Color.blue.opacity(0.08 + hour.precipitationChance * 0.5))
-                .frame(width: 3)
+                .fill(Color.blue.opacity(rainOpacity))
+                .frame(width: 2)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
     }
