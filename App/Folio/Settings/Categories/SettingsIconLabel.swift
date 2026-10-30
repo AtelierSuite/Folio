@@ -9,8 +9,11 @@ struct SettingsIconLabel: View {
             Text(category.title)
         } icon: {
             Image(systemName: category.systemImage)
-                .font(.system(size: iconSize / 2, weight: .medium))
+                .resizable()
+                .scaledToFit()
+                .fontWeight(.medium)
                 .foregroundStyle(.white)
+                .frame(width: iconSize * 0.6, height: iconSize * 0.6)
                 .frame(width: iconSize, height: iconSize)
                 .background(category.color.gradient, in: .rect(cornerRadius: iconSize * 0.27))
         }
