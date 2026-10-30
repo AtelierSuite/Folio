@@ -30,6 +30,7 @@ struct NotificationSchedulerStyleTests {
             alarmLedger: AlarmLedger(defaults: defaults),
             settings: settings,
             styleSettings: NotificationStyleSettings(defaults: defaults),
+            allDayAlertTimeSettings: AllDayAlertTimeSettings(defaults: defaults),
             capabilities: PlatformCapabilities(platform: platform, areLiveActivitiesSupported: false),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             clock: { NotificationFixtures.now }
