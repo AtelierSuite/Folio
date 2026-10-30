@@ -12,22 +12,29 @@ final class TimelinePageFrames {
         let width: CGFloat
     }
 
-    private(set) var frames: [Date: Frame] = [:]
+    /// Keyed by width too: when the pages are rebuilt at a new width, the old pages keep reporting
+    /// until they're gone, and readers only want the pages of the current width.
+    private struct Key: Hashable {
+        let page: Date
+        let width: CGFloat
+    }
+
+    private var frames: [Key: Frame] = [:]
     var viewportWidth: CGFloat = 0
 
     func update(_ page: Date, minX: CGFloat, width: CGFloat) {
+        let key = Key(page: page, width: width)
         let frame = Frame(page: page, minX: minX, width: width)
-        if frames[page] != frame { frames[page] = frame }
+        if frames[key] != frame { frames[key] = frame }
     }
 
-    /// When the pages are rebuilt at a new width, the new page can report in before the old one
-    /// disappears, so only a frame of the old width is dropped.
     func remove(_ page: Date, width: CGFloat) {
-        if frames[page]?.width == width { frames[page] = nil }
+        frames[Key(page: page, width: width)] = nil
     }
 
-    var visible: [Frame] {
+    func visible(pageWidth: CGFloat) -> [Frame] {
         frames.values
+            .filter { abs($0.width - pageWidth) < 0.5 }
             .filter { $0.minX < viewportWidth && $0.minX + $0.width > 0 }
             .sorted { $0.minX < $1.minX }
     }
