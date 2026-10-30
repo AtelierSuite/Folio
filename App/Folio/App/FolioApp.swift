@@ -103,9 +103,7 @@ struct FolioApp: App {
         }
         #if os(macOS)
         Settings {
-            NavigationStack {
-                SettingsView()
-            }
+            SettingsWindow()
             .environment(\.platformCapabilities, .current)
             .environment(calendarStore)
             .environment(notesLibrary)

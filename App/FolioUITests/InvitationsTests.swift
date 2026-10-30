@@ -62,6 +62,7 @@ final class InvitationsTests: XCTestCase {
         capture(app, "AgendaDeclined")
 
         app.buttons["Settings"].tap()
+        app.openSettingsCategory("calendars")
         let toggle = app.switches["HideDeclinedEventsToggle"]
         for _ in 0..<6 where !toggle.isHittable {
             app.swipeUp()

@@ -9,6 +9,7 @@ final class WorkWeekSettingsTests: XCTestCase {
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
         app.tabBars.buttons.element(boundBy: 2).tap()
+        app.openSettingsCategory("calendars")
         app.buttons["WorkWeekLink"].tap()
         let thursday = app.switches.matching(identifier: "WorkWeek.Day.5").firstMatch
         XCTAssertTrue(thursday.waitForExistence(timeout: 5))

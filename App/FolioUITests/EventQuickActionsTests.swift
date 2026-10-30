@@ -120,6 +120,7 @@ final class EventQuickActionsTests: XCTestCase {
     func testSettingSwitchesTheTapBehavior() throws {
         let app = launch(mode: "day", behavior: nil)
         app.tabBars.buttons["Settings"].firstMatch.tap()
+        app.openSettingsCategory("general")
         let picker = app.buttons["EventTapBehaviorPicker"].firstMatch
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
         picker.tap()

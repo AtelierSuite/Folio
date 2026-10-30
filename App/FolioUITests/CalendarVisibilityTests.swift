@@ -9,6 +9,7 @@ final class CalendarVisibilityTests: XCTestCase {
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
         app.tabBars.buttons.element(boundBy: 2).tap()
+        app.openSettingsCategory("calendars")
         app.buttons["CalendarVisibilityLink"].tap()
         let sampleToggle = app.switches.matching(identifier: "CalendarVisibility.Folio Samples").firstMatch
         XCTAssertTrue(sampleToggle.waitForExistence(timeout: 5))

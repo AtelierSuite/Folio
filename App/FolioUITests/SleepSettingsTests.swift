@@ -15,9 +15,12 @@ final class SleepSettingsTests: XCTestCase {
         let isPhone = false
         #endif
         if isPhone {
+            app.openSettingsCategory("sleep")
             for _ in 0..<3 where !toggle.exists {
                 app.swipeUp()
             }
+        } else {
+            XCTAssertFalse(app.buttons["SettingsCategory.sleep"].waitForExistence(timeout: 3))
         }
         XCTAssertEqual(toggle.waitForExistence(timeout: 5), isPhone)
     }
