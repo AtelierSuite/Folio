@@ -68,23 +68,26 @@ private struct EventActionsHostModifier: ViewModifier {
                 }
             }
             .eventResponseSheet(event: $controller.respondingEvent)
-            .eventSpanDialog(
-                isPresented: isPresented($controller.pendingDelete),
-                action: .delete,
-                spans: EventEditSpan.allCases
-            ) { span in
-                if let event = controller.pendingDelete {
-                    actions.delete(event, span: span)
-                }
-            }
-            .eventSpanDialog(
-                isPresented: isPresented($controller.pendingMove),
-                action: .save,
-                spans: [.futureEvents, .allEvents]
-            ) { span in
-                if let request = controller.pendingMove {
-                    actions.finishMove(request, span: span)
-                }
+            .dialogAnchor(at: spanDialogAnchor(actions), in: EventActions.coordinateSpace) { anchor in
+                anchor
+                    .eventSpanDialog(
+                        isPresented: isPresented($controller.pendingDelete),
+                        action: .delete,
+                        spans: EventEditSpan.allCases
+                    ) { span in
+                        if let event = controller.pendingDelete {
+                            actions.delete(event, span: span)
+                        }
+                    }
+                    .eventSpanDialog(
+                        isPresented: isPresented($controller.pendingMove),
+                        action: .save,
+                        spans: [.futureEvents, .allEvents]
+                    ) { span in
+                        if let request = controller.pendingMove {
+                            actions.finishMove(request, span: span)
+                        }
+                    }
             }
             .alert(
                 String(localized: "Error.Title", table: "EventActions"),
@@ -94,6 +97,10 @@ private struct EventActionsHostModifier: ViewModifier {
             } message: {
                 Text(controller.errorMessage ?? "")
             }
+    }
+
+    private func spanDialogAnchor(_ actions: EventActions) -> CGRect? {
+        (controller.pendingDelete ?? controller.pendingMove?.event).flatMap(actions.dialogAnchor(for:))
     }
 
     private func isPresented<Value>(_ value: Binding<Value?>) -> Binding<Bool> {

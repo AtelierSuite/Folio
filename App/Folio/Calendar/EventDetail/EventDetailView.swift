@@ -50,6 +50,11 @@ struct EventDetailView: View {
                                 Task { await delete(span: .thisEvent) }
                             }
                         }
+                        .eventSpanDialog(
+                            isPresented: $isConfirmingDelete, action: .delete, spans: deleteSpans
+                        ) { span in
+                            Task { await delete(span: span) }
+                        }
                     }
                 }
             }
@@ -61,9 +66,6 @@ struct EventDetailView: View {
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar { toolbar }
-            .eventSpanDialog(isPresented: $isConfirmingDelete, action: .delete, spans: deleteSpans) { span in
-                Task { await delete(span: span) }
-            }
             .alert(
                 String(localized: "Detail.DeleteFailed", table: "EventEditor"),
                 isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
