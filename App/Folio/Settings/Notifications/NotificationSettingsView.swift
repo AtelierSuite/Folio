@@ -41,7 +41,6 @@ struct NotificationSettingsView: View {
             if scheduler.isEnabled {
                 NotificationStatusSection()
             }
-            NotificationPoliciesSection()
         }
         .formStyle(.grouped)
         .navigationTitle(String(localized: "Title", table: "Notifications"))
