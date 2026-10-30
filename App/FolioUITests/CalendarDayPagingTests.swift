@@ -70,7 +70,7 @@ final class CalendarDayPagingTests: XCTestCase {
 
         app.buttons["Next"].firstMatch.tap()
         XCTAssertTrue(waitUntilOnScreen(header(for: day(3, after: today), in: app), in: app))
-        XCTAssertFalse(isOnScreen(header(for: today, in: app), in: app))
+        XCTAssertTrue(waitUntilOffScreen(header(for: today, in: app), in: app))
     }
 
     @MainActor
@@ -82,9 +82,9 @@ final class CalendarDayPagingTests: XCTestCase {
         XCTAssertTrue(waitUntilOnScreen(header(for: thirdDay, in: app), in: app, timeout: 10))
 
         selectDayCount("2 Days", in: app)
-        XCTAssertTrue(waitUntilOffScreen(header(for: thirdDay, in: app), in: app))
         let secondDay = Calendar.current.date(byAdding: .day, value: 1, to: today)!
-        XCTAssertTrue(isOnScreen(header(for: secondDay, in: app), in: app))
+        XCTAssertTrue(waitUntilOnScreen(header(for: secondDay, in: app), in: app))
+        XCTAssertTrue(waitUntilOffScreen(header(for: thirdDay, in: app), in: app))
 
         app.terminate()
         app.launchArguments = baseArguments(mode: "multiDay")
