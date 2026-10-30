@@ -35,6 +35,11 @@ struct NotificationSettingsView: View {
                     NotificationStyleDefaultsView()
                 }
                 .accessibilityIdentifier("NotificationStylesLink")
+                NavigationLink(String(localized: "AllDay.Title", table: "Notifications")) {
+                    AllDayAlertTimesView()
+                }
+                .disabled(!scheduler.includesEvents)
+                .accessibilityIdentifier("AllDayAlertTimesLink")
             }
             .disabled(!scheduler.isEnabled)
             ArrivalAlertsSection()
