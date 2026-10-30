@@ -6,10 +6,27 @@ struct ReminderListsSidebar: View {
     @Environment(SystemTimeObserver.self) private var systemTime
     @Binding var selection: String?
     @State private var openCounts: [String: Int] = [:]
+    @State private var isCreatingList = false
 
     var body: some View {
         content
             .navigationTitle(String(localized: "Title", table: "Lists"))
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(String(localized: "NewList", table: "Lists"), systemImage: "plus") {
+                        isCreatingList = true
+                    }
+                    .disabled(store.defaultReminderListAccountIdentifier == nil)
+                    .accessibilityIdentifier("NewReminderList")
+                }
+            }
+            .sheet(isPresented: $isCreatingList) {
+                if let accountIdentifier = store.defaultReminderListAccountIdentifier {
+                    ReminderListCreationView(accountIdentifier: accountIdentifier) { list in
+                        selection = list.id
+                    }
+                }
+            }
             .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
                 openCounts = await store.openReminderCounts(calendar: systemTime.calendar)
             }
