@@ -14,9 +14,6 @@ struct RootView: View {
             Tab(String(localized: "Tab.Notes", table: "Root"), systemImage: "note.text", value: AppTab.notes) {
                 NotesView()
             }
-            Tab(value: AppTab.search, role: .search) {
-                SearchView()
-            }
             #if os(iOS)
             Tab(String(localized: "Tab.Settings", table: "Root"), systemImage: "gearshape", value: AppTab.settings) {
                 NavigationStack {
@@ -24,6 +21,9 @@ struct RootView: View {
                 }
             }
             #endif
+            Tab(value: AppTab.search, role: .search) {
+                SearchView()
+            }
         }
         .tabViewStyle(.sidebarAdaptable)
         .undoToastHost()
