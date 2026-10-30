@@ -1,53 +1,60 @@
 import Planner
 import SwiftUI
 
+/// The hour labels and gutter layers, which stay put, next to the horizontally scrolling pages.
 struct TimelineGridContentView: View {
     @Environment(TimelineDragController.self) private var drag: TimelineDragController?
     let layout: TimelineLayout
+    let pages: TimelinePages
+    @Binding var position: ScrollPosition
+    let frames: TimelinePageFrames
     let hourHeight: CGFloat
     let layers: [TimelineLayer]
     let gutterLayers: [TimelineLayer]
     let metrics: TimelineMetrics
+    let isPinching: Bool
     var onSelectEntry: ((TimelineEntry) -> Void)?
+    var onScrollPhaseChange: ((ScrollPhase) -> Void)?
 
     var body: some View {
-        let context = TimelineLayerContext(days: layout.days, hourHeight: hourHeight)
         HStack(alignment: .top, spacing: 0) {
-            TimelineLayersView(layers: gutterLayers, context: context)
+            TimelineLayersView(
+                layers: gutterLayers,
+                context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
+            )
             TimelineHourLabelsView(hourHeight: hourHeight, width: metrics.hourLabelWidth)
-            ZStack(alignment: .topLeading) {
-                TimelineHourGridView(dayCount: layout.days.count, hourHeight: hourHeight)
-                TimelineLayersView(layers: layers.filter { $0.placement == .belowEntries }, context: context)
-                TimelineCardsView(
-                    layout: layout,
+            TimelinePageScrollView(
+                pages: pages,
+                position: $position,
+                frames: frames,
+                isScrollDisabled: isPinching,
+                onScrollPhaseChange: onScrollPhaseChange
+            ) { page in
+                TimelinePageGridView(
+                    layout: pages.dayRange(of: page).map(layout.page) ?? layout.page(0..<0),
                     hourHeight: hourHeight,
-                    minimumCardHeight: metrics.minimumCardHeight(hourHeight: hourHeight),
-                    draggedEntryIdentifier: drag?.session?.entry.id,
+                    layers: layers,
+                    metrics: metrics,
                     onSelectEntry: onSelectEntry
                 )
-                .environment(\.eventCardsLiftToDrag, drag != nil)
-                TimelineLayersView(layers: layers.filter { $0.placement == .aboveEntries }, context: context)
-                TimelineCurrentTimeIndicatorView(days: layout.days, hourHeight: hourHeight)
-                TimelineDragPreviewView(
-                    days: layout.days,
-                    hourHeight: hourHeight,
-                    minimumCardHeight: metrics.minimumCardHeight(hourHeight: hourHeight)
-                )
             }
-            .onGeometryChange(for: CGRect.self) { $0.frame(in: TimelineDragController.coordinateSpace) } action: {
-                drag?.updateGridFrame($0)
-            }
-            .onChange(of: DragLayoutKey(layout: layout, hourHeight: hourHeight), initial: true) { _, key in
-                drag?.update(
-                    layout: key.layout,
-                    hourHeight: key.hourHeight,
-                    minimumCardHeight: metrics.minimumCardHeight(hourHeight: key.hourHeight)
-                )
-            }
-            .timelineGridDragging(drag)
         }
         .frame(height: hourHeight * 24)
         .padding(.vertical, metrics.verticalInset)
+        .onChange(of: DragLayoutKey(layout: layout, hourHeight: hourHeight), initial: true) { _, key in
+            drag?.update(
+                layout: key.layout,
+                hourHeight: key.hourHeight,
+                minimumCardHeight: metrics.minimumCardHeight(hourHeight: key.hourHeight)
+            )
+        }
+    }
+
+    /// Gutter layers, such as a second time zone, label the hours of the page in view.
+    private var gutterDays: TimelineDays {
+        let page = position.viewID(type: Date.self) ?? pages.starts.first
+        let range = page.flatMap(pages.dayRange(of:)) ?? 0..<min(pages.daysPerPage, layout.days.count)
+        return layout.page(range).days
     }
 }
 

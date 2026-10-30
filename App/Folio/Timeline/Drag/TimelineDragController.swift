@@ -18,6 +18,8 @@ final class TimelineDragController {
     /// Called when a card was lifted and let go without moving, so the screen can show its menu.
     @ObservationIgnored var onReleaseInPlace: ((TimelineEntry) -> Void)?
     @ObservationIgnored var viewportFrame: CGRect = .zero
+    /// The part of the grid on screen. The grid itself spans every page, most of them off screen.
+    @ObservationIgnored var pagingFrame: CGRect?
     @ObservationIgnored private(set) var layout: TimelineLayout?
     @ObservationIgnored private var hourHeight: CGFloat = 48
     @ObservationIgnored private var minimumCardHeight: CGFloat = 16
@@ -153,7 +155,8 @@ final class TimelineDragController {
 
     /// Only once the pointer has moved towards an edge, so grabbing a card that already sits by the edge doesn't page.
     private func edgeDirection(for pointer: CGPoint) -> CalendarPageDirection? {
-        let direction = edgePaging.direction(pointerX: pointer.x - gridFrame.minX, width: gridFrame.width)
+        let frame = pagingFrame ?? gridFrame
+        let direction = edgePaging.direction(pointerX: pointer.x - frame.minX, width: frame.width)
         let travel = pointer.x - startPointer.x
         switch direction {
         case .backward where travel < -edgePaging.edgeWidth: return .backward

@@ -16,6 +16,7 @@ struct TimelineDebugView: View {
             floatingSourceTimeZone: .current
         )
         let firstDay = calendar.date(byAdding: .day, value: dayOffset, to: sampleWeek.weekStart) ?? sampleWeek.weekStart
+        let days = TimelineDays(startingOn: firstDay, count: dayCount, calendar: calendar)
         VStack(spacing: 0) {
             TimelineDebugControlsView(
                 dayCount: $dayCount,
@@ -24,8 +25,9 @@ struct TimelineDebugView: View {
                 hourHeight: Binding(get: { zoom.hourHeight }, set: { zoom.setHourHeight($0) })
             )
             CalendarTimelineView(
-                entries: sampleWeek.entries,
-                days: TimelineDays(startingOn: firstDay, count: dayCount, calendar: calendar),
+                layout: TimelineLayoutEngine(days: days).layout(sampleWeek.entries),
+                pages: TimelinePages(single: days),
+                position: .constant(ScrollPosition(id: firstDay)),
                 zoom: zoom,
                 layers: [
                     .timeBlocks(id: "sleep", intervals: sampleWeek.sleepIntervals, style: Color.indigo.opacity(0.08)),

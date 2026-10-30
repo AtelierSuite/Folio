@@ -3,6 +3,9 @@ import SwiftUI
 
 struct TimelineDayHeaderView: View {
     let days: TimelineDays
+    let pages: TimelinePages
+    let frames: TimelinePageFrames
+    let scrolledPage: Date?
     let gutterWidth: CGFloat
     var gutterLayers: [TimelineLayer] = []
 
@@ -14,15 +17,33 @@ struct TimelineDayHeaderView: View {
             }
             Color.clear
                 .frame(width: gutterWidth - gutterLayers.reduce(0) { $0 + $1.gutterWidth }, height: 1)
-            ForEach(days.intervals, id: \.start) { day in
+            TimelinePagedRow(frames: frames, pages: pages, scrolledPage: scrolledPage) { page in
+                TimelinePageHeaderView(intervals: intervals(of: page), calendar: days.calendar)
+            }
+        }
+        .padding(.vertical, 6)
+    }
+
+    private func intervals(of page: Date) -> ArraySlice<DateInterval> {
+        guard let range = pages.dayRange(of: page) else { return [] }
+        return days.intervals[range.clamped(to: days.intervals.indices)]
+    }
+}
+
+struct TimelinePageHeaderView: View {
+    let intervals: ArraySlice<DateInterval>
+    let calendar: Calendar
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(intervals, id: \.start) { day in
                 VStack(spacing: 2) {
-                    TimelineDayHeaderLabel(day: day, calendar: days.calendar)
+                    TimelineDayHeaderLabel(day: day, calendar: calendar)
                     TimelineDayHeaderWeather(dayStart: day.start)
                 }
                 .frame(maxWidth: .infinity)
             }
         }
-        .padding(.vertical, 6)
     }
 }
 
