@@ -103,7 +103,7 @@ struct EventDetailView: View {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button(String(localized: "Detail.Done", table: "EventEditor")) {
+            Button(role: .confirm) {
                 dismiss()
             }
         }
