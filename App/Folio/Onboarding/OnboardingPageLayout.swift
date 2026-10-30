@@ -38,12 +38,13 @@ struct OnboardingPageLayout<Content: View>: View {
             .frame(maxWidth: .infinity)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .background(alignment: .top) { accentGlow.ignoresSafeArea() }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        .scrollEdgeEffectStyle(.soft, for: .bottom)
+        .safeAreaBar(edge: .bottom, spacing: 0) {
             button
                 .frame(maxWidth: 560)
                 .padding(24)
         }
+        .background(alignment: .top) { accentGlow.ignoresSafeArea() }
         #endif
     }
 
