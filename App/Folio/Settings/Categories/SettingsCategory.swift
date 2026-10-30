@@ -77,8 +77,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     static var groups: [[SettingsCategory]] {
         var groups: [[SettingsCategory]] = [
             [.general, .calendars, .notes],
-            [.notifications, .sleep, .searchAndPrivacy],
-            [.weather]
+            [.weather],
+            [.notifications, .sleep, .searchAndPrivacy]
         ]
         #if DEBUG
         groups.append([.debug])
