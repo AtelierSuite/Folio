@@ -23,6 +23,7 @@ final class AllDayAlertTimeTests: XCTestCase {
                 allow.tap()
             }
         }
+        attachScreenshot(named: "NotificationSettings")
         app.buttons["AllDayAlertTimesLink"].tap()
         let row = app.descendants(matching: .any)
             .matching(NSPredicate(format: "identifier BEGINSWITH %@", "AllDayAlertTime.")).firstMatch
@@ -30,8 +31,13 @@ final class AllDayAlertTimeTests: XCTestCase {
         let defaultTime = app.descendants(matching: .any)
             .matching(NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "8:00", "8:00")).firstMatch
         XCTAssertTrue(defaultTime.waitForExistence(timeout: 5))
+        attachScreenshot(named: "AllDayAlertTimes")
+    }
+
+    @MainActor
+    private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        attachment.name = "AllDayAlertTimes"
+        attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
     }
