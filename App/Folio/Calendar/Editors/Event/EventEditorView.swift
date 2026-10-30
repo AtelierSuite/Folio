@@ -91,9 +91,6 @@ struct EventEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar { toolbar }
-            .eventSpanDialog(isPresented: $isChoosingSpan, action: .save, spans: spans) { span in
-                Task { await save(span: span) }
-            }
             .alert(
                 String(localized: "Editor.SaveFailed", table: "EventEditor"),
                 isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
@@ -132,6 +129,9 @@ struct EventEditorView: View {
                 }
             }
             .disabled(!canSave)
+            .eventSpanDialog(isPresented: $isChoosingSpan, action: .save, spans: spans) { span in
+                Task { await save(span: span) }
+            }
         }
     }
 

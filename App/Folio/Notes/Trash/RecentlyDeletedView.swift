@@ -28,17 +28,9 @@ struct RecentlyDeletedView: View {
         .toolbar {
             RecentlyDeletedToolbar(
                 canEmpty: !library.trashedNotes.isEmpty,
-                onEmpty: { isConfirmingEmptyTrash = true }
+                isConfirmingEmptyTrash: $isConfirmingEmptyTrash,
+                onEmpty: emptyTrash
             )
-        }
-        .confirmationDialog(
-            String(localized: "Trash.EmptyTrash.Confirmation", table: "Notes"),
-            isPresented: $isConfirmingEmptyTrash,
-            titleVisibility: .visible
-        ) {
-            Button(String(localized: "Trash.EmptyTrash", table: "Notes"), role: .destructive, action: emptyTrash)
-        } message: {
-            Text(String(localized: "Trash.EmptyTrash.Message", table: "Notes"))
         }
         .notesErrorAlert(message: $errorMessage)
         .task {
