@@ -1,29 +1,24 @@
 import SwiftUI
 
 struct OnboardingContinueButton: View {
-    @Binding var page: OnboardingPage
-    let onFinish: () -> Void
+    let title: String
+    let action: () -> Void
 
     var body: some View {
-        Button {
-            if let next = page.next {
-                page = next
-            } else {
-                onFinish()
-            }
-        } label: {
-            Text(page.next == nil
-                ? String(localized: "Action.GetStarted", table: "Onboarding")
-                : String(localized: "Action.Continue", table: "Onboarding"))
+        Button(action: action) {
+            Text(title)
                 #if !os(macOS)
-                .frame(maxWidth: 360)
+                .fontWeight(.bold)
                 #endif
         }
+        #if os(macOS)
         .buttonStyle(.borderedProminent)
-        #if !os(macOS)
-        .controlSize(.large)
+        #else
+        .buttonStyle(.glassProminent)
+        .buttonBorderShape(.capsule)
+        .controlSize(.extraLarge)
+        .buttonSizing(.flexible)
         #endif
         .keyboardShortcut(.defaultAction)
-        .accessibilityIdentifier("OnboardingContinue")
     }
 }

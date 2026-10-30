@@ -1,71 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Action.Back": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurück"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indietro"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "戻る"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "뒤로"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terug"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quay lại"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "返回"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "返回"
-          }
-        }
-      }
-    },
     "Action.Continue": {
       "extractionState": "manual",
       "localizations": {
@@ -196,72 +131,7 @@
         }
       }
     },
-    "Action.Skip": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Überspringen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salta"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スキップ"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "건너뛰기"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sla over"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bỏ qua"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "跳过"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "略過"
-          }
-        }
-      }
-    },
-    "Page.Calendar.Description": {
+    "Feature.Calendar.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -326,7 +196,7 @@
         }
       }
     },
-    "Page.Calendar.Title": {
+    "Feature.Calendar.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -391,7 +261,7 @@
         }
       }
     },
-    "Page.Notes.Description": {
+    "Feature.Notes.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -456,7 +326,7 @@
         }
       }
     },
-    "Page.Notes.Title": {
+    "Feature.Notes.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -521,7 +391,7 @@
         }
       }
     },
-    "Page.Privacy.Description": {
+    "Feature.Privacy.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -586,7 +456,7 @@
         }
       }
     },
-    "Page.Privacy.Title": {
+    "Feature.Privacy.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -651,72 +521,267 @@
         }
       }
     },
-    "Page.Welcome.Description": {
+    "Feature.Sleep.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Kalender, deine Erinnerungen und Notizen, vereint in einem Planer."
+            "value": "Zeige Schlaf aus der Health-App in deinem Kalender neben deinen Plänen an. Aktiviere es in den Einstellungen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your calendar, reminders and notes, together in one planner."
+            "value": "Show sleep from the Health app on your calendar, next to your plans. Turn it on in Settings."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Votre calendrier, vos rappels et vos notes, réunis dans un seul agenda."
+            "value": "Affichez le sommeil de l’app Santé dans votre calendrier, à côté de vos projets. Activez-le dans Réglages."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calendario, promemoria e note, insieme in un’unica agenda."
+            "value": "Mostra il sonno dell’app Salute nel calendario, accanto ai tuoi piani. Attivalo in Impostazioni."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "カレンダー、リマインダー、メモをひとつのプランナーに。"
+            "value": "ヘルスケアの睡眠を、予定と並べてカレンダーに表示できます。設定でオンにしてください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "캘린더, 미리 알림, 메모를 하나의 플래너에서."
+            "value": "건강 앱의 수면을 일정 옆에 캘린더로 표시할 수 있습니다. 설정에서 켜세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je agenda, herinneringen en notities, samen in één planner."
+            "value": "Toon slaap uit de Gezondheid-app in je agenda, naast je planning. Zet het aan in Instellingen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lịch, lời nhắc và ghi chú của bạn, gói gọn trong một trình lập kế hoạch."
+            "value": "Hiển thị giấc ngủ từ ứng dụng Sức khỏe trên lịch, ngay cạnh kế hoạch của bạn. Bật tính năng này trong Cài đặt."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日历、提醒事项和备忘录，汇集在一个计划工具中。"
+            "value": "在日历上将“健康”中的睡眠与你的计划并排显示。可在设置中打开。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "行事曆、提醒事項和備忘錄，匯集在一個規劃工具中。"
+            "value": "在行事曆上將「健康」中的睡眠與你的計畫並列顯示。可在設定中開啟。"
           }
         }
       }
     },
-    "Page.Welcome.Title": {
+    "Feature.Sleep.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte deinen Schlaf im Blick"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See How You Slept"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyez votre sommeil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni d’occhio il sonno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠もひと目で"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수면도 한눈에"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zie hoe je hebt geslapen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem giấc ngủ của bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠情况"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠狀況"
+          }
+        }
+      }
+    },
+    "Permissions.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaube den Zugriff jetzt oder erst, wenn du eine Funktion zum ersten Mal verwendest. Du kannst dies jederzeit in den Einstellungen ändern."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow access now, or wait until you first use a feature. You can change this anytime in Settings."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez l’accès maintenant ou attendez d’utiliser une fonctionnalité pour la première fois. Vous pouvez modifier ce choix à tout moment dans Réglages."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consenti l’accesso ora oppure quando usi una funzione per la prima volta. Puoi modificarlo in qualsiasi momento in Impostazioni."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今すぐアクセスを許可するか、機能を初めて使うときに許可できます。設定からいつでも変更できます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지금 접근을 허용하거나 기능을 처음 사용할 때 허용할 수 있습니다. 언제든지 설정에서 변경할 수 있습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geef nu toegang of wacht tot je een functie voor het eerst gebruikt. Je kunt dit altijd wijzigen in Instellingen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho phép truy cập ngay bây giờ hoặc khi bạn dùng một tính năng lần đầu. Bạn có thể thay đổi bất cứ lúc nào trong Cài đặt."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你可以现在允许访问，也可以等到首次使用某项功能时再允许。你可以随时在设置中更改。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你可以現在允許取用，也可以等到首次使用某項功能時再允許。你可以隨時在設定中更改。"
+          }
+        }
+      }
+    },
+    "Permissions.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff erlauben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Access"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser l’accès"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consenti l’accesso"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクセスを許可"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "접근 허용"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toegang geven"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho phép truy cập"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允许访问"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允許取用"
+          }
+        }
+      }
+    },
+    "Welcome.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {

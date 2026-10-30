@@ -9,17 +9,10 @@ struct OnboardingPresenter: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            #if os(macOS)
             .sheet(isPresented: $isPresented) {
                 OnboardingView(onFinish: finish)
-                    .frame(width: 500, height: 420)
                     .interactiveDismissDisabled()
             }
-            #else
-            .fullScreenCover(isPresented: $isPresented) {
-                OnboardingView(onFinish: finish)
-            }
-            #endif
     }
 
     private func finish() {

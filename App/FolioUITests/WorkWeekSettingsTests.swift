@@ -34,7 +34,8 @@ final class WorkWeekSettingsTests: XCTestCase {
         let hasExpectedValue = NSPredicate(format: "value == %@", expectedValue)
         for _ in 0..<3 where toggle.value as? String != expectedValue {
             toggle.switches.firstMatch.tap()
-            _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: hasExpectedValue, object: toggle)], timeout: 2)
+            let expectation = XCTNSPredicateExpectation(predicate: hasExpectedValue, object: toggle)
+            _ = XCTWaiter.wait(for: [expectation], timeout: 2)
         }
         XCTAssertEqual(toggle.value as? String, expectedValue)
     }
