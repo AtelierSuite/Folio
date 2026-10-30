@@ -41,13 +41,3 @@ struct WeatherAttributionView: View {
             .accessibilityLabel(attribution.serviceName)
     }
 }
-
-struct WeatherAttributionFooter: View {
-    let snapshot: WeatherSnapshot
-
-    var body: some View {
-        if snapshot.hasWeather {
-            WeatherAttributionView(attribution: snapshot.attribution ?? .placeholder)
-        }
-    }
-}

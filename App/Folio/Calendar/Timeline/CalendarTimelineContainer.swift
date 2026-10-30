@@ -76,7 +76,6 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             .reminderCompletion(
                 undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier
             )
-            WeatherAttributionFooter(snapshot: weather)
         }
         .modifier(dragHandling)
         .modifier(scrollSync)
