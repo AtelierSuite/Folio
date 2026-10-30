@@ -66,6 +66,10 @@ public final class WeatherStore {
         usesCurrentLocation || chosenPlace != nil || fallbackPlace != nil
     }
 
+    public func attribution() async -> WeatherAttribution {
+        await repository.currentAttribution()
+    }
+
     func homeCoordinate() async -> PlannerCoordinate? {
         if locationMode == .current, let locator, locator.authorizationStatus == .granted {
             let lastFix = settings.lastLocationFix

@@ -5,6 +5,7 @@ import SwiftUI
 struct WeatherAttributionView: View {
     @Environment(\.colorScheme) private var colorScheme
     let attribution: WeatherAttribution
+    var alignment: Alignment = .center
 
     var body: some View {
         HStack(spacing: 8) {
@@ -14,7 +15,7 @@ struct WeatherAttributionView: View {
         }
         .font(.caption2)
         .foregroundStyle(.secondary)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: alignment)
         .padding(.vertical, 4)
     }
 

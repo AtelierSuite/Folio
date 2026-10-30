@@ -7,7 +7,6 @@ struct GeneralSettingsView: View {
             TimelineSettingsSection()
             DragSettingsSection()
             MonthSettingsSection()
-            WeatherSettingsSection()
         }
         .settingsCategoryStyle(.general)
     }

@@ -5,8 +5,16 @@ struct WeatherSettingsFooter: View {
     @Environment(WeatherStore.self) private var weather
     @Environment(PermissionCenter.self) private var permissions
 
+    @State private var attribution = WeatherAttribution.placeholder
+
     var body: some View {
-        Text(message)
+        VStack(alignment: .leading, spacing: 12) {
+            Text(message)
+            WeatherAttributionView(attribution: attribution, alignment: .leading)
+        }
+        .task {
+            attribution = await weather.attribution()
+        }
     }
 
     private var message: String {
