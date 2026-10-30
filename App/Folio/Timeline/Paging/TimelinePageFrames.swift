@@ -13,6 +13,7 @@ final class TimelinePageFrames {
     }
 
     private(set) var frames: [Date: Frame] = [:]
+    var viewportWidth: CGFloat = 0
 
     func update(_ page: Date, minX: CGFloat, width: CGFloat) {
         let frame = Frame(page: page, minX: minX, width: width)
@@ -25,9 +26,9 @@ final class TimelinePageFrames {
         if frames[page]?.width == width { frames[page] = nil }
     }
 
-    func visible(inWidth width: CGFloat) -> [Frame] {
+    var visible: [Frame] {
         frames.values
-            .filter { $0.minX < width && $0.minX + $0.width > 0 }
+            .filter { $0.minX < viewportWidth && $0.minX + $0.width > 0 }
             .sorted { $0.minX < $1.minX }
     }
 }

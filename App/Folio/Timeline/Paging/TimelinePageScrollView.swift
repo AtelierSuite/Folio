@@ -38,6 +38,7 @@ struct TimelinePageScrollView<Page: View>: View {
         }
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
             viewportWidth = width
+            frames.viewportWidth = width
             keepAnchoredPage()
         }
         .onGeometryChange(for: CGRect.self) { $0.frame(in: TimelineDragController.coordinateSpace) } action: {
