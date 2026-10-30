@@ -1,7 +1,7 @@
 #if os(macOS)
 import AppKit
 
-extension EventPlatformMenu {
+extension PlatformMenu {
     func menu() -> NSMenu {
         let menu = NSMenu()
         for (index, section) in sections.enumerated() {
@@ -14,8 +14,8 @@ extension EventPlatformMenu {
     }
 
     private func item(for entry: Entry) -> NSMenuItem {
-        let target = EventMenuActionTarget(handler: entry.action)
-        let item = NSMenuItem(title: entry.title, action: #selector(EventMenuActionTarget.run), keyEquivalent: "")
+        let target = PlatformMenuActionTarget(handler: entry.action)
+        let item = NSMenuItem(title: entry.title, action: #selector(PlatformMenuActionTarget.run), keyEquivalent: "")
         item.target = target
         item.representedObject = target
         item.image = NSImage(systemSymbolName: entry.systemImage, accessibilityDescription: nil)
@@ -35,7 +35,7 @@ extension EventPlatformMenu {
 }
 
 /// Menu items only hold their target weakly, so each item keeps this in `representedObject`.
-private final class EventMenuActionTarget: NSObject {
+private final class PlatformMenuActionTarget: NSObject {
     private let handler: @MainActor () -> Void
 
     init(handler: @escaping @MainActor () -> Void) {

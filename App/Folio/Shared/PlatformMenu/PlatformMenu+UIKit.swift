@@ -1,7 +1,7 @@
 #if os(iOS)
 import UIKit
 
-extension EventPlatformMenu {
+extension PlatformMenu {
     func menu() -> UIMenu {
         UIMenu(children: sections.map { section in
             UIMenu(options: .displayInline, children: section.map(element(for:)))

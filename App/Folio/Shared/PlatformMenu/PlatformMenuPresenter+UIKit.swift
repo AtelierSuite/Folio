@@ -1,24 +1,23 @@
 #if os(iOS)
-import Planner
 import SwiftUI
 import UIKit
 
-extension EventMenuPresenter: UIViewRepresentable {
-    func makeUIView(context: Context) -> EventMenuAnchorView {
-        EventMenuAnchorView()
+extension PlatformMenuPresenter: UIViewRepresentable {
+    func makeUIView(context: Context) -> PlatformMenuAnchorView {
+        PlatformMenuAnchorView()
     }
 
-    func updateUIView(_ view: EventMenuAnchorView, context: Context) {
+    func updateUIView(_ view: PlatformMenuAnchorView, context: Context) {
         guard let request = shouldPresent(context.coordinator) else { return }
-        let menu = EventPlatformMenu(event: request.event, actions: actions).menu()
+        let menu = request.menu().menu()
         Task { @MainActor in
             view.present(menu, at: request.point)
         }
     }
 }
 
-/// Lets every touch through to the cards below; only its hidden button shows menus.
-final class EventMenuAnchorView: UIView {
+/// Lets every touch through to the views below; only its hidden button shows menus.
+final class PlatformMenuAnchorView: UIView {
     private let button = UIButton(type: .custom)
 
     override init(frame: CGRect) {

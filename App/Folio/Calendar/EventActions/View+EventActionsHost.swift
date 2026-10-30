@@ -55,7 +55,7 @@ private struct EventActionsHostModifier: ViewModifier {
         content
             .environment(\.eventActions, actions)
             .overlay {
-                EventMenuPresenter(request: controller.menuRequest, actions: actions)
+                PlatformMenuPresenter(request: menuRequest(actions))
                     .allowsHitTesting(false)
             }
             .coordinateSpace(EventActions.coordinateSpace)
@@ -97,6 +97,14 @@ private struct EventActionsHostModifier: ViewModifier {
             } message: {
                 Text(controller.errorMessage ?? "")
             }
+    }
+
+    private func menuRequest(_ actions: EventActions) -> PlatformMenuRequest? {
+        controller.menuRequest.map { request in
+            PlatformMenuRequest(id: request.id, point: request.point) {
+                EventPlatformMenu(event: request.event, actions: actions).menu
+            }
+        }
     }
 
     private func spanDialogAnchor(_ actions: EventActions) -> CGRect? {
