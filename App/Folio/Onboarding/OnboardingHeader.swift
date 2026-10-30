@@ -4,17 +4,12 @@ struct OnboardingHeader: View {
     private static let appName = "Folio"
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.largeTitle)
-                .fontWeight(.black)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityIdentifier("OnboardingTitle")
-            Text(String(localized: "Welcome.Subtitle", table: "Onboarding"))
-                .font(.title3)
-                .foregroundStyle(.secondary)
-        }
-        .multilineTextAlignment(.leading)
+        Text(title)
+            .font(.largeTitle)
+            .fontWeight(.black)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier("OnboardingTitle")
+            .multilineTextAlignment(.leading)
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
