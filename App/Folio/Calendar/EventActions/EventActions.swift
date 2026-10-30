@@ -18,8 +18,6 @@ struct EventActions {
     let tapBehavior: EventTapBehavior
     let usesPointerSelection: Bool
     let eventsByIdentifier: [String: CalendarEvent]
-    /// Lets a screen ignore the tap that ends another gesture, such as a drag.
-    let ignoresTaps: () -> Bool
 
     func event(for entry: TimelineEntry) -> CalendarEvent? {
         guard entry.kind == .event else { return nil }
@@ -44,7 +42,7 @@ struct EventActions {
     }
 
     func handle(_ gesture: EventTapGesture, on event: CalendarEvent, at point: CGPoint) {
-        guard !ignoresTaps() else { return }
+        guard !controller.ignoresTaps() else { return }
         switch tapBehavior.outcome(of: gesture, usesPointerSelection: usesPointerSelection) {
         case .showDetails:
             controller.selectedEventID = event.id

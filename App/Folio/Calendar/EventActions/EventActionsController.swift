@@ -18,6 +18,9 @@ final class EventActionsController {
     var selectedEventID: String?
     /// Where each event's card is in `EventActions.coordinateSpace`, to open dialogs about it there.
     @ObservationIgnored var cardFrames: [String: CGRect] = [:]
+    /// Lets a screen ignore the tap that ends another gesture, such as a drag. Kept out of
+    /// `EventActions` because a new closure on every update makes every card update with it.
+    @ObservationIgnored var ignoresTaps: () -> Bool = { false }
     var errorMessage: String?
 }
 

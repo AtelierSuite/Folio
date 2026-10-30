@@ -47,8 +47,7 @@ private struct EventActionsHostModifier: ViewModifier {
             openURL: openURL,
             tapBehavior: tapBehavior,
             usesPointerSelection: capabilities.usesPointerSelection,
-            eventsByIdentifier: eventsByIdentifier,
-            ignoresTaps: ignoresTaps
+            eventsByIdentifier: eventsByIdentifier
         )
     }
 
@@ -57,9 +56,7 @@ private struct EventActionsHostModifier: ViewModifier {
         let actions = actions
         content
             .environment(\.eventActions, actions)
-            .onChange(of: events, initial: true) {
-                eventsByIdentifier = Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-            }
+            .onChange(of: events, initial: true, updateLookup)
             .overlay {
                 EventMenuPresenter(request: controller.menuRequest, actions: actions)
                     .allowsHitTesting(false)
@@ -103,6 +100,11 @@ private struct EventActionsHostModifier: ViewModifier {
             } message: {
                 Text(controller.errorMessage ?? "")
             }
+    }
+
+    private func updateLookup() {
+        eventsByIdentifier = Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        controller.ignoresTaps = ignoresTaps
     }
 
     private func spanDialogAnchor(_ actions: EventActions) -> CGRect? {
