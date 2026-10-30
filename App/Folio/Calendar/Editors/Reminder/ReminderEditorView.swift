@@ -87,7 +87,7 @@ struct ReminderEditorView: View {
     private var toolbar: some ToolbarContent {
         if mode.isReadOnly {
             ToolbarItem(placement: .confirmationAction) {
-                Button(String(localized: "Action.Done", table: "ReminderEditor")) { dismiss() }
+                Button(role: .confirm) { dismiss() }
             }
         } else {
             ToolbarItem(placement: .cancellationAction) {

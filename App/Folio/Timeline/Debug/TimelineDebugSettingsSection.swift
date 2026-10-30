@@ -20,7 +20,7 @@ struct TimelineDebugSettingsSection: View {
                 NavigationStack {
                     TimelineDebugView()
                         .toolbar {
-                            Button(String(localized: "Debug.Done", table: "Timeline")) {
+                            Button(role: .confirm) {
                                 isShowingTimeline = false
                             }
                         }

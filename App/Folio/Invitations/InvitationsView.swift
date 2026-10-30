@@ -16,7 +16,7 @@ struct InvitationsView: View {
                 #endif
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "List.Done", table: "Invitations")) { dismiss() }
+                        Button(role: .confirm) { dismiss() }
                     }
                 }
         }
