@@ -93,6 +93,9 @@ struct FolioApp: App {
                     await seedSampleDataIfRequested()
                 }
         }
+        #if os(macOS)
+        .defaultSize(width: 1100, height: 760)
+        #endif
         .notificationRefreshTask(notificationScheduler)
         .commands {
             TimelineZoomCommands()
