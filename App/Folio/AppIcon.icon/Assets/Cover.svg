@@ -5,7 +5,7 @@
     lights the layer, so the artwork carries only shape and opacity.
   -->
   <g fill="#FFFFFF">
-    <path d="M320 184H620V840H320A72 72 0 0 1 248 768V256A72 72 0 0 1 320 184Z" opacity="0.95"/>
-    <path d="M676 184H704A72 72 0 0 1 776 256V768A72 72 0 0 1 704 840H676V184Z" opacity="0.95"/>
+    <path d="M328 196H616V828H328A72 72 0 0 1 256 756V268A72 72 0 0 1 328 196Z" opacity="0.32"/>
+    <path d="M672 196H696A72 72 0 0 1 768 268V756A72 72 0 0 1 696 828H672V196Z" opacity="0.32"/>
   </g>
 </svg>
