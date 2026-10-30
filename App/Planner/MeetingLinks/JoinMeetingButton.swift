@@ -33,10 +33,10 @@ public struct JoinMeetingButton: View {
                 .controlSize(.large)
             case .capsule:
                 Link(destination: destination) {
-                    Label(
-                        String(localized: "Join", table: "MeetingLinks", bundle: #bundle),
-                        systemImage: link.provider.systemImage
-                    )
+                    HStack(spacing: 4) {
+                        Image(systemName: link.provider.systemImage)
+                        Text(String(localized: "Join", table: "MeetingLinks", bundle: #bundle))
+                    }
                     .font(.caption.weight(.semibold))
                 }
                 .buttonStyle(.bordered)
