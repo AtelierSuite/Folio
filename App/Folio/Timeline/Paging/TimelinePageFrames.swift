@@ -1,41 +1,38 @@
 import Observation
 import SwiftUI
 
-/// Where each rendered grid page sits across the horizontal scroll view, so the day headers and
-/// the all-day strip, which sit outside it, can follow the grid as it scrolls.
+/// Which grid pages are on screen and how far the first one sits from the leading edge, so the
+/// day headers and the all-day strip, which sit outside the horizontal scroll view, can follow it.
+/// The pages only change when one scrolls in or out; while scrolling, only `leadingOffset` moves.
 @MainActor
 @Observable
 final class TimelinePageFrames {
-    struct Frame: Equatable {
-        let page: Date
-        let minX: CGFloat
-        let width: CGFloat
+    struct ShownPages: Equatable {
+        let firstPage: Date
+        let count: Int
     }
 
-    /// Keyed by width too: when the pages are rebuilt at a new width, the old pages keep reporting
-    /// until they're gone, and readers only want the pages of the current width.
-    private struct Key: Hashable {
-        let page: Date
-        let width: CGFloat
-    }
-
-    private var frames: [Key: Frame] = [:]
+    private(set) var shownPages: ShownPages?
+    private(set) var leadingOffset: CGFloat = 0
     var viewportWidth: CGFloat = 0
+    @ObservationIgnored private var contentOffset: CGFloat = 0
 
-    func update(_ page: Date, minX: CGFloat, width: CGFloat) {
-        let key = Key(page: page, width: width)
-        let frame = Frame(page: page, minX: minX, width: width)
-        if frames[key] != frame { frames[key] = frame }
+    func update(contentOffset: CGFloat, pages: TimelinePages) {
+        self.contentOffset = contentOffset
+        let pageWidth = pages.pageWidth(viewportWidth: viewportWidth)
+        guard pageWidth > 0, !pages.starts.isEmpty else { return }
+        let firstIndex = min(max(Int(((contentOffset + 0.5) / pageWidth).rounded(.down)), 0), pages.starts.count - 1)
+        let offset = CGFloat(firstIndex) * pageWidth - contentOffset
+        let count = Int(((viewportWidth - offset) / pageWidth).rounded(.up))
+        let shown = ShownPages(
+            firstPage: pages.starts[firstIndex],
+            count: min(max(count, 1), pages.starts.count - firstIndex)
+        )
+        if shownPages != shown { shownPages = shown }
+        if leadingOffset != offset { leadingOffset = offset }
     }
 
-    func remove(_ page: Date, width: CGFloat) {
-        frames[Key(page: page, width: width)] = nil
-    }
-
-    func visible(pageWidth: CGFloat) -> [Frame] {
-        frames.values
-            .filter { abs($0.width - pageWidth) < 0.5 }
-            .filter { $0.minX < viewportWidth && $0.minX + $0.width > 0 }
-            .sorted { $0.minX < $1.minX }
+    func refresh(pages: TimelinePages) {
+        update(contentOffset: contentOffset, pages: pages)
     }
 }
