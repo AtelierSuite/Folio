@@ -82,6 +82,18 @@ struct SleepStoreTests {
         #expect(source.fetchCount == 1)
     }
 
+    @Test func failedReadsAreNotCached() async {
+        let source = FakeSleepDataSource(samples: lastNightSamples)
+        source.failsReads = true
+        let store = makeStore(source: source)
+        #expect(await store.sessions(in: night).isEmpty)
+
+        source.failsReads = false
+
+        #expect(await store.sessions(in: night).count == 1)
+        #expect(source.fetchCount == 2)
+    }
+
     @Test func observedChangesRefreshAndBumpTheRevision() async {
         let source = FakeSleepDataSource()
         let store = makeStore(source: source)
