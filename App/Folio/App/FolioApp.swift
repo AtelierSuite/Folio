@@ -72,6 +72,7 @@ struct FolioApp: App {
                 .environment(notificationNavigator)
                 .environment(weatherStore)
                 .environment(sleepStore)
+                .refreshesSleep(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
