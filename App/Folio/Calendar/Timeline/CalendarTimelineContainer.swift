@@ -22,8 +22,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State var drag = TimelineDragController()
     @State var dropHandler = CalendarDropHandler()
     @State var dragSource: CalendarDragSource?
-    @State private var selectedEvent: CalendarEvent?
     @State private var openedReminder: ReminderItem?
+    @State private var eventActionsController = EventActionsController()
     @State private var events: [CalendarEvent] = []
     @State private var weather = WeatherSnapshot.empty
     @State var zoom: TimelineZoomController
@@ -80,7 +80,14 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         .loadsWeather(
             for: days.intervals, calendar: days.calendar, events: events, detail: .dailyAndHourly, into: $weather
         )
-        .eventDetailSheet(item: $selectedEvent)
+        .eventActionsHost(events: events, controller: eventActionsController) { drag.suppressesSelection }
+        .onAppear {
+            drag.onReleaseInPlace = { entry in
+                guard !capabilities.usesPointerSelection, let event = eventsByEntryIdentifier[entry.id] else { return }
+                eventActionsController.selectedEventID = event.id
+                eventActionsController.cardMenuEventID = event.id
+            }
+        }
         .sheet(item: $openedReminder) { reminder in
             ReminderEditorView(reminder: reminder)
         }
@@ -88,10 +95,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
 
     private func select(_ entry: TimelineEntry) {
         guard !drag.suppressesSelection else { return }
-        switch entry.kind {
-        case .event: selectedEvent = eventsByEntryIdentifier[entry.id]
-        case .reminder: openedReminder = remindersByEntryIdentifier[entry.id]
-        }
+        openedReminder = remindersByEntryIdentifier[entry.id]
     }
 
     func load() async {

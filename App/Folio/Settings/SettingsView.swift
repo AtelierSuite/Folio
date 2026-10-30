@@ -16,6 +16,7 @@ struct SettingsView: View {
                 NavigationLink(String(localized: "WorkWeek.Title", table: "Week")) { WorkWeekSettingsView() }
                     .accessibilityIdentifier("WorkWeekLink")
             }
+            EventTapSettingsSection()
             TimelineSettingsSection()
             DragSettingsSection()
             MonthSettingsSection()

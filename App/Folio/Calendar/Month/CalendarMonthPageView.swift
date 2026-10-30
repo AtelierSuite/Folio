@@ -39,6 +39,7 @@ struct CalendarMonthPageView: View {
         .environment(\.weatherSnapshot, weather)
         .reminderCompletion(undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier)
         .calendarDropDialogs(dropHandler)
+        .eventActionsHost(events: events)
         .task(id: LoadKey(revision: store.contentRevision, span: grid.span)) {
             await load()
         }

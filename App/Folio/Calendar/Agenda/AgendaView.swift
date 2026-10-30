@@ -7,7 +7,6 @@ struct AgendaView: View {
     @State private var days: [AgendaDay] = []
     @State private var hasLoaded = false
     @State private var openedReminder: ReminderItem?
-    @State private var selectedEvent: CalendarEvent?
 
     private static let dayCount = 7
 
@@ -23,8 +22,7 @@ struct AgendaView: View {
                 List(days.filter { !$0.isEmpty }) { day in
                     AgendaDaySection(
                         day: day,
-                        onOpenReminder: { openedReminder = $0 },
-                        onSelectEvent: { selectedEvent = $0 }
+                        onOpenReminder: { openedReminder = $0 }
                     )
                 }
             }
@@ -32,7 +30,7 @@ struct AgendaView: View {
         .sheet(item: $openedReminder) { reminder in
             ReminderEditorView(reminder: reminder)
         }
-        .eventDetailSheet(item: $selectedEvent)
+        .eventActionsHost(events: days.flatMap(\.events))
         .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
             await load()
         }

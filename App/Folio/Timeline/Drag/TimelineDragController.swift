@@ -15,6 +15,8 @@ final class TimelineDragController {
 
     @ObservationIgnored var snap = TimelineDragSnap.default
     @ObservationIgnored var isSuspended = false
+    /// Called when a card was lifted and let go without moving, so the screen can show its menu.
+    @ObservationIgnored var onReleaseInPlace: ((TimelineEntry) -> Void)?
     @ObservationIgnored var viewportFrame: CGRect = .zero
     @ObservationIgnored private(set) var layout: TimelineLayout?
     @ObservationIgnored private var hourHeight: CGFloat = 48
@@ -99,6 +101,7 @@ final class TimelineDragController {
         guard var session else { return }
         guard session.hasChanges else {
             finish()
+            onReleaseInPlace?(session.entry)
             return
         }
         session.isDropping = true
