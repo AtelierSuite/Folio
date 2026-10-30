@@ -27,11 +27,12 @@ public struct UserNotificationLeaveAlertScheduler: LeaveAlertScheduling {
             content: formatter.leaveContent(for: alert),
             place: NotificationPlace(name: event.location, coordinate: alert.destination)
         ), style: .timeSensitive)
-        let interval = max(1, alert.fireDate.timeIntervalSince(now))
+        let interval = alert.fireDate.timeIntervalSince(now)
+        // A late alert is delivered right away, so a replan a moment later can't cancel it while it's still pending.
         let request = UNNotificationRequest(
             identifier: alert.id,
             content: UNNotificationContent.make(planned),
-            trigger: UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+            trigger: interval < 1 ? nil : UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         )
         try? await center.add(request)
     }
