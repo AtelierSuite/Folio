@@ -21,6 +21,7 @@ extension CalendarTimelineContainer {
 
     private func drop(_ session: TimelineDragSession) async {
         if let source = dragSource, let proposal = session.proposal {
+            dropHandler.spanDialogAnchor = CGRect(origin: drag.globalPointer, size: .zero)
             await dropHandler.move(
                 source, to: proposal, hasDueTime: true, store: store, undoCoordinator: undoCoordinator
             )

@@ -12,13 +12,26 @@ extension View {
         }
     }
 
+    /// `onDrop` gets the day's frame in global coordinates, to ask about the drop from there.
     func calendarMonthDropDestination(
         isTargeted: Binding<Bool>,
-        onDrop: @escaping (CalendarItemDragPayload) -> Bool
+        onDrop: @escaping (CalendarItemDragPayload, CGRect) -> Bool
     ) -> some View {
-        dropDestination(for: String.self) { strings, _ in
-            guard let payload = strings.lazy.compactMap(CalendarItemDragPayload.init).first else { return false }
-            return onDrop(payload)
-        } isTargeted: { isTargeted.wrappedValue = $0 }
+        modifier(CalendarMonthDropDestinationModifier(isTargeted: isTargeted, onDrop: onDrop))
+    }
+}
+
+private struct CalendarMonthDropDestinationModifier: ViewModifier {
+    @Binding var isTargeted: Bool
+    let onDrop: (CalendarItemDragPayload, CGRect) -> Bool
+    @State private var frame: CGRect = .zero
+
+    func body(content: Content) -> some View {
+        content
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { frame = $0 }
+            .dropDestination(for: String.self) { strings, _ in
+                guard let payload = strings.lazy.compactMap(CalendarItemDragPayload.init).first else { return false }
+                return onDrop(payload, frame)
+            } isTargeted: { isTargeted = $0 }
     }
 }

@@ -9,7 +9,7 @@ struct CalendarMonthWeekRowView: View {
     let showsWeekNumber: Bool
     let weekNumberWidth: CGFloat
     let onSelectDay: (MonthDay) -> Void
-    let onDrop: (CalendarItemDragPayload, MonthDay) -> Bool
+    let onDrop: (CalendarItemDragPayload, MonthDay, CGRect) -> Bool
     @State private var targetedDay: Date?
 
     var body: some View {
@@ -38,8 +38,8 @@ struct CalendarMonthWeekRowView: View {
                             targetedDay = nil
                         }
                     }
-                )) { payload in
-                    onDrop(payload, day)
+                )) { payload, frame in
+                    onDrop(payload, day, frame)
                 }
                 .onTapGesture {
                     onSelectDay(day)

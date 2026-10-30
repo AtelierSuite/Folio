@@ -16,6 +16,7 @@ struct CalendarTimelineView: View {
     var metrics = TimelineMetrics()
     var onSelectEntry: ((TimelineEntry) -> Void)?
     var onScrollPhaseChange: ((ScrollPhase) -> Void)?
+    @Environment(TimelineDragController.self) private var drag: TimelineDragController?
     @State private var frames = TimelinePageFrames()
 
     private var gutterLayers: [TimelineLayer] {
@@ -68,6 +69,7 @@ struct CalendarTimelineView: View {
                 )
             }
         }
+        .onGeometryChange(for: CGPoint.self) { $0.frame(in: .global).origin } action: { drag?.globalOrigin = $0 }
         .coordinateSpace(TimelineDragController.coordinateSpace)
     }
 }

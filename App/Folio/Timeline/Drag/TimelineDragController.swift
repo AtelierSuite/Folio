@@ -20,6 +20,8 @@ final class TimelineDragController {
     @ObservationIgnored var viewportFrame: CGRect = .zero
     /// The part of the grid on screen. The grid itself spans every page, most of them off screen.
     @ObservationIgnored var pagingFrame: CGRect?
+    /// Where `coordinateSpace` sits in global coordinates.
+    @ObservationIgnored var globalOrigin: CGPoint = .zero
     @ObservationIgnored private(set) var layout: TimelineLayout?
     @ObservationIgnored private var hourHeight: CGFloat = 48
     @ObservationIgnored private var minimumCardHeight: CGFloat = 16
@@ -36,6 +38,10 @@ final class TimelineDragController {
     #else
     private let handleHeight: CGFloat = 12
     #endif
+
+    var globalPointer: CGPoint {
+        CGPoint(x: pointer.x + globalOrigin.x, y: pointer.y + globalOrigin.y)
+    }
 
     var isActive: Bool {
         session != nil

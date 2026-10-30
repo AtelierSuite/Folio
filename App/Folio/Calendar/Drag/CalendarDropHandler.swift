@@ -8,6 +8,8 @@ import SwiftUI
 @Observable
 final class CalendarDropHandler {
     var isChoosingSpan = false
+    /// Where the item was dropped, in global coordinates. Set it before `move`.
+    var spanDialogAnchor: CGRect?
     var errorMessage: String?
     @ObservationIgnored private var spanContinuation: CheckedContinuation<EventEditSpan?, Never>?
 
@@ -58,18 +60,20 @@ final class CalendarDropHandler {
 
 extension View {
     func calendarDropDialogs(_ handler: CalendarDropHandler) -> some View {
-        eventSpanDialog(
-            isPresented: Binding(
-                get: { handler.isChoosingSpan },
-                set: { isPresented in
-                    handler.isChoosingSpan = isPresented
-                    if !isPresented { handler.spanDialogDismissed() }
-                }
-            ),
-            action: .save,
-            spans: CalendarDropHandler.recurringSpans
-        ) { span in
-            handler.chooseSpan(span)
+        dialogAnchor(at: handler.spanDialogAnchor, in: .global) { anchor in
+            anchor.eventSpanDialog(
+                isPresented: Binding(
+                    get: { handler.isChoosingSpan },
+                    set: { isPresented in
+                        handler.isChoosingSpan = isPresented
+                        if !isPresented { handler.spanDialogDismissed() }
+                    }
+                ),
+                action: .save,
+                spans: CalendarDropHandler.recurringSpans
+            ) { span in
+                handler.chooseSpan(span)
+            }
         }
         .alert(
             String(localized: "Drop.Failed", table: "Drag"),
