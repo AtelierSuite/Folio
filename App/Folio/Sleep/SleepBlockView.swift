@@ -1,17 +1,17 @@
 import Planner
 import SwiftUI
 
-/// Stages are shaded in one muted hue so sleep sits quietly behind events.
+/// Sleep is shaded in one muted hue so it sits quietly behind events.
 struct SleepBlockView: View {
-    let stage: SleepStage
+    let isAsleep: Bool
     let showsIcon: Bool
 
     var body: some View {
         Rectangle()
-            .fill(Color.indigo.opacity(stage.fillOpacity))
+            .fill(Color.indigo.opacity(isAsleep ? 0.09 : 0.04))
             .overlay(alignment: .leading) {
                 Rectangle()
-                    .fill(Color.indigo.opacity(stage.edgeOpacity))
+                    .fill(Color.indigo.opacity(isAsleep ? 0.35 : 0.15))
                     .frame(width: 3)
             }
             .overlay(alignment: .topLeading) {
@@ -24,26 +24,5 @@ struct SleepBlockView: View {
                 }
             }
             .clipped()
-    }
-}
-
-extension SleepStage {
-    var fillOpacity: Double {
-        switch self {
-        case .inBed: 0.04
-        case .awake: 0.02
-        case .asleep, .core: 0.09
-        case .rem: 0.12
-        case .deep: 0.17
-        }
-    }
-
-    var edgeOpacity: Double {
-        switch self {
-        case .inBed, .awake: 0.15
-        case .asleep, .core: 0.35
-        case .rem: 0.45
-        case .deep: 0.6
-        }
     }
 }

@@ -9,7 +9,7 @@ struct SleepTimelineLayerView: View {
     var body: some View {
         TimelineSlotLayout(dayCount: context.days.count, hourHeight: context.hourHeight) {
             ForEach(blocks) { block in
-                SleepBlockView(stage: block.stage, showsIcon: block.isSessionStart)
+                SleepBlockView(isAsleep: block.isAsleep, showsIcon: block.isSessionStart)
                     .timelineSlot(TimelineSlot(block.segment))
             }
         }
@@ -24,12 +24,12 @@ struct SleepTimelineLayerView: View {
 
     private var blocks: [SleepBlock] {
         sessions.flatMap { session in
-            let daySegments = session.segments.flatMap { segment in
-                context.days.segments(from: segment.interval.start, to: segment.interval.end)
-                    .map { (stage: segment.stage, daySegment: $0) }
+            let daySegments = session.stretches.flatMap { stretch in
+                context.days.segments(from: stretch.interval.start, to: stretch.interval.end)
+                    .map { (isAsleep: stretch.isAsleep, daySegment: $0) }
             }
             return daySegments.enumerated().map { index, item in
-                SleepBlock(stage: item.stage, segment: item.daySegment, isSessionStart: index == 0)
+                SleepBlock(isAsleep: item.isAsleep, segment: item.daySegment, isSessionStart: index == 0)
             }
         }
     }
@@ -61,7 +61,7 @@ struct SleepTimelineLayerView: View {
 }
 
 private struct SleepBlock: Identifiable {
-    let stage: SleepStage
+    let isAsleep: Bool
     let segment: TimelineDaySegment
     let isSessionStart: Bool
 
