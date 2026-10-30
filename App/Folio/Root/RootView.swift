@@ -21,7 +21,12 @@ struct RootView: View {
                 }
             }
             #endif
-            Tab(value: AppTab.search, role: .search) {
+            Tab(
+                String(localized: "Tab.Search", table: "Root"),
+                systemImage: "magnifyingglass",
+                value: AppTab.search,
+                role: searchTabRole
+            ) {
                 SearchView()
             }
         }
@@ -43,5 +48,14 @@ struct RootView: View {
                 router.open(.note(url))
             }
         }
+    }
+
+    private var searchTabRole: TabRole {
+        #if os(iOS)
+        if #available(iOS 27.0, *) {
+            return .prominent
+        }
+        #endif
+        return .search
     }
 }
