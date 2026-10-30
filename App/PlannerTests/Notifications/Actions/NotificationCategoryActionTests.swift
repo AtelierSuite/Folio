@@ -47,6 +47,28 @@ struct NotificationCategoryActionTests {
         #expect(note?.options.contains(.foreground) == true)
     }
 
+    @Test func meetingCategoriesNameTheProvider() {
+        #expect(NotificationCategory.eventWithMeeting.identifier(joining: .zoom) == "folio.event.meeting.zoom")
+        #expect(NotificationCategory.eventWithMeeting.identifier(joining: nil) == "folio.event.meeting")
+        #expect(NotificationCategory.eventWithPlace.identifier(joining: .zoom) == "folio.event.place")
+        let category = NotificationCategoryRegistry.makeCategory(.eventWithMeetingAndPlace, joining: .zoom)
+        #expect(category.identifier == "folio.event.meeting.place.zoom")
+        #expect(category.actions.first?.identifier == NotificationAction.joinMeeting.identifier)
+        #expect(category.actions.first?.title == MeetingProvider.zoom.joinTitle)
+        #expect(category.actions.dropFirst().first?.title == NotificationAction.directions.title)
+    }
+
+    @Test func everyProviderVariantIsRegistered() {
+        let identifiers = Set(NotificationCategoryRegistry.allCategories.map(\.identifier))
+        for provider in MeetingProvider.allCases {
+            #expect(identifiers.contains(NotificationCategory.eventWithMeeting.identifier(joining: provider)))
+            #expect(identifiers.contains(NotificationCategory.eventWithMeetingAndPlace.identifier(joining: provider)))
+        }
+        for category in NotificationCategory.allCases {
+            #expect(identifiers.contains(category.rawValue))
+        }
+    }
+
     @Test func variantsShareTheirKindsThread() {
         #expect(NotificationCategory.eventWithMeetingAndPlace.threadIdentifier == "folio.event")
         #expect(NotificationCategory.reminder.threadIdentifier == "folio.reminder")

@@ -17,7 +17,7 @@ public struct JoinMeetingButton: View {
     }
 
     private var title: String {
-        String(format: String(localized: "Join.Provider", table: "MeetingLinks", bundle: #bundle), link.displayName)
+        link.provider.joinTitle
     }
 
     public var body: some View {

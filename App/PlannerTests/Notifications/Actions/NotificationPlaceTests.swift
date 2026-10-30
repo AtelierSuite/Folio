@@ -48,6 +48,7 @@ struct NotificationPlaceTests {
             NotificationActionFixtures.event(location: "https://zoom.us/j/123")
         ))
         #expect(linkOnly.category == .eventWithMeeting)
+        #expect(linkOnly.categoryIdentifier == "folio.event.meeting.zoom")
     }
 
     @Test func eventsWithoutExtrasKeepTheirIdentifier() throws {
