@@ -28,12 +28,6 @@ struct SettingsView: View {
             LinkedNotesSettingsSection()
             ReminderSettingsSection()
             InvitationSettingsSection()
-            Section {
-                LabeledContent(
-                    String(localized: "About.Version", table: "Settings"),
-                    value: Bundle.main.versionDescription
-                )
-            }
             #if DEBUG
             TimelineDebugSettingsSection()
             MarkdownDebugSection()
