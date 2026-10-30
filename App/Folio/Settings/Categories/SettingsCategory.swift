@@ -60,6 +60,14 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         }
     }
 
+    // Fraction of the icon size; some glyphs are drawn off-centre within their own bounds.
+    var iconHorizontalOffset: CGFloat {
+        switch self {
+        case .searchAndPrivacy: -0.03
+        default: 0
+        }
+    }
+
     var accessibilityIdentifier: String {
         switch self {
         case .notifications: "NotificationSettingsLink"
