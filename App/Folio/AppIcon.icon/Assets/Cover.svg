@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    The planner's cover, split where the elastic band crosses it so the band
+    reads as a separate strap on top. Drawn in white — Icon Composer tints and
+    lights the layer, so the artwork carries only shape and opacity.
+  -->
+  <g fill="#FFFFFF">
+    <path d="M320 184H620V840H320A72 72 0 0 1 248 768V256A72 72 0 0 1 320 184Z" opacity="0.95"/>
+    <path d="M676 184H704A72 72 0 0 1 776 256V768A72 72 0 0 1 704 840H676V184Z" opacity="0.95"/>
+  </g>
+</svg>

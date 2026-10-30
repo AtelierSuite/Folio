@@ -608,6 +608,7 @@
 		1F56EB963860C7169EDF99BD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folio/Folio.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphone*]" = "Folio/Folio-iOS.entitlements";
@@ -820,6 +821,7 @@
 		DA92BB9625393CF84A265C86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folio/Folio.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphone*]" = "Folio/Folio-iOS.entitlements";
