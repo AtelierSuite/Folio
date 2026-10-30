@@ -4,7 +4,7 @@ import SwiftUI
 struct NotificationStyleCalendarRow: View {
     @Environment(NotificationScheduler.self) private var scheduler
     let calendar: PlannerCalendar
-    @State private var style: NotificationAlertStyle = .standard
+    @State private var style = NotificationStyleSettings.initialStyle
 
     var body: some View {
         NotificationStylePicker(selection: style, inheritedStyle: nil) { newValue in

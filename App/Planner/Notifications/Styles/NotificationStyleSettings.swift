@@ -4,6 +4,7 @@ public final class NotificationStyleSettings: @unchecked Sendable {
     public static let calendarStylesKey = "Notifications.CalendarStyles"
     public static let itemStylesKey = "Notifications.ItemStyles"
     public static let shared = NotificationStyleSettings()
+    public static let initialStyle: NotificationAlertStyle = .timeSensitive
 
     private let defaults: UserDefaults
     private let itemStyles: CalendarItemMetadataStore<NotificationAlertStyle>
@@ -14,12 +15,12 @@ public final class NotificationStyleSettings: @unchecked Sendable {
     }
 
     public func defaultStyle(forCalendar calendarIdentifier: String) -> NotificationAlertStyle {
-        calendarStyles[calendarIdentifier] ?? .standard
+        calendarStyles[calendarIdentifier] ?? Self.initialStyle
     }
 
     public func setDefaultStyle(_ style: NotificationAlertStyle, forCalendar calendarIdentifier: String) {
         var styles = calendarStyles
-        styles[calendarIdentifier] = style == .standard ? nil : style
+        styles[calendarIdentifier] = style == Self.initialStyle ? nil : style
         defaults.set(styles.mapValues(\.rawValue), forKey: Self.calendarStylesKey)
     }
 

@@ -44,12 +44,15 @@ struct NotificationSchedulerStyleTests {
 
     @Test func calendarDefaultsAndItemOverridesReachTheCenter() async throws {
         let harness = try makeHarness(events: [work, wake])
-        await harness.scheduler.setDefaultStyle(.timeSensitive, forCalendar: "wake")
-        #expect(harness.center.pendingNotifications.map(\.style) == [.standard, .timeSensitive])
-
-        await harness.scheduler.setStyleOverride(.timeSensitive, for: work.reference)
+        await harness.scheduler.replan()
         #expect(harness.center.pendingNotifications.map(\.style) == [.timeSensitive, .timeSensitive])
-        #expect(harness.scheduler.styleOverride(for: work.reference) == .timeSensitive)
+
+        await harness.scheduler.setDefaultStyle(.standard, forCalendar: "wake")
+        #expect(harness.center.pendingNotifications.map(\.style) == [.timeSensitive, .standard])
+
+        await harness.scheduler.setStyleOverride(.standard, for: work.reference)
+        #expect(harness.center.pendingNotifications.map(\.style) == [.standard, .standard])
+        #expect(harness.scheduler.styleOverride(for: work.reference) == .standard)
     }
 
     @Test func alarmStyleItemsAreScheduledWithAlarmsInsteadOfNotifications() async throws {

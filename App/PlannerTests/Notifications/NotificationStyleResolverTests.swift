@@ -11,21 +11,21 @@ struct NotificationStyleResolverTests {
         return NotificationStyleSettings(defaults: defaults)
     }
 
-    @Test func itemOverrideBeatsCalendarDefaultWhichBeatsStandard() throws {
+    @Test func itemOverrideBeatsCalendarDefaultWhichBeatsTimeSensitive() throws {
         let settings = try makeSettings()
         let resolver = NotificationStyleResolver(settings: settings, capabilities: iPhone)
         let reference = Fixtures.reference(calendarIdentifier: "work")
-        #expect(resolver.style(for: reference) == .standard)
-
-        settings.setDefaultStyle(.timeSensitive, forCalendar: "work")
         #expect(resolver.style(for: reference) == .timeSensitive)
-        #expect(resolver.style(for: Fixtures.reference(local: "other", calendarIdentifier: "home")) == .standard)
+
+        settings.setDefaultStyle(.standard, forCalendar: "work")
+        #expect(resolver.style(for: reference) == .standard)
+        #expect(resolver.style(for: Fixtures.reference(local: "other", calendarIdentifier: "home")) == .timeSensitive)
 
         settings.setStyleOverride(.alarm, for: reference)
         #expect(resolver.style(for: reference) == .alarm)
 
         settings.setStyleOverride(nil, for: reference)
-        #expect(resolver.style(for: reference) == .timeSensitive)
+        #expect(resolver.style(for: reference) == .standard)
     }
 
     @Test func overrideAppliesToEveryOccurrenceOfARecurringItem() throws {
@@ -33,9 +33,9 @@ struct NotificationStyleResolverTests {
         let resolver = NotificationStyleResolver(settings: settings, capabilities: iPhone)
         let monday = Fixtures.reference(occurrence: Fixtures.date(2026, 11, 2, hour: 9))
         let tuesday = Fixtures.reference(occurrence: Fixtures.date(2026, 11, 3, hour: 9))
-        settings.setStyleOverride(.timeSensitive, for: monday)
-        #expect(resolver.style(for: tuesday) == .timeSensitive)
-        #expect(resolver.style(for: Fixtures.reference(external: "external-2", local: "local-2")) == .standard)
+        settings.setStyleOverride(.alarm, for: monday)
+        #expect(resolver.style(for: tuesday) == .alarm)
+        #expect(resolver.style(for: Fixtures.reference(external: "external-2", local: "local-2")) == .timeSensitive)
     }
 
     @Test func macFallsBackFromAlarmToTimeSensitive() throws {
@@ -53,11 +53,11 @@ struct NotificationStyleResolverTests {
         #expect(NotificationAlertStyle.available(on: mac) == [.standard, .timeSensitive])
     }
 
-    @Test func standardDefaultIsNotStored() throws {
+    @Test func initialDefaultIsNotStored() throws {
         let defaults = try #require(UserDefaults(suiteName: "NotificationStyleResolverTests.\(UUID().uuidString)"))
         let settings = NotificationStyleSettings(defaults: defaults)
-        settings.setDefaultStyle(.timeSensitive, forCalendar: "work")
         settings.setDefaultStyle(.standard, forCalendar: "work")
+        settings.setDefaultStyle(.timeSensitive, forCalendar: "work")
         #expect((defaults.dictionary(forKey: NotificationStyleSettings.calendarStylesKey) ?? [:]).isEmpty)
     }
 }
