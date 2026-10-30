@@ -14,6 +14,7 @@ struct CalendarView: View {
     var body: some View {
         NavigationStack {
             content
+                .calendarCreationMenu(calendar: navigation.calendar)
                 .calendarPermissionGate()
                 .navigationTitle(navigation.selectedDate.formatted(.dateTime.year().month(.wide)))
                 #if os(iOS)
