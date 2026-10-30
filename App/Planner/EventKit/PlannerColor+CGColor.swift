@@ -18,3 +18,9 @@ extension PlannerColor {
         )
     }
 }
+
+extension PlannerColor {
+    var cgColor: CGColor {
+        CGColor(srgbRed: red, green: green, blue: blue, alpha: alpha)
+    }
+}
