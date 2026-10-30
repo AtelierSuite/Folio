@@ -4,6 +4,7 @@ import SwiftUI
 struct AgendaReminderRow: View {
     @Environment(UndoCoordinator.self) private var undoCoordinator
     let reminder: ReminderItem
+    var showsDueDay = false
     let onOpen: () -> Void
 
     var body: some View {
@@ -31,10 +32,10 @@ struct AgendaReminderRow: View {
                             .foregroundStyle(reminder.isCompleted ? .secondary : .primary)
                         if reminder.isCarriedForward && !reminder.isCompleted {
                             ReminderOverdueLabel(reminder: reminder)
-                        } else if reminder.hasDueTime, let dueDate = reminder.dueDate {
-                            Text(dueDate, format: .dateTime.hour().minute())
+                        } else if let dueDateFormat, let dueDate = reminder.dueDate {
+                            Text(dueDate, format: dueDateFormat)
                                 .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(isOverdue(dueDate) ? AnyShapeStyle(.red) : AnyShapeStyle(.secondary))
                         }
                     }
                     Spacer(minLength: 0)
@@ -49,5 +50,18 @@ struct AgendaReminderRow: View {
             }
             .buttonStyle(.plain)
         }
+    }
+
+    private var dueDateFormat: Date.FormatStyle? {
+        switch (showsDueDay, reminder.hasDueTime) {
+        case (true, true): .dateTime.weekday().month().day().hour().minute()
+        case (true, false): .dateTime.weekday().month().day()
+        case (false, true): .dateTime.hour().minute()
+        case (false, false): nil
+        }
+    }
+
+    private func isOverdue(_ dueDate: Date) -> Bool {
+        showsDueDay && !reminder.isCompleted && dueDate < .now
     }
 }

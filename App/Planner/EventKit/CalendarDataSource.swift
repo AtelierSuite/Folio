@@ -12,4 +12,5 @@ public protocol CalendarDataSource: EventWritingDataSource {
     func createReminder(_ draft: ReminderDraft) async throws -> String
     func updateReminder(identifier: String, with draft: ReminderDraft) async throws
     func deleteReminder(identifier: String) async throws
+    func createReminderList(_ draft: ReminderListDraft) async throws -> String
 }

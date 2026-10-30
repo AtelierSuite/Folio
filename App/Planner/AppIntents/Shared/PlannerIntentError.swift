@@ -46,7 +46,7 @@ public enum PlannerIntentError: Error, Sendable, Equatable, CustomLocalizedStrin
         switch error {
         case .invalidDraft: self = .emptyTitle
         case .readOnly: self = .readOnly
-        case .listNotFound: self = .noWritableReminderList
+        case .listNotFound, .accountNotFound: self = .noWritableReminderList
         }
     }
 }

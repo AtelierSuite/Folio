@@ -11,6 +11,9 @@ struct RootView: View {
             Tab(String(localized: "Tab.Calendar", table: "Root"), systemImage: "calendar", value: AppTab.calendar) {
                 CalendarView()
             }
+            Tab(String(localized: "Tab.Lists", table: "Root"), systemImage: "checklist", value: AppTab.lists) {
+                ListsView()
+            }
             Tab(String(localized: "Tab.Notes", table: "Root"), systemImage: "note.text", value: AppTab.notes) {
                 NotesView()
             }
