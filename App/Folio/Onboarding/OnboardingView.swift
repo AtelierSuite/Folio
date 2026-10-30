@@ -1,54 +1,68 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @State private var page: OnboardingPage = .welcome
     let onFinish: () -> Void
 
     var body: some View {
         #if os(macOS)
         VStack(spacing: 0) {
-            VStack(spacing: 24) {
-                Spacer(minLength: 0)
-                pageContent
-                Spacer(minLength: 0)
-                OnboardingPageIndicator(current: page)
+            VStack(alignment: .leading, spacing: 28) {
+                OnboardingHeader()
+                featureList(spacing: 20)
             }
-            .padding(.horizontal, 40)
-            .padding(.vertical, 24)
+            .padding(.horizontal, 32)
+            .padding(.top, 32)
+            .padding(.bottom, 28)
             Divider()
-            OnboardingMacFooter(page: $page, onFinish: onFinish)
-        }
-        .animation(.default, value: page)
-        #else
-        VStack(spacing: 32) {
             HStack {
-                if let previous = page.previous {
-                    Button(String(localized: "Action.Back", table: "Onboarding")) {
-                        page = previous
-                    }
-                }
                 Spacer()
-                if page.next != nil {
-                    Button(String(localized: "Action.Skip", table: "Onboarding"), action: onFinish)
-                        .accessibilityIdentifier("OnboardingSkip")
-                }
+                OnboardingContinueButton(action: onFinish)
             }
-            .buttonStyle(.borderless)
-            .frame(minHeight: 32)
-            Spacer()
-            pageContent
-            Spacer()
-            OnboardingPageIndicator(current: page)
-            OnboardingContinueButton(page: $page, onFinish: onFinish)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 14)
         }
-        .padding(24)
-        .animation(.default, value: page)
+        .frame(width: 460)
+        .fixedSize(horizontal: false, vertical: true)
+        .background(alignment: .top) { accentGlow }
+        #else
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 32) {
+                    OnboardingHeader()
+                        .padding(.top, 24)
+                    Spacer(minLength: 0)
+                    featureList(spacing: 32)
+                    Spacer(minLength: 0)
+                }
+                .padding(24)
+                .frame(maxWidth: 560, minHeight: proxy.size.height)
+                .frame(maxWidth: .infinity)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .background(alignment: .top) { accentGlow.ignoresSafeArea() }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            OnboardingContinueButton(action: onFinish)
+                .frame(maxWidth: 560)
+                .padding(24)
+        }
+        .presentationDragIndicator(.hidden)
         #endif
     }
 
-    private var pageContent: some View {
-        OnboardingPageView(page: page)
-            .id(page)
-            .transition(.opacity)
+    private func featureList(spacing: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: spacing) {
+            ForEach(OnboardingFeature.allCases) { feature in
+                OnboardingFeatureRow(feature: feature)
+            }
+        }
+    }
+
+    private var accentGlow: some View {
+        LinearGradient(
+            colors: [Color.accentColor.opacity(0.12), .clear],
+            startPoint: .top,
+            endPoint: .center
+        )
     }
 }

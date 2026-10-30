@@ -1,136 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Action.Back": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurück"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indietro"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "戻る"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "뒤로"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Terug"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quay lại"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "返回"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "返回"
-          }
-        }
-      }
-    },
-    "Action.Continue": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weiter"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continua"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "続ける"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "계속"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ga door"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiếp tục"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "继续"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "繼續"
-          }
-        }
-      }
-    },
     "Action.GetStarted": {
       "extractionState": "manual",
       "localizations": {
@@ -196,72 +66,7 @@
         }
       }
     },
-    "Action.Skip": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Überspringen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salta"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スキップ"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "건너뛰기"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sla over"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bỏ qua"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "跳过"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "略過"
-          }
-        }
-      }
-    },
-    "Page.Calendar.Description": {
+    "Feature.Calendar.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -326,7 +131,7 @@
         }
       }
     },
-    "Page.Calendar.Title": {
+    "Feature.Calendar.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -391,7 +196,7 @@
         }
       }
     },
-    "Page.Notes.Description": {
+    "Feature.Notes.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -456,7 +261,7 @@
         }
       }
     },
-    "Page.Notes.Title": {
+    "Feature.Notes.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -521,7 +326,7 @@
         }
       }
     },
-    "Page.Privacy.Description": {
+    "Feature.Privacy.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -586,7 +391,7 @@
         }
       }
     },
-    "Page.Privacy.Title": {
+    "Feature.Privacy.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -651,7 +456,7 @@
         }
       }
     },
-    "Page.Welcome.Description": {
+    "Welcome.Subtitle": {
       "extractionState": "manual",
       "localizations": {
         "de": {
@@ -716,7 +521,7 @@
         }
       }
     },
-    "Page.Welcome.Title": {
+    "Welcome.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
