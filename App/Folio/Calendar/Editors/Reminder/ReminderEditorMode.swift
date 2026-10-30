@@ -2,7 +2,7 @@ import Foundation
 import Planner
 
 enum ReminderEditorMode {
-    case create(initialDate: Date?)
+    case create(initialDate: Date?, listIdentifier: String?)
     case edit(ReminderItem)
 
     var reminder: ReminderItem? {
@@ -24,7 +24,8 @@ enum ReminderEditorMode {
 
     var initialDraft: ReminderDraft {
         switch self {
-        case .create(let initialDate): ReminderDraft(listIdentifier: "", dueDate: initialDate)
+        case .create(let initialDate, let listIdentifier):
+            ReminderDraft(listIdentifier: listIdentifier ?? "", dueDate: initialDate)
         case .edit(let reminder): ReminderDraft(reminder)
         }
     }
