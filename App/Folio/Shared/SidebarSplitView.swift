@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NotesSplitView<Sidebar: View, Detail: View>: View {
+struct SidebarSplitView<Sidebar: View, Detail: View>: View {
     @ViewBuilder let sidebar: Sidebar
     @ViewBuilder let detail: Detail
 
