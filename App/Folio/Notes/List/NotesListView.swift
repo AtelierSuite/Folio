@@ -3,33 +3,38 @@ import SwiftUI
 
 struct NotesListView: View {
     @Environment(NotesLibrary.self) private var library
-    @Binding var selection: URL?
+    @Binding var selection: NotesSidebarItem?
     let onRename: (URL) -> Void
     let onTrash: (URL) -> Void
 
     var body: some View {
         List(selection: $selection) {
-            ForEach(library.notes) { file in
-                NoteRowView(file: file)
-                    .tag(file.url)
-                    .contextMenu {
-                        Button(String(localized: "Action.Rename", table: "Notes"), systemImage: "pencil") {
-                            onRename(file.url)
-                        }
-                        trashButton(for: file)
-                    }
-                    .swipeActions {
-                        trashButton(for: file)
-                    }
+            Section {
+                RecentlyDeletedRow(count: library.trashedNotes.count)
+                    .tag(NotesSidebarItem.recentlyDeleted)
             }
-        }
-        .overlay {
-            if library.notes.isEmpty {
-                ContentUnavailableView(
-                    String(localized: "Placeholder.Title", table: "Notes"),
-                    systemImage: "note.text",
-                    description: Text(String(localized: "Placeholder.Description", table: "Notes"))
-                )
+            Section {
+                ForEach(library.notes) { file in
+                    NoteRowView(file: file)
+                        .tag(NotesSidebarItem.note(file.url))
+                        .contextMenu {
+                            Button(String(localized: "Action.Rename", table: "Notes"), systemImage: "pencil") {
+                                onRename(file.url)
+                            }
+                            trashButton(for: file)
+                        }
+                        .swipeActions {
+                            trashButton(for: file)
+                        }
+                }
+                if library.notes.isEmpty {
+                    ContentUnavailableView(
+                        String(localized: "Placeholder.Title", table: "Notes"),
+                        systemImage: "note.text",
+                        description: Text(String(localized: "Placeholder.Description", table: "Notes"))
+                    )
+                    .listRowBackground(Color.clear)
+                }
             }
         }
         .refreshable {

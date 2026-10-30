@@ -2,6 +2,30 @@ import Planner
 import SwiftUI
 
 extension NotesView {
+    var sidebarSelection: Binding<NotesSidebarItem?> {
+        Binding(
+            get: {
+                if isShowingRecentlyDeleted {
+                    return .recentlyDeleted
+                }
+                return selection.map(NotesSidebarItem.note)
+            },
+            set: { item in
+                switch item {
+                case .recentlyDeleted:
+                    selection = nil
+                    isShowingRecentlyDeleted = true
+                case .note(let url):
+                    isShowingRecentlyDeleted = false
+                    selection = url
+                case nil:
+                    isShowingRecentlyDeleted = false
+                    selection = nil
+                }
+            }
+        )
+    }
+
     func openNote(at url: URL?) async {
         guard session?.url != url else {
             return
