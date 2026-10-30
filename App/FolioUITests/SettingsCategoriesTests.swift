@@ -14,7 +14,7 @@ final class SettingsCategoriesTests: XCTestCase {
         app.launchArguments += ["-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.buttons["Settings"].firstMatch.tap()
         XCTAssertTrue(app.buttons["SettingsCategory.general"].waitForExistence(timeout: 10))
         attachScreenshot(named: "SettingsRoot")
 
