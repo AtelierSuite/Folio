@@ -12,6 +12,7 @@ struct FolioApp: App {
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler: NotificationScheduler
     @State private var arrivalAlerts: ArrivalAlertCenter
+    @State private var leaveAlerts: LeaveAlertCenter
     @State private var notificationNavigator = NotificationNavigator()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
@@ -28,7 +29,11 @@ struct FolioApp: App {
         let notificationNavigator = NotificationNavigator()
         _notificationScheduler = State(initialValue: notificationScheduler)
         _notificationNavigator = State(initialValue: notificationNavigator)
-        _arrivalAlerts = State(initialValue: .makeForApp(following: notificationScheduler))
+        let arrivalAlerts = ArrivalAlertCenter.makeForApp()
+        let leaveAlerts = LeaveAlertCenter(capabilities: .current)
+        notificationScheduler.replansLocationAlerts(arrivalAlerts, leaveAlerts)
+        _arrivalAlerts = State(initialValue: arrivalAlerts)
+        _leaveAlerts = State(initialValue: leaveAlerts)
         NotificationPresentationDelegate.install(responseHandler: NotificationResponseHandler(
             reminders: calendarStore,
             routing: notificationNavigator,
@@ -69,6 +74,7 @@ struct FolioApp: App {
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
                 .environment(arrivalAlerts)
+                .environment(leaveAlerts)
                 .environment(notificationNavigator)
                 .environment(weatherStore)
                 .environment(sleepStore)
@@ -111,6 +117,7 @@ struct FolioApp: App {
             .environment(permissionCenter)
             .environment(notificationScheduler)
             .environment(arrivalAlerts)
+            .environment(leaveAlerts)
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(sleepStore)
@@ -143,6 +150,10 @@ struct FolioApp: App {
             if arguments.contains(ArrivalAlertCenter.simulateArrivalLaunchArgument) {
                 await arrivalAlerts.simulateArrival(at: EventKitDataSource.arrivalTestCoordinate)
             }
+        }
+        if arguments.contains(LeaveAlertCenter.leaveTestLaunchArgument),
+           let reference = try? EventKitDataSource.shared.seedArrivalTestEvent() {
+            await leaveAlerts.setEnabled(true, for: reference)
         }
         if arguments.contains(EventKitDataSource.countdownSampleLaunchArgument) {
             try? EventKitDataSource.shared.seedCountdownSampleEvent()

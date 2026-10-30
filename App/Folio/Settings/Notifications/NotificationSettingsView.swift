@@ -37,6 +37,7 @@ struct NotificationSettingsView: View {
                 .accessibilityIdentifier("NotificationStylesLink")
             }
             .disabled(!scheduler.isEnabled)
+            LeaveAlertsSection()
             ArrivalAlertsSection()
             if scheduler.isEnabled {
                 NotificationStatusSection()

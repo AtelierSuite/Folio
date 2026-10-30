@@ -1,9 +1,10 @@
 import Planner
 import SwiftUI
 
-struct ArrivalAlertsAccessRows: View {
+struct LocationAlertAccessRows: View {
     let authorization: ArrivalAuthorization
-    let isMonitoringAvailable: Bool
+    var isMonitoringAvailable = true
+    let table: String
 
     var body: some View {
         if let message {
@@ -12,7 +13,7 @@ struct ArrivalAlertsAccessRows: View {
                 .foregroundStyle(.secondary)
             PermissionSettingsButton(kind: .location)
         } else if !isMonitoringAvailable {
-            Text(String(localized: "Settings.Unavailable", table: "ArrivalAlerts"))
+            Text(String(localized: "Settings.Unavailable", table: table))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -20,8 +21,8 @@ struct ArrivalAlertsAccessRows: View {
 
     private var message: String? {
         switch authorization {
-        case .denied: String(localized: "Settings.Denied", table: "ArrivalAlerts")
-        case .whenInUse: String(localized: "Settings.WhenInUse", table: "ArrivalAlerts")
+        case .denied: String(localized: "Settings.Denied", table: table)
+        case .whenInUse: String(localized: "Settings.WhenInUse", table: table)
         case .notDetermined, .always: nil
         }
     }
