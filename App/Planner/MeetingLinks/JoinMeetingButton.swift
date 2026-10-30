@@ -53,6 +53,7 @@ public struct JoinMeetingButton: View {
                 }
             }
         }
+        .meetingProviderTint(link.provider)
         .accessibilityLabel(title)
         .accessibilityIdentifier("JoinMeeting")
     }
