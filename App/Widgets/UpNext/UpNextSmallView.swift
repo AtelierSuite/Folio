@@ -65,7 +65,7 @@ struct UpNextFooter: View {
 
     var body: some View {
         if let joinURL = upNext.joinURL {
-            JoinMeetingButton(url: joinURL)
+            JoinMeetingButton(url: joinURL, brandColor: upNext.meetingBrandColor)
         } else if !upNext.isOngoing {
             Text("UpNext.StartsIn \(Text(upNext.event.startDate, style: .relative))", tableName: "Widgets")
                 .font(.caption2)

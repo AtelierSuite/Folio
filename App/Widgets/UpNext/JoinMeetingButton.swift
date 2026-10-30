@@ -4,6 +4,7 @@ import WidgetKit
 
 struct JoinMeetingButton: View {
     let url: URL
+    var brandColor: Color?
 
     var body: some View {
         Button(intent: OpenURLIntent(url)) {
@@ -14,6 +15,7 @@ struct JoinMeetingButton: View {
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)
         .controlSize(.small)
+        .tint(brandColor)
         .widgetAccentable()
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 public struct WidgetUpNext: Sendable, Hashable {
     public let event: CalendarEvent
@@ -7,6 +8,10 @@ public struct WidgetUpNext: Sendable, Hashable {
 
     public var joinURL: URL? {
         event.meetingLink?.joinDeepLink
+    }
+
+    public var meetingBrandColor: Color? {
+        event.meetingLink?.provider.brandColor
     }
 }
 
