@@ -261,71 +261,6 @@
         }
       }
     },
-    "Attribution.Weather" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wetter"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weather"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Météo"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meteo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "天気"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "날씨"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weer"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Thời tiết"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "天气"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "天氣"
-          }
-        }
-      }
-    },
     "Location.ChosenHeader" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -657,7 +592,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeigt die Vorhersage an Kalendertagen und das stündliche Wetter in der Zeitleiste. Die Wetterdaten stammen von Apple Wetter."
+            "value" : "Zeigt die Vorhersage an Kalendertagen und das stündliche Wetter in der Zeitleiste. Die Wetterdaten stammen von Apple Weather."
           }
         },
         "en" : {
@@ -669,49 +604,49 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Affiche les prévisions sur les jours du calendrier et la météo heure par heure sur la chronologie. Les données proviennent d’Apple Météo."
+            "value" : "Affiche les prévisions sur les jours du calendrier et la météo heure par heure sur la chronologie. Les données proviennent d’Apple Weather."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostra le previsioni sui giorni del calendario e il meteo ora per ora sulla timeline. I dati provengono da Apple Meteo."
+            "value" : "Mostra le previsioni sui giorni del calendario e il meteo ora per ora sulla timeline. I dati provengono da Apple Weather."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カレンダーの各日に天気予報を、タイムラインに1時間ごとの天気を表示します。天気データはAppleの天気から取得します。"
+            "value" : "カレンダーの各日に天気予報を、タイムラインに1時間ごとの天気を表示します。天気データはApple Weatherから取得します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "캘린더의 각 날짜에 일기 예보를, 타임라인에 시간별 날씨를 표시합니다. 날씨 데이터는 Apple 날씨에서 제공됩니다."
+            "value" : "캘린더의 각 날짜에 일기 예보를, 타임라인에 시간별 날씨를 표시합니다. 날씨 데이터는 Apple Weather에서 제공됩니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toont de verwachting op kalenderdagen en het weer per uur op de tijdlijn. De gegevens komen van Apple Weer."
+            "value" : "Toont de verwachting op kalenderdagen en het weer per uur op de tijdlijn. De gegevens komen van Apple Weather."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hiển thị dự báo trên các ngày trong lịch và thời tiết theo giờ trên dòng thời gian. Dữ liệu thời tiết lấy từ Apple Thời tiết."
+            "value" : "Hiển thị dự báo trên các ngày trong lịch và thời tiết theo giờ trên dòng thời gian. Dữ liệu thời tiết lấy từ Apple Weather."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在日历的每一天显示天气预报，并在时间线上显示每小时天气。天气数据来自 Apple 天气。"
+            "value" : "在日历的每一天显示天气预报，并在时间线上显示每小时天气。天气数据来自 Apple Weather。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在行事曆的每一天顯示天氣預報，並在時間線上顯示每小時天氣。天氣資料來自 Apple 天氣。"
+            "value" : "在行事曆的每一天顯示天氣預報，並在時間線上顯示每小時天氣。天氣資料來自 Apple Weather。"
           }
         }
       }
