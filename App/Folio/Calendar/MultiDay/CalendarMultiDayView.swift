@@ -7,11 +7,10 @@ struct CalendarMultiDayView: View {
 
     var body: some View {
         CalendarTimelineContainer(
-            days: TimelineDays(
-                startingOn: navigation.selectedDate,
-                count: dayCount.rawValue,
-                calendar: navigation.calendar
-            ),
+            unit: .day,
+            columnsOnScreen: dayCount.rawValue,
+            initialDate: navigation.selectedDate,
+            calendar: navigation.calendar,
             pageStep: .day,
             zoomScope: .multiDay
         )

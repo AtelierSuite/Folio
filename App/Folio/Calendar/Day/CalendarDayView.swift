@@ -6,7 +6,10 @@ struct CalendarDayView: View {
 
     var body: some View {
         CalendarTimelineContainer(
-            days: TimelineDays(startingOn: navigation.selectedDate, count: 1, calendar: navigation.calendar),
+            unit: .day,
+            columnsOnScreen: 1,
+            initialDate: navigation.selectedDate,
+            calendar: navigation.calendar,
             pageStep: .day,
             zoomScope: .day
         ) {
