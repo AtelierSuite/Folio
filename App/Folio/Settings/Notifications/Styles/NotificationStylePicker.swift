@@ -12,7 +12,7 @@ struct NotificationStylePicker<Label: View>: View {
     var body: some View {
         Picker(selection: Binding(get: { selection }, set: select)) {
             if let inheritedStyle {
-                Text(String(localized: "Style.Inherited \(inheritedStyle.title)", table: "NotificationStyles"))
+                Text(inheritedTitle(inheritedStyle))
                     .tag(NotificationAlertStyle?.none)
             }
             ForEach(scheduler.availableStyles) { style in
@@ -21,7 +21,23 @@ struct NotificationStylePicker<Label: View>: View {
             }
         } label: {
             label()
+        } currentValueLabel: {
+            Text(currentTitle)
         }
+    }
+
+    private var currentTitle: String {
+        if let selection {
+            selection.title
+        } else if let inheritedStyle {
+            inheritedTitle(inheritedStyle)
+        } else {
+            ""
+        }
+    }
+
+    private func inheritedTitle(_ style: NotificationAlertStyle) -> String {
+        String(localized: "Style.Inherited \(style.title)", table: "NotificationStyles")
     }
 
     private func select(_ style: NotificationAlertStyle?) {
