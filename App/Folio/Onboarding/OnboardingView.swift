@@ -25,21 +25,17 @@ struct OnboardingView: View {
         .fixedSize(horizontal: false, vertical: true)
         .background(alignment: .top) { accentGlow }
         #else
-        GeometryReader { proxy in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 32) {
-                    OnboardingHeader()
-                        .padding(.top, 24)
-                    Spacer(minLength: 0)
-                    featureList(spacing: 32)
-                    Spacer(minLength: 0)
-                }
-                .padding(24)
-                .frame(maxWidth: 560, minHeight: proxy.size.height)
-                .frame(maxWidth: .infinity)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 40) {
+                OnboardingHeader()
+                    .padding(.top, 24)
+                featureList(spacing: 32)
             }
-            .scrollBounceBehavior(.basedOnSize)
+            .padding(24)
+            .frame(maxWidth: 560)
+            .frame(maxWidth: .infinity)
         }
+        .scrollBounceBehavior(.basedOnSize)
         .background(alignment: .top) { accentGlow.ignoresSafeArea() }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             OnboardingContinueButton(action: onFinish)
