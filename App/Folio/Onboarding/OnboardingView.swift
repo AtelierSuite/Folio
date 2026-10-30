@@ -1,6 +1,8 @@
+import Planner
 import SwiftUI
 
 struct OnboardingView: View {
+    @Environment(\.platformCapabilities) private var capabilities
     let onFinish: () -> Void
 
     var body: some View {
@@ -48,9 +50,15 @@ struct OnboardingView: View {
 
     private func featureList(spacing: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: spacing) {
-            ForEach(OnboardingFeature.allCases) { feature in
+            ForEach(features) { feature in
                 OnboardingFeatureRow(feature: feature)
             }
+        }
+    }
+
+    private var features: [OnboardingFeature] {
+        OnboardingFeature.allCases.filter { feature in
+            feature.requiredPlatformFeature.map(capabilities.supports) ?? true
         }
     }
 

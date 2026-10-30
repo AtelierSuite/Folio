@@ -456,6 +456,136 @@
         }
       }
     },
+    "Feature.Sleep.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeige Schlaf aus der Health-App in deinem Kalender neben deinen Plänen an. Aktiviere es in den Einstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show sleep from the Health app on your calendar, next to your plans. Turn it on in Settings."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affichez le sommeil de l’app Santé dans votre calendrier, à côté de vos projets. Activez-le dans Réglages."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il sonno dell’app Salute nel calendario, accanto ai tuoi piani. Attivalo in Impostazioni."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヘルスケアの睡眠を、予定と並べてカレンダーに表示できます。設定でオンにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "건강 앱의 수면을 일정 옆에 캘린더로 표시할 수 있습니다. 설정에서 켜세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon slaap uit de Gezondheid-app in je agenda, naast je planning. Zet het aan in Instellingen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị giấc ngủ từ ứng dụng Sức khỏe trên lịch, ngay cạnh kế hoạch của bạn. Bật tính năng này trong Cài đặt."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在日历上将“健康”中的睡眠与你的计划并排显示。可在设置中打开。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在行事曆上將「健康」中的睡眠與你的計畫並列顯示。可在設定中開啟。"
+          }
+        }
+      }
+    },
+    "Feature.Sleep.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte deinen Schlaf im Blick"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See How You Slept"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyez votre sommeil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni d’occhio il sonno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠もひと目で"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수면도 한눈에"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zie hoe je hebt geslapen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem giấc ngủ của bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠情况"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠狀況"
+          }
+        }
+      }
+    },
     "Welcome.Title": {
       "extractionState": "manual",
       "localizations": {
