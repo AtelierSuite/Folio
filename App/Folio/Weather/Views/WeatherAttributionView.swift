@@ -5,6 +5,7 @@ import SwiftUI
 struct WeatherAttributionView: View {
     @Environment(\.colorScheme) private var colorScheme
     let attribution: WeatherAttribution
+    var alignment: Alignment = .center
 
     var body: some View {
         HStack(spacing: 8) {
@@ -14,7 +15,7 @@ struct WeatherAttributionView: View {
         }
         .font(.caption2)
         .foregroundStyle(.secondary)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: alignment)
         .padding(.vertical, 4)
     }
 
@@ -38,15 +39,5 @@ struct WeatherAttributionView: View {
         Label(String(localized: "Attribution.Weather", table: "Weather"), systemImage: "apple.logo")
             .labelStyle(.titleAndIcon)
             .accessibilityLabel(attribution.serviceName)
-    }
-}
-
-struct WeatherAttributionFooter: View {
-    let snapshot: WeatherSnapshot
-
-    var body: some View {
-        if snapshot.hasWeather {
-            WeatherAttributionView(attribution: snapshot.attribution ?? .placeholder)
-        }
     }
 }

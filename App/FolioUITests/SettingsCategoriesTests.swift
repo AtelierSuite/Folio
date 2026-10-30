@@ -5,7 +5,8 @@ final class SettingsCategoriesTests: XCTestCase {
         ("general", "EventTapBehaviorPicker"),
         ("calendars", "CalendarVisibilityLink"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),
-        ("searchAndPrivacy", "Search.Settings.MonthsBack")
+        ("searchAndPrivacy", "Search.Settings.MonthsBack"),
+        ("weather", "WeatherToggle")
     ]
 
     @MainActor

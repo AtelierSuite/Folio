@@ -7,6 +7,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case notes
     case notifications
     case sleep
+    case weather
     case searchAndPrivacy
     #if DEBUG
     case debug
@@ -21,6 +22,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notes: String(localized: "Category.Notes", table: "Settings")
         case .notifications: String(localized: "Category.Notifications", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
+        case .weather: String(localized: "Category.Weather", table: "Settings")
         case .searchAndPrivacy: String(localized: "Category.SearchAndPrivacy", table: "Settings")
         #if DEBUG
         case .debug: String(localized: "Category.Debug", table: "Settings")
@@ -35,6 +37,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
         case .sleep: "bed.double.fill"
+        case .weather: "cloud.sun.fill"
         case .searchAndPrivacy: "hand.raised.fill"
         #if DEBUG
         case .debug: "ladybug.fill"
@@ -49,6 +52,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notes: .orange
         case .notifications: .pink
         case .sleep: .indigo
+        case .weather: .cyan
         case .searchAndPrivacy: .blue
         #if DEBUG
         case .debug: .green
@@ -73,7 +77,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     static var groups: [[SettingsCategory]] {
         var groups: [[SettingsCategory]] = [
             [.general, .calendars, .notes],
-            [.notifications, .sleep, .searchAndPrivacy]
+            [.notifications, .sleep, .searchAndPrivacy],
+            [.weather]
         ]
         #if DEBUG
         groups.append([.debug])

@@ -34,7 +34,6 @@ struct CalendarMonthPageView: View {
                 .frame(maxHeight: .infinity)
                 Divider()
             }
-            WeatherAttributionFooter(snapshot: weather)
         }
         .environment(\.weatherSnapshot, weather)
         .reminderCompletion(undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier)
