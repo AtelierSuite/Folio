@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct OnboardingContinueButton: View {
+    let title: String
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text(String(localized: "Action.GetStarted", table: "Onboarding"))
+            Text(title)
                 #if !os(macOS)
                 .fontWeight(.bold)
                 #endif
@@ -19,6 +20,5 @@ struct OnboardingContinueButton: View {
         .buttonSizing(.flexible)
         #endif
         .keyboardShortcut(.defaultAction)
-        .accessibilityIdentifier("OnboardingContinue")
     }
 }
