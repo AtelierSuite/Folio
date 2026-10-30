@@ -24,7 +24,7 @@ private struct InvitationCardStyleModifier<CardShape: InsettableShape>: ViewModi
                     shape.strokeBorder(color, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
                 }
             }
-            .opacity(style == .dimmed ? 0.45 : 1)
+            .opacity(style.opacity)
         if let statusLabel = style.accessibilityLabel {
             styled.accessibilityLabel { label in
                 Text(statusLabel)
@@ -37,6 +37,14 @@ private struct InvitationCardStyleModifier<CardShape: InsettableShape>: ViewModi
 }
 
 extension InvitationCardStyle {
+    var opacity: Double {
+        switch self {
+        case .standard: 1
+        case .outlined: 0.6
+        case .dimmed: 0.45
+        }
+    }
+
     var accessibilityLabel: String? {
         switch self {
         case .standard: nil
