@@ -33,6 +33,19 @@ final class SettingsCategoriesTests: XCTestCase {
     }
 
     @MainActor
+    func testSourceCodeLinkIsShown() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
+        app.launch()
+
+        app.buttons["Settings"].firstMatch.tap()
+        let link = app.links["SourceCodeLink"]
+        XCTAssertTrue(link.waitForExistence(timeout: 10))
+        XCTAssertTrue(link.label.contains("AtelierSuite/Folio"))
+        attachScreenshot(named: "Settings-SourceCode")
+    }
+
+    @MainActor
     private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name

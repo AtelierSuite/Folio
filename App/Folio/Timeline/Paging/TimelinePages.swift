@@ -20,6 +20,10 @@ struct TimelinePages: Equatable {
     func dayRange(of page: Date) -> Range<Int>? {
         index(of: page).map(dayRange(ofPageAt:))
     }
+
+    func pageWidth(viewportWidth: CGFloat) -> CGFloat {
+        viewportWidth / CGFloat(max(columnsOnScreen, 1)) * CGFloat(daysPerPage)
+    }
 }
 
 extension TimelinePages {

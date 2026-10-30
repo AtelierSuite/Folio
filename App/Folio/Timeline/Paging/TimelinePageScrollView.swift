@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-/// The grid's horizontal scroll view. Pages are built lazily, report where they are to `frames`,
+/// The grid's horizontal scroll view. Pages are built lazily, the offset is reported to `frames`,
 /// and the whole strip is one drag surface so a card can be moved from one page to the next.
 struct TimelinePageScrollView<Page: View>: View {
     @Environment(TimelineDragController.self) private var drag: TimelineDragController?
@@ -15,7 +15,7 @@ struct TimelinePageScrollView<Page: View>: View {
     @State private var viewportWidth: CGFloat = 0
 
     private var pageWidth: CGFloat {
-        viewportWidth / CGFloat(max(pages.columnsOnScreen, 1)) * CGFloat(pages.daysPerPage)
+        pages.pageWidth(viewportWidth: viewportWidth)
     }
 
     var body: some View {
@@ -36,9 +36,14 @@ struct TimelinePageScrollView<Page: View>: View {
         .onChange(of: position.viewID(type: Date.self), initial: true) { _, page in
             if !position.isPositionedByUser { anchoredPage = page }
         }
+        .onScrollGeometryChange(for: CGFloat.self) { $0.contentOffset.x } action: { _, offset in
+            frames.update(contentOffset: offset, pages: pages)
+        }
+        .onChange(of: pages) { frames.refresh(pages: pages) }
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
             viewportWidth = width
             frames.viewportWidth = width
+            frames.refresh(pages: pages)
             keepAnchoredPage()
         }
         .onGeometryChange(for: CGRect.self) { $0.frame(in: TimelineDragController.coordinateSpace) } action: {
@@ -54,10 +59,6 @@ struct TimelinePageScrollView<Page: View>: View {
             ForEach(pages.starts, id: \.self) { start in
                 page(start)
                     .frame(width: pageWidth)
-                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .scrollView(axis: .horizontal)) } action: {
-                        frames.update(start, minX: $0.minX, width: $0.width)
-                    }
-                    .onDisappear { frames.remove(start, width: pageWidth) }
             }
         }
         .scrollTargetLayout()

@@ -16,7 +16,7 @@ final class NotificationStyleTests: XCTestCase {
             .matching(NSPredicate(format: "label CONTAINS[c] %@", "Folio Test Alert")).firstMatch
         XCTAssertTrue(banner.waitForExistence(timeout: 150))
         attachScreenshot(named: "DeliveredTimeSensitiveAlert")
-        chooseStyle("Standard", in: app)
+        chooseStyle("Time Sensitive", in: app)
     }
 
     @MainActor
@@ -48,7 +48,7 @@ final class NotificationStyleTests: XCTestCase {
         attachScreenshot(named: isDenied ? "DeliveredFallbackAlert" : "FiredAlarm")
         app.activate()
         app.buttons["NotificationStylesLink"].tap()
-        chooseStyle("Standard", in: app)
+        chooseStyle("Time Sensitive", in: app)
     }
 
     @MainActor
@@ -72,8 +72,8 @@ final class NotificationStyleTests: XCTestCase {
             }
             XCTAssertTrue(row.waitForExistence(timeout: 5))
             row.tap()
-            XCTAssertTrue(app.buttons["Default (Standard)"].waitForExistence(timeout: 5))
-            app.buttons["Time Sensitive"].tap()
+            XCTAssertTrue(app.buttons["Default (Time Sensitive)"].waitForExistence(timeout: 5))
+            app.buttons["Standard"].tap()
             attachScreenshot(named: "\(item) Alert Style")
             app.buttons["Cancel"].firstMatch.tap()
             let discard = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", "Discard")).firstMatch

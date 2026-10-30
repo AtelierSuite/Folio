@@ -25,4 +25,8 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.category = category
         self.style = style
     }
+
+    public var categoryIdentifier: String {
+        category.identifier(joining: meeting?.link.provider)
+    }
 }

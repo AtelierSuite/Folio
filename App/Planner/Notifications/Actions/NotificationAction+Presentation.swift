@@ -12,6 +12,16 @@ extension NotificationAction {
         }
     }
 
+    public func title(joining provider: MeetingProvider?) -> String {
+        guard self == .joinMeeting, let provider else { return title }
+        return provider.joinTitle
+    }
+
+    public func systemImage(joining provider: MeetingProvider?) -> String {
+        guard self == .joinMeeting, let provider else { return systemImage }
+        return provider.systemImage
+    }
+
     public var systemImage: String {
         switch self {
         case .joinMeeting: "video"

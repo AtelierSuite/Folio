@@ -17,6 +17,18 @@ struct SettingsView: View {
                     }
                 }
             }
+            Section {
+                Link(destination: URL(string: "https://github.com/AtelierSuite/Folio")!) {
+                    HStack {
+                        Text(String(localized: "SourceCode", table: "Settings"))
+                        Spacer()
+                        Text(verbatim: "AtelierSuite/Folio")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .tint(.primary)
+                .accessibilityIdentifier("SourceCodeLink")
+            }
         }
         .formStyle(.grouped)
         .navigationTitle(String(localized: "Title", table: "Settings"))
