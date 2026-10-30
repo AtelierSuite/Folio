@@ -2,7 +2,7 @@
 import AppKit
 import SwiftUI
 
-extension PlatformMenuPresenter: NSViewRepresentable {
+extension PlatformMenuAnchor: NSViewRepresentable {
     func makeNSView(context: Context) -> PlatformMenuAnchorView {
         PlatformMenuAnchorView()
     }
@@ -11,7 +11,7 @@ extension PlatformMenuPresenter: NSViewRepresentable {
         guard let request = shouldPresent(context.coordinator) else { return }
         let menu = request.menu().menu()
         Task { @MainActor in
-            menu.popUp(positioning: nil, at: request.point, in: view)
+            menu.popUp(positioning: nil, at: .zero, in: view)
         }
     }
 }

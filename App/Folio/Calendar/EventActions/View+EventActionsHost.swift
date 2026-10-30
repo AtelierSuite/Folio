@@ -56,7 +56,6 @@ private struct EventActionsHostModifier: ViewModifier {
             .environment(\.eventActions, actions)
             .overlay {
                 PlatformMenuPresenter(request: menuRequest(actions))
-                    .allowsHitTesting(false)
             }
             .coordinateSpace(EventActions.coordinateSpace)
             .eventDetailSheet(item: $controller.detailEvent)

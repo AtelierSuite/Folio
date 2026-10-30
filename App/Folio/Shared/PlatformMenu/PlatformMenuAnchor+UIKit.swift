@@ -2,7 +2,7 @@
 import SwiftUI
 import UIKit
 
-extension PlatformMenuPresenter: UIViewRepresentable {
+extension PlatformMenuAnchor: UIViewRepresentable {
     func makeUIView(context: Context) -> PlatformMenuAnchorView {
         PlatformMenuAnchorView()
     }
@@ -11,7 +11,7 @@ extension PlatformMenuPresenter: UIViewRepresentable {
         guard let request = shouldPresent(context.coordinator) else { return }
         let menu = request.menu().menu()
         Task { @MainActor in
-            view.present(menu, at: request.point)
+            view.present(menu)
         }
     }
 }
@@ -36,8 +36,8 @@ final class PlatformMenuAnchorView: UIView {
         nil
     }
 
-    func present(_ menu: UIMenu, at point: CGPoint) {
-        button.frame = CGRect(x: point.x, y: point.y, width: 1, height: 1)
+    func present(_ menu: UIMenu) {
+        button.frame = bounds
         button.menu = menu
         button.performPrimaryAction()
     }
