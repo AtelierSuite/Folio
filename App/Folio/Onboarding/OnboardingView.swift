@@ -5,6 +5,21 @@ struct OnboardingView: View {
     let onFinish: () -> Void
 
     var body: some View {
+        #if os(macOS)
+        VStack(spacing: 0) {
+            VStack(spacing: 24) {
+                Spacer(minLength: 0)
+                pageContent
+                Spacer(minLength: 0)
+                OnboardingPageIndicator(current: page)
+            }
+            .padding(.horizontal, 40)
+            .padding(.vertical, 24)
+            Divider()
+            OnboardingMacFooter(page: $page, onFinish: onFinish)
+        }
+        .animation(.default, value: page)
+        #else
         VStack(spacing: 32) {
             HStack {
                 if let previous = page.previous {
@@ -21,33 +36,19 @@ struct OnboardingView: View {
             .buttonStyle(.borderless)
             .frame(minHeight: 32)
             Spacer()
-            OnboardingPageView(page: page)
-                .id(page)
-                .transition(.opacity)
+            pageContent
             Spacer()
             OnboardingPageIndicator(current: page)
-            continueButton
+            OnboardingContinueButton(page: $page, onFinish: onFinish)
         }
         .padding(24)
         .animation(.default, value: page)
+        #endif
     }
 
-    private var continueButton: some View {
-        Button {
-            if let next = page.next {
-                page = next
-            } else {
-                onFinish()
-            }
-        } label: {
-            Text(page.next == nil
-                ? String(localized: "Action.GetStarted", table: "Onboarding")
-                : String(localized: "Action.Continue", table: "Onboarding"))
-                .frame(maxWidth: 360)
-        }
-        .buttonStyle(.borderedProminent)
-        .controlSize(.large)
-        .keyboardShortcut(.defaultAction)
-        .accessibilityIdentifier("OnboardingContinue")
+    private var pageContent: some View {
+        OnboardingPageView(page: page)
+            .id(page)
+            .transition(.opacity)
     }
 }

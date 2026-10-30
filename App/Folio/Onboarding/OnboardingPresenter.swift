@@ -12,7 +12,7 @@ struct OnboardingPresenter: ViewModifier {
             #if os(macOS)
             .sheet(isPresented: $isPresented) {
                 OnboardingView(onFinish: finish)
-                    .frame(width: 520, height: 520)
+                    .frame(width: 500, height: 420)
                     .interactiveDismissDisabled()
             }
             #else
