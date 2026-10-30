@@ -7,15 +7,18 @@ public struct NotificationPlanner: Sendable {
     public var reservedSlots: Int
     public var formatter: NotificationContentFormatter
     public var styleResolver: @Sendable (NotificationCandidate) -> NotificationAlertStyle
+    public var allDayAlertMinutes: @Sendable (String) -> Int?
 
     public init(
         reservedSlots: Int = defaultReservedSlots,
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
-        styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard }
+        styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard },
+        allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil }
     ) {
         self.reservedSlots = reservedSlots
         self.formatter = formatter
         self.styleResolver = styleResolver
+        self.allDayAlertMinutes = allDayAlertMinutes
     }
 
     public func budget(foreignPendingCount: Int) -> Int {
@@ -40,7 +43,7 @@ public struct NotificationPlanner: Sendable {
 
     private func eventCandidates(_ events: [CalendarEvent], after now: Date) -> [NotificationCandidate] {
         events.flatMap { event in
-            let eventFireDates = fireDates(for: event.alarms, anchor: event.startDate, after: now)
+            let eventFireDates = fireDates(for: event, after: now)
             let meeting = eventFireDates.isEmpty ? nil : NotificationMeeting(event: event)
             let place = eventFireDates.isEmpty ? nil : NotificationPlace(event: event)
             return eventFireDates.map { fireDate in
@@ -68,6 +71,19 @@ public struct NotificationPlanner: Sendable {
                 )
             }
         }
+    }
+
+    private func fireDates(for event: CalendarEvent, after now: Date) -> [Date] {
+        guard event.isAllDay, let minutes = allDayAlertMinutes(event.calendarIdentifier) else {
+            return fireDates(for: event.alarms, anchor: event.startDate, after: now)
+        }
+        let retimed = event.alarms.compactMap { alarm -> Date? in
+            guard let fireDate = alarm.fireDate(relativeTo: event.startDate) else { return nil }
+            guard case .relative = alarm else { return fireDate }
+            let startOfDay = formatter.calendar.startOfDay(for: fireDate)
+            return formatter.calendar.date(byAdding: .minute, value: minutes, to: startOfDay)
+        }
+        return Array(Set(retimed)).filter { $0 > now }
     }
 
     private func fireDates(for alarms: [CalendarAlarm], anchor: Date?, after now: Date) -> [Date] {
