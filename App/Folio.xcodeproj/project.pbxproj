@@ -11,9 +11,9 @@
 		44A24B7A717BD9C741251134 /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
 		68A0368D961685EB85497CDE /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
 		6D81656FDFD2C6209E74502B /* Planner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A1D0C0DE0000000000000001 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = A1D0C0DE0000000000000003 /* Markdown */; };
 		EE4F42DAE8856F1A2AC4A4AB /* FolioWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2D1776F9E773F75107F07B2C /* FolioWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F08A7111160B1A3738CF5A3B /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
-		A1D0C0DE0000000000000001 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = A1D0C0DE0000000000000003 /* Markdown */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,19 +94,19 @@
 		2D1776F9E773F75107F07B2C /* FolioWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FolioWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB50B7C60308378A0D2FDFB /* Planner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Planner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A00E9AE034A862E41F8D60 /* PlannerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B8BAAD0990BFEBF5AC22207 /* Folio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Folio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B8BAAD0990BFEBF5AC22207 /* Folio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CEC680A68AB0D3810F2F61D /* FolioUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FolioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		226FEB5D6D8CE06FF6E2DF03 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		226FEB5D6D8CE06FF6E2DF03 /* Exceptions for "Widgets" folder in "FolioWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = C8B13B880FD2FB1F6E320B8E /* FolioWidgets */;
 		};
-		E0502A99448226A8B5BB777D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		E0502A99448226A8B5BB777D /* Exceptions for "Folio" folder in "Folio" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -118,51 +118,31 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0CF649188740A7A6D5F77473 /* FolioUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
 			path = FolioUITests;
 			sourceTree = "<group>";
 		};
 		406D77D6C5F7E2CB211E327D /* Folio */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E0502A99448226A8B5BB777D /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
+				E0502A99448226A8B5BB777D /* Exceptions for "Folio" folder in "Folio" target */,
 			);
 			path = Folio;
 			sourceTree = "<group>";
 		};
 		804A749D76E288CA353976E7 /* Planner */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
 			path = Planner;
 			sourceTree = "<group>";
 		};
 		EE30883B29DE8FA34FCCEDB1 /* PlannerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
 			path = PlannerTests;
 			sourceTree = "<group>";
 		};
 		F7E643641B26DE2403A8F285 /* Widgets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				226FEB5D6D8CE06FF6E2DF03 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
+				226FEB5D6D8CE06FF6E2DF03 /* Exceptions for "Widgets" folder in "FolioWidgets" target */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -626,10 +606,12 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep from the Health app to show it on your calendar. Sleep data stays on this iPhone and is never uploaded or synced.";
-				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
-				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for arrival alerts you turn on, to tell you when you arrive at an event's location. Your location stays on this iPhone.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival alerts, to tell you when you arrive at an event.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIFileSharingEnabled = YES;
@@ -640,8 +622,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio;
 				PRODUCT_NAME = Folio;
 				SDKROOT = auto;
@@ -692,8 +680,16 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio.Widgets;
 				PRODUCT_NAME = FolioWidgets;
 				SDKROOT = auto;
@@ -840,10 +836,11 @@
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep from the Health app to show it on your calendar. Sleep data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
-				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
-				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for arrival alerts you turn on, to tell you when you arrive at an event's location. Your location stays on this iPhone.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival alerts, to tell you when you arrive at an event.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIFileSharingEnabled = YES;
@@ -854,8 +851,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio;
 				PRODUCT_NAME = Folio;
 				SDKROOT = auto;
@@ -885,8 +888,16 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio.Widgets;
 				PRODUCT_NAME = FolioWidgets;
 				SDKROOT = auto;

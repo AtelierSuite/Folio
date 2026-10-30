@@ -19,8 +19,6 @@
 	</array>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.com.tsubuzaki.Folio</key>
