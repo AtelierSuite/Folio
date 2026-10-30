@@ -8,6 +8,7 @@ final class SecondaryTimeZoneTests: XCTestCase {
         app.launch()
 
         app.tabBars.buttons.element(boundBy: 2).tap()
+        app.openSettingsCategory("calendars")
         let toggle = app.switches.matching(identifier: "SecondaryTimeZoneToggle").firstMatch
         scrollIntoView(toggle, in: app)
         setToggle(toggle, isOn: true)

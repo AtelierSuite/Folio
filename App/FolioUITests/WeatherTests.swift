@@ -13,6 +13,7 @@ final class WeatherTests: XCTestCase {
         attachScreenshot(named: "WeatherWeek")
 
         app.tabBars.buttons.element(boundBy: 2).tap()
+        app.openSettingsCategory("general")
         let toggle = app.switches.matching(identifier: "WeatherToggle").firstMatch
         scrollUntilHittable(toggle, in: app)
         XCTAssertTrue(app.buttons["WeatherLocationLink"].exists)
