@@ -88,7 +88,8 @@ struct TimelineStripTests {
             unit: .day, around: Support.date(2026, 10, 30), window: SlidingPageWindow(radius: 2),
             calendar: Support.calendar()
         )
-        #expect(strip.date(Support.date(2026, 10, 30), movedToPage: Support.date(2026, 11, 1)) == Support.date(2026, 11, 1))
+        let moved = strip.date(Support.date(2026, 10, 30), movedToPage: Support.date(2026, 11, 1))
+        #expect(moved == Support.date(2026, 11, 1))
     }
 
     @Test func intervalsAroundAPageAreClampedToTheStrip() {

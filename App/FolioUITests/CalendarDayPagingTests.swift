@@ -136,7 +136,9 @@ final class CalendarDayPagingTests: XCTestCase {
     }
 
     @MainActor
-    private func waitUntilOnScreen(_ element: XCUIElement, in app: XCUIApplication, timeout: TimeInterval = 10) -> Bool {
+    private func waitUntilOnScreen(
+        _ element: XCUIElement, in app: XCUIApplication, timeout: TimeInterval = 10
+    ) -> Bool {
         let predicate = NSPredicate { _, _ in self.isOnScreen(element, in: app) }
         return XCTWaiter.wait(for: [expectation(for: predicate, evaluatedWith: nil)], timeout: timeout) == .completed
     }
