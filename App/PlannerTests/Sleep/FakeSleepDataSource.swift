@@ -8,6 +8,7 @@ final class FakeSleepDataSource: SleepDataSource, @unchecked Sendable {
     private var storedFetchCount = 0
     private var storedOnChange: (@Sendable () async -> Void)?
     private var storedRequestCount = 0
+    private var storedFailsReads = false
 
     init(samples: [SleepSample] = [], status: SleepAuthorizationRequestStatus = .shouldRequest) {
         storedSamples = samples
@@ -17,6 +18,11 @@ final class FakeSleepDataSource: SleepDataSource, @unchecked Sendable {
     var samples: [SleepSample] {
         get { lock.withLock { storedSamples } }
         set { lock.withLock { storedSamples = newValue } }
+    }
+
+    var failsReads: Bool {
+        get { lock.withLock { storedFailsReads } }
+        set { lock.withLock { storedFailsReads = newValue } }
     }
 
     var fetchCount: Int { lock.withLock { storedFetchCount } }
@@ -35,8 +41,11 @@ final class FakeSleepDataSource: SleepDataSource, @unchecked Sendable {
     }
 
     func samples(in interval: DateInterval) async throws -> [SleepSample] {
-        lock.withLock {
+        try lock.withLock {
             storedFetchCount += 1
+            if storedFailsReads {
+                throw CocoaError(.fileReadNoPermission)
+            }
             return storedSamples.filter { $0.interval.intersects(interval) }
         }
     }

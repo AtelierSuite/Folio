@@ -91,7 +91,7 @@ public final class SleepStore {
         if let cached = cachedSamples[interval] {
             return cached
         }
-        let samples = (try? await source.samples(in: interval)) ?? []
+        guard let samples = try? await source.samples(in: interval) else { return [] }
         if cachedSamples.count >= Self.cacheLimit {
             cachedSamples.removeAll()
         }
