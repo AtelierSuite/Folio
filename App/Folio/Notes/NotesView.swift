@@ -15,20 +15,20 @@ struct NotesView: View {
     var body: some View {
         NotesSplitView {
             NotesSidebarView(
-                selection: $selection,
+                selection: sidebarSelection,
                 onCreate: createNote,
                 onRename: { renamingURL = $0 },
-                onTrash: moveToTrash,
-                onShowRecentlyDeleted: { isShowingRecentlyDeleted = true }
+                onTrash: moveToTrash
             )
         } detail: {
-            NoteDetailView(session: session, onRename: { renamingURL = $0 }, onTrash: moveToTrash)
+            if isShowingRecentlyDeleted {
+                RecentlyDeletedView()
+            } else {
+                NoteDetailView(session: session, onRename: { renamingURL = $0 }, onTrash: moveToTrash)
+            }
         }
         .renameNoteAlert(url: $renamingURL, onRename: rename)
         .notesErrorAlert(message: $errorMessage)
-        .sheet(isPresented: $isShowingRecentlyDeleted) {
-            RecentlyDeletedView()
-        }
         .task {
             await library.start()
         }
@@ -45,6 +45,9 @@ struct NotesView: View {
             }
         }
         .onChange(of: selection) { _, newSelection in
+            if newSelection != nil {
+                isShowingRecentlyDeleted = false
+            }
             Task {
                 await openNote(at: newSelection)
             }

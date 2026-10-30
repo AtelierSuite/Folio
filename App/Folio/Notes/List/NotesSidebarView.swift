@@ -3,11 +3,10 @@ import SwiftUI
 
 struct NotesSidebarView: View {
     @Environment(NotesLibrary.self) private var library
-    @Binding var selection: URL?
+    @Binding var selection: NotesSidebarItem?
     let onCreate: () -> Void
     let onRename: (URL) -> Void
     let onTrash: (URL) -> Void
-    let onShowRecentlyDeleted: () -> Void
 
     var body: some View {
         content
@@ -34,9 +33,6 @@ struct NotesSidebarView: View {
             NotesUnavailableView(status: library.status)
         case .ready:
             NotesListView(selection: $selection, onRename: onRename, onTrash: onTrash)
-                .safeAreaInset(edge: .bottom) {
-                    RecentlyDeletedButton(count: library.trashedNotes.count, action: onShowRecentlyDeleted)
-                }
         }
     }
 }
