@@ -61,6 +61,14 @@ struct EventActions {
         controller.menuRequest = EventMenuRequest(event: event, point: point)
     }
 
+    /// The point the event's menu opened at, or else its card.
+    func dialogAnchor(for event: CalendarEvent) -> CGRect? {
+        if let request = controller.menuRequest, request.event.id == event.id {
+            return CGRect(origin: request.point, size: .zero)
+        }
+        return controller.cardFrames[event.id]
+    }
+
     func presentMenuAtCard(for entry: TimelineEntry) {
         guard let event = event(for: entry) else { return }
         controller.selectedEventID = event.id

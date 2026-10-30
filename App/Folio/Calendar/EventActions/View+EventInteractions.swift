@@ -59,7 +59,15 @@ private struct EventInteractionsModifier: ViewModifier {
             .modifier(EventLongPressModifier(
                 event: event, actions: actions, opensMenuAtCard: placement == .monthCell, center: { center }
             ))
-            .onGeometryChange(for: CGRect.self) { $0.frame(in: EventActions.coordinateSpace) } action: { frame = $0 }
+            .onGeometryChange(for: CGRect.self) { $0.frame(in: EventActions.coordinateSpace) } action: { newFrame in
+                frame = newFrame
+                actions.controller.cardFrames[event.id] = newFrame
+            }
+            .onDisappear {
+                if actions.controller.cardFrames[event.id] == frame {
+                    actions.controller.cardFrames[event.id] = nil
+                }
+            }
             .onChange(of: actions.controller.cardMenuEventID) { _, eventID in
                 guard eventID == event.id else { return }
                 actions.controller.cardMenuEventID = nil

@@ -16,6 +16,8 @@ final class EventActionsController {
     /// card's position, such as a long press that lifted a card for dragging and let go in place.
     var cardMenuEventID: String?
     var selectedEventID: String?
+    /// Where each event's card is in `EventActions.coordinateSpace`, to open dialogs about it there.
+    @ObservationIgnored var cardFrames: [String: CGRect] = [:]
     var errorMessage: String?
 }
 
