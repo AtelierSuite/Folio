@@ -6,7 +6,7 @@ extension UNNotificationContent {
         let content = UNMutableNotificationContent()
         content.title = notification.content.title
         content.body = notification.content.body
-        content.categoryIdentifier = notification.category.rawValue
+        content.categoryIdentifier = notification.categoryIdentifier
         content.threadIdentifier = notification.category.threadIdentifier
         content.userInfo = NotificationUserInfo.make(for: notification)
         apply(notification.style, to: content)
