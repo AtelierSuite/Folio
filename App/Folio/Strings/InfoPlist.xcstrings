@@ -332,61 +332,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio verwendet deinen Standort im Hintergrund nur für Ankunftshinweise, die du aktivierst, um dich zu benachrichtigen, wenn du am Ort eines Termins ankommst. Dein Standort bleibt auf diesem iPhone."
+            "value": "Folio verwendet deinen Standort im Hintergrund nur für Ankunfts- und Aufbruchshinweise, die du aktivierst, um dich zu benachrichtigen, wenn du an einem Termin ankommst oder es Zeit ist aufzubrechen. Dein Standort wird nur mit Apple Karten geteilt, um Reisezeiten zu berechnen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio uses your location in the background only for arrival alerts you turn on, to tell you when you arrive at an event's location. Your location stays on this iPhone."
+            "value": "Folio uses your location in the background only for arrival and time to leave alerts you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée que vous activez, afin de vous prévenir quand vous arrivez au lieu d'un événement. Votre position reste sur cet iPhone."
+            "value": "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée et de départ que vous activez, afin de vous prévenir quand vous arrivez à un événement ou quand il est temps de partir. Votre position n'est partagée qu'avec Plans d'Apple pour calculer les temps de trajet."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio usa la tua posizione in background solo per gli avvisi di arrivo che attivi, per avvisarti quando arrivi nel luogo di un evento. La tua posizione resta su questo iPhone."
+            "value": "Folio usa la tua posizione in background solo per gli avvisi di arrivo e di partenza che attivi, per avvisarti quando arrivi a un evento o quando è ora di partire. La tua posizione viene condivisa solo con Mappe di Apple per calcolare i tempi di percorrenza."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioは、オンにした到着通知のためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときにお知らせします。位置情報はこのiPhoneから送信されません。"
+            "value": "Folioは、オンにした到着通知と出発時刻の通知のためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときや出発する時刻になったときにお知らせします。位置情報は所要時間の計算のためにAppleのマップとのみ共有されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio는 사용자가 켠 도착 알림을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때 알려 줍니다. 위치 정보는 이 iPhone에만 머뭅니다."
+            "value": "Folio는 사용자가 켠 도착 알림과 출발 시간 알림을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 줍니다. 위치 정보는 이동 시간 계산을 위해 Apple 지도와만 공유됩니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio gebruikt je locatie op de achtergrond alleen voor aankomstmeldingen die je aanzet, om je te laten weten wanneer je op de locatie van een activiteit aankomt. Je locatie blijft op deze iPhone."
+            "value": "Folio gebruikt je locatie op de achtergrond alleen voor aankomst- en vertrekmeldingen die je aanzet, om je te laten weten wanneer je bij een activiteit aankomt of wanneer het tijd is om te vertrekken. Je locatie wordt alleen met Apple Kaarten gedeeld om reistijden te berekenen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio chỉ dùng vị trí của bạn ở chế độ nền cho các cảnh báo khi đến nơi mà bạn bật, để báo cho bạn khi bạn đến địa điểm của sự kiện. Vị trí của bạn chỉ được lưu trên iPhone này."
+            "value": "Folio chỉ dùng vị trí của bạn ở chế độ nền cho các cảnh báo khi đến nơi và cảnh báo giờ khởi hành mà bạn bật, để báo cho bạn khi bạn đến một sự kiện hoặc khi đến lúc khởi hành. Vị trí của bạn chỉ được chia sẻ với Apple Bản đồ để tính thời gian di chuyển."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 仅为你打开的到达提醒在后台使用你的位置，以便在你到达活动地点时通知你。你的位置信息只保留在这台 iPhone 上。"
+            "value": "Folio 仅为你打开的到达提醒和出发时间提醒在后台使用你的位置，以便在你到达活动地点或该出发时通知你。你的位置仅会与 Apple 地图共享，用于计算路程时间。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 僅為你開啟的抵達提醒在背景使用你的位置，以便在你抵達活動地點時通知你。你的位置資訊只保留在這部 iPhone 上。"
+            "value": "Folio 僅為你開啟的抵達提醒和出發時間提醒在背景使用你的位置，以便在你抵達活動地點或該出發時通知你。你的位置僅會與 Apple 地圖共享，用於計算交通時間。"
           }
         }
       }
@@ -462,61 +462,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen und, wenn du Ankunftshinweise aktivierst, um dich bei Ankunft an einem Termin zu benachrichtigen."
+            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen und, wenn du Ankunfts- oder Aufbruchshinweise aktivierst, um dich bei Ankunft an einem Termin oder zum Aufbrechen zu benachrichtigen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio uses your location to show the weather where you are and, if you turn on arrival alerts, to tell you when you arrive at an event."
+            "value": "Folio uses your location to show the weather where you are and, if you turn on arrival or time to leave alerts, to tell you when you arrive at an event or when it's time to leave."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio utilise votre position pour afficher la météo là où vous êtes et, si vous activez les alertes d'arrivée, pour vous prévenir quand vous arrivez à un événement."
+            "value": "Folio utilise votre position pour afficher la météo là où vous êtes et, si vous activez les alertes d'arrivée ou de départ, pour vous prévenir quand vous arrivez à un événement ou quand il est temps de partir."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi e, se attivi gli avvisi di arrivo, per avvisarti quando arrivi a un evento."
+            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi e, se attivi gli avvisi di arrivo o di partenza, per avvisarti quando arrivi a un evento o quando è ora di partire."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioは現在地の天気を表示するため、また到着通知をオンにした場合はイベントの場所に到着したことをお知らせするために位置情報を使用します。"
+            "value": "Folioは現在地の天気を表示するため、また到着通知や出発時刻の通知をオンにした場合はイベントの場所に到着したときや出発する時刻になったときにお知らせするために位置情報を使用します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio는 현재 위치의 날씨를 보여 주고, 도착 알림을 켠 경우 이벤트 장소에 도착했을 때 알려 주기 위해 위치 정보를 사용합니다."
+            "value": "Folio는 현재 위치의 날씨를 보여 주고, 도착 알림이나 출발 시간 알림을 켠 경우 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 주기 위해 위치 정보를 사용합니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent en, als je aankomstmeldingen aanzet, om je te laten weten wanneer je bij een activiteit aankomt."
+            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent en, als je aankomst- of vertrekmeldingen aanzet, om je te laten weten wanneer je bij een activiteit aankomt of wanneer het tijd is om te vertrekken."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở và, nếu bạn bật cảnh báo khi đến nơi, để báo cho bạn khi bạn đến một sự kiện."
+            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở và, nếu bạn bật cảnh báo khi đến nơi hoặc cảnh báo giờ khởi hành, để báo cho bạn khi bạn đến một sự kiện hoặc khi đến lúc khởi hành."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 使用你的位置来显示你所在地的天气；如果你打开了到达提醒，还会在你到达活动地点时通知你。"
+            "value": "Folio 使用你的位置来显示你所在地的天气；如果你打开了到达提醒或出发时间提醒，还会在你到达活动地点或该出发时通知你。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 使用你的位置來顯示你所在地的天氣；如果你開啟了抵達提醒，也會在你抵達活動地點時通知你。"
+            "value": "Folio 使用你的位置來顯示你所在地的天氣；如果你開啟了抵達提醒或出發時間提醒，也會在你抵達活動地點或該出發時通知你。"
           }
         }
       }
