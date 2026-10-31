@@ -8,7 +8,7 @@ struct SettingsWindow: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $selectedCategory) {
-                ForEach(SettingsCategory.groups, id: \.self) { group in
+                ForEach(SettingsCategory.windowGroups, id: \.self) { group in
                     Section {
                         ForEach(group.filter { $0.isAvailable(with: capabilities) }) { category in
                             SettingsIconLabel(category: category, iconSize: 22)

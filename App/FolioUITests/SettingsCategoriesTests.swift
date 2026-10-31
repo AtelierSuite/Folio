@@ -5,7 +5,7 @@ final class SettingsCategoriesTests: XCTestCase {
         ("general", "EventTapBehaviorPicker"),
         ("calendars", "CalendarVisibilityLink"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),
-        ("searchAndPrivacy", "Search.Settings.MonthsBack"),
+        ("search", "Search.Settings.MonthsBack"),
         ("weather", "WeatherToggle")
     ]
 
@@ -39,8 +39,12 @@ final class SettingsCategoriesTests: XCTestCase {
         app.launch()
 
         app.buttons["Settings"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["SettingsCategory.general"].waitForExistence(timeout: 10))
         let link = app.links["SourceCodeLink"]
-        XCTAssertTrue(link.waitForExistence(timeout: 10))
+        for _ in 0..<6 where !link.exists {
+            app.swipeUp()
+        }
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
         XCTAssertTrue(link.label.contains("AtelierSuite/Folio"))
         attachScreenshot(named: "Settings-SourceCode")
     }
