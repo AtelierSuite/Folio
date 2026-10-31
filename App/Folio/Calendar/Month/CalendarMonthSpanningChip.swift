@@ -12,6 +12,7 @@ struct CalendarMonthSpanningChip: View {
             .lineLimit(1)
             .padding(.horizontal, 3)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .foregroundStyle(Color(item.entry.color))
             .background(Color(item.entry.color).opacity(0.3), in: shape)
             .invitationCardStyle(item.entry.invitationStyle, color: Color(item.entry.color), in: shape)
     }
