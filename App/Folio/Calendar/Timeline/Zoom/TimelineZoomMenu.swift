@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// Zoom without pinching, for people who can't or prefer not to. On iPhone it sits in the
-/// toolbar's overflow menu so the view's own controls keep their place.
+/// Zoom without pinching, for people who can't or prefer not to.
 struct TimelineZoomMenu: View {
     let zoom: TimelineZoomController
 

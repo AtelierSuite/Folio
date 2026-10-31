@@ -2,9 +2,12 @@ import Testing
 @testable import Planner
 
 struct PlatformCapabilitiesTests {
-    @Test func iPhoneSupportsEveryFeature() {
+    @Test func iPhoneSupportsEveryFeatureExceptCalendarControls() {
         let capabilities = PlatformCapabilities(platform: .iPhone, areLiveActivitiesSupported: true)
-        #expect(capabilities.supportedFeatures == Set(PlatformFeature.allCases))
+        #expect(
+            capabilities.supportedFeatures
+                == Set(PlatformFeature.allCases).subtracting([.calendarPagingButtons, .timelineZoomMenu])
+        )
     }
 
     @Test func iPadHidesSleepAndGeofencing() {
@@ -13,6 +16,8 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.timeSensitiveNotifications))
         #expect(capabilities.supports(.weather))
         #expect(capabilities.supports(.invitationResponses))
+        #expect(capabilities.supports(.calendarPagingButtons))
+        #expect(capabilities.supports(.timelineZoomMenu))
         #expect(!capabilities.supports(.sleep))
         #expect(!capabilities.supports(.geofencedNotifications))
         #expect(!capabilities.supports(.leaveAlerts))
@@ -24,8 +29,11 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.liveActivityCountdown))
     }
 
-    @Test func macOnlySupportsNotificationsAndWeather() {
+    @Test func macOnlySupportsNotificationsWeatherAndCalendarControls() {
         let capabilities = PlatformCapabilities(platform: .mac, areLiveActivitiesSupported: true)
-        #expect(capabilities.supportedFeatures == [.timeSensitiveNotifications, .weather])
+        #expect(
+            capabilities.supportedFeatures
+                == [.timeSensitiveNotifications, .weather, .calendarPagingButtons, .timelineZoomMenu]
+        )
     }
 }
