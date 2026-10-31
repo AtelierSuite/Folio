@@ -29,6 +29,12 @@ extension MarkdownListDecoration {
         }
     }
 
+    /// The width the concealed marker is squeezed to, leaving a small gap after the checkbox.
+    var concealedWidth: CGFloat? {
+        guard case .task = kind else { return nil }
+        return MarkdownEditorStyle.bodyFont.pointSize * 1.6
+    }
+
     /// Sits at the start of the concealed marker, centred on its line.
     func frame(inLine lineFrame: CGRect, origin: CGPoint, lineWidth: CGFloat) -> CGRect {
         if kind == .rule {

@@ -34,7 +34,7 @@ enum MarkdownTextStyler {
         }
         let decorations = highlights.compactMap { decoration(for: $0, outside: revealed) }
         for decoration in decorations {
-            storage.addAttribute(.foregroundColor, value: PlatformColor.clear, range: decoration.range)
+            conceal(decoration, in: storage)
         }
         for (location, attachment) in attachments {
             storage.addAttribute(.attachment, value: attachment, range: NSRange(location: location, length: 1))

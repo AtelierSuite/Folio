@@ -43,6 +43,16 @@ extension MarkdownTextStyler {
         return MarkdownListDecoration(kind: kind, range: highlight.range)
     }
 
+    /// Keeps the marker's characters but makes them invisible, and squeezes a task marker to the width of its
+    /// checkbox so the task's text sits right next to it.
+    static func conceal(_ decoration: MarkdownListDecoration, in storage: NSTextStorage) {
+        storage.addAttribute(.foregroundColor, value: PlatformColor.clear, range: decoration.range)
+        guard let targetWidth = decoration.concealedWidth, decoration.range.length > 0 else { return }
+        let width = storage.attributedSubstring(from: decoration.range).size().width
+        let kern = (targetWidth - width) / CGFloat(decoration.range.length)
+        storage.addAttribute(.kern, value: kern, range: decoration.range)
+    }
+
     static func hide(_ range: NSRange, in storage: NSTextStorage) {
         storage.addAttributes(
             [.font: MarkdownEditorStyle.hiddenFont, .foregroundColor: PlatformColor.clear],
