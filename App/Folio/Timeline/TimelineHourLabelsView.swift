@@ -17,9 +17,8 @@ struct TimelineHourLabelsView: View {
                         .foregroundStyle(.secondary)
                 }
                 if let currentTime {
-                    label(context.date.formatted(.dateTime.hour().minute()), atHour: currentTime.hour)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.red)
+                    currentTimeLabel(context.date.formatted(.dateTime.hour().minute()))
+                        .position(x: width / 2, y: CGFloat(currentTime.hour) * hourHeight)
                 }
             }
         }
@@ -36,6 +35,25 @@ struct TimelineHourLabelsView: View {
             .minimumScaleFactor(0.8)
             .frame(width: width - 6, alignment: .trailing)
             .position(x: (width - 6) / 2, y: CGFloat(hour) * hourHeight)
+    }
+
+    private func currentTimeLabel(_ text: String) -> some View {
+        HStack(spacing: 0) {
+            Text(text)
+                .font(.caption2)
+                .fontWeight(.semibold)
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 1)
+                .background(.red, in: .capsule)
+            Rectangle()
+                .fill(.red)
+                .frame(width: 4, height: 2)
+        }
+        .frame(width: width, alignment: .trailing)
     }
 
     /// Hour labels that would overlap the current time label are hidden, like Calendar does.
