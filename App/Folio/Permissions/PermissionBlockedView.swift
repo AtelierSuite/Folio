@@ -13,12 +13,17 @@ struct PermissionBlockedView: View {
         } description: {
             Text(description(for: status))
         } actions: {
-            PermissionActionButton(kind: kind, status: status)
-                .buttonStyle(.borderedProminent)
-            ForEach(requestable) { other in
-                PermissionRequestButton(kind: other)
-                    .buttonStyle(.bordered)
+            VStack(spacing: 12) {
+                PermissionActionButton(kind: kind, status: status)
+                    .buttonStyle(.borderedProminent)
+                ForEach(requestable) { other in
+                    PermissionRequestButton(kind: other)
+                        .buttonStyle(.bordered)
+                }
             }
+            .buttonSizing(.flexible)
+            .controlSize(.large)
+            .frame(maxWidth: 400)
         }
         .accessibilityIdentifier("PermissionBlocked.\(kind.rawValue)")
     }
