@@ -13,16 +13,7 @@ struct TimelineEventCardView: View {
         placement.entry
     }
 
-    private var shape: UnevenRoundedRectangle {
-        let topRadius: CGFloat = placement.continuesFromPreviousDay ? 0 : 5
-        let bottomRadius: CGFloat = placement.continuesToNextDay ? 0 : 5
-        return UnevenRoundedRectangle(
-            topLeadingRadius: topRadius,
-            bottomLeadingRadius: bottomRadius,
-            bottomTrailingRadius: bottomRadius,
-            topTrailingRadius: topRadius
-        )
-    }
+    private let shape = Rectangle()
 
     var body: some View {
         let color = Color(entry.color)

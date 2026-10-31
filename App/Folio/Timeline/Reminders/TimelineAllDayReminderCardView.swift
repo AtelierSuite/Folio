@@ -24,7 +24,7 @@ struct TimelineAllDayReminderCardView: View {
         .font(.caption.weight(.semibold))
         .padding(.horizontal, 4)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .background(Color(entry.color).opacity(entry.isCompleted ? 0.12 : 0.3), in: RoundedRectangle(cornerRadius: 4))
+        .background(Color(entry.color).opacity(entry.isCompleted ? 0.12 : 0.3), in: .rect)
         .padding(1)
     }
 }

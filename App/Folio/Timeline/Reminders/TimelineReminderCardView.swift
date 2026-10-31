@@ -18,7 +18,7 @@ struct TimelineReminderCardView: View {
         textMetrics.titlePointSize * presentation.textScale
     }
 
-    private let shape = RoundedRectangle(cornerRadius: 5)
+    private let shape = Rectangle()
 
     var body: some View {
         let color = Color(entry.color)
