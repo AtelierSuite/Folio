@@ -18,13 +18,13 @@ struct CalendarMonthDayCellView: View {
                 Spacer(minLength: 0)
                 CalendarMonthWeatherSlot(date: day.date)
             }
+            .allowsHitTesting(false)
             CalendarMonthDayItemsView(items: items, day: day.date)
         }
         .padding(.horizontal, 2)
         .padding(.vertical, 3)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(isSelected ? Color.accentColor.opacity(0.08) : Color.clear)
-        .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityAddTraits(isSelected ? .isSelected : [])

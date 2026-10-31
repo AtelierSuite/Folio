@@ -58,8 +58,7 @@ private struct EventActionsHostModifier: ViewModifier {
             .environment(\.eventActions, actions)
             .onChange(of: events, initial: true, updateLookup)
             .overlay {
-                EventMenuPresenter(request: controller.menuRequest, actions: actions)
-                    .allowsHitTesting(false)
+                PlatformMenuPresenter(request: menuRequest(actions))
             }
             .coordinateSpace(EventActions.coordinateSpace)
             .eventDetailSheet(item: $controller.detailEvent)
@@ -100,6 +99,14 @@ private struct EventActionsHostModifier: ViewModifier {
             } message: {
                 Text(controller.errorMessage ?? "")
             }
+    }
+
+    private func menuRequest(_ actions: EventActions) -> PlatformMenuRequest? {
+        controller.menuRequest.map { request in
+            PlatformMenuRequest(id: request.id, point: request.point) {
+                EventPlatformMenu(event: request.event, actions: actions).menu
+            }
+        }
     }
 
     private func updateLookup() {

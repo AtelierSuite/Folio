@@ -41,7 +41,7 @@ struct CalendarMonthWeekRowView: View {
                 )) { payload, frame in
                     onDrop(payload, day, frame)
                 }
-                .onTapGesture {
+                .calendarMonthDayTaps(day) {
                     onSelectDay(day)
                 }
                 .accessibilityAction {

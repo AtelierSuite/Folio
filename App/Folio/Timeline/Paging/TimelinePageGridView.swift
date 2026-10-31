@@ -15,6 +15,7 @@ struct TimelinePageGridView: View {
         let minimumCardHeight = metrics.minimumCardHeight(hourHeight: hourHeight)
         ZStack(alignment: .topLeading) {
             TimelineHourGridView(dayCount: layout.days.count, hourHeight: hourHeight)
+                .timelineCreationTap(days: layout.days, hourHeight: hourHeight)
             TimelineLayersView(layers: layers.filter { $0.placement == .belowEntries }, context: context)
             TimelineCardsView(
                 layout: layout,
