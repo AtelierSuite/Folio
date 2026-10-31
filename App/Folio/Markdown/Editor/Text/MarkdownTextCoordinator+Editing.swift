@@ -28,7 +28,8 @@ extension MarkdownTextCoordinator {
         let insertion = MarkdownAttributedText.attributedString(fromMarkdown: snippet, baseURL: baseURL)
         performEdit { storage in
             storage.replaceCharacters(in: selection, with: insertion)
-            return NSRange(location: selection.location + insertion.length, length: 0)
+            let caret = selection.location + insertion.length + (needsTrailingBreak ? 0 : 1)
+            return NSRange(location: caret, length: 0)
         }
         host.focusMarkdownText()
     }
