@@ -25,7 +25,7 @@ extension MarkdownTextCoordinator {
         let selectionEnd = NSMaxRange(selection)
         let needsTrailingBreak = selectionEnd >= string.length || string.character(at: selectionEnd) != 10
         let snippet = (needsLeadingBreak ? "\n" : "") + markdown + (needsTrailingBreak ? "\n" : "")
-        let insertion = MarkdownAttributedText.attributedString(fromMarkdown: snippet, baseURL: baseURL)
+        let insertion = attributedString(fromMarkdown: snippet)
         performEdit { storage in
             storage.replaceCharacters(in: selection, with: insertion)
             let caret = selection.location + insertion.length + (needsTrailingBreak ? 0 : 1)

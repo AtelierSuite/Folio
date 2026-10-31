@@ -5,11 +5,12 @@ import UIKit
 import AppKit
 #endif
 
-/// Shows a note's image inline, and turns back into the Markdown it came from when the note is saved.
+/// Shows a note's image inline, and turns back into the Markdown it came from when the note is saved. An image
+/// still downloading keeps a blank space the width of the text until it arrives.
 nonisolated final class MarkdownImageAttachment: NSTextAttachment {
     let markdown: String
 
-    init(markdown: String, image: PlatformImage) {
+    init(markdown: String, image: PlatformImage?) {
         self.markdown = markdown
         super.init(data: nil, ofType: nil)
         self.image = image
@@ -39,9 +40,12 @@ nonisolated final class MarkdownImageAttachment: NSTextAttachment {
     }
 
     private func fittedBounds(in textContainer: NSTextContainer?, lineFragment: CGRect) -> CGRect {
-        guard let size = image?.size, size.width > 0, size.height > 0 else { return .zero }
         let padding = (textContainer?.lineFragmentPadding ?? 0) * 2
         let containerWidth = (textContainer?.size.width ?? lineFragment.width) - padding
+        guard let size = image?.size, size.width > 0, size.height > 0 else {
+            let width = max(containerWidth, 0)
+            return CGRect(x: 0, y: 0, width: width, height: width / 2)
+        }
         let availableWidth = containerWidth > 0 ? containerWidth : size.width
         let width = min(size.width, availableWidth)
         return CGRect(x: 0, y: 0, width: width, height: size.height * width / size.width)
