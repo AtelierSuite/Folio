@@ -22,7 +22,13 @@ struct TimelineGridContentView: View {
                 layers: gutterLayers,
                 context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
             )
-            TimelineHourLabelsView(hourHeight: hourHeight, width: metrics.hourLabelWidth)
+            TimelineHourLabelsView(
+                days: shownDays,
+                frames: frames,
+                columnsOnScreen: pages.columnsOnScreen,
+                hourHeight: hourHeight,
+                width: metrics.hourLabelWidth
+            )
             TimelinePageScrollView(
                 pages: pages,
                 position: $position,
@@ -48,6 +54,17 @@ struct TimelineGridContentView: View {
                 minimumCardHeight: metrics.minimumCardHeight(hourHeight: key.hourHeight)
             )
         }
+    }
+
+    /// Every day on a page that is at least partly on screen, so the current time label stays
+    /// joined to the now line until today's page has scrolled fully out of view.
+    private var shownDays: TimelineDays {
+        guard let shown = frames.shownPages, let firstIndex = pages.index(of: shown.firstPage) else {
+            return gutterDays
+        }
+        let lowerBound = pages.dayRange(ofPageAt: firstIndex).lowerBound
+        let upperBound = min(pages.dayRange(ofPageAt: firstIndex + shown.count - 1).upperBound, layout.days.count)
+        return layout.page(lowerBound..<max(upperBound, lowerBound)).days
     }
 
     /// Gutter layers, such as a second time zone, label the hours of the page in view.

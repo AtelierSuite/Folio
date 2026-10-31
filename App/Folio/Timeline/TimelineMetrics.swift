@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimelineMetrics {
-    var hourLabelWidth: CGFloat = 52
+    var hourLabelWidth: CGFloat = 60
     var allDayLaneHeight: CGFloat = 22
     var maximumVisibleAllDayLanes: CGFloat = 3.5
     var minimumCardHeight: CGFloat = 16
