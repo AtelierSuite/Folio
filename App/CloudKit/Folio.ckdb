@@ -1,12 +1,6 @@
 DEFINE SCHEMA
 
     RECORD TYPE CD_NoteLinkRecord (
-        "___createTime" TIMESTAMP,
-        "___createdBy"  REFERENCE,
-        "___etag"       STRING,
-        "___modTime"    TIMESTAMP,
-        "___modifiedBy" REFERENCE,
-        "___recordID"   REFERENCE QUERYABLE,
         CD_calendarIdentifier STRING,
         CD_dayKey             STRING,
         CD_entityName         STRING,
@@ -15,6 +9,12 @@ DEFINE SCHEMA
         CD_linkedAt           TIMESTAMP,
         CD_location           STRING,
         CD_notePath           STRING,
+        "___createTime"       TIMESTAMP,
+        "___createdBy"        REFERENCE,
+        "___etag"             STRING,
+        "___modTime"          TIMESTAMP,
+        "___modifiedBy"       REFERENCE,
+        "___recordID"         REFERENCE QUERYABLE,
         GRANT WRITE TO "_creator",
         GRANT CREATE TO "_icloud",
         GRANT READ TO "_world"
@@ -31,3 +31,4 @@ DEFINE SCHEMA
         GRANT WRITE TO "_creator",
         GRANT READ TO "_world"
     );
+
