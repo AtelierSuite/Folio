@@ -32,6 +32,7 @@ struct TimelineEventCardView: View {
                 .padding(.trailing, 3 + trailingInset)
                 .padding(.vertical, presentation.showsPadding ? textMetrics.verticalPadding / 2 : 0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .foregroundStyle(color)
                 .background(color.opacity(0.22), in: shape)
                 .overlay(alignment: .leading) {
                     Rectangle()
