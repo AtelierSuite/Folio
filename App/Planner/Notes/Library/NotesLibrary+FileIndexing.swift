@@ -1,6 +1,7 @@
 import Foundation
 
 extension NotesLibrary {
+    static let unusedAssetGrace: TimeInterval = 7 * 24 * 60 * 60
     static let fileIndexingDelay = Duration.seconds(2)
 
     private struct ListedNote {
@@ -19,8 +20,8 @@ extension NotesLibrary {
     }
 
     /// Reads only notes that are on the device and changed since this device last read them, moving any old front
-    /// matter into the index.
-    func indexFiles() async {
+    /// matter into the index, then removes images no note has mentioned for `unusedAssetGrace`.
+    func indexFiles(now: Date = .now) async {
         guard hasCompleteListing, status == .ready, !isMigrating, let location = indexLocation, let store else {
             return
         }
@@ -44,6 +45,12 @@ extension NotesLibrary {
             ))
         }
         index.keepFiles(Set(listed.map(\.path)), in: location)
+        let isComplete = listed.allSatisfy { note in
+            note.file.isDownloaded && index.fileStates(in: location)[note.path] != nil
+        }
+        if isComplete {
+            await removeUnusedAssets(in: store, location: location, now: now)
+        }
     }
 
     /// Notes written by earlier versions keep links in front matter. The link moves into the index first, and the
@@ -61,5 +68,20 @@ extension NotesLibrary {
         }
         guard case .saved(let saved) = try? await store.save(file.body, over: note) else { return nil }
         return saved
+    }
+
+    private func removeUnusedAssets(in store: NoteFileStore, location: String, now: Date) async {
+        let used = Set(index.fileStates(in: location).values.flatMap(\.referencedNames))
+        let prefix = "asset:\(location)/"
+        var unusedKeys = Set<String>()
+        for name in await store.assetFileNames() where !used.contains(name.lowercased()) {
+            let key = prefix + name
+            unusedKeys.insert(key)
+            if now.timeIntervalSince(index.markMissing(key, at: now)) >= Self.unusedAssetGrace,
+               (try? await store.deleteAsset(named: name)) != nil {
+                unusedKeys.remove(key)
+            }
+        }
+        index.clearMissing(withPrefix: prefix, except: unusedKeys)
     }
 }
