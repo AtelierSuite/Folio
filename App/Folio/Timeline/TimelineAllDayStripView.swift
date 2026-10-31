@@ -8,10 +8,13 @@ struct TimelineAllDayStripView: View {
     let scrolledPage: Date?
     let gutterWidth: CGFloat
     let metrics: TimelineMetrics
+    let isScrolling: Bool
     var onSelectEntry: ((TimelineEntry) -> Void)?
+    @State private var settledLaneCount: Int?
 
     var body: some View {
         let laneCount = max(laneCountOnScreen, 1)
+        let visibleLaneCount = settledLaneCount ?? laneCount
         HStack(alignment: .top, spacing: 0) {
             Text(String(localized: "AllDay", table: "Timeline"))
                 .font(.caption2)
@@ -30,9 +33,17 @@ struct TimelineAllDayStripView: View {
             }
             .scrollBounceBehavior(.basedOnSize)
         }
-        .frame(height: min(CGFloat(laneCount), metrics.maximumVisibleAllDayLanes) * metrics.allDayLaneHeight)
+        .frame(height: min(CGFloat(visibleLaneCount), metrics.maximumVisibleAllDayLanes) * metrics.allDayLaneHeight)
         .padding(.vertical, 2)
-        .animation(.snappy, value: laneCount)
+        .animation(.snappy, value: visibleLaneCount)
+        .onChange(of: laneCount, initial: true) { settleLaneCount(laneCount) }
+        .onChange(of: isScrolling) { settleLaneCount(laneCount) }
+    }
+
+    /// The strip only resizes once a scroll comes to rest, so it doesn't jump as pages pass by.
+    private func settleLaneCount(_ laneCount: Int) {
+        guard !isScrolling else { return }
+        settledLaneCount = laneCount
     }
 
     /// Lanes are counted over the days on screen, so the strip only grows for what can be seen.

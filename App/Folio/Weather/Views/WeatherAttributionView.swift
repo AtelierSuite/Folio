@@ -36,8 +36,12 @@ struct WeatherAttributionView: View {
     }
 
     private var fallbackMark: some View {
-        Label(String(localized: "Attribution.Weather", table: "Weather"), systemImage: "apple.logo")
-            .labelStyle(.titleAndIcon)
-            .accessibilityLabel(attribution.serviceName)
+        Label {
+            Text(verbatim: "Weather")
+        } icon: {
+            Image(systemName: "apple.logo")
+        }
+        .labelStyle(.titleAndIcon)
+        .accessibilityLabel(attribution.serviceName)
     }
 }

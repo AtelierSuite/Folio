@@ -18,6 +18,7 @@ struct CalendarTimelineView: View {
     var onScrollPhaseChange: ((ScrollPhase) -> Void)?
     @Environment(TimelineDragController.self) private var drag: TimelineDragController?
     @State private var frames = TimelinePageFrames()
+    @State private var scrollPhase = ScrollPhase.idle
 
     private var gutterLayers: [TimelineLayer] {
         layers.filter { $0.gutterWidth > 0 }
@@ -45,6 +46,7 @@ struct CalendarTimelineView: View {
                 scrolledPage: scrolledPage,
                 gutterWidth: gutterWidth,
                 metrics: metrics,
+                isScrolling: scrollPhase.isScrolling,
                 onSelectEntry: onSelectEntry
             )
             Divider()
@@ -65,7 +67,10 @@ struct CalendarTimelineView: View {
                     metrics: metrics,
                     isPinching: zoom?.isPinching ?? false,
                     onSelectEntry: onSelectEntry,
-                    onScrollPhaseChange: onScrollPhaseChange
+                    onScrollPhaseChange: { phase in
+                        scrollPhase = phase
+                        onScrollPhaseChange?(phase)
+                    }
                 )
             }
         }

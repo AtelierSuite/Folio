@@ -60,6 +60,14 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         }
     }
 
+    // Fraction of the icon size; some glyphs are drawn off-centre within their own bounds.
+    var iconHorizontalOffset: CGFloat {
+        switch self {
+        case .searchAndPrivacy: -0.03
+        default: 0
+        }
+    }
+
     var accessibilityIdentifier: String {
         switch self {
         case .notifications: "NotificationSettingsLink"
@@ -77,8 +85,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     static var groups: [[SettingsCategory]] {
         var groups: [[SettingsCategory]] = [
             [.general, .calendars, .notes],
-            [.notifications, .sleep, .searchAndPrivacy],
-            [.weather]
+            [.weather],
+            [.notifications, .sleep, .searchAndPrivacy]
         ]
         #if DEBUG
         groups.append([.debug])
