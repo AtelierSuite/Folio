@@ -40,7 +40,7 @@ private struct EventInteractionsModifier: ViewModifier {
         content
             .overlay {
                 if actions.usesPointerSelection && actions.isSelected(event) {
-                    RoundedRectangle(cornerRadius: 5)
+                    Rectangle()
                         .strokeBorder(Color.accentColor, lineWidth: 2)
                         .allowsHitTesting(false)
                 }
