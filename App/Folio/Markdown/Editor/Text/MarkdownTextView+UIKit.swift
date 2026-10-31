@@ -4,7 +4,7 @@ import UIKit
 
 extension MarkdownTextView: UIViewRepresentable {
     func makeUIView(context: Context) -> MarkdownUITextView {
-        let textView = MarkdownUITextView(usingTextLayoutManager: true)
+        let textView = MarkdownUITextView(frame: .zero, textContainer: nil)
         textView.delegate = context.coordinator
         textView.backgroundColor = .clear
         textView.allowsEditingTextAttributes = false
