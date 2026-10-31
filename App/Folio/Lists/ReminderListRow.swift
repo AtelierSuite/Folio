@@ -18,8 +18,7 @@ struct ReminderListRow: View {
                 }
             }
         } icon: {
-            Image(systemName: "list.bullet.circle.fill")
-                .foregroundStyle(list.color.color)
+            ReminderListIcon(color: list.color.color)
         }
         .accessibilityIdentifier("ReminderList.\(list.title)")
     }
