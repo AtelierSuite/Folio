@@ -33,9 +33,12 @@ private struct EventMenuItemView: View {
                     Button {
                         actions.move(event, to: calendar)
                     } label: {
-                        Label(calendar.title, systemImage: "circle.fill")
+                        Label {
+                            Text(calendar.title)
+                        } icon: {
+                            Image(coloredSymbol: "circle.fill", color: calendar.color)
+                        }
                     }
-                    .tint(calendar.color.color)
                 }
             } label: {
                 Label(item.title, systemImage: item.systemImage)
