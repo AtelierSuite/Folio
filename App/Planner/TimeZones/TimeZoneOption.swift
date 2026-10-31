@@ -6,6 +6,7 @@ public struct TimeZoneOption: Identifiable, Hashable, Sendable {
     public let regionName: String
     public let abbreviation: String
     public let offset: String
+    public let regionCode: String?
 
     public var id: String {
         identifier
@@ -15,9 +16,13 @@ public struct TimeZoneOption: Identifiable, Hashable, Sendable {
         cityName ?? regionName
     }
 
-    /// Short enough for the narrow time zone column header.
     public var shortLabel: String {
         cityName ?? abbreviation
+    }
+
+    /// Short enough for the narrow time zone column header.
+    public var columnLabel: String {
+        regionCode ?? shortLabel
     }
 
     public init?(identifier: String, locale: Locale = .autoupdatingCurrent, date: Date = .now) {
@@ -26,6 +31,7 @@ public struct TimeZoneOption: Identifiable, Hashable, Sendable {
         cityName = Self.cityName(of: timeZone, locale: locale)
         regionName = timeZone.localizedName(for: .generic, locale: locale) ?? identifier
         abbreviation = timeZone.abbreviation(for: date) ?? identifier
+        regionCode = TimeZoneRegions.regionCode(for: identifier)
         offset = date.formatted(
             Date.FormatStyle(locale: locale, timeZone: timeZone).timeZone(.localizedGMT(.short))
         )

@@ -7,7 +7,7 @@ extension CalendarTimelineContainer {
             isEnabled: showsSecondaryTimeZone,
             identifier: secondaryTimeZoneIdentifier
         ) else { return [] }
-        let label = TimeZoneOption(identifier: timeZone.identifier)?.shortLabel ?? timeZone.identifier
+        let label = TimeZoneOption(identifier: timeZone.identifier)?.columnLabel ?? timeZone.identifier
         return [.secondaryTimeZone(timeZone, label: label)]
     }
 }
