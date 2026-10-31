@@ -4,6 +4,8 @@ import SwiftUI
 struct TimelineHourLabelsView: View {
     @Environment(SystemTimeObserver.self) private var systemTime: SystemTimeObserver?
     let days: TimelineDays
+    let frames: TimelinePageFrames
+    let columnsOnScreen: Int
     let hourHeight: CGFloat
     let width: CGFloat
     @ScaledMetric(relativeTo: .caption2) private var labelHeight = TimelineMetrics.cardDetailPointSize * 1.2
@@ -17,7 +19,10 @@ struct TimelineHourLabelsView: View {
                         .foregroundStyle(.secondary)
                 }
                 if let currentTime {
-                    currentTimeLabel(context.date.formatted(.dateTime.hour().minute()))
+                    currentTimeLabel(
+                        context.date.formatted(.dateTime.hour().minute()),
+                        isJoinedToLine: currentTime.dayIndex == leadingColumnIndex
+                    )
                         .position(x: width / 2, y: CGFloat(currentTime.hour) * hourHeight)
                 }
             }
@@ -37,7 +42,14 @@ struct TimelineHourLabelsView: View {
             .position(x: (width - 6) / 2, y: CGFloat(hour) * hourHeight)
     }
 
-    private func currentTimeLabel(_ text: String) -> some View {
+    /// The column under the leading edge of the grid, counted from the first day in `days`.
+    private var leadingColumnIndex: Int {
+        let columnWidth = frames.viewportWidth / CGFloat(max(columnsOnScreen, 1))
+        guard columnWidth > 0 else { return 0 }
+        return Int(((-frames.leadingOffset + 0.5) / columnWidth).rounded(.down))
+    }
+
+    private func currentTimeLabel(_ text: String, isJoinedToLine: Bool) -> some View {
         HStack(spacing: 0) {
             Text(text)
                 .font(.caption2)
@@ -52,6 +64,8 @@ struct TimelineHourLabelsView: View {
             Rectangle()
                 .fill(.red)
                 .frame(width: 4, height: 2)
+                .scaleEffect(x: isJoinedToLine ? 1 : 0, anchor: .leading)
+                .animation(.easeOut(duration: 0.15), value: isJoinedToLine)
         }
         .frame(width: width, alignment: .trailing)
     }

@@ -22,7 +22,13 @@ struct TimelineGridContentView: View {
                 layers: gutterLayers,
                 context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
             )
-            TimelineHourLabelsView(days: shownDays, hourHeight: hourHeight, width: metrics.hourLabelWidth)
+            TimelineHourLabelsView(
+                days: shownDays,
+                frames: frames,
+                columnsOnScreen: pages.columnsOnScreen,
+                hourHeight: hourHeight,
+                width: metrics.hourLabelWidth
+            )
             TimelinePageScrollView(
                 pages: pages,
                 position: $position,
