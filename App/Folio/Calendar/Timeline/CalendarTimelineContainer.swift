@@ -8,6 +8,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(\.platformCapabilities) private var capabilities
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
+    @AppStorage(WeatherNightSettings.shadesNightKey) var shadesNight = true
     @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
     var showsSecondaryTimeZone = false
     @AppStorage(SecondaryTimeZoneSettings.identifierKey, store: AppGroup.userDefaults)
@@ -66,7 +67,9 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                 pages: TimelinePages(strip: strip, columnsOnScreen: columnsOnScreen),
                 position: $position,
                 zoom: zoom,
-                layers: CalendarTimelineOverlays(capabilities: capabilities, weather: weather).layers(for: strip.days)
+                layers: CalendarTimelineOverlays(
+                    capabilities: capabilities, weather: weather, shadesNight: shadesNight
+                ).layers(for: strip.days)
                     + secondaryTimeZoneLayers,
                 onSelectEntry: select,
                 onScrollPhaseChange: handleScrollPhase

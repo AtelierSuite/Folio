@@ -4,6 +4,7 @@ import SwiftUI
 struct WeatherSettingsSection: View {
     @Environment(WeatherStore.self) private var weather
     @Environment(PermissionCenter.self) private var permissions
+    @AppStorage(WeatherNightSettings.shadesNightKey) private var shadesNight = true
 
     var body: some View {
         Section {
@@ -19,6 +20,8 @@ struct WeatherSettingsSection: View {
                     )
                 }
                 .accessibilityIdentifier("WeatherLocationLink")
+                Toggle(String(localized: "Settings.ShadeNight", table: "Weather"), isOn: $shadesNight)
+                    .accessibilityIdentifier("WeatherShadeNightToggle")
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "Weather"))
