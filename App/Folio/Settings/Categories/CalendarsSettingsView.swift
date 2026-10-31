@@ -14,6 +14,7 @@ struct CalendarsSettingsView: View {
             ReminderSettingsSection()
             InvitationSettingsSection()
             SecondaryTimeZoneSection()
+            AlternateCalendarSection()
         }
         .settingsCategoryStyle(.calendars)
     }

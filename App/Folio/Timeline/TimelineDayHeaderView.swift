@@ -48,6 +48,7 @@ struct TimelinePageHeaderView: View {
 }
 
 struct TimelineDayHeaderLabel: View {
+    @Environment(\.alternateCalendarFormatter) private var alternateCalendarFormatter
     let day: DateInterval
     let calendar: Calendar
 
@@ -65,8 +66,15 @@ struct TimelineDayHeaderLabel: View {
                 .padding(.horizontal, 6)
                 .frame(minWidth: 26, minHeight: 26)
                 .background(isToday ? Color.accentColor : Color.clear, in: Capsule())
+            AlternateCalendarDayLabel(date: day.start)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(day.start.formatted(Date.FormatStyle(date: .complete, timeZone: calendar.timeZone)))
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    private var accessibilityLabel: String {
+        let gregorianDate = day.start.formatted(Date.FormatStyle(date: .complete, timeZone: calendar.timeZone))
+        guard let alternateCalendarFormatter else { return gregorianDate }
+        return "\(gregorianDate), \(alternateCalendarFormatter.fullDate(for: day.start))"
     }
 }

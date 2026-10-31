@@ -15,6 +15,8 @@ struct CalendarMonthDayCellView: View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .top, spacing: 2) {
                 CalendarMonthDayNumberView(day: day, isToday: calendar.isDateInToday(day.date))
+                AlternateCalendarDayLabel(date: day.date)
+                    .padding(.top, 3)
                 Spacer(minLength: 0)
                 CalendarMonthWeatherSlot(date: day.date)
             }
