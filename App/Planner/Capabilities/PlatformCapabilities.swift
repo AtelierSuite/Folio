@@ -19,6 +19,8 @@ public struct PlatformCapabilities: Sendable, Equatable {
             platform != .mac
         case .sleep, .geofencedNotifications, .leaveAlerts:
             platform == .iPhone
+        case .calendarPagingButtons, .timelineZoomMenu:
+            platform != .iPhone
         }
     }
 

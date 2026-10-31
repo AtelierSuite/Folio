@@ -83,8 +83,10 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         .modifier(dragHandling)
         .modifier(scrollSync)
         .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
-                TimelineZoomMenu(zoom: zoom)
+            if capabilities.supports(.timelineZoomMenu) {
+                ToolbarItem(placement: .secondaryAction) {
+                    TimelineZoomMenu(zoom: zoom)
+                }
             }
         }
         .focusedSceneValue(\.timelineZoom, zoom)

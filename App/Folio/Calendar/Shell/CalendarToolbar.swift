@@ -1,4 +1,5 @@
 import SwiftUI
+import Planner
 
 struct CalendarToolbar: ToolbarContent {
     @Binding var mode: CalendarViewMode
@@ -6,6 +7,7 @@ struct CalendarToolbar: ToolbarContent {
     @Binding var isShowingInbox: Bool
     let navigation: CalendarNavigation
     var pendingInvitationCount = 0
+    @Environment(\.platformCapabilities) private var capabilities
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -28,15 +30,19 @@ struct CalendarToolbar: ToolbarContent {
             InvitationsToolbarItem(pendingCount: pendingInvitationCount)
         }
         ToolbarItemGroup(placement: .navigation) {
-            Button(String(localized: "Toolbar.Previous", table: "Calendar"), systemImage: "chevron.left") {
-                navigation.page(mode, forward: false)
+            if capabilities.supports(.calendarPagingButtons) {
+                Button(String(localized: "Toolbar.Previous", table: "Calendar"), systemImage: "chevron.left") {
+                    navigation.page(mode, forward: false)
+                }
             }
             Button(String(localized: "Toolbar.Today", table: "Calendar")) {
                 navigation.goToToday()
             }
             .disabled(navigation.isShowingToday)
-            Button(String(localized: "Toolbar.Next", table: "Calendar"), systemImage: "chevron.right") {
-                navigation.page(mode, forward: true)
+            if capabilities.supports(.calendarPagingButtons) {
+                Button(String(localized: "Toolbar.Next", table: "Calendar"), systemImage: "chevron.right") {
+                    navigation.page(mode, forward: true)
+                }
             }
         }
     }
