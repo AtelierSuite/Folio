@@ -53,7 +53,6 @@ public final class NoteLinkMaintenance {
     }
 
     private func calendarExists(for link: NoteLink) -> Bool {
-        link.event.calendarIdentifier.isEmpty
-            || calendarStore.eventCalendars.contains { $0.id == link.event.calendarIdentifier }
+        calendarStore.eventCalendars.contains { $0.id == link.event.calendarIdentifier }
     }
 }

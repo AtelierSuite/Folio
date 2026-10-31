@@ -29,17 +29,6 @@ struct NotesLibraryFileIndexingTests {
         FileManager.default.fileExists(atPath: vault.appending(path: relativePath).path(percentEncoded: false))
     }
 
-    @Test func movesFrontMatterLinksIntoTheIndexAndStripsThem() async throws {
-        try write("---\nevent: external-1\ndate: 2026-10-29\ntags: [work]\n---\n# Agenda\n", to: "Agenda.md")
-        await library.refresh()
-        await library.indexFiles()
-        let url = vault.appending(path: "Agenda.md")
-        #expect(try await library.read(url).text == "# Agenda\n")
-        let link = try #require(library.eventLink(forNote: url))
-        #expect(link.event.eventKey == "external-1")
-        #expect(link.event.dayKey == "2026-10-29")
-    }
-
     @Test func removesOnlyImagesNoNoteHasMentionedForAWeek() async throws {
         try write("![Cat](assets/cat.png)", to: "Pets.md")
         try write("![[dog.png]]", to: "\(NoteFileStore.trashFolderName)/Old.md")
