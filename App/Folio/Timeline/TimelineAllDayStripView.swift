@@ -35,15 +35,18 @@ struct TimelineAllDayStripView: View {
         }
         .frame(height: min(CGFloat(visibleLaneCount), metrics.maximumVisibleAllDayLanes) * metrics.allDayLaneHeight)
         .padding(.vertical, 2)
-        .animation(.snappy, value: visibleLaneCount)
         .onChange(of: laneCount, initial: true) { settleLaneCount(laneCount) }
         .onChange(of: isScrolling) { settleLaneCount(laneCount) }
     }
 
     /// The strip only resizes once a scroll comes to rest, so it doesn't jump as pages pass by.
     private func settleLaneCount(_ laneCount: Int) {
-        guard !isScrolling else { return }
-        settledLaneCount = laneCount
+        guard !isScrolling, settledLaneCount != laneCount else { return }
+        if settledLaneCount == nil {
+            settledLaneCount = laneCount
+        } else {
+            withAnimation(.snappy) { settledLaneCount = laneCount }
+        }
     }
 
     /// Lanes are counted over the days on screen, so the strip only grows for what can be seen.
