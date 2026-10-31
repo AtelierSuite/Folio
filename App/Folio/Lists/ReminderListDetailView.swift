@@ -47,6 +47,7 @@ struct ReminderListDetailView: View {
             List(reminders) { reminder in
                 AgendaReminderRow(reminder: reminder, showsDueDay: true) { openedReminder = reminder }
             }
+            .listStyle(.plain)
         }
     }
 
