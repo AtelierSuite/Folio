@@ -69,6 +69,24 @@ final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
         return didResign
     }
 
+    /// The window's undo manager also holds the app's undo steps, so the text keeps its own and the
+    /// Edit menu's Undo and Redo, which go to the window by default, are taken here first.
+    @objc func undo(_ sender: Any?) {
+        textUndoManager.undo()
+    }
+
+    @objc func redo(_ sender: Any?) {
+        textUndoManager.redo()
+    }
+
+    override func validateUserInterfaceItem(_ item: any NSValidatedUserInterfaceItem) -> Bool {
+        switch item.action {
+        case #selector(undo(_:)): textUndoManager.canUndo
+        case #selector(redo(_:)): textUndoManager.canRedo
+        default: super.validateUserInterfaceItem(item)
+        }
+    }
+
     override func paste(_ sender: Any?) {
         pasteAsPlainText(sender)
     }
