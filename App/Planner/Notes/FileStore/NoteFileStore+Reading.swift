@@ -1,41 +1,20 @@
 import Foundation
 
 extension NoteFileStore {
+    /// Downloads the note first if iCloud hasn't put it on this device yet.
     @concurrent
     public func read(_ url: URL) async throws -> Note {
-        try await downloadIfNeeded(url)
+        try await ensureDownloaded(url)
         try preserveConflictVersions(of: url)
-        return try FileCoordination.read(at: url) { coordinatedURL in
-            try loadNote(at: coordinatedURL, reportedURL: url)
+        let store = self
+        return try await FileCoordination.readDownloading(at: url) { coordinatedURL in
+            try store.loadNote(at: coordinatedURL, reportedURL: url)
         }
     }
 
     @concurrent
-    public func downloadIfNeeded(_ url: URL, timeout: Duration = .seconds(60)) async throws {
-        guard isEvicted(url) else {
-            return
-        }
-        try FileManager.default.startDownloadingUbiquitousItem(at: url)
-        let clock = ContinuousClock()
-        let deadline = clock.now.advanced(by: timeout)
-        while isEvicted(url) {
-            guard clock.now < deadline else {
-                throw NotesStorageError.downloadTimedOut
-            }
-            try await Task.sleep(for: .milliseconds(250))
-        }
-    }
-
-    func isEvicted(_ url: URL) -> Bool {
-        let fileManager = FileManager.default
-        guard fileManager.isUbiquitousItem(at: url) else {
-            return false
-        }
-        var freshURL = url
-        freshURL.removeAllCachedResourceValues()
-        let status = try? freshURL.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey])
-            .ubiquitousItemDownloadingStatus
-        return status != .current
+    public func ensureDownloaded(_ url: URL) async throws {
+        try await FileCoordination.readDownloading(at: url) { _ in }
     }
 
     func loadNote(at url: URL, reportedURL: URL) throws -> Note {
