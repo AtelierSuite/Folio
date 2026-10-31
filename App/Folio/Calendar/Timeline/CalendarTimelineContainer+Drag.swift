@@ -44,9 +44,9 @@ struct TimelineDropHandlingModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .sensoryFeedback(trigger: drag.session?.proposal) { oldProposal, newProposal in
-                guard newProposal != nil else { return nil }
-                return oldProposal == nil ? .impact(weight: .medium) : .selection
+            .sensoryFeedback(trigger: drag.session?.proposedHour) { oldHour, newHour in
+                guard newHour != nil else { return nil }
+                return oldHour == nil ? .impact(weight: .medium) : .impact(weight: .light)
             }
             .onChange(of: drag.session?.entry.id) { _, identifier in
                 if identifier != nil, let entry = drag.session?.entry { onLift(entry) }

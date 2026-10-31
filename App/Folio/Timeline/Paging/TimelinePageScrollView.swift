@@ -39,6 +39,7 @@ struct TimelinePageScrollView<Page: View>: View {
         .onScrollGeometryChange(for: CGFloat.self) { $0.contentOffset.x } action: { _, offset in
             frames.update(contentOffset: offset, pages: pages)
         }
+        .modifier(TimelineDayEdgeHapticsModifier(columnsOnScreen: pages.columnsOnScreen))
         .onChange(of: pages) { frames.refresh(pages: pages) }
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
             viewportWidth = width
