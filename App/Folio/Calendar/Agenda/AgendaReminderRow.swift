@@ -6,31 +6,32 @@ struct AgendaReminderRow: View {
     let reminder: ReminderItem
     var showsDueDay = false
     let onOpen: () -> Void
+    @State private var pendingCompletion: Bool?
+
+    private var isCompleted: Bool {
+        pendingCompletion ?? reminder.isCompleted
+    }
 
     var body: some View {
         HStack(spacing: 12) {
-            Button {
-                Task {
-                    try? await undoCoordinator.setCompleted(!reminder.isCompleted, for: reminder)
-                }
-            } label: {
-                Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
+            Button(action: toggleCompletion) {
+                Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
                     .foregroundStyle(reminder.color.color)
             }
             .buttonStyle(.plain)
             .disabled(reminder.isReadOnly)
             .accessibilityLabel(String(
-                localized: reminder.isCompleted ? "Reminder.MarkIncomplete" : "Reminder.MarkCompleted",
+                localized: isCompleted ? "Reminder.MarkIncomplete" : "Reminder.MarkCompleted",
                 table: "Agenda"
             ))
             Button(action: onOpen) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(reminder.title)
-                            .strikethrough(reminder.isCompleted)
-                            .foregroundStyle(reminder.isCompleted ? .secondary : .primary)
-                        if reminder.isCarriedForward && !reminder.isCompleted {
+                            .strikethrough(isCompleted)
+                            .foregroundStyle(isCompleted ? .secondary : .primary)
+                        if reminder.isCarriedForward && !isCompleted {
                             ReminderOverdueLabel(reminder: reminder)
                         } else if let dueDateFormat, let dueDate = reminder.dueDate {
                             Text(dueDate, format: dueDateFormat)
@@ -50,6 +51,21 @@ struct AgendaReminderRow: View {
             }
             .buttonStyle(.plain)
         }
+        .onChange(of: reminder) {
+            pendingCompletion = nil
+        }
+    }
+
+    private func toggleCompletion() {
+        let target = !isCompleted
+        pendingCompletion = target
+        Task {
+            do {
+                try await undoCoordinator.setCompleted(target, for: reminder)
+            } catch {
+                pendingCompletion = nil
+            }
+        }
     }
 
     private var dueDateFormat: Date.FormatStyle? {
@@ -62,6 +78,6 @@ struct AgendaReminderRow: View {
     }
 
     private func isOverdue(_ dueDate: Date) -> Bool {
-        showsDueDay && !reminder.isCompleted && dueDate < .now
+        showsDueDay && !isCompleted && dueDate < .now
     }
 }
