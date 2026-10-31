@@ -2,26 +2,50 @@ import Planner
 import SwiftUI
 
 struct TimelineHourLabelsView: View {
+    @Environment(SystemTimeObserver.self) private var systemTime: SystemTimeObserver?
+    let days: TimelineDays
     let hourHeight: CGFloat
     let width: CGFloat
     @ScaledMetric(relativeTo: .caption2) private var labelHeight = TimelineMetrics.cardDetailPointSize * 1.2
 
     var body: some View {
-        let labelStride = TimelineHourLabelStride.stride(hourHeight: hourHeight, labelHeight: labelHeight)
-        ZStack(alignment: .topTrailing) {
-            ForEach(Array(stride(from: 0, to: 24, by: labelStride)), id: \.self) { hour in
-                Text(Self.label(forHour: hour))
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                    .frame(width: width - 6, alignment: .trailing)
-                    .position(x: (width - 6) / 2, y: CGFloat(hour) * hourHeight)
+        TimelineView(.everyMinute) { context in
+            let currentTime = days.position(of: context.date)
+            ZStack(alignment: .topTrailing) {
+                ForEach(visibleHours(around: currentTime), id: \.self) { hour in
+                    label(Self.label(forHour: hour), atHour: Double(hour))
+                        .foregroundStyle(.secondary)
+                }
+                if let currentTime {
+                    label(context.date.formatted(.dateTime.hour().minute()), atHour: currentTime.hour)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
+                }
             }
         }
+        .id(systemTime?.changeCount)
         .frame(width: width, height: hourHeight * 24, alignment: .topLeading)
         .accessibilityHidden(true)
+    }
+
+    private func label(_ text: String, atHour hour: Double) -> some View {
+        Text(text)
+            .font(.caption2)
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+            .frame(width: width - 6, alignment: .trailing)
+            .position(x: (width - 6) / 2, y: CGFloat(hour) * hourHeight)
+    }
+
+    /// Hour labels that would overlap the current time label are hidden, like Calendar does.
+    private func visibleHours(around currentTime: TimelineTimePosition?) -> [Int] {
+        let labelStride = TimelineHourLabelStride.stride(hourHeight: hourHeight, labelHeight: labelHeight)
+        let hours = Array(stride(from: 0, to: 24, by: labelStride))
+        guard let currentTime else { return hours }
+        return hours.filter { hour in
+            abs(Double(hour) - currentTime.hour) * hourHeight >= labelHeight
+        }
     }
 
     /// Formatted in GMT so the labels show wall clock hours, even on DST days.

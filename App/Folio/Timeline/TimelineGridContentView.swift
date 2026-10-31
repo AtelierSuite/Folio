@@ -22,7 +22,7 @@ struct TimelineGridContentView: View {
                 layers: gutterLayers,
                 context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
             )
-            TimelineHourLabelsView(hourHeight: hourHeight, width: metrics.hourLabelWidth)
+            TimelineHourLabelsView(days: gutterDays, hourHeight: hourHeight, width: metrics.hourLabelWidth)
             TimelinePageScrollView(
                 pages: pages,
                 position: $position,
@@ -50,7 +50,7 @@ struct TimelineGridContentView: View {
         }
     }
 
-    /// Gutter layers, such as a second time zone, label the hours of the page in view.
+    /// Gutter layers, such as a second time zone, and the current time label follow the page in view.
     private var gutterDays: TimelineDays {
         let page = position.viewID(type: Date.self) ?? pages.starts.first
         let range = page.flatMap(pages.dayRange(of:)) ?? 0..<min(pages.daysPerPage, layout.days.count)
