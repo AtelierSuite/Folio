@@ -10,17 +10,10 @@ public struct LinkedNoteTemplate: Sendable, Equatable {
             ? String(localized: "EventNote.UntitledEvent", table: "LinkedNotes", bundle: #bundle)
             : eventTitle
         let dayKey = DailyNoteNaming.dayKey(for: event.startDate, timeZone: timeZone)
-        var frontMatter = MarkdownFrontMatter()
-        frontMatter.event = event.reference.storageKey
-        frontMatter.setValue(dayKey, forKey: MarkdownFrontMatter.dateKey)
-        let file = MarkdownNoteFile(frontMatter: frontMatter, body: "# \(displayTitle)\n")
-        return LinkedNoteTemplate(title: "\(displayTitle) \(dayKey)", text: file.contents)
+        return LinkedNoteTemplate(title: "\(displayTitle) \(dayKey)", text: "# \(displayTitle)\n")
     }
 
     public static func dailyNote(on date: Date, timeZone: TimeZone = .current) -> LinkedNoteTemplate {
-        let dayKey = DailyNoteNaming.dayKey(for: date, timeZone: timeZone)
-        var frontMatter = MarkdownFrontMatter()
-        frontMatter.setValue(dayKey, forKey: MarkdownFrontMatter.dateKey)
-        return LinkedNoteTemplate(title: dayKey, text: MarkdownNoteFile(frontMatter: frontMatter, body: "").contents)
+        LinkedNoteTemplate(title: DailyNoteNaming.dayKey(for: date, timeZone: timeZone), text: "")
     }
 }

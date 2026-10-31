@@ -11,6 +11,7 @@ struct NotesView: View {
     @State var createdNoteURL: URL?
     @State var isShowingRecentlyDeleted = false
     @State var errorMessage: String?
+    @State private var openingTask: Task<Void, Never>?
 
     var body: some View {
         SidebarSplitView {
@@ -48,7 +49,8 @@ struct NotesView: View {
             if newSelection != nil {
                 isShowingRecentlyDeleted = false
             }
-            Task {
+            openingTask?.cancel()
+            openingTask = Task {
                 await openNote(at: newSelection)
             }
         }

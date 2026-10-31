@@ -54,62 +54,19 @@ struct LinkedNoteIndexTests {
         #expect(index.note(linkedTo: reference)?.title == "New")
     }
 
-    @Test func findsTheDailyNoteByPathBeforeFrontMatter() {
+    @Test func findsTheDailyNoteByItsPathOnly() {
         let day = Fixtures.date(2026, 10, 29, hour: 15)
         let index = LinkedNoteIndex(notes: [
             note("Journal.md", day: "2026-10-29", modified: 50),
-            note("Daily/2026-10-29.md", modified: 10)
-        ])
-        #expect(index.dailyNote(on: day, timeZone: utc)?.file.relativePath == "Daily/2026-10-29.md")
-    }
-
-    @Test func findsADatedNoteWithoutAnEventAsTheDailyNote() {
-        let day = Fixtures.date(2026, 10, 29)
-        let index = LinkedNoteIndex(notes: [
-            note("Meeting.md", event: "external-1", day: "2026-10-29", modified: 50),
-            note("Journal.md", day: "2026-10-29", modified: 10),
+            note("Daily/2026-10-29.md", modified: 10),
             note("Daily/2026-10-30.md")
         ])
-        #expect(index.dailyNote(on: day, timeZone: utc)?.title == "Journal")
+        #expect(index.dailyNote(on: day, timeZone: utc)?.file.relativePath == "Daily/2026-10-29.md")
         #expect(index.dailyNote(on: Fixtures.date(2026, 10, 31), timeZone: utc) == nil)
     }
 
-    @Test func readsLinksAndPreviewFromFrontMatter() {
-        let file = NoteFile(url: URL(filePath: "/notes/A.md"), relativePath: "A.md", modifiedDate: .distantPast)
-        let text = "---\nevent: \"external-1@1793264400\"\ndate: 2026-10-29\ntags: [work]\n---\n# Agenda\n\n- Budget\n"
-        let linked = LinkedNote(file: file, text: text, timeZone: .current)
-        #expect(linked.eventKey == "external-1@1793264400")
-        #expect(linked.dayKey == "2026-10-29")
-        #expect(linked.preview == "Agenda\nBudget")
-    }
-
-    @Test func rereadsOnlyNotesThatChanged() async throws {
-        let directory = try TemporaryDirectory()
-        try directory.write("---\nevent: first\n---\n", to: "A.md")
-        try directory.write("---\ndate: 2026-10-29\n---\n", to: "B.md")
-        let store = NoteFileStore(rootURL: directory.url)
-        let index = await LinkedNoteIndex().updated(with: try await store.notes(), in: store)
-        #expect(Set(index.notes.values.compactMap(\.eventKey)) == ["first"])
-
-        let fileB = try #require(index.notes.values.first { $0.title == "B" }?.file)
-        try directory.write("---\nevent: second\n---\n", to: "A.md")
-        try directory.write("---\nevent: ignored\n---\n", to: "B.md")
-        let changedA = try #require(try await store.notes().first { $0.title == "A" })
-        let updated = await index.updated(
-            with: [NoteFile(url: changedA.url, relativePath: "A.md", modifiedDate: .now), fileB], in: store
-        )
-
-        #expect(Set(updated.notes.values.compactMap(\.eventKey)) == ["second"])
-        #expect(updated.notes.values.first { $0.title == "B" }?.dayKey == "2026-10-29")
-    }
-
-    @Test func dropsNotesThatAreGone() async throws {
-        let directory = try TemporaryDirectory()
-        try directory.write("---\nevent: first\n---\n", to: "A.md")
-        let store = NoteFileStore(rootURL: directory.url)
-        let index = await LinkedNoteIndex().updated(with: try await store.notes(), in: store)
-        let emptied = await index.updated(with: [], in: store)
-        #expect(index.notes.count == 1)
-        #expect(emptied.notes.isEmpty)
+    @Test func parsesDayKeysBackIntoDates() {
+        #expect(DailyNoteNaming.date(forDayKey: "2026-10-29", timeZone: utc) == Fixtures.date(2026, 10, 29))
+        #expect(DailyNoteNaming.date(forDayKey: "Ideas", timeZone: utc) == nil)
     }
 }

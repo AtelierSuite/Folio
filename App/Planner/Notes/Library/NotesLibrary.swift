@@ -10,6 +10,9 @@ public final class NotesLibrary {
         didSet { updateLinkedNotes() }
     }
     public internal(set) var linkedNotes = LinkedNoteIndex()
+    public internal(set) var noteLinks: [String: NoteLink] = [:]
+    /// Called with the links removed with their notes, so the events can drop the notes' URLs.
+    @ObservationIgnored public var onLinksRemoved: (([NoteLink]) -> Void)?
     public internal(set) var trashedNotes: [NoteFile] = []
     public internal(set) var store: NoteFileStore?
     public internal(set) var isMigrating = false
@@ -17,20 +20,42 @@ public final class NotesLibrary {
 
     let settings: NotesStorageSettings
     let searchIndexer: NoteSpotlightIndexer?
+    let index: NoteIndexStore
+    var hasCompleteListing = false
     var customFolder: SecurityScopedFolder?
     @ObservationIgnored private var metadataQuery: NotesMetadataQuery?
     @ObservationIgnored private var folderPresenter: NotesFolderPresenter?
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
     @ObservationIgnored private var startTask: Task<Void, Never>?
     @ObservationIgnored var indexingTask: Task<Void, Never>?
-    @ObservationIgnored var linkingTask: Task<Void, Never>?
+    @ObservationIgnored var fileIndexingTask: Task<Void, Never>?
 
-    public init(settings: NotesStorageSettings = NotesStorageSettings(), searchIndexer: NoteSpotlightIndexer? = nil) {
+    public init(
+        settings: NotesStorageSettings = NotesStorageSettings(),
+        searchIndexer: NoteSpotlightIndexer? = nil,
+        index: NoteIndexStore = .inMemory()
+    ) {
         self.settings = settings
         self.searchIndexer = searchIndexer
+        self.index = index
         let mode = settings.mode ?? (NotesLocation.isICloudSignedIn ? .iCloudDrive : .onMyDevice)
         settings.mode = mode
         self.mode = mode
+        index.observeRemoteChanges { [weak self] in
+            self?.updateLinkedNotes()
+        }
+    }
+
+    /// Which notes the index's links belong to. iCloud Drive links are shared by every device; links to notes
+    /// that live only on this device carry its identifier.
+    public var indexLocation: String? {
+        guard let store else { return nil }
+        return switch mode {
+        case .iCloudDrive: mode.rawValue
+        case .onMyDevice: "\(mode.rawValue):\(NoteIndexDevice.identifier())"
+        case .customFolder:
+            "\(mode.rawValue):\(NoteIndexDevice.identifier()):\(store.rootURL.path(percentEncoded: false))"
+        }
     }
 
     public var customFolderName: String? {
@@ -55,14 +80,20 @@ public final class NotesLibrary {
             return
         }
         if metadataQuery == nil {
-            notes = (try? await store.notes()) ?? []
+            if let listed = try? await store.notes() {
+                notes = listed
+                hasCompleteListing = true
+            }
             scheduleIndexing()
         }
         trashedNotes = (try? await store.trashedNotes()) ?? []
+        reconcileLinks()
+        scheduleFileIndexing()
     }
 
     func activateCurrentMode() async {
         stopMonitoring()
+        hasCompleteListing = false
         status = .loading
         if mode == .customFolder, customFolder == nil {
             customFolder = resolveSavedFolder()
@@ -132,6 +163,7 @@ public final class NotesLibrary {
     }
 
     private func receiveQueryResults(_ files: [NoteFile]) {
+        hasCompleteListing = true
         notes = files.sorted { $0.modifiedDate > $1.modifiedDate }
         scheduleRefresh()
         scheduleIndexing()

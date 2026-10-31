@@ -1,0 +1,34 @@
+DEFINE SCHEMA
+
+    RECORD TYPE CD_NoteLinkRecord (
+        CD_calendarIdentifier STRING,
+        CD_dayKey             STRING,
+        CD_entityName         STRING,
+        CD_eventKey           STRING,
+        CD_eventTitle         STRING,
+        CD_linkedAt           TIMESTAMP,
+        CD_location           STRING,
+        CD_notePath           STRING,
+        "___createTime"       TIMESTAMP,
+        "___createdBy"        REFERENCE,
+        "___etag"             STRING,
+        "___modTime"          TIMESTAMP,
+        "___modifiedBy"       REFERENCE,
+        "___recordID"         REFERENCE QUERYABLE,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE Users (
+        "___createTime" TIMESTAMP,
+        "___createdBy"  REFERENCE,
+        "___etag"       STRING,
+        "___modTime"    TIMESTAMP,
+        "___modifiedBy" REFERENCE,
+        "___recordID"   REFERENCE,
+        roles           LIST<INT64>,
+        GRANT WRITE TO "_creator",
+        GRANT READ TO "_world"
+    );
+

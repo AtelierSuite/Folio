@@ -12,7 +12,7 @@ extension NoteFileStore {
         try destination.ensureDirectoryExists(destination.rootURL)
         for relativePath in try migratableRelativePaths() {
             let sourceURL = rootURL.appending(path: relativePath)
-            try await downloadIfNeeded(sourceURL)
+            try await ensureDownloaded(sourceURL)
             let target = destination.rootURL.appending(path: relativePath)
             if NoteFileNaming.exists(target) {
                 if try destination.contentsMatch(of: target, and: sourceURL) {

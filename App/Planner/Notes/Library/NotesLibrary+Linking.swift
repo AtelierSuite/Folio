@@ -9,6 +9,10 @@ extension NotesLibrary {
         linkedNotes.dailyNote(on: date)
     }
 
+    public func eventLink(forNote url: URL) -> NoteLink? {
+        store?.relativePath(of: url).flatMap { noteLinks[$0] }
+    }
+
     public func deepLink(for url: URL) -> URL? {
         store?.relativePath(of: url).flatMap(NoteDeepLink.url(forRelativePath:))
     }
@@ -19,19 +23,17 @@ extension NotesLibrary {
 
     /// Returns the note already linked to `event` if there is one.
     public func createNote(for event: CalendarEvent) async throws -> URL {
-        await waitForLinkedNotes()
         if let existing = linkedNote(for: event) {
             return existing.url
         }
         let template = LinkedNoteTemplate.eventNote(for: event)
         let note = try await createNote(titled: template.title, text: template.text)
-        recordLinkedNote(note)
+        link(note.url, to: event)
         return note.url
     }
 
     /// Returns the day's note already in the library if there is one.
     public func createDailyNote(on date: Date) async throws -> URL {
-        await waitForLinkedNotes()
         if let existing = dailyNote(on: date) {
             return existing.url
         }
@@ -40,43 +42,66 @@ extension NotesLibrary {
             atRelativePath: DailyNoteNaming.relativePath(for: date), text: template.text
         )
         await refresh()
-        recordLinkedNote(note)
         return note.url
     }
 
-    func updateLinkedNotes() {
-        linkingTask?.cancel()
-        let files = notes
-        let store = store
-        let current = linkedNotes
-        linkingTask = Task {
-            let updated = if let store {
-                await current.updated(with: files, in: store)
-            } else {
-                LinkedNoteIndex()
-            }
-            guard !Task.isCancelled, updated != linkedNotes else {
-                return
-            }
-            linkedNotes = updated
-        }
+    public func link(_ url: URL, to event: CalendarEvent) {
+        guard let location = indexLocation, let path = store?.relativePath(of: url) else { return }
+        index.link(notePath: path, in: location, to: NoteLinkEvent(event: event))
+        updateLinkedNotes()
     }
 
-    public func waitForLinkedNotes() async {
-        while let task = linkingTask {
-            await task.value
-            if linkingTask == task {
-                return
-            }
-        }
+    public func unlink(_ url: URL) {
+        guard let location = indexLocation, let path = store?.relativePath(of: url) else { return }
+        removeLinks(index.unlink(notePath: path, in: location))
     }
 
-    /// Makes a note created here findable right away, before the next index update reads it.
-    private func recordLinkedNote(_ note: Note) {
-        guard let store, let relativePath = store.relativePath(of: note.url) else {
+    /// The event is gone, so there is no URL to clean up on it.
+    func unlinkEvent(_ eventKey: String) {
+        guard let location = indexLocation else { return }
+        index.unlink(eventKey: eventKey, in: location)
+        updateLinkedNotes()
+    }
+
+    func moveLinks(from oldURL: URL, to newURL: URL) {
+        guard let location = indexLocation, let store,
+              let oldPath = store.relativePath(of: oldURL), let newPath = store.relativePath(of: newURL) else {
             return
         }
-        let file = NoteFile(url: note.url, relativePath: relativePath, modifiedDate: note.modifiedDate)
-        linkedNotes.insert(LinkedNote(file: file, text: note.text))
+        index.moveLinks(from: oldPath, to: newPath, in: location)
+        updateLinkedNotes()
+    }
+
+    func removeLinks(_ links: [NoteLink]) {
+        updateLinkedNotes()
+        if !links.isEmpty {
+            onLinksRemoved?(links)
+        }
+    }
+
+    /// Links come from the index and are matched to the listed notes; nothing is read from the notes themselves.
+    func updateLinkedNotes() {
+        guard let location = indexLocation else {
+            noteLinks = [:]
+            linkedNotes = LinkedNoteIndex()
+            return
+        }
+        let links = Dictionary(index.links(in: location).map { ($0.notePath, $0) }, uniquingKeysWith: { $1 })
+        let files = Dictionary(notes.map { ($0.relativePath, $0) }, uniquingKeysWith: { first, _ in first })
+        let linked = links.values.compactMap { link in
+            files[link.notePath].map { LinkedNote(file: $0, eventKey: link.event.eventKey, dayKey: link.event.dayKey) }
+        }
+        let daily = notes.filter { DailyNoteNaming.dayKey(ofRelativePath: $0.relativePath) != nil }
+            .map { LinkedNote(file: $0) }
+        noteLinks = links
+        linkedNotes = LinkedNoteIndex(notes: daily + linked)
+    }
+}
+
+extension NotesLibrary {
+    /// The start of a note's text, read from its file when shown; downloading it first if needed.
+    public func preview(of url: URL) async -> String {
+        guard let note = try? await read(url) else { return "" }
+        return String(MarkdownDocument(parsing: note.text).plainText.prefix(LinkedNote.previewLength))
     }
 }

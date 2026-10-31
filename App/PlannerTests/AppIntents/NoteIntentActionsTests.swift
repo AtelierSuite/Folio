@@ -52,7 +52,7 @@ struct NoteIntentActionsTests {
         #expect(second.id == first.id)
         let text = try await library.read(second.url).text
         #expect(text.hasSuffix("Called the bank\nBooked flights\n"))
-        #expect(MarkdownNoteFile(contents: text).frontMatter.value(forKey: MarkdownFrontMatter.dateKey) != nil)
+        #expect(text == "Called the bank\nBooked flights\n")
     }
 
     @Test func editingReplacesTheBodyKeepsFrontMatterAndRenames() async throws {

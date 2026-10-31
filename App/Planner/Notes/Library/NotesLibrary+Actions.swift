@@ -19,6 +19,7 @@ extension NotesLibrary {
 
     public func rename(_ url: URL, to title: String) async throws -> URL {
         let newURL = try await requireStore().rename(url, to: title)
+        moveLinks(from: url, to: newURL)
         await refresh()
         return newURL
     }
@@ -26,6 +27,7 @@ extension NotesLibrary {
     @discardableResult
     public func moveToTrash(_ url: URL) async throws -> URL {
         let trashedURL = try await requireStore().moveToTrash(url)
+        moveLinks(from: url, to: trashedURL)
         await refresh()
         return trashedURL
     }
@@ -33,17 +35,20 @@ extension NotesLibrary {
     @discardableResult
     public func restore(_ trashedURL: URL) async throws -> URL {
         let url = try await requireStore().restore(trashedURL)
+        moveLinks(from: trashedURL, to: url)
         await refresh()
         return url
     }
 
     public func deletePermanently(_ trashedURL: URL) async throws {
         try await requireStore().deletePermanently(trashedURL)
+        unlinkTrashed(at: trashedURL)
         await refresh()
     }
 
     public func emptyTrash() async throws {
         try await requireStore().emptyTrash()
+        unlinkTrashed(at: nil)
         await refresh()
     }
 
