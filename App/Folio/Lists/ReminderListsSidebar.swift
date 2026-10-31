@@ -28,7 +28,9 @@ struct ReminderListsSidebar: View {
                 }
             }
             .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
-                openCounts = await store.openReminderCounts(calendar: systemTime.calendar)
+                let counts = await store.openReminderCounts(calendar: systemTime.calendar)
+                guard !Task.isCancelled else { return }
+                openCounts = counts
             }
     }
 

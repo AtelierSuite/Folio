@@ -30,7 +30,9 @@ struct ReminderListDetailView: View {
                 ReminderEditorView(initialDate: nil, listIdentifier: list.id)
             }
             .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
-                reminders = await store.reminders(inList: list.id, calendar: systemTime.calendar)
+                let loaded = await store.reminders(inList: list.id, calendar: systemTime.calendar)
+                guard !Task.isCancelled else { return }
+                reminders = loaded
                 hasLoaded = true
             }
     }
