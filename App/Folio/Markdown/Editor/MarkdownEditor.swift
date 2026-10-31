@@ -6,7 +6,10 @@ struct MarkdownEditor: View {
     @Binding var text: String
     var baseURL: URL?
     var focusesOnAppear = false
+    var imageAttacher: MarkdownImageAttacher?
     @State private var controller = MarkdownEditorController()
+    @State private var isPickingPhoto = false
+    @State private var isPickingFile = false
 
     var body: some View {
         MarkdownTextView(
@@ -19,7 +22,9 @@ struct MarkdownEditor: View {
         .overlay(alignment: .bottom) {
             if controller.isEditing {
                 MarkdownFormattingBar(perform: controller.apply) {
-                    EmptyView()
+                    if imageAttacher != nil {
+                        MarkdownImageMenu(onPickPhoto: { isPickingPhoto = true }, onPickFile: { isPickingFile = true })
+                    }
                 }
                 .padding(.horizontal, 12)
                 .padding(.bottom, 8)
@@ -27,5 +32,11 @@ struct MarkdownEditor: View {
             }
         }
         .animation(.smooth(duration: 0.25), value: controller.isEditing)
+        .modifier(MarkdownImagePickers(
+            isPickingPhoto: $isPickingPhoto,
+            isPickingFile: $isPickingFile,
+            attacher: imageAttacher,
+            onAttach: controller.insertImage(markdown:)
+        ))
     }
 }
