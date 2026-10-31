@@ -1,7 +1,7 @@
 import Foundation
 
-/// Front matter links of every note in the library, kept in memory so finding an event's note or a
-/// day's note never reads files. `updated(with:in:)` only re-reads notes that changed.
+/// The links of every note in the library, kept in memory so finding an event's note or a day's note never
+/// reads files.
 public struct LinkedNoteIndex: Sendable, Equatable {
     public private(set) var notes: [URL: LinkedNote] = [:]
 
@@ -27,15 +27,12 @@ public struct LinkedNoteIndex: Sendable, Equatable {
         return Self.newest(candidates.filter { $0.0 == match }.map(\.1))
     }
 
-    /// Prefers the note at `Daily/yyyy-MM-dd.md`, then the newest note dated that day that isn't
-    /// linked to an event.
+    /// The note at `Daily/yyyy-MM-dd.md`.
     public func dailyNote(on date: Date, timeZone: TimeZone = .current) -> LinkedNote? {
         let dayKey = DailyNoteNaming.dayKey(for: date, timeZone: timeZone)
-        let namedNotes = notes.values.filter { DailyNoteNaming.dayKey(ofRelativePath: $0.file.relativePath) == dayKey }
-        if let named = Self.newest(namedNotes) {
-            return named
-        }
-        return Self.newest(notes.values.filter { $0.eventKey == nil && $0.dayKey == dayKey })
+        return Self.newest(notes.values.filter {
+            DailyNoteNaming.dayKey(ofRelativePath: $0.file.relativePath) == dayKey
+        })
     }
 
     private static func newest(_ notes: some Sequence<LinkedNote>) -> LinkedNote? {

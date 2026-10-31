@@ -5,7 +5,7 @@ import Testing
 struct LinkedNoteTemplateTests {
     private let utc = Fixtures.calendar.timeZone
 
-    @Test func eventNoteLinksTheEventAndItsDay() {
+    @Test func eventNoteIsPlainMarkdownTitledByTheEventAndDay() {
         let occurrence = Fixtures.date(2026, 10, 29, hour: 9)
         let event = CalendarEvent(
             reference: Fixtures.reference(occurrence: occurrence),
@@ -15,19 +15,14 @@ struct LinkedNoteTemplateTests {
             endDate: occurrence.addingTimeInterval(900)
         )
         let template = LinkedNoteTemplate.eventNote(for: event, timeZone: utc)
-        let file = MarkdownNoteFile(contents: template.text)
         #expect(template.title == "Standup 2026-10-29")
-        #expect(file.frontMatter.event == event.reference.storageKey)
-        #expect(file.frontMatter.value(forKey: "date") == "2026-10-29")
-        #expect(file.body == "# Standup\n")
+        #expect(template.text == "# Standup\n")
     }
 
-    @Test func dailyNoteIsDatedWithoutAnEvent() {
+    @Test func dailyNoteStartsEmpty() {
         let template = LinkedNoteTemplate.dailyNote(on: Fixtures.date(2026, 10, 29, hour: 23), timeZone: utc)
-        let file = MarkdownNoteFile(contents: template.text)
         #expect(template.title == "2026-10-29")
-        #expect(file.frontMatter.event == nil)
-        #expect(file.frontMatter.value(forKey: "date") == "2026-10-29")
+        #expect(template.text.isEmpty)
     }
 
     @Test func dailyNotesLiveInTheDailyFolder() {

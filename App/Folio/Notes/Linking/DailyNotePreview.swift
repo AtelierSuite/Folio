@@ -2,8 +2,10 @@ import Planner
 import SwiftUI
 
 struct DailyNotePreview: View {
+    @Environment(NotesLibrary.self) private var library
     let note: LinkedNote
     let onOpen: () -> Void
+    @State private var preview = ""
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -25,10 +27,13 @@ struct DailyNotePreview: View {
         }
         .contentShape(Rectangle())
         .onTapGesture(perform: onOpen)
+        .task(id: note.file) {
+            preview = await library.preview(of: note.url)
+        }
     }
 
     private var previewText: String {
-        let preview = note.preview.replacingOccurrences(of: "\n", with: " ")
+        let preview = preview.replacingOccurrences(of: "\n", with: " ")
         return preview.isEmpty ? String(localized: "Daily.EmptyPreview", table: "LinkedNotes") : preview
     }
 }

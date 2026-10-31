@@ -17,7 +17,7 @@ struct NoteSessionView: View {
             .toolbar {
                 ToolbarItemGroup {
                     NoteShareLink(title: session.title, text: session.text)
-                    NoteEventLinkButton(session: session)
+                    NoteEventLinkButton(noteURL: session.url)
                     Button(String(localized: "Action.Rename", table: "Notes"), systemImage: "pencil") {
                         onRename(session.url)
                     }

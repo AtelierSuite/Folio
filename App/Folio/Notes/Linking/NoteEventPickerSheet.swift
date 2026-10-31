@@ -5,15 +5,13 @@ struct NoteEventPickerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(NotesLibrary.self) private var library
     @Environment(CalendarStore.self) private var calendarStore
-    @Binding var text: String
     let noteURL: URL
     @State private var date: Date
     @State private var events: [CalendarEvent]?
 
-    init(text: Binding<String>, noteURL: URL) {
-        _text = text
+    init(noteURL: URL, initialDate: Date) {
         self.noteURL = noteURL
-        _date = State(initialValue: MarkdownNoteFile(contents: text.wrappedValue).frontMatter.date ?? .now)
+        _date = State(initialValue: initialDate)
     }
 
     var body: some View {
@@ -22,7 +20,7 @@ struct NoteEventPickerSheet: View {
                 if linkedKey != nil {
                     Section {
                         Button(String(localized: "LinkEvent.Remove", table: "LinkedNotes"), role: .destructive) {
-                            text = NoteEventLink.unlinking(text)
+                            library.unlink(noteURL)
                             dismiss()
                         }
                     }
@@ -73,11 +71,11 @@ struct NoteEventPickerSheet: View {
     }
 
     private var linkedKey: String? {
-        NoteEventLink.eventKey(in: text)
+        library.eventLink(forNote: noteURL)?.event.eventKey
     }
 
     private func link(_ event: CalendarEvent) {
-        text = NoteEventLink.linking(text, to: event)
+        library.link(noteURL, to: event)
         if LinkedNoteSettings.writesLinkToEvent(), let deepLink = library.deepLink(for: noteURL) {
             Task {
                 _ = try? await calendarStore.addNoteLink(deepLink, to: event)

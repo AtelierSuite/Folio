@@ -16,6 +16,14 @@ public enum DailyNoteNaming {
         "\(folderName)/\(dayKey(for: date, timeZone: timeZone)).\(NoteFileNaming.noteExtension)"
     }
 
+    public static func date(forDayKey dayKey: String, timeZone: TimeZone = .current) -> Date? {
+        let parts = dayKey.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        return calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))
+    }
+
     static func dayKey(ofRelativePath relativePath: String) -> String? {
         let components = relativePath.split(separator: "/")
         guard components.count == 2, components[0] == folderName else {

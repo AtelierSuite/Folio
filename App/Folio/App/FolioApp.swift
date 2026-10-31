@@ -40,7 +40,7 @@ struct FolioApp: App {
             replan: { await notificationScheduler.replan() }
         ))
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
-        let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer())
+        let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer(), index: .persistent())
         let noteNavigator = NoteNavigator()
         _notesLibrary = State(initialValue: notesLibrary)
         _noteNavigator = State(initialValue: noteNavigator)
