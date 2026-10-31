@@ -22,7 +22,7 @@ struct AgendaDaySection: View {
                 AgendaReminderRow(reminder: reminder) { onOpenReminder(reminder) }
             }
         } header: {
-            Text(day.interval.start, format: .dateTime.weekday(.wide).month(.wide).day())
+            AgendaDaySectionHeader(date: day.interval.start)
         }
     }
 }

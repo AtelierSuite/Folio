@@ -17,6 +17,7 @@ struct CalendarView: View {
                 .calendarCreationMenu(calendar: navigation.calendar)
                 .calendarPermissionGate()
                 .navigationTitle(navigation.selectedDate.formatted(.dateTime.year().month(.wide)))
+                .alternateCalendarSubtitle(for: navigation.selectedDate, in: navigation.calendar)
                 #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
                 #endif
@@ -41,6 +42,7 @@ struct CalendarView: View {
                 }
         }
         .calendarItemSheet(request: $itemRequest)
+        .providesAlternateCalendar()
         .environment(navigation)
         .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
