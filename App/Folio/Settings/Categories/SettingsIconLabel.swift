@@ -14,6 +14,7 @@ struct SettingsIconLabel: View {
                 .fontWeight(.medium)
                 .foregroundStyle(.white)
                 .frame(width: iconSize * 0.6, height: iconSize * 0.6)
+                .offset(x: category.iconHorizontalOffset * iconSize)
                 .frame(width: iconSize, height: iconSize)
                 .background(category.color.gradient, in: .rect(cornerRadius: iconSize * 0.27))
         }
