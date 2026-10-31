@@ -24,6 +24,9 @@ private struct EventActionsHostModifier: ViewModifier {
     @AppStorage(EventTapSettings.behaviorKey, store: AppGroup.userDefaults)
     private var tapBehavior = EventTapSettings.defaultBehavior
     @State private var ownController = EventActionsController()
+    /// Built once per events array: cards compare `EventActions` on every update, and a rebuilt
+    /// dictionary is compared entry by entry, while the same one is compared by identity.
+    @State private var eventsByIdentifier: [String: CalendarEvent] = [:]
     let events: [CalendarEvent]
     let externalController: EventActionsController?
     let ignoresTaps: () -> Bool
@@ -44,8 +47,7 @@ private struct EventActionsHostModifier: ViewModifier {
             openURL: openURL,
             tapBehavior: tapBehavior,
             usesPointerSelection: capabilities.usesPointerSelection,
-            eventsByIdentifier: Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first }),
-            ignoresTaps: ignoresTaps
+            eventsByIdentifier: eventsByIdentifier
         )
     }
 
@@ -54,6 +56,7 @@ private struct EventActionsHostModifier: ViewModifier {
         let actions = actions
         content
             .environment(\.eventActions, actions)
+            .onChange(of: events, initial: true, updateLookup)
             .overlay {
                 EventMenuPresenter(request: controller.menuRequest, actions: actions)
                     .allowsHitTesting(false)
@@ -97,6 +100,11 @@ private struct EventActionsHostModifier: ViewModifier {
             } message: {
                 Text(controller.errorMessage ?? "")
             }
+    }
+
+    private func updateLookup() {
+        eventsByIdentifier = Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        controller.ignoresTaps = ignoresTaps
     }
 
     private func spanDialogAnchor(_ actions: EventActions) -> CGRect? {
