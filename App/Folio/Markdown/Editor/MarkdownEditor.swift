@@ -10,6 +10,7 @@ struct MarkdownEditor: View {
     @State private var controller = MarkdownEditorController()
     @State private var isPickingPhoto = false
     @State private var isPickingFile = false
+    @State private var pastedImage: MarkdownPastedImage?
 
     var body: some View {
         MarkdownTextView(
@@ -17,7 +18,8 @@ struct MarkdownEditor: View {
             baseURL: baseURL,
             controller: controller,
             bottomInset: controller.isEditing ? Self.barSpace : 0,
-            focusesOnAppear: focusesOnAppear
+            focusesOnAppear: focusesOnAppear,
+            onPasteImage: imageAttacher == nil ? nil : { pastedImage = $0 }
         )
         .overlay(alignment: .bottom) {
             if controller.isEditing {
@@ -35,6 +37,7 @@ struct MarkdownEditor: View {
         .modifier(MarkdownImagePickers(
             isPickingPhoto: $isPickingPhoto,
             isPickingFile: $isPickingFile,
+            pastedImage: $pastedImage,
             attacher: imageAttacher,
             onAttach: controller.insertImage(markdown:)
         ))

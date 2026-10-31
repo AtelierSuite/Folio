@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 struct MarkdownImagePickers: ViewModifier {
     @Binding var isPickingPhoto: Bool
     @Binding var isPickingFile: Bool
+    @Binding var pastedImage: MarkdownPastedImage?
     let attacher: MarkdownImageAttacher?
     let onAttach: (String) -> Void
     @State private var pickedPhoto: PhotosPickerItem?
@@ -28,6 +29,13 @@ struct MarkdownImagePickers: ViewModifier {
                 guard let item else { return }
                 pickedPhoto = nil
                 Task { await attachPhoto(item) }
+            }
+            .onChange(of: pastedImage) { _, image in
+                guard let image else { return }
+                pastedImage = nil
+                Task {
+                    await attach { PickedImage(data: image.data, type: image.type, name: image.name) }
+                }
             }
             .alert(
                 String(localized: "Image.AttachFailed", table: "Markdown"),

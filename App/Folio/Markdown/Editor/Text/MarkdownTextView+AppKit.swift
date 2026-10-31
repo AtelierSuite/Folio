@@ -42,6 +42,7 @@ extension MarkdownTextView: NSViewRepresentable {
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         context.coordinator.update(text: $text, baseURL: baseURL)
+        (scrollView.documentView as? MarkdownNSTextView)?.onPasteImage = onPasteImage
         if scrollView.contentInsets.bottom != bottomInset {
             scrollView.contentInsets.bottom = bottomInset
         }
@@ -51,6 +52,7 @@ extension MarkdownTextView: NSViewRepresentable {
 final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
     var onFocusChange: ((Bool) -> Void)?
     var onToggleTask: ((NSRange) -> Void)?
+    var onPasteImage: ((MarkdownPastedImage) -> Void)?
     var listDecorations: [MarkdownListDecoration] = []
     var decorationViews: [NSView] = []
     private let textUndoManager = UndoManager()
@@ -102,12 +104,17 @@ final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
         switch item.action {
         case #selector(undo(_:)): textUndoManager.canUndo
         case #selector(redo(_:)): textUndoManager.canRedo
+        case #selector(paste(_:)) where onPasteImage != nil && MarkdownPastedImage.isAvailable: true
         default: super.validateUserInterfaceItem(item)
         }
     }
 
     override func paste(_ sender: Any?) {
-        pasteAsPlainText(sender)
+        if let onPasteImage, let image = MarkdownPastedImage.fromPasteboard() {
+            onPasteImage(image)
+        } else {
+            pasteAsPlainText(sender)
+        }
     }
 
     var markdownStorage: NSTextStorage {

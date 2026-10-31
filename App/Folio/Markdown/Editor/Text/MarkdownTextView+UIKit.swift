@@ -29,6 +29,7 @@ extension MarkdownTextView: UIViewRepresentable {
 
     func updateUIView(_ textView: MarkdownUITextView, context: Context) {
         context.coordinator.update(text: $text, baseURL: baseURL)
+        textView.onPasteImage = onPasteImage
         if textView.contentInset.bottom != bottomInset {
             textView.contentInset.bottom = bottomInset
             textView.verticalScrollIndicatorInsets.bottom = bottomInset
@@ -39,6 +40,7 @@ extension MarkdownTextView: UIViewRepresentable {
 final class MarkdownUITextView: UITextView, MarkdownTextHost {
     private let textUndoManager = UndoManager()
     var onToggleTask: ((NSRange) -> Void)?
+    var onPasteImage: ((MarkdownPastedImage) -> Void)?
     var listDecorations: [MarkdownListDecoration] = []
     var decorationViews: [UIView] = []
     private var decoratedSize = CGSize.zero
@@ -50,6 +52,22 @@ final class MarkdownUITextView: UITextView, MarkdownTextHost {
             decoratedSize = size
             layoutListDecorations()
         }
+    }
+
+    /// Text views that don't edit text attributes only paste text, so an image on the pasteboard is taken here.
+    override func paste(_ sender: Any?) {
+        if let onPasteImage, let image = MarkdownPastedImage.fromPasteboard() {
+            onPasteImage(image)
+        } else {
+            super.paste(sender)
+        }
+    }
+
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        if action == #selector(paste(_:)), onPasteImage != nil, MarkdownPastedImage.isAvailable {
+            return true
+        }
+        return super.canPerformAction(action, withSender: sender)
     }
 
     func showListDecorations(_ decorations: [MarkdownListDecoration]) {
