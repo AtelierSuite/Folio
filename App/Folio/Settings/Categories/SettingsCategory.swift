@@ -8,7 +8,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case notifications
     case sleep
     case weather
-    case searchAndPrivacy
+    case search
+    case privacy
     #if DEBUG
     case debug
     #endif
@@ -23,7 +24,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: String(localized: "Category.Notifications", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
-        case .searchAndPrivacy: String(localized: "Category.SearchAndPrivacy", table: "Settings")
+        case .search: String(localized: "Category.Search", table: "Settings")
+        case .privacy: String(localized: "Category.Privacy", table: "Settings")
         #if DEBUG
         case .debug: String(localized: "Category.Debug", table: "Settings")
         #endif
@@ -38,7 +40,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: "bell.badge.fill"
         case .sleep: "bed.double.fill"
         case .weather: "cloud.sun.fill"
-        case .searchAndPrivacy: "hand.raised.fill"
+        case .search: "magnifyingglass"
+        case .privacy: "hand.raised.fill"
         #if DEBUG
         case .debug: "ladybug.fill"
         #endif
@@ -53,7 +56,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: .pink
         case .sleep: .indigo
         case .weather: .cyan
-        case .searchAndPrivacy: .blue
+        case .search: .purple
+        case .privacy: .blue
         #if DEBUG
         case .debug: .green
         #endif
@@ -63,7 +67,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     // Fraction of the icon size; some glyphs are drawn off-centre within their own bounds.
     var iconHorizontalOffset: CGFloat {
         switch self {
-        case .searchAndPrivacy: -0.03
+        case .privacy: -0.03
         default: 0
         }
     }
@@ -83,10 +87,18 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     }
 
     static var groups: [[SettingsCategory]] {
+        groups(including: [.search])
+    }
+
+    static var windowGroups: [[SettingsCategory]] {
+        groups(including: [.search, .privacy])
+    }
+
+    private static func groups(including systemCategories: [SettingsCategory]) -> [[SettingsCategory]] {
         var groups: [[SettingsCategory]] = [
             [.general, .calendars, .notes],
             [.weather],
-            [.notifications, .sleep, .searchAndPrivacy]
+            [.notifications, .sleep] + systemCategories
         ]
         #if DEBUG
         groups.append([.debug])

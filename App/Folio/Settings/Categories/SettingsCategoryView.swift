@@ -11,7 +11,8 @@ struct SettingsCategoryView: View {
         case .notifications: NotificationSettingsView()
         case .sleep: SleepSettingsView()
         case .weather: WeatherSettingsView()
-        case .searchAndPrivacy: SearchAndPrivacySettingsView()
+        case .search: SearchSettingsView()
+        case .privacy: PrivacySettingsView()
         #if DEBUG
         case .debug: DebugSettingsView()
         #endif
