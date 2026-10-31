@@ -25,9 +25,9 @@ final class ReminderCheckboxTests: XCTestCase {
         app.launchArguments += ["-Calendar.ViewMode", "month", "-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
 
-        let viewModeMenu = app.navigationBars.buttons["CalendarViewModeMenu"]
-        if viewModeMenu.waitForExistence(timeout: 10) {
-            viewModeMenu.tap()
+        let moreMenu = app.navigationBars.buttons["CalendarMoreMenu"]
+        if moreMenu.waitForExistence(timeout: 10) {
+            moreMenu.tap()
         }
         let inboxButton = app.buttons
             .matching(NSPredicate(

@@ -19,15 +19,10 @@ struct CalendarToolbar: ToolbarContent {
     #endif
 
     var body: some ToolbarContent {
-        ToolbarItemGroup(placement: .primaryAction) {
-            if !isCompact {
-                ReminderInboxButton(isShowingInbox: $isShowingInbox)
-            }
-            CalendarAddMenu(composer: $composer)
-            CalendarViewModeMenu(mode: $mode, isShowingInbox: $isShowingInbox, includesInbox: isCompact)
-        }
-        if pendingInvitationCount > 0 {
-            InvitationsToolbarItem(pendingCount: pendingInvitationCount)
+        if isCompact {
+            compactActions
+        } else {
+            regularActions
         }
         ToolbarItemGroup(placement: .navigation) {
             if capabilities.supports(.calendarPagingButtons) {
@@ -44,6 +39,33 @@ struct CalendarToolbar: ToolbarContent {
                     navigation.page(mode, forward: true)
                 }
             }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var compactActions: some ToolbarContent {
+        ToolbarItem(placement: .primaryAction) {
+            CalendarMoreMenu(
+                mode: $mode, isShowingInbox: $isShowingInbox, pendingInvitationCount: pendingInvitationCount
+            )
+        }
+        ToolbarSpacer(.fixed, placement: .primaryAction)
+        ToolbarItem(placement: .primaryAction) {
+            CalendarAddMenu(composer: $composer)
+                .buttonStyle(.borderedProminent)
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var regularActions: some ToolbarContent {
+        ToolbarItemGroup(placement: .primaryAction) {
+            ReminderInboxButton(isShowingInbox: $isShowingInbox)
+            CalendarAddMenu(composer: $composer)
+            CalendarViewModePicker(mode: $mode)
+                .pickerStyle(.menu)
+        }
+        if pendingInvitationCount > 0 {
+            InvitationsToolbarItem(pendingCount: pendingInvitationCount)
         }
     }
 }
