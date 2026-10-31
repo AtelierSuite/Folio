@@ -4,7 +4,7 @@ import SwiftUI
 struct EventArrivalAlertSection: View {
     @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
     @Environment(NotificationScheduler.self) private var scheduler
-    @Binding var choice: EventArrivalAlertChoice
+    @Binding var choice: EventLocationAlertChoice
     let reference: CalendarItemReference?
     let hasLocation: Bool
 

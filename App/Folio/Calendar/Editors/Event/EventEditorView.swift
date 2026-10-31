@@ -6,6 +6,7 @@ struct EventEditorView: View {
     @Environment(UndoCoordinator.self) private var undoCoordinator
     @Environment(NotificationScheduler.self) private var notificationScheduler
     @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
+    @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(\.dismiss) private var dismiss
     private let editedEvent: CalendarEvent?
     private let originalDraft: EventDraft?
@@ -13,7 +14,8 @@ struct EventEditorView: View {
     @State private var draft: EventDraft
     @State private var urlText: String
     @State private var styleDraft: NotificationStyleDraft
-    @State private var arrivalAlert = EventArrivalAlertChoice()
+    @State private var arrivalAlert = EventLocationAlertChoice()
+    @State private var leaveAlert = EventLocationAlertChoice()
     @State private var isSaving = false
     @State private var isChoosingSpan = false
     @State private var errorMessage: String?
@@ -53,7 +55,8 @@ struct EventEditorView: View {
     }
 
     private var hasChanges: Bool {
-        styleDraft.hasChanges || arrivalAlert.hasChanges || originalDraft.map { finalDraft != $0 } ?? true
+        styleDraft.hasChanges || arrivalAlert.hasChanges || leaveAlert.hasChanges
+            || originalDraft.map { finalDraft != $0 } ?? true
     }
 
     private var canSave: Bool {
@@ -79,6 +82,7 @@ struct EventEditorView: View {
                         urlText: $urlText,
                         alertStyle: $styleDraft.style,
                         arrivalAlert: $arrivalAlert,
+                        leaveAlert: $leaveAlert,
                         reference: editedEvent?.reference,
                         calendars: store.writableEventCalendars
                     )
@@ -147,6 +151,7 @@ struct EventEditorView: View {
             }
             styleDraft.save(for: reference, in: notificationScheduler)
             await arrivalAlert.save(for: reference, to: arrivalAlerts)
+            await leaveAlert.save(for: reference, to: leaveAlerts)
             onSave(reference, savedDraft)
             dismiss()
         } catch {
