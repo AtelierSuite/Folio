@@ -28,7 +28,7 @@ struct TimelineCurrentTimeIndicatorView: View {
     private var leadingLine: some View {
         Rectangle()
             .fill(.red.opacity(0.5))
-            .frame(height: 1)
+            .frame(height: 2)
             .frame(height: 0)
     }
 
@@ -36,12 +36,6 @@ struct TimelineCurrentTimeIndicatorView: View {
         Rectangle()
             .fill(.red)
             .frame(height: 2)
-            .overlay(alignment: .leading) {
-                Circle()
-                    .fill(.red)
-                    .frame(width: 9, height: 9)
-                    .offset(x: -4.5)
-            }
             .frame(height: 0)
     }
 }
