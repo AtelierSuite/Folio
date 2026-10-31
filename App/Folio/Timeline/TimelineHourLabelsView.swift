@@ -14,6 +14,8 @@ struct TimelineHourLabelsView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                     .frame(width: width - 6, alignment: .trailing)
                     .position(x: (width - 6) / 2, y: CGFloat(hour) * hourHeight)
             }
@@ -25,6 +27,6 @@ struct TimelineHourLabelsView: View {
     /// Formatted in GMT so the labels show wall clock hours, even on DST days.
     private static func label(forHour hour: Int) -> String {
         Date(timeIntervalSinceReferenceDate: Double(hour) * 3600)
-            .formatted(Date.FormatStyle(timeZone: .gmt).hour())
+            .formatted(Date.FormatStyle(timeZone: .gmt).hour().minute())
     }
 }
