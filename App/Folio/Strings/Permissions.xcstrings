@@ -131,6 +131,71 @@
         }
       }
     },
+    "Action.Manage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gérer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestisci"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "관리"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beheer"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quản lý"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理"
+          }
+        }
+      }
+    },
     "Action.OpenSettings": {
       "extractionState": "manual",
       "localizations": {
@@ -3127,61 +3192,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unbekannt"
+            "value": "Angefragt"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unknown"
+            "value": "Asked"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Inconnu"
+            "value": "Demandé"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sconosciuto"
+            "value": "Richiesto"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "不明"
+            "value": "リクエスト済み"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "알 수 없음"
+            "value": "요청됨"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Onbekend"
+            "value": "Gevraagd"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Không xác định"
+            "value": "Đã yêu cầu"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "未知"
+            "value": "已请求"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "未知"
+            "value": "已請求"
           }
         }
       }

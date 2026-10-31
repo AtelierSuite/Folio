@@ -11,6 +11,8 @@ struct PermissionActionButton: View {
             PermissionRequestButton(kind: kind, title: requestTitle)
         } else if status.canBeFixedInSettings {
             PermissionSettingsButton(kind: kind)
+        } else if status.mayHideMissingAccess {
+            PermissionSettingsButton(kind: kind, title: String(localized: "Action.Manage", table: "Permissions"))
         }
     }
 }
