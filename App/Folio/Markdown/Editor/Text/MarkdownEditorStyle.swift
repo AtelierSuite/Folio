@@ -39,12 +39,31 @@ enum MarkdownEditorStyle {
         return style
     }
 
+    static var quoteParagraphStyle: NSParagraphStyle {
+        let style = NSMutableParagraphStyle()
+        style.setParagraphStyle(paragraphStyle)
+        style.firstLineHeadIndent = 16
+        style.headIndent = 16
+        return style
+    }
+
+    static var hiddenFont: PlatformFont {
+        .systemFont(ofSize: 0.01)
+    }
+
+    static var hiddenParagraphStyle: NSParagraphStyle {
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = 0.01
+        return style
+    }
+
     #if canImport(UIKit)
     static let textColor = UIColor.label
     static let secondaryColor = UIColor.secondaryLabel
     static let syntaxColor = UIColor.tertiaryLabel
     static let linkColor = UIColor.tintColor
     static let codeBackground = UIColor.quaternarySystemFill
+    static let separatorColor = UIColor.separator
 
     static func adding(_ trait: Trait, to font: UIFont) -> UIFont {
         let symbolicTrait: UIFontDescriptor.SymbolicTraits = trait == .bold ? .traitBold : .traitItalic
@@ -58,6 +77,7 @@ enum MarkdownEditorStyle {
     static let syntaxColor = NSColor.tertiaryLabelColor
     static let linkColor = NSColor.controlAccentColor
     static let codeBackground = NSColor.quaternarySystemFill
+    static let separatorColor = NSColor.separatorColor
 
     static func adding(_ trait: Trait, to font: NSFont) -> NSFont {
         let symbolicTrait: NSFontDescriptor.SymbolicTraits = trait == .bold ? .bold : .italic

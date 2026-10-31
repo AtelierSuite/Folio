@@ -34,13 +34,28 @@ extension MarkdownTextCoordinator {
         host.focusMarkdownText()
     }
 
+    func toggleTask(markerRange: NSRange) {
+        guard let host else { return }
+        let string = host.markdownStorage.string as NSString
+        guard NSMaxRange(markerRange) <= string.length else { return }
+        let box = (string.substring(with: markerRange) as NSString).range(of: "[")
+        guard box.location != NSNotFound else { return }
+        let stateRange = NSRange(location: markerRange.location + box.location + 1, length: 1)
+        let isChecked = string.substring(with: stateRange) != " "
+        let selection = host.markdownSelection
+        performEdit { storage in
+            storage.replaceCharacters(in: stateRange, with: isChecked ? " " : "x")
+            return selection
+        }
+    }
+
     private func performEdit(_ edit: (NSTextStorage) -> NSRange) {
         guard let host else { return }
         host.prepareForProgrammaticEdit()
         let snapshot = NSAttributedString(attributedString: host.markdownStorage)
         let previousSelection = host.markdownSelection
         let selection = edit(host.markdownStorage)
-        MarkdownTextStyler.style(host.markdownStorage)
+        restyle()
         host.markdownSelection = Self.clamped(selection, to: host.markdownStorage.length)
         registerUndo(restoring: snapshot, selection: previousSelection)
         textDidChange()
@@ -62,7 +77,7 @@ extension MarkdownTextCoordinator {
         guard let host else { return }
         host.prepareForProgrammaticEdit()
         host.markdownStorage.setAttributedString(snapshot)
-        MarkdownTextStyler.style(host.markdownStorage)
+        restyle()
         host.markdownSelection = Self.clamped(selection, to: host.markdownStorage.length)
         textDidChange()
     }

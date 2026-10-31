@@ -11,4 +11,5 @@ protocol MarkdownTextHost: AnyObject {
     var markdownUndoManager: UndoManager { get }
     func prepareForProgrammaticEdit()
     func focusMarkdownText()
+    func showListDecorations(_ decorations: [MarkdownListDecoration])
 }

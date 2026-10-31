@@ -15,6 +15,9 @@ extension MarkdownTextView: UIViewRepresentable {
         textView.keyboardDismissMode = .interactive
         textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 24, right: 12)
         textView.typingAttributes = MarkdownTextStyler.baseAttributes
+        textView.onToggleTask = { [weak coordinator = context.coordinator] range in
+            coordinator?.toggleTask(markerRange: range)
+        }
         context.coordinator.attach(textView)
         if focusesOnAppear {
             Task { @MainActor in
@@ -35,6 +38,24 @@ extension MarkdownTextView: UIViewRepresentable {
 
 final class MarkdownUITextView: UITextView, MarkdownTextHost {
     private let textUndoManager = UndoManager()
+    var onToggleTask: ((NSRange) -> Void)?
+    var listDecorations: [MarkdownListDecoration] = []
+    var decorationViews: [UIView] = []
+    private var decoratedSize = CGSize.zero
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let size = CGSize(width: bounds.width, height: contentSize.height)
+        if size != decoratedSize {
+            decoratedSize = size
+            layoutListDecorations()
+        }
+    }
+
+    func showListDecorations(_ decorations: [MarkdownListDecoration]) {
+        listDecorations = decorations
+        layoutListDecorations()
+    }
 
     override var undoManager: UndoManager? {
         textUndoManager
@@ -67,8 +88,10 @@ extension MarkdownTextCoordinator: UITextViewDelegate {
     }
 
     func textViewDidChangeSelection(_ textView: UITextView) {
-        if textView.typingAttributes[.attachment] != nil {
-            textView.typingAttributes[.attachment] = nil
+        guard textView.markedTextRange == nil else { return }
+        selectionDidChange()
+        if textView.typingAttributes[.attachment] != nil || Self.isHidden(textView.typingAttributes) {
+            textView.typingAttributes = MarkdownTextStyler.baseAttributes
         }
     }
 

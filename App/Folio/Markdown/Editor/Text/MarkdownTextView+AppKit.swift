@@ -23,6 +23,9 @@ extension MarkdownTextView: NSViewRepresentable {
         textView.onFocusChange = { [weak coordinator = context.coordinator] isFocused in
             coordinator?.setEditing(isFocused)
         }
+        textView.onToggleTask = { [weak coordinator = context.coordinator] range in
+            coordinator?.toggleTask(markerRange: range)
+        }
         let scrollView = NSScrollView()
         scrollView.drawsBackground = false
         scrollView.hasVerticalScroller = true
@@ -47,7 +50,23 @@ extension MarkdownTextView: NSViewRepresentable {
 
 final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
     var onFocusChange: ((Bool) -> Void)?
+    var onToggleTask: ((NSRange) -> Void)?
+    var listDecorations: [MarkdownListDecoration] = []
+    var decorationViews: [NSView] = []
     private let textUndoManager = UndoManager()
+
+    override func setFrameSize(_ newSize: NSSize) {
+        let sizeChanged = newSize != frame.size
+        super.setFrameSize(newSize)
+        if sizeChanged {
+            layoutListDecorations()
+        }
+    }
+
+    func showListDecorations(_ decorations: [MarkdownListDecoration]) {
+        listDecorations = decorations
+        layoutListDecorations()
+    }
 
     override var undoManager: UndoManager? {
         textUndoManager
@@ -120,9 +139,11 @@ extension MarkdownTextCoordinator: NSTextViewDelegate {
     }
 
     func textViewDidChangeSelection(_ notification: Notification) {
-        guard let textView = notification.object as? NSTextView,
-              textView.typingAttributes[.attachment] != nil else { return }
-        textView.typingAttributes[.attachment] = nil
+        guard let textView = notification.object as? NSTextView, !textView.hasMarkedText() else { return }
+        selectionDidChange()
+        if textView.typingAttributes[.attachment] != nil || Self.isHidden(textView.typingAttributes) {
+            textView.typingAttributes = MarkdownTextStyler.baseAttributes
+        }
     }
 }
 #endif
