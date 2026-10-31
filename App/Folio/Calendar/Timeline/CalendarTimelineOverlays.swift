@@ -17,7 +17,7 @@ struct CalendarTimelineOverlays {
 
     private func weatherLayers(for days: TimelineDays) -> [TimelineLayer] {
         guard capabilities.supports(.weather), weather.hasWeather else { return [] }
-        let night: [TimelineLayer] = shadesNight ? [.weatherNight(weather, days: days)] : []
+        let night: [TimelineLayer] = shadesNight ? [.weatherNight(weather)] : []
         return night + [.weatherBand(weather), .rainHighlights(weather.rainHighlights)]
     }
 }

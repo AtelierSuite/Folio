@@ -3,8 +3,23 @@ import SwiftUI
 
 extension TimelineLayer {
     /// Shades the hours before sunrise and after sunset, fading across each.
-    static func weatherNight(_ snapshot: WeatherSnapshot, days: TimelineDays) -> TimelineLayer {
-        let daylights = days.intervals.enumerated().compactMap { dayIndex, day -> WeatherNightDaylight? in
+    static func weatherNight(_ snapshot: WeatherSnapshot) -> TimelineLayer {
+        TimelineLayer(id: "weather.night", placement: .belowEntries) { context in
+            WeatherNightView(
+                daylights: WeatherNightDaylight.daylights(in: snapshot, days: context.days),
+                context: context
+            )
+        }
+    }
+}
+
+struct WeatherNightDaylight: Hashable {
+    let dayIndex: Int
+    let sunriseHour: Double
+    let sunsetHour: Double
+
+    static func daylights(in snapshot: WeatherSnapshot, days: TimelineDays) -> [WeatherNightDaylight] {
+        days.intervals.enumerated().compactMap { dayIndex, day in
             guard let daily = snapshot.day(startingAt: day.start)?.daily,
                   let sunrise = daily.sunrise, let sunset = daily.sunset,
                   day.start < sunrise, sunrise < sunset, sunset < day.end else { return nil }
@@ -14,16 +29,7 @@ extension TimelineLayer {
                 sunsetHour: days.hour(of: sunset, onDay: dayIndex)
             )
         }
-        return TimelineLayer(id: "weather.night", placement: .belowEntries) { context in
-            WeatherNightView(daylights: daylights, context: context)
-        }
     }
-}
-
-struct WeatherNightDaylight: Hashable {
-    let dayIndex: Int
-    let sunriseHour: Double
-    let sunsetHour: Double
 }
 
 struct WeatherNightView: View {
