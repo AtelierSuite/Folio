@@ -25,7 +25,7 @@ final class InvitationsTests: XCTestCase {
         let app = launch(mode: "day")
         let invitationsButton = app.buttons["InvitationsButton"]
         if !invitationsButton.waitForExistence(timeout: 15) {
-            app.buttons["OverflowBarButtonItem"].tap()
+            app.navigationBars.buttons["CalendarMoreMenu"].tap()
         }
         app.buttons["Invitations"].firstMatch.tap()
 
