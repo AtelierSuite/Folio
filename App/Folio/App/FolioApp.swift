@@ -8,6 +8,7 @@ struct FolioApp: App {
     @State private var permissionCenter: PermissionCenter
     @State private var notesLibrary: NotesLibrary
     @State private var noteNavigator: NoteNavigator
+    @State private var noteLinkMaintenance: NoteLinkMaintenance
     @State private var destinationRequests: AppDestinationRequests
     @State private var workWeekPreferences = WorkWeekPreferences()
     @State private var notificationScheduler: NotificationScheduler
@@ -41,6 +42,9 @@ struct FolioApp: App {
         ))
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
         let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer(), index: .persistent())
+        _noteLinkMaintenance = State(
+            initialValue: NoteLinkMaintenance(library: notesLibrary, calendarStore: calendarStore)
+        )
         let noteNavigator = NoteNavigator()
         _notesLibrary = State(initialValue: notesLibrary)
         _noteNavigator = State(initialValue: noteNavigator)
@@ -90,6 +94,9 @@ struct FolioApp: App {
                 .reloadsWidgets(on: calendarStore)
                 .environment(countdowns)
                 .reconcilesCountdowns(countdowns, with: calendarStore)
+                .task(id: calendarStore.contentRevision) {
+                    await noteLinkMaintenance.checkLinkedEvents()
+                }
                 .task {
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {
