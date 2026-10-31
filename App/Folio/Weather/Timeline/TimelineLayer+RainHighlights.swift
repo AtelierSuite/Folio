@@ -32,25 +32,31 @@ struct TimelineRainBadge: View {
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
-            label.labelStyle(.titleAndIcon)
-            label.labelStyle(.iconOnly)
+            HStack(spacing: 1) {
+                icon
+                Text(WeatherFormatting.chance(highlight.precipitationChance))
+            }
+            icon
         }
         .lineLimit(1)
         .font(.system(size: 9, weight: .semibold))
         .monospacedDigit()
         .foregroundStyle(.white)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 3)
         .padding(.vertical, 1)
-        .background(Color.blue, in: Capsule())
-        .padding(2)
+        .background(Color.blue, in: Rectangle())
+        .fixedSize(horizontal: false, vertical: true)
+        .alignmentGuide(.top) { dimensions in dimensions[.bottom] }
+        .padding(.trailing, 1)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityIdentifier("RainHighlight.\(highlight.eventID)")
     }
 
-    private var label: some View {
-        Label(WeatherFormatting.chance(highlight.precipitationChance), systemImage: "umbrella.fill")
+    private var icon: some View {
+        Image(systemName: "umbrella.fill")
+            .imageScale(.small)
     }
 
     private var accessibilityLabel: String {
