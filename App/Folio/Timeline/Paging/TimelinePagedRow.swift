@@ -19,7 +19,8 @@ struct TimelinePagedRow<Content: View>: View {
         }
         .fixedSize(horizontal: true, vertical: false)
         .modifier(TimelinePagedRowOffset(frames: frames, followsScroll: shown.followsScroll))
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        // Without minWidth the frame grows to the row's full width while two pages show, and gets centered.
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
         .clipped()
     }
 
