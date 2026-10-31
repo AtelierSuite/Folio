@@ -40,7 +40,7 @@ struct NoteIndexStoreTests {
 
     @Test func remembersFilesAndForgetsMissingOnes() {
         let store = NoteIndexStore.inMemory()
-        let state = NoteFileState(modifiedDate: .now, isTrashed: false, assetNames: ["cat.png"])
+        let state = NoteFileState(modifiedDate: .now, isTrashed: false, referencedNames: ["cat.png"])
         store.recordFile("a.md", in: "icloud", state: state)
         store.recordFile("b.md", in: "icloud", state: state)
         store.keepFiles(["a.md"], in: "icloud")

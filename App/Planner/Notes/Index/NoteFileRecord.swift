@@ -8,13 +8,13 @@ final class NoteFileRecord {
     var relativePath: String = ""
     var isTrashed = false
     var modifiedDate = Date.distantPast
-    var assetNames: [String] = []
+    var referencedNames: [String] = []
 
-    init(location: String, relativePath: String, isTrashed: Bool, modifiedDate: Date, assetNames: [String]) {
+    init(location: String, relativePath: String, isTrashed: Bool, modifiedDate: Date, referencedNames: [String]) {
         self.location = location
         self.relativePath = relativePath
         self.isTrashed = isTrashed
         self.modifiedDate = modifiedDate
-        self.assetNames = assetNames
+        self.referencedNames = referencedNames
     }
 }

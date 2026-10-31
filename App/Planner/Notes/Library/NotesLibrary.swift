@@ -28,6 +28,7 @@ public final class NotesLibrary {
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
     @ObservationIgnored private var startTask: Task<Void, Never>?
     @ObservationIgnored var indexingTask: Task<Void, Never>?
+    @ObservationIgnored var fileIndexingTask: Task<Void, Never>?
 
     public init(
         settings: NotesStorageSettings = NotesStorageSettings(),
@@ -87,6 +88,7 @@ public final class NotesLibrary {
         }
         trashedNotes = (try? await store.trashedNotes()) ?? []
         reconcileLinks()
+        scheduleFileIndexing()
     }
 
     func activateCurrentMode() async {

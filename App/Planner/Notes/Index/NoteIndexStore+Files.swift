@@ -4,7 +4,7 @@ import SwiftData
 public struct NoteFileState: Hashable, Sendable {
     public let modifiedDate: Date
     public let isTrashed: Bool
-    public let assetNames: [String]
+    public let referencedNames: [String]
 }
 
 extension NoteIndexStore {
@@ -14,7 +14,9 @@ extension NoteIndexStore {
                 (
                     record.relativePath,
                     NoteFileState(
-                        modifiedDate: record.modifiedDate, isTrashed: record.isTrashed, assetNames: record.assetNames
+                        modifiedDate: record.modifiedDate,
+                        isTrashed: record.isTrashed,
+                        referencedNames: record.referencedNames
                     )
                 )
             },
@@ -27,12 +29,12 @@ extension NoteIndexStore {
         if let record = records.first {
             record.modifiedDate = state.modifiedDate
             record.isTrashed = state.isTrashed
-            record.assetNames = state.assetNames
+            record.referencedNames = state.referencedNames
             records.dropFirst().forEach(context.delete)
         } else {
             context.insert(NoteFileRecord(
                 location: location, relativePath: path, isTrashed: state.isTrashed,
-                modifiedDate: state.modifiedDate, assetNames: state.assetNames
+                modifiedDate: state.modifiedDate, referencedNames: state.referencedNames
             ))
         }
         save()
