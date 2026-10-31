@@ -15,10 +15,25 @@ struct TimeZoneCatalogTests {
         #expect(japanese.cityName == "東京")
     }
 
+    @Test func columnLabelIsTheISORegionCode() throws {
+        let singapore = try #require(TimeZoneOption(identifier: "Asia/Singapore", locale: english, date: winter))
+        #expect(singapore.columnLabel == "SG")
+        let kolkata = try #require(TimeZoneOption(identifier: "Asia/Calcutta", locale: english, date: winter))
+        #expect(kolkata.columnLabel == "IN")
+    }
+
+    @Test func knownZonesHaveARegionCode() {
+        let missing = TimeZone.knownTimeZoneIdentifiers.filter {
+            $0.contains("/") && TimeZoneRegions.regionCode(for: $0) == nil
+        }
+        #expect(missing.isEmpty)
+    }
+
     @Test func zonesWithoutACityFallBackToTheAbbreviation() throws {
         let gmt = try #require(TimeZoneOption(identifier: "GMT", locale: english, date: winter))
         #expect(gmt.cityName == nil)
         #expect(gmt.shortLabel == "GMT")
+        #expect(gmt.columnLabel == "GMT")
         #expect(gmt.displayName == gmt.regionName)
     }
 
