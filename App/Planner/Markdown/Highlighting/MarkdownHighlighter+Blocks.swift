@@ -12,12 +12,12 @@ extension MarkdownHighlighter {
         if let match = Self.heading.firstMatch(in: text as String, range: line) {
             let level = match.range(at: 1).length
             add(.heading(level: level), line)
-            add(.syntax, match.range(at: 1))
+            add(.syntax, match.range)
             scanInline(NSRange(location: NSMaxRange(match.range), length: NSMaxRange(line) - NSMaxRange(match.range)))
             return
         }
         if Self.horizontalRule.firstMatch(in: text as String, range: line) != nil {
-            add(.syntax, line)
+            add(.horizontalRule, line)
             return
         }
         var contentStart = line.location
@@ -31,8 +31,16 @@ extension MarkdownHighlighter {
             add(.listMarker, match.range)
             contentStart = NSMaxRange(match.range)
             let checkbox = match.range(at: 1)
-            if checkbox.location != NSNotFound, text.substring(with: checkbox).lowercased().hasPrefix("[x]") {
-                add(.completedTask, NSRange(location: contentStart, length: NSMaxRange(line) - contentStart))
+            let marker = text.substring(with: match.range).trimmingCharacters(in: .whitespaces)
+            let isOrdered = marker.first?.isNumber ?? false
+            if checkbox.location != NSNotFound {
+                let isChecked = text.substring(with: checkbox).lowercased().hasPrefix("[x]")
+                add(.task(isChecked: isChecked), match.range)
+                if isChecked {
+                    add(.completedTask, NSRange(location: contentStart, length: NSMaxRange(line) - contentStart))
+                }
+            } else if !isOrdered {
+                add(.bullet, match.range)
             }
         }
         scanInline(NSRange(location: contentStart, length: NSMaxRange(line) - contentStart))

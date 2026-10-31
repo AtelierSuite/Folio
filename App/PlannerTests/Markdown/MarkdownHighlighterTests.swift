@@ -12,7 +12,7 @@ struct MarkdownHighlighterTests {
     @Test func highlightsHeadingsAndTheirMarkers() {
         let text = "## Plans\nbody"
         #expect(highlighted(text, as: .heading(level: 2)) == ["## Plans"])
-        #expect(highlighted(text, as: .syntax) == ["##"])
+        #expect(highlighted(text, as: .syntax) == ["## "])
         #expect(highlighted("#hashtag", as: .heading(level: 1)).isEmpty)
     }
 
@@ -31,10 +31,18 @@ struct MarkdownHighlighterTests {
         #expect(highlighted(text, as: .syntax) == ["[", "](https://example.com)"])
     }
 
+    @Test func highlightsHorizontalRules() {
+        #expect(highlighted("a\n---\nb", as: .horizontalRule) == ["---"])
+        #expect(highlighted("a\n---\nb", as: .syntax).isEmpty)
+    }
+
     @Test func highlightsListsTasksAndQuotes() {
         let text = "- [x] done\n- [ ] todo\n1. first\n> quoted"
         #expect(highlighted(text, as: .listMarker) == ["- [x] ", "- [ ] ", "1. "])
         #expect(highlighted(text, as: .completedTask) == ["done"])
+        #expect(highlighted(text, as: .task(isChecked: true)) == ["- [x] "])
+        #expect(highlighted(text, as: .task(isChecked: false)) == ["- [ ] "])
+        #expect(highlighted(text + "\n* plain", as: .bullet) == ["* "])
         #expect(highlighted(text, as: .blockQuote) == ["> quoted"])
     }
 

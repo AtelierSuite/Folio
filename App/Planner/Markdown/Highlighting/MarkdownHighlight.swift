@@ -12,6 +12,11 @@ public struct MarkdownHighlight: Hashable, Sendable {
         case blockQuote
         case link
         case listMarker
+        /// The whole marker of a `-`, `*` or `+` item that isn't a task, which an editor can draw as a bullet.
+        case bullet
+        /// The whole marker of a task item, `- [ ] ` included, which an editor can draw as a checkbox.
+        case task(isChecked: Bool)
+        case horizontalRule
         case completedTask
         case syntax
     }
