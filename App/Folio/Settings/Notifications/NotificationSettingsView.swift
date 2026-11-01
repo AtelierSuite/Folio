@@ -35,6 +35,11 @@ struct NotificationSettingsView: View {
                     NotificationStyleDefaultsView()
                 }
                 .accessibilityIdentifier("NotificationStylesLink")
+                NavigationLink(String(localized: "Title", table: "NotificationSounds")) {
+                    NotificationSoundsView()
+                }
+                .disabled(!scheduler.includesEvents && !scheduler.includesReminders)
+                .accessibilityIdentifier("NotificationSoundsLink")
                 NavigationLink(String(localized: "AllDay.Title", table: "Notifications")) {
                     AllDayAlertTimesView()
                 }

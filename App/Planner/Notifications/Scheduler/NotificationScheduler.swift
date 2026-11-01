@@ -8,6 +8,9 @@ public final class NotificationScheduler {
     public internal(set) var isEnabled: Bool
     public internal(set) var includesEvents: Bool
     public internal(set) var includesReminders: Bool
+    public internal(set) var eventSound: NotificationSound
+    public internal(set) var reminderSound: NotificationSound
+    public internal(set) var calendarSounds: [String: NotificationSound]
     public internal(set) var alarmAuthorization: NotificationAuthorization = .notDetermined
     public private(set) var lastReport: NotificationReplanReport?
 
@@ -16,6 +19,7 @@ public final class NotificationScheduler {
     @ObservationIgnored let alarmClient: any AlarmSchedulingClient
     @ObservationIgnored let alarmLedger: AlarmLedger
     @ObservationIgnored let settings: NotificationSettings
+    @ObservationIgnored let soundSettings: NotificationSoundSettings
     @ObservationIgnored public let styleSettings: NotificationStyleSettings
     @ObservationIgnored let allDayAlertTimeSettings: AllDayAlertTimeSettings
     @ObservationIgnored public let capabilities: PlatformCapabilities
@@ -37,6 +41,7 @@ public final class NotificationScheduler {
         alarmClient: (any AlarmSchedulingClient)? = nil,
         alarmLedger: AlarmLedger = AlarmLedger(),
         settings: NotificationSettings = NotificationSettings(),
+        soundSettings: NotificationSoundSettings = NotificationSoundSettings(),
         styleSettings: NotificationStyleSettings = .shared,
         allDayAlertTimeSettings: AllDayAlertTimeSettings = .shared,
         capabilities: PlatformCapabilities = .current,
@@ -50,6 +55,7 @@ public final class NotificationScheduler {
         self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
         self.alarmLedger = alarmLedger
         self.settings = settings
+        self.soundSettings = soundSettings
         self.styleSettings = styleSettings
         self.allDayAlertTimeSettings = allDayAlertTimeSettings
         self.capabilities = capabilities
@@ -57,13 +63,17 @@ public final class NotificationScheduler {
         let resolver = NotificationStyleResolver(settings: styleSettings, capabilities: capabilities)
         self.planner = planner ?? NotificationPlanner(
             styleResolver: resolver.style(for:),
-            allDayAlertMinutes: allDayAlertTimeSettings.minutesAfterMidnight(forCalendar:)
+            allDayAlertMinutes: allDayAlertTimeSettings.minutesAfterMidnight(forCalendar:),
+            soundResolver: soundSettings.resolvedSound(for:)
         )
         self.horizon = horizon
         self.clock = clock
         isEnabled = settings.isEnabled
         includesEvents = settings.includesEvents
         includesReminders = settings.includesReminders
+        eventSound = soundSettings.sound(for: .event)
+        reminderSound = soundSettings.sound(for: .reminder)
+        calendarSounds = soundSettings.calendarSounds
     }
 
     public func replan() async {
