@@ -13,17 +13,20 @@ struct NotificationAttachmentFactory: Sendable {
     }
 
     func attachments(for notification: PlannedNotification) -> [UNNotificationAttachment] {
-        guard let data = artwork(for: notification.kind) else {
+        let picture = notification.imageURL.flatMap(NotificationThumbnailImage.jpegData(from:))
+            .map { (data: $0, type: UTType.jpeg) }
+            ?? artwork(for: notification.kind).map { (data: $0, type: UTType.png) }
+        guard let picture, let fileExtension = picture.type.preferredFilenameExtension else {
             return []
         }
-        let url = directory.appending(path: "\(UUID().uuidString).png")
+        let url = directory.appending(path: "\(UUID().uuidString).\(fileExtension)")
         do {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-            try data.write(to: url)
+            try picture.data.write(to: url)
             let attachment = try UNNotificationAttachment(
                 identifier: Self.thumbnailIdentifier,
                 url: url,
-                options: [UNNotificationAttachmentOptionsTypeHintKey: UTType.png.identifier]
+                options: [UNNotificationAttachmentOptionsTypeHintKey: picture.type.identifier]
             )
             return [attachment]
         } catch {

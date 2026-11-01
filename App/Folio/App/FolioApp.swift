@@ -42,6 +42,7 @@ struct FolioApp: App {
         ))
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
         let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer(), index: .persistent())
+        notificationScheduler.attachesLinkedNoteImages(from: notesLibrary)
         _noteLinkMaintenance = State(
             initialValue: NoteLinkMaintenance(library: notesLibrary, calendarStore: calendarStore)
         )
@@ -84,6 +85,7 @@ struct FolioApp: App {
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
+                .replansNotificationsOnLinkedNoteChanges(notificationScheduler, library: notesLibrary)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
                 .opensMeetingJoinDeepLinks()
