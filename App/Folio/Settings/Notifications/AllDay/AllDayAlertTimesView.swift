@@ -10,11 +10,10 @@ struct AllDayAlertTimesView: View {
                 Text(String(localized: "AllDay.Empty", table: "Notifications"))
                     .foregroundStyle(.secondary)
             } else {
-                Section {
-                    ForEach(store.eventCalendars) { AllDayAlertTimeRow(calendar: $0) }
-                } footer: {
-                    Text(String(localized: "AllDay.Footer", table: "Notifications"))
-                }
+                CalendarAccountSections(
+                    calendars: store.eventCalendars,
+                    footer: String(localized: "AllDay.Footer", table: "Notifications")
+                ) { AllDayAlertTimeRow(calendar: $0) }
             }
         }
         .formStyle(.grouped)

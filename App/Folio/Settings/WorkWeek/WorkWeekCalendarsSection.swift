@@ -5,23 +5,18 @@ struct WorkWeekCalendarsSection: View {
     @Environment(CalendarStore.self) private var store
 
     var body: some View {
-        if !store.eventCalendars.isEmpty {
-            Section {
-                ForEach(store.eventCalendars) { calendar in
-                    WorkWeekCalendarRow(calendar: calendar)
-                }
-            } header: {
-                Text(String(localized: "WorkWeek.Section.Calendars", table: "Week"))
-            } footer: {
-                Text(String(localized: "WorkWeek.Section.Calendars.Footer", table: "Week"))
-            }
+        CalendarAccountSections(
+            calendars: store.eventCalendars,
+            kindTitle: String(localized: "WorkWeek.Section.Calendars", table: "Week"),
+            footer: String(localized: "WorkWeek.Section.Calendars.Footer", table: "Week")
+        ) { calendar in
+            WorkWeekCalendarRow(calendar: calendar)
         }
-        if !store.reminderLists.isEmpty {
-            Section(String(localized: "WorkWeek.Section.ReminderLists", table: "Week")) {
-                ForEach(store.reminderLists) { calendar in
-                    WorkWeekCalendarRow(calendar: calendar)
-                }
-            }
+        CalendarAccountSections(
+            calendars: store.reminderLists,
+            kindTitle: String(localized: "WorkWeek.Section.ReminderLists", table: "Week")
+        ) { calendar in
+            WorkWeekCalendarRow(calendar: calendar)
         }
     }
 }

@@ -10,19 +10,17 @@ struct CalendarVisibilityView: View {
                 Text(String(localized: "Empty", table: "CalendarVisibility"))
                     .foregroundStyle(.secondary)
             }
-            if !store.eventCalendars.isEmpty {
-                Section(String(localized: "Section.Calendars", table: "CalendarVisibility")) {
-                    ForEach(store.eventCalendars) { calendar in
-                        CalendarVisibilityRow(calendar: calendar)
-                    }
-                }
+            CalendarAccountSections(
+                calendars: store.eventCalendars,
+                kindTitle: String(localized: "Section.Calendars", table: "CalendarVisibility")
+            ) { calendar in
+                CalendarVisibilityRow(calendar: calendar)
             }
-            if !store.reminderLists.isEmpty {
-                Section(String(localized: "Section.ReminderLists", table: "CalendarVisibility")) {
-                    ForEach(store.reminderLists) { calendar in
-                        CalendarVisibilityRow(calendar: calendar)
-                    }
-                }
+            CalendarAccountSections(
+                calendars: store.reminderLists,
+                kindTitle: String(localized: "Section.ReminderLists", table: "CalendarVisibility")
+            ) { calendar in
+                CalendarVisibilityRow(calendar: calendar)
             }
         }
         .formStyle(.grouped)

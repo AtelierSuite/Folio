@@ -14,12 +14,7 @@ struct WorkWeekCalendarRow: View {
                 Circle()
                     .fill(calendar.color.color)
                     .frame(width: 12, height: 12)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(calendar.title)
-                    Text(calendar.sourceTitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text(calendar.title)
             }
         }
         .accessibilityIdentifier("WorkWeek.Calendar.\(calendar.title)")

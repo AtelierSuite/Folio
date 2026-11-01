@@ -16,20 +16,14 @@ struct CalendarVisibilityRow: View {
                     .frame(width: 12, height: 12)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(calendar.title)
-                    Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    if calendar.isReadOnly {
+                        Text(String(localized: "Subtitle.ReadOnly", table: "CalendarVisibility"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
         .accessibilityIdentifier("CalendarVisibility.\(calendar.title)")
-    }
-
-    private var subtitle: String {
-        guard calendar.isReadOnly else { return calendar.sourceTitle }
-        return String(
-            localized: "Subtitle.ReadOnly \(calendar.sourceTitle)",
-            table: "CalendarVisibility"
-        )
     }
 }

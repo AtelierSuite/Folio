@@ -196,67 +196,67 @@
         }
       }
     },
-    "Subtitle.ReadOnly %@": {
+    "Subtitle.ReadOnly": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Schreibgeschützt"
+            "value": "Schreibgeschützt"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Read Only"
+            "value": "Read Only"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Lecture seule"
+            "value": "Lecture seule"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Sola lettura"
+            "value": "Sola lettura"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 読み出し専用"
+            "value": "読み出し専用"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 읽기 전용"
+            "value": "읽기 전용"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Alleen-lezen"
+            "value": "Alleen-lezen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · Chỉ đọc"
+            "value": "Chỉ đọc"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 只读"
+            "value": "只读"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ · 唯讀"
+            "value": "唯讀"
           }
         }
       }
