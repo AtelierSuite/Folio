@@ -58,6 +58,7 @@ public struct NotificationPlanner: Sendable {
             return eventFireDates.map { fireDate in
                 NotificationCandidate(
                     fireDate: fireDate,
+                    endDate: event.endDate,
                     kind: .event,
                     reference: event.reference,
                     content: formatter.content(for: event, firingAt: fireDate),

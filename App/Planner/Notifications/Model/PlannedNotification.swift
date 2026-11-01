@@ -3,6 +3,7 @@ import Foundation
 public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let id: String
     public let fireDate: Date
+    public let endDate: Date?
     public let kind: CalendarItemKind
     public let reference: CalendarItemReference
     public let content: NotificationContent
@@ -25,6 +26,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         )
         self.id = NotificationIdentifier.make(for: candidate, category: category, style: style, sound: sound)
         self.fireDate = candidate.fireDate
+        self.endDate = candidate.endDate
         self.kind = candidate.kind
         self.reference = candidate.reference
         self.content = candidate.content

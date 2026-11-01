@@ -4,6 +4,7 @@ extension PlannedNotification {
     public var candidate: NotificationCandidate {
         NotificationCandidate(
             fireDate: fireDate,
+            endDate: endDate,
             kind: kind,
             reference: reference,
             content: content,

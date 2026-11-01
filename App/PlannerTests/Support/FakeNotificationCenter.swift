@@ -8,6 +8,7 @@ final class FakeNotificationCenter: NotificationCenterClient {
         var authorizationAfterRequest: NotificationAuthorization = .authorized
         var authorizationRequestCount = 0
         var pending: [String: PlannedNotification?] = [:]
+        var delivered: [String: Date?] = [:]
         var addCount = 0
         var removeCount = 0
         var maximumPendingCount = 0
@@ -40,6 +41,14 @@ final class FakeNotificationCenter: NotificationCenterClient {
 
     var removeCount: Int {
         state.withLock { $0.removeCount }
+    }
+
+    var deliveredIdentifiers: Set<String> {
+        state.withLock { Set($0.delivered.keys) }
+    }
+
+    func deliver(_ identifier: String, endDate: Date?) {
+        state.withLock { $0.delivered[identifier] = .some(endDate) }
     }
 
     var maximumPendingCount: Int {
@@ -88,6 +97,20 @@ final class FakeNotificationCenter: NotificationCenterClient {
         state.withLock { state in
             for identifier in identifiers where state.pending.removeValue(forKey: identifier) != nil {
                 state.removeCount += 1
+            }
+        }
+    }
+}
+
+extension FakeNotificationCenter {
+    func deliveredEndDates() async -> [String: Date] {
+        state.withLock { $0.delivered.compactMapValues { $0 } }
+    }
+
+    func removeDelivered(withIdentifiers identifiers: [String]) async {
+        state.withLock { state in
+            for identifier in identifiers {
+                state.delivered.removeValue(forKey: identifier)
             }
         }
     }

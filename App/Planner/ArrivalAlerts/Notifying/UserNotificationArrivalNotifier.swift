@@ -12,6 +12,7 @@ public struct UserNotificationArrivalNotifier: ArrivalNotifying {
         let event = candidate.event
         let planned = PlannedNotification(NotificationCandidate(
             fireDate: date,
+            endDate: event.endDate,
             kind: .event,
             reference: event.reference,
             content: formatter.arrivalContent(for: event, at: date)
