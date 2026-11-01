@@ -11,10 +11,13 @@ extension NotificationContentFormatter {
                 ))
             )
         let travel = String(format: travelFormat(for: alert.transport), travelDuration(alert.travelTime))
-        let details = content(for: alert.event, firingAt: alert.fireDate).body
+        let details = content(for: alert.event, firingAt: alert.fireDate)
         return NotificationContent(
             title: alert.event.title,
-            body: [leave, travel, details].filter { !$0.isEmpty }.joined(separator: Self.separator)
+            body: [leave, travel, details.body].filter { !$0.isEmpty }.joined(separator: Self.separator),
+            status: [leave, travel].joined(separator: Self.separator),
+            time: details.time,
+            color: details.color
         )
     }
 
