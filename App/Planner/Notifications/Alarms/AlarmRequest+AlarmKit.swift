@@ -1,5 +1,6 @@
 #if canImport(AlarmKit) && os(iOS)
 import AlarmKit
+import AppIntents
 import Foundation
 import SwiftUI
 
@@ -20,19 +21,19 @@ extension AlarmRequest {
     var alarmConfiguration: AlarmManager.AlarmConfiguration<FolioAlarmMetadata> {
         switch secondaryAction {
         case .snooze(let duration):
-            AlarmManager.AlarmConfiguration(
+            configuration(
                 countdownDuration: Alarm.CountdownDuration(preAlert: nil, postAlert: duration),
-                schedule: .fixed(fireDate),
                 attributes: attributes(
                     button: AlarmButton(
                         text: Self.localized("Button.Snooze"), textColor: tintColor, systemImageName: "zzz"
                     ),
                     behavior: .countdown
-                )
+                ),
+                secondaryIntent: nil
             )
         case .open:
-            AlarmManager.AlarmConfiguration(
-                schedule: .fixed(fireDate),
+            configuration(
+                countdownDuration: nil,
                 attributes: attributes(
                     button: AlarmButton(
                         text: Self.localized("Button.Open"),
@@ -43,6 +44,35 @@ extension AlarmRequest {
                 ),
                 secondaryIntent: OpenAlarmItemIntent(link: link)
             )
+        }
+    }
+
+    private func configuration(
+        countdownDuration: Alarm.CountdownDuration?,
+        attributes: AlarmAttributes<FolioAlarmMetadata>,
+        secondaryIntent: (any LiveActivityIntent)?
+    ) -> AlarmManager.AlarmConfiguration<FolioAlarmMetadata> {
+        if #available(iOS 27, *) {
+            return AlarmManager.AlarmConfiguration(
+                countdownDuration: countdownDuration,
+                schedule: .fixed(fireDate),
+                attributes: attributes,
+                appEntityIdentifier: entityIdentifier,
+                secondaryIntent: secondaryIntent
+            )
+        }
+        return AlarmManager.AlarmConfiguration(
+            countdownDuration: countdownDuration,
+            schedule: .fixed(fireDate),
+            attributes: attributes,
+            secondaryIntent: secondaryIntent
+        )
+    }
+
+    private var entityIdentifier: EntityIdentifier {
+        switch item.kind {
+        case .event: EntityIdentifier(for: EventEntity.self, identifier: item.reference.storageKey)
+        case .reminder: EntityIdentifier(for: ReminderEntity.self, identifier: item.reference.storageKey)
         }
     }
 
