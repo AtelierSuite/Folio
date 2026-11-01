@@ -14,6 +14,7 @@ struct FolioApp: App {
     @State private var notificationScheduler: NotificationScheduler
     @State private var arrivalAlerts: ArrivalAlertCenter
     @State private var leaveAlerts: LeaveAlertCenter
+    @State private var wakeUpAlarms: WakeUpAlarmCenter
     @State private var notificationNavigator = NotificationNavigator()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
@@ -32,9 +33,11 @@ struct FolioApp: App {
         _notificationNavigator = State(initialValue: notificationNavigator)
         let arrivalAlerts = ArrivalAlertCenter.makeForApp()
         let leaveAlerts = LeaveAlertCenter(capabilities: .current)
-        notificationScheduler.replansLocationAlerts(arrivalAlerts, leaveAlerts)
+        let wakeUpAlarms = WakeUpAlarmCenter(capabilities: .current)
+        notificationScheduler.replansDependentAlerts(arrivalAlerts, leaveAlerts, wakeUpAlarms)
         _arrivalAlerts = State(initialValue: arrivalAlerts)
         _leaveAlerts = State(initialValue: leaveAlerts)
+        _wakeUpAlarms = State(initialValue: wakeUpAlarms)
         NotificationPresentationDelegate.install(responseHandler: NotificationResponseHandler(
             reminders: calendarStore,
             routing: notificationNavigator,
@@ -79,6 +82,8 @@ struct FolioApp: App {
                 .environment(notificationScheduler)
                 .environment(arrivalAlerts)
                 .environment(leaveAlerts)
+            .environment(wakeUpAlarms)
+                .environment(wakeUpAlarms)
                 .environment(notificationNavigator)
                 .environment(weatherStore)
                 .environment(sleepStore)
@@ -125,6 +130,7 @@ struct FolioApp: App {
             .environment(notificationScheduler)
             .environment(arrivalAlerts)
             .environment(leaveAlerts)
+            .environment(wakeUpAlarms)
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(sleepStore)
