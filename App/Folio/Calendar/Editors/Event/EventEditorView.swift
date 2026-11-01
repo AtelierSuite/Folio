@@ -118,20 +118,22 @@ struct EventEditorView: View {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button(String(localized: "Cancel", table: "EventEditor"), role: .cancel) {
+            Button(role: .cancel) {
                 dismiss()
             }
+            .accessibilityLabel(String(localized: "Cancel", table: "EventEditor"))
         }
         ToolbarItem(placement: .confirmationAction) {
-            Button(editedEvent == nil
-                   ? String(localized: "Editor.Add", table: "EventEditor")
-                   : String(localized: "Editor.Save", table: "EventEditor")) {
+            Button(role: .confirm) {
                 if editedEvent?.isRecurring == true {
                     isChoosingSpan = true
                 } else {
                     Task { await save(span: .thisEvent) }
                 }
             }
+            .accessibilityLabel(editedEvent == nil
+                                ? String(localized: "Editor.Add", table: "EventEditor")
+                                : String(localized: "Editor.Save", table: "EventEditor"))
             .disabled(!canSave)
             .eventSpanDialog(isPresented: $isChoosingSpan, action: .save, spans: spans) { span in
                 Task { await save(span: span) }
