@@ -13,6 +13,7 @@ struct CalendarsSettingsView: View {
             }
             ReminderSettingsSection()
             InvitationSettingsSection()
+            TravelTimeSettingsSection()
             SecondaryTimeZoneSection()
             AlternateCalendarSection()
         }
