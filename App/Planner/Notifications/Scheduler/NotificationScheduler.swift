@@ -10,6 +10,7 @@ public final class NotificationScheduler {
     public internal(set) var includesReminders: Bool
     public internal(set) var eventSound: NotificationSound
     public internal(set) var reminderSound: NotificationSound
+    public internal(set) var calendarSounds: [String: NotificationSound]
     public internal(set) var alarmAuthorization: NotificationAuthorization = .notDetermined
     public private(set) var lastReport: NotificationReplanReport?
 
@@ -62,7 +63,7 @@ public final class NotificationScheduler {
         self.planner = planner ?? NotificationPlanner(
             styleResolver: resolver.style(for:),
             allDayAlertMinutes: allDayAlertTimeSettings.minutesAfterMidnight(forCalendar:),
-            soundResolver: soundSettings.sound(for:)
+            soundResolver: soundSettings.resolvedSound(for:)
         )
         self.horizon = horizon
         self.clock = clock
@@ -71,6 +72,7 @@ public final class NotificationScheduler {
         includesReminders = settings.includesReminders
         eventSound = soundSettings.sound(for: .event)
         reminderSound = soundSettings.sound(for: .reminder)
+        calendarSounds = soundSettings.calendarSounds
     }
 
     public func replan() async {

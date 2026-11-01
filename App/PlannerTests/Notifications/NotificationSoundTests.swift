@@ -67,8 +67,41 @@ struct NotificationSoundTests {
 
         await scheduler.setSound(.uguisu, for: .event)
         await scheduler.setSound(.shizuku, for: .reminder)
-        let sounds = Dictionary(uniqueKeysWithValues: center.pendingNotifications.map { ($0.kind, $0.sound) })
-        #expect(sounds == [.event: .uguisu, .reminder: .shizuku])
+        #expect(sounds(in: center) == [.event: .uguisu, .reminder: .shizuku])
         #expect(makeScheduler(defaults: defaults, center: center).sound(for: .event) == .uguisu)
+    }
+
+    @Test func calendarSoundsOverrideTheirKindAndFallBackWhenCleared() async throws {
+        let defaults = try #require(UserDefaults(suiteName: "NotificationSoundTests.\(UUID().uuidString)"))
+        let center = FakeNotificationCenter()
+        let scheduler = makeScheduler(defaults: defaults, center: center)
+        await scheduler.setSound(.uguisu, for: .event)
+        await scheduler.setSound(.hotaru, for: .reminder)
+        await scheduler.setSound(.kumo, forCalendar: work.calendarIdentifier)
+        await scheduler.setSound(.tsuki, forCalendar: milk.listIdentifier)
+        #expect(sounds(in: center) == [.event: .kumo, .reminder: .tsuki])
+        #expect(makeScheduler(defaults: defaults, center: center).sound(forCalendar: work.calendarIdentifier) == .kumo)
+
+        await scheduler.setSound(nil, forCalendar: work.calendarIdentifier)
+        #expect(sounds(in: center) == [.event: .uguisu, .reminder: .tsuki])
+        #expect(scheduler.sound(forCalendar: work.calendarIdentifier) == nil)
+    }
+
+    @Test func aCalendarSoundOnlyAppliesToItsOwnCalendar() throws {
+        let defaults = try #require(UserDefaults(suiteName: "NotificationSoundTests.\(UUID().uuidString)"))
+        let settings = NotificationSoundSettings(defaults: defaults)
+        settings.setSound(.niji, forCalendar: "other-calendar")
+        let candidate = NotificationCandidate(
+            fireDate: NotificationFixtures.now, kind: .event, reference: work.reference,
+            content: NotificationContent(title: "work", body: "")
+        )
+        #expect(settings.resolvedSound(for: candidate) == .system)
+        settings.setSound(.system, forCalendar: work.calendarIdentifier)
+        settings.setSound(.nami, for: .event)
+        #expect(settings.resolvedSound(for: candidate) == .system)
+    }
+
+    private func sounds(in center: FakeNotificationCenter) -> [CalendarItemKind: NotificationSound] {
+        Dictionary(uniqueKeysWithValues: center.pendingNotifications.map { ($0.kind, $0.sound) })
     }
 }
