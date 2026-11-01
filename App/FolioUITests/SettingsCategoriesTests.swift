@@ -3,7 +3,8 @@ import XCTest
 final class SettingsCategoriesTests: XCTestCase {
     private static let categoryContents: [(category: String, identifier: String)] = [
         ("general", "EventTapBehaviorPicker"),
-        ("calendars", "CalendarVisibilityLink"),
+        ("accounts", "AccountsForm"),
+        ("calendars", "WorkWeekLink"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),
         ("search", "Search.Settings.MonthsBack"),
         ("weather", "WeatherToggle"),

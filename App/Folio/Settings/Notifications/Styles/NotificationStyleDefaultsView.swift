@@ -15,20 +15,11 @@ struct NotificationStyleDefaultsView: View {
             if permissionCenter.status(of: .alarms) == .denied {
                 NotificationAlarmDeniedSection()
             }
-            if !store.eventCalendars.isEmpty {
-                Section {
-                    ForEach(store.eventCalendars) { NotificationStyleCalendarRow(calendar: $0) }
-                } header: {
-                    Text(String(localized: "Defaults.Calendars", table: "NotificationStyles"))
-                } footer: {
-                    Text(footer)
-                }
-            }
-            if !store.reminderLists.isEmpty {
-                Section(String(localized: "Defaults.ReminderLists", table: "NotificationStyles")) {
-                    ForEach(store.reminderLists) { NotificationStyleCalendarRow(calendar: $0) }
-                }
-            }
+            CalendarAccountSections(
+                calendars: store.eventCalendars,
+                lists: store.reminderLists,
+                footer: footer
+            ) { NotificationStyleCalendarRow(calendar: $0) }
         }
         .formStyle(.grouped)
         .navigationTitle(String(localized: "Defaults.Title", table: "NotificationStyles"))

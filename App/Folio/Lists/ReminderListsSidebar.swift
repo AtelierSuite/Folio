@@ -46,9 +46,9 @@ struct ReminderListsSidebar: View {
             )
         } else {
             List(selection: $selection) {
-                ForEach(ReminderListGroup.groups(from: store.reminderLists)) { group in
+                ForEach(CalendarAccountGroup.groups(from: store.reminderLists)) { group in
                     Section(group.title) {
-                        ForEach(group.lists) { list in
+                        ForEach(group.calendars) { list in
                             ReminderListRow(list: list, openCount: openCounts[list.id] ?? 0)
                                 .tag(list.id)
                         }

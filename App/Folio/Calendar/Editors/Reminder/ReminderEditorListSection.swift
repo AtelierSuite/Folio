@@ -15,8 +15,12 @@ struct ReminderEditorListSection: View {
                 if draft.listIdentifier.isEmpty {
                     Text(String(localized: "List.None", table: "ReminderEditor")).tag("")
                 }
-                ForEach(lists) { list in
-                    Text(list.title).tag(list.id)
+                ForEach(CalendarAccountGroup.groups(from: lists)) { group in
+                    Section(group.title) {
+                        ForEach(group.calendars) { list in
+                            Text(list.title).tag(list.id)
+                        }
+                    }
                 }
             }
             Picker(String(localized: "Field.Priority", table: "ReminderEditor"), selection: $draft.priority) {

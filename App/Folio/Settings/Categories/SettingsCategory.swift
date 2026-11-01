@@ -3,6 +3,7 @@ import SwiftUI
 
 enum SettingsCategory: String, CaseIterable, Identifiable {
     case general
+    case accounts
     case calendars
     case notes
     case notifications
@@ -20,6 +21,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .general: String(localized: "Category.General", table: "Settings")
+        case .accounts: String(localized: "Category.Accounts", table: "Settings")
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
         case .notes: String(localized: "Category.Notes", table: "Settings")
         case .notifications: String(localized: "Category.Notifications", table: "Settings")
@@ -37,6 +39,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     var systemImage: String {
         switch self {
         case .general: "gearshape.fill"
+        case .accounts: "person.crop.circle.fill"
         case .calendars: "calendar"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
@@ -54,6 +57,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .general: .gray
+        case .accounts: .blue
         case .calendars: .red
         case .notes: .blue
         case .notifications: .pink
@@ -101,6 +105,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
 
     private static func groups(including systemCategories: [SettingsCategory]) -> [[SettingsCategory]] {
         var groups: [[SettingsCategory]] = [
+            [.accounts],
             [.general, .calendars, .notes],
             [.weather],
             [.notifications, .alarms, .sleep] + systemCategories

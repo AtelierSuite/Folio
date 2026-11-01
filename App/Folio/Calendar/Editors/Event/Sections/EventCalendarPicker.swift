@@ -7,9 +7,13 @@ struct EventCalendarPicker: View {
 
     var body: some View {
         Picker(String(localized: "Field.Calendar", table: "EventEditor"), selection: $selection) {
-            ForEach(calendars) { calendar in
-                Text(calendar.title)
-                    .tag(calendar.id)
+            ForEach(CalendarAccountGroup.groups(from: calendars)) { group in
+                Section(group.title) {
+                    ForEach(group.calendars) { calendar in
+                        Text(calendar.title)
+                            .tag(calendar.id)
+                    }
+                }
             }
         }
         .tint(calendars.first { $0.id == selection }?.color.color)

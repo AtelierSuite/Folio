@@ -10,17 +10,7 @@ struct WorkWeekCalendarRow: View {
             get: { workWeek.countsForWorkWeek(calendarIdentifier: calendar.id) },
             set: { workWeek.setCountsForWorkWeek($0, calendarIdentifier: calendar.id) }
         )) {
-            HStack(spacing: 10) {
-                Circle()
-                    .fill(calendar.color.color)
-                    .frame(width: 12, height: 12)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(calendar.title)
-                    Text(calendar.sourceTitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
+            CalendarKindLabel(calendar: calendar)
         }
         .accessibilityIdentifier("WorkWeek.Calendar.\(calendar.title)")
     }
