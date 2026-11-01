@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Synthesizes Folio's notification sounds, inspired by Japanese nature.
+"""Synthesizes Folio's notification sounds: bright synth-pop motifs named after Japanese nature.
+
+Kept soft and short, with gentle attacks, so they suit a quiet meeting room.
 
 Usage: python3 generate.py <output directory>
 
@@ -9,7 +11,6 @@ so every run produces identical files. Requires macOS for afconvert.
 
 import math
 import os
-import random
 import struct
 import subprocess
 import sys
@@ -38,31 +39,15 @@ class Track:
     def __len__(self):
         return len(self.samples)
 
-    def partial(self, start, frequency, amplitude, decay, attack=0.002, glide=None, vibrato=None):
-        """Adds a sine with an exponential decay. glide is (target frequency, seconds)."""
+    def partial(self, start, frequency, amplitude, decay, attack=0.003):
+        """Adds a sine with a short linear attack and an exponential decay."""
         first = int(start * SAMPLE_RATE)
         length = min(len(self) - first, int(decay * 7 * SAMPLE_RATE))
-        phase = 0.0
+        step = TAU * frequency / SAMPLE_RATE
         for index in range(max(0, length)):
             time = index / SAMPLE_RATE
-            current = frequency
-            if glide:
-                target, glide_seconds = glide
-                progress = min(1.0, time / glide_seconds)
-                current = frequency * (target / frequency) ** progress
-            if vibrato:
-                rate, depth, delay = vibrato
-                ramp = min(1.0, max(0.0, (time - delay) / 0.4))
-                current *= 1 + depth * ramp * math.sin(TAU * rate * time)
-            phase += TAU * current / SAMPLE_RATE
             envelope = min(1.0, time / attack) * math.exp(-time / decay)
-            self.samples[first + index] += amplitude * envelope * math.sin(phase)
-
-    def bell(self, start, frequency, amplitude, ratios, levels, decays, beat=0.0):
-        for ratio, level, decay in zip(ratios, levels, decays):
-            self.partial(start, frequency * ratio, amplitude * level, decay)
-            if beat:
-                self.partial(start, frequency * ratio + beat, amplitude * level * 0.6, decay)
+            self.samples[first + index] += amplitude * envelope * math.sin(step * index)
 
     def tone(self, start, seconds, frequency_curve, amplitude_curve, harmonics=(1.0,)):
         """Adds a sustained tone shaped by curves that map progress 0...1 to a value."""
@@ -76,60 +61,21 @@ class Track:
             value = sum(level * math.sin(phase * (order + 1)) for order, level in enumerate(harmonics))
             self.samples[first + index] += amplitude * value
 
-    def noise(self, start, seconds, center, quality, amplitude_curve, rng):
-        first = int(start * SAMPLE_RATE)
-        length = min(len(self) - first, int(seconds * SAMPLE_RATE))
-        source = [rng.uniform(-1, 1) for _ in range(max(0, length))]
-        filtered = bandpass(source, center, quality)
-        for index, value in enumerate(filtered):
-            self.samples[first + index] += value * amplitude_curve(index / length, index / SAMPLE_RATE)
-
-    def pluck(self, start, frequency, amplitude, sustain, brightness, rng, bend=None):
-        """Karplus-Strong string. bend is (cents, delay seconds) for a pressed-string rise."""
-        first = int(start * SAMPLE_RATE)
-        period = SAMPLE_RATE / frequency
-        size = int(period) + 2
-        line = [rng.uniform(-1, 1) for _ in range(size)]
-        line = [(line[index] + line[index - 1]) * 0.5 for index in range(size)]
-        previous = 0.0
-        length = min(len(self) - first, int(sustain * 6 * SAMPLE_RATE))
-        write_index = 0
-        output = []
-        for index in range(length):
-            time = index / SAMPLE_RATE
-            current_period = period
-            if bend:
-                cents, delay = bend
-                progress = min(1.0, max(0.0, (time - delay) / 0.12))
-                current_period = period / 2 ** (cents * progress / 1200)
-            read = (write_index - current_period) % size
-            lower = int(read)
-            fraction = read - lower
-            value = line[lower] * (1 - fraction) + line[(lower + 1) % size] * fraction
-            smoothed = brightness * value + (1 - brightness) * previous
-            previous = smoothed
-            line[write_index] = smoothed * math.exp(-1 / (sustain * frequency))
-            write_index = (write_index + 1) % size
-            output.append(value)
-        for index, value in enumerate(output):
-            self.samples[first + index] += amplitude * value
-
-    def click(self, start, amplitude, center, rng, seconds=0.012):
-        self.noise(start, seconds, center, 1.2, lambda progress, _: amplitude * (1 - progress) ** 3, rng)
-
-    def finish(self, room=0.0, mix=0.0, damping=0.4, fade=0.15):
+    def finish(self, room=0.0, mix=0.0, damping=0.5, fade=0.15, delay=None):
         samples = self.samples
+        if delay:
+            samples = echo(samples, *delay)
         if mix:
             wet = reverb(samples, room, damping)
             samples = [dry * (1 - mix * 0.5) + echo * mix for dry, echo in zip(samples, wet)]
-        samples = highpass(samples, 90)
+        samples = lowpass(highpass(samples, 120), 7000)
         fade_length = int(fade * SAMPLE_RATE)
         for index in range(fade_length):
             samples[-1 - index] *= index / fade_length
         return level(samples)
 
 
-def level(samples, target_decibels=-16.0, ceiling=0.9):
+def level(samples, target_decibels=-20.0, ceiling=0.8):
     """Matches loudness across sounds, softly limiting peaks instead of clipping them."""
     loudest = max(abs(value) for value in samples) or 1
     power = math.sqrt(sum(value * value for value in samples) / len(samples)) or 1
@@ -146,17 +92,27 @@ def level(samples, target_decibels=-16.0, ceiling=0.9):
     return [limit(value * gain) for value in samples]
 
 
-def bandpass(samples, center, quality):
-    omega = TAU * center / SAMPLE_RATE
-    alpha = math.sin(omega) / (2 * quality)
-    b0, b2 = alpha, -alpha
-    a0, a1, a2 = 1 + alpha, -2 * math.cos(omega), 1 - alpha
-    x1 = x2 = y1 = y2 = 0.0
+def lowpass(samples, cutoff):
+    coefficient = 1 - math.exp(-TAU * cutoff / SAMPLE_RATE)
+    previous = 0.0
     output = []
     for value in samples:
-        result = (b0 * value + b2 * x2 - a1 * y1 - a2 * y2) / a0
-        x2, x1, y2, y1 = x1, value, y1, result
-        output.append(result)
+        previous += coefficient * (value - previous)
+        output.append(previous)
+    return output
+
+
+def echo(samples, seconds, feedback, mix):
+    """A soft feedback delay, darker on each repeat, for the synth-pop sparkle."""
+    delay = int(seconds * SAMPLE_RATE)
+    line = [0.0] * delay
+    store = 0.0
+    output = []
+    for index, value in enumerate(samples):
+        repeated = line[index % delay]
+        store = 0.6 * repeated + 0.4 * store
+        line[index % delay] = value + store * feedback
+        output.append(value + repeated * mix)
     return output
 
 
@@ -207,243 +163,242 @@ def swell(attack, release):
     return curve
 
 
-# Calendar sounds: clearer, a little longer, meant to announce an event.
 
-def furin(rng):
-    """Furin: a glass wind bell touched by a summer breeze."""
-    track = Track(2.6)
-    ratios, levels, decays = (1, 2.32, 4.25, 6.63), (1, 0.45, 0.25, 0.12), (0.9, 0.5, 0.3, 0.18)
-    for start, pitch, level in ((0.0, "E6", 1.0), (0.34, "B6", 0.75), (0.61, "G#6", 0.6), (1.05, "E6", 0.4)):
-        track.click(start, 0.25 * level, 6000, rng)
-        track.bell(start, note(pitch), level, ratios, levels, decays, beat=2.1)
+
+class Instruments(Track):
+    """Soft synth-pop voices. Every attack is a few milliseconds so nothing clicks."""
+
+    def glockenspiel(self, start, pitch, amplitude=1.0, decay=0.8):
+        frequency = note(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.003)
+        self.partial(start, frequency + 1.2, amplitude * 0.35, decay, attack=0.003)
+        self.partial(start, frequency * 2.0, amplitude * 0.12, decay * 0.3, attack=0.003)
+        self.partial(start, frequency * 2.76, amplitude * 0.05, decay * 0.15, attack=0.003)
+
+    def celesta(self, start, pitch, amplitude=1.0, decay=0.6):
+        frequency = note(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.004)
+        self.partial(start, frequency * 2.0, amplitude * 0.2, decay * 0.35, attack=0.004)
+        self.partial(start, frequency * 3.0, amplitude * 0.05, decay * 0.2, attack=0.004)
+
+    def music_box(self, start, pitch, amplitude=1.0, decay=0.5):
+        frequency = note(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.003)
+        self.partial(start, frequency * 3.0, amplitude * 0.1, decay * 0.25, attack=0.003)
+        self.partial(start, frequency * 5.4, amplitude * 0.03, decay * 0.1, attack=0.003)
+
+    def marimba(self, start, pitch, amplitude=1.0, decay=0.3):
+        frequency = note(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.005)
+        self.partial(start, frequency * 3.93, amplitude * 0.15, decay * 0.15, attack=0.005)
+
+    def pad(self, start, seconds, pitches, amplitude=0.25, attack=0.35, release=0.5):
+        for pitch in pitches:
+            for detune in (0.9975, 1.0025):
+                self.tone(start, seconds, lambda progress, time, base=note(pitch) * detune: base,
+                          swell(attack, release), (amplitude, amplitude * 0.12, amplitude * 0.04))
+
+
+def sequence(track, voice, notes, **options):
+    for start, pitch in notes:
+        voice(track, start, pitch, **options)
+
+
+# Event sounds: short melodic motifs that announce something is starting.
+
+def furin():
+    """Wind Chime: a glockenspiel climbing a C major ninth over a soft pad."""
+    track = Instruments(2.2)
+    track.pad(0.0, 1.9, ("C5", "E5", "G5"), amplitude=0.08)
+    sequence(track, Instruments.glockenspiel,
+             ((0.0, "C6"), (0.1, "E6"), (0.2, "G6"), (0.3, "B6"), (0.4, "D7")), amplitude=0.6)
+    return track.finish(room=0.5, mix=0.25, delay=(0.18, 0.3, 0.3))
+
+
+def asahi():
+    """Sunrise: marimba steps up a G major chord to a ringing high bell."""
+    track = Instruments(2.2)
+    track.pad(0.25, 1.8, ("G4", "D5", "B5"), amplitude=0.07, attack=0.4)
+    sequence(track, Instruments.marimba, ((0.0, "G5"), (0.14, "D6"), (0.28, "B5")))
+    track.glockenspiel(0.42, "G6", 0.7, decay=0.9)
+    return track.finish(room=0.5, mix=0.25, delay=(0.21, 0.3, 0.25))
+
+
+def sakura():
+    """Cherry Blossom: celesta notes drifting down onto a G add9 chord."""
+    track = Instruments(2.2)
+    sequence(track, Instruments.celesta, ((0.0, "E6"), (0.13, "D6"), (0.26, "B5"), (0.39, "G5")))
+    for pitch in ("G5", "A5", "D6"):
+        track.celesta(0.62, pitch, 0.6, decay=0.8)
+    return track.finish(room=0.55, mix=0.3, delay=(0.2, 0.25, 0.2))
+
+
+def uguisu():
+    """Warbler: two playful grace-note leaps, then a bright high note."""
+    track = Instruments(1.9)
+    for start, low, high in ((0.0, "D6", "G6"), (0.3, "D6", "B6")):
+        track.glockenspiel(start, low, 0.35, decay=0.25)
+        track.glockenspiel(start + 0.05, high, 0.6, decay=0.5)
+    track.glockenspiel(0.6, "D7", 0.55, decay=0.8)
+    return track.finish(room=0.45, mix=0.25, delay=(0.15, 0.3, 0.25))
+
+
+def seseragi():
+    """Brook: a music box rippling up and down an F major seventh."""
+    track = Instruments(2.0)
+    notes = ("F5", "A5", "C6", "E6", "G6", "E6", "C6", "E6")
+    sequence(track, Instruments.music_box, [(index * 0.08, pitch) for index, pitch in enumerate(notes)],
+             amplitude=0.6)
+    track.music_box(0.68, "F6", 0.7, decay=0.8)
+    track.music_box(0.68, "C6", 0.4, decay=0.8)
+    return track.finish(room=0.5, mix=0.25, delay=(0.16, 0.3, 0.25))
+
+
+def hoshizora():
+    """Starry Sky: slow twinkling celesta over a D major seventh pad."""
+    track = Instruments(2.3)
+    track.pad(0.0, 2.1, ("D5", "F#5", "A5", "C#6"), amplitude=0.06, attack=0.3)
+    sequence(track, Instruments.celesta, ((0.0, "A6"), (0.22, "E6"), (0.44, "B6"), (0.66, "F#6")),
+             amplitude=0.55, decay=0.7)
+    return track.finish(room=0.6, mix=0.3, delay=(0.22, 0.35, 0.3))
+
+
+def niji():
+    """Rainbow: a quick music box run that blooms into a C add9 chord."""
+    track = Instruments(2.1)
+    notes = ("C6", "D6", "E6", "G6", "A6", "C7")
+    sequence(track, Instruments.music_box, [(index * 0.07, pitch) for index, pitch in enumerate(notes)],
+             amplitude=0.55)
+    track.pad(0.35, 1.6, ("C5", "E5", "G5", "D6"), amplitude=0.07, attack=0.3)
+    return track.finish(room=0.5, mix=0.25, delay=(0.14, 0.3, 0.25))
+
+
+def kumo():
+    """Clouds: a soft F major seventh pad with two quiet bells on top."""
+    track = Instruments(2.0)
+    track.pad(0.0, 1.9, ("F4", "A4", "C5", "E5"), amplitude=0.08, attack=0.25)
+    track.celesta(0.15, "C6", 0.6, decay=0.7)
+    track.celesta(0.5, "A5", 0.5, decay=0.8)
+    return track.finish(room=0.6, mix=0.3)
+
+
+def nami():
+    """Waves: a rolling marimba call and answer, settling on a high bell."""
+    track = Instruments(2.0)
+    sequence(track, Instruments.marimba,
+             ((0.0, "E6"), (0.13, "C6"), (0.26, "G5"), (0.52, "A5"), (0.65, "C6"), (0.78, "D6")),
+             amplitude=0.8)
+    track.glockenspiel(0.92, "E6", 0.5, decay=0.8)
+    return track.finish(room=0.5, mix=0.25, delay=(0.13, 0.25, 0.2))
+
+
+def kaze():
+    """Breeze: an airy E major pad with a light glockenspiel falling through it."""
+    track = Instruments(2.1)
+    track.pad(0.0, 2.0, ("E5", "G#5", "B5"), amplitude=0.07, attack=0.25)
+    sequence(track, Instruments.glockenspiel,
+             ((0.25, "B6"), (0.37, "G#6"), (0.49, "E6"), (0.61, "C#6")), amplitude=0.5, decay=0.6)
+    return track.finish(room=0.55, mix=0.3, delay=(0.18, 0.3, 0.25))
+
+
+# Reminder sounds: two or three notes, softer still, a gentle nudge.
+
+def shizuku():
+    """Dewdrop: two soft marimba notes, a fourth apart."""
+    track = Instruments(1.0)
+    sequence(track, Instruments.marimba, ((0.0, "B5"), (0.12, "E6")), decay=0.25)
+    return track.finish(room=0.45, mix=0.25, delay=(0.12, 0.2, 0.2))
+
+
+def hotaru():
+    """Firefly: three glockenspiel notes twinkling up an E major chord."""
+    track = Instruments(1.2)
+    sequence(track, Instruments.glockenspiel, ((0.0, "E6"), (0.1, "G#6"), (0.2, "B6")), decay=0.5)
+    return track.finish(room=0.5, mix=0.25, delay=(0.15, 0.25, 0.25))
+
+
+def momiji():
+    """Maple Leaf: a celesta note falling, then a lighter one above."""
+    track = Instruments(1.2)
+    sequence(track, Instruments.celesta, ((0.0, "A5"), (0.16, "E5")), decay=0.45)
+    track.celesta(0.4, "C#6", 0.5, decay=0.5)
     return track.finish(room=0.5, mix=0.25)
 
 
-def shishiodoshi(rng):
-    """Shishi-odoshi: water fills the bamboo, which tips and knocks against stone."""
-    track = Track(2.0)
-    track.noise(0.0, 0.7, 900, 3, swell(0.4, 0.3), rng)
-    for start in (0.08, 0.22, 0.37, 0.5):
-        track.partial(start, rng.uniform(700, 1000), 0.12, 0.03, glide=(1700, 0.04))
-    track.click(0.72, 0.9, 2500, rng, seconds=0.02)
-    track.partial(0.72, 392, 1.0, 0.16)
-    track.partial(0.72, 392 * 2.9, 0.35, 0.05)
-    track.partial(0.72, 196, 0.5, 0.11)
-    return track.finish(room=0.85, mix=0.55, damping=0.3)
+def tsuki():
+    """Moon: one calm bell chord of a fifth, with a faint octave."""
+    track = Instruments(1.4)
+    for pitch, amplitude in (("A5", 0.8), ("E6", 0.6), ("A6", 0.2)):
+        track.celesta(0.0, pitch, amplitude, decay=0.7)
+    return track.finish(room=0.55, mix=0.3, fade=0.3)
 
 
-def bonsho(rng):
-    """Bonsho: a temple bell heard from across the valley."""
-    track = Track(3.2)
-    track.noise(0.0, 0.05, 300, 0.8, lambda progress, _: 0.6 * (1 - progress) ** 2, rng)
-    track.bell(
-        0.0, 196, 1.0,
-        (0.5, 1.0, 1.19, 1.51, 2.0, 2.68, 3.02, 4.17),
-        (0.35, 1.0, 0.6, 0.5, 0.45, 0.3, 0.2, 0.12),
-        (2.4, 1.8, 1.5, 1.2, 1.0, 0.7, 0.5, 0.35),
-        beat=0.9,
-    )
-    return track.finish(room=0.8, mix=0.35, fade=0.6)
+def kiri():
+    """Morning Mist: an A major ninth pad that swells up under a single bell."""
+    track = Instruments(1.5)
+    track.pad(0.0, 1.4, ("A4", "C#5", "E5", "B5"), amplitude=0.08, attack=0.25)
+    track.celesta(0.2, "E6", 0.5, decay=0.6)
+    return track.finish(room=0.55, mix=0.3, fade=0.05)
 
 
-def suikinkutsu(rng):
-    """Suikinkutsu: drops falling into a buried jar, ringing back up through the stones."""
-    track = Track(2.8)
-    for start, pitch in ((0.0, "E6"), (0.42, "B5"), (0.7, "A5"), (1.25, "E6"), (1.5, "D6")):
-        frequency = note(pitch)
-        track.partial(start, frequency * 0.6, 0.35, 0.025, glide=(frequency, 0.02))
-        track.bell(start + 0.01, frequency, 0.8, (1, 2.01, 3.02), (1, 0.3, 0.12), (0.7, 0.35, 0.2))
-    return track.finish(room=0.92, mix=0.6, damping=0.2)
+def hamon():
+    """Ripple: a single celesta note with echoes spreading out."""
+    track = Instruments(1.3)
+    track.celesta(0.0, "C6", decay=0.4)
+    return track.finish(room=0.5, mix=0.25, delay=(0.15, 0.45, 0.5))
 
 
-def uguisu(rng):
-    """Uguisu: the bush warbler's spring call, hoo hokekyo."""
-    track = Track(2.3)
-    harmonics = (1.0, 0.12, 0.04)
-    track.tone(0.05, 0.62, lambda progress, time: 1250 + 60 * progress + 12 * math.sin(TAU * 7 * time),
-               swell(0.35, 0.15), harmonics)
-    track.tone(0.82, 0.12, lambda progress, _: 1700 + 300 * progress, swell(0.2, 0.3), harmonics)
-    track.tone(0.97, 0.1, lambda progress, _: 2100 + 900 * progress, swell(0.15, 0.3), harmonics)
-    track.tone(1.1, 0.34, lambda progress, _: 3100 - 1200 * progress ** 0.7, swell(0.08, 0.5), harmonics)
-    return track.finish(room=0.7, mix=0.4)
+def suzu():
+    """Little Bell: two small bells, high then a fourth below."""
+    track = Instruments(1.0)
+    sequence(track, Instruments.glockenspiel, ((0.0, "D7"), (0.09, "A6")), amplitude=0.7, decay=0.4)
+    return track.finish(room=0.45, mix=0.25)
 
 
-def koto(rng):
-    """Koto: a few plucked strings in the hirajoshi scale, the last one pressed."""
-    track = Track(2.2)
-    for start, pitch, level in ((0.0, "A4", 0.8), (0.16, "Bb4", 0.7), (0.32, "D5", 0.8), (0.48, "E5", 0.9)):
-        track.pluck(start, note(pitch), level, 0.5, 0.55, rng)
-    track.pluck(0.9, note("A5"), 1.0, 0.7, 0.6, rng, bend=(100, 0.25))
+def hana():
+    """Flower: a music box opening up an A minor seventh."""
+    track = Instruments(1.1)
+    sequence(track, Instruments.music_box, ((0.0, "C6"), (0.09, "E6"), (0.18, "A6")), decay=0.45)
+    return track.finish(room=0.45, mix=0.25, delay=(0.13, 0.25, 0.2))
+
+
+def yuki():
+    """Snow: three hushed celesta notes settling down a D major chord."""
+    track = Instruments(1.2)
+    sequence(track, Instruments.celesta, ((0.0, "F#6"), (0.16, "D6"), (0.32, "A5")), amplitude=0.7, decay=0.45)
     return track.finish(room=0.55, mix=0.3)
 
 
-def shakuhachi(rng):
-    """Shakuhachi: a breathy bamboo flute phrase with a gentle meri bend."""
-    track = Track(2.6)
-    breath = lambda progress, _: 0.25 * swell(0.2, 0.25)(progress, 0)
-    track.tone(0.0, 0.7, lambda progress, _: note("A4") * 2 ** (-0.8 * (1 - min(1, progress * 3)) / 12),
-               swell(0.25, 0.2), (1.0, 0.35, 0.12))
-    track.noise(0.0, 0.7, 1800, 1.5, breath, rng)
-    track.tone(0.65, 1.7, lambda progress, time: note("D5") * (1 + 0.012 * min(1, time) * math.sin(TAU * 5 * time)),
-               swell(0.12, 0.45), (1.0, 0.3, 0.1))
-    track.noise(0.65, 1.7, 2400, 1.5, breath, rng)
-    return track.finish(room=0.7, mix=0.35)
-
-
-def sakura(rng):
-    """Sakura: petals drifting down on miyako-bushi bells."""
-    track = Track(2.4)
-    for index, pitch in enumerate(("C7", "B6", "A6", "F6", "E6", "B5")):
-        start = index * 0.17 + rng.uniform(-0.02, 0.02)
-        track.bell(start, note(pitch), 0.8 - index * 0.06, (1, 3.0, 4.07), (1, 0.18, 0.06), (0.6, 0.15, 0.08))
-    return track.finish(room=0.6, mix=0.35)
-
-
-def seseragi(rng):
-    """Seseragi: a clear mountain stream burbling over pebbles."""
-    track = Track(2.2)
-    track.noise(0.0, 2.2, 1400, 1.2, lambda progress, _: 0.08 * swell(0.2, 0.35)(progress, 0), rng)
-    time = 0.05
-    while time < 1.8:
-        frequency = rng.uniform(500, 1300)
-        track.partial(time, frequency, rng.uniform(0.25, 0.5), 0.035, glide=(frequency * 2.1, 0.035))
-        time += rng.uniform(0.04, 0.13)
-    return track.finish(room=0.5, mix=0.3)
-
-
-def higurashi(rng):
-    """Higurashi: the evening cicada's falling kana-kana-kana."""
-    track = Track(2.6)
-    start, gap, level = 0.0, 0.11, 1.0
-    for _ in range(13):
-        pitch = 4300 * (0.97 + 0.06 * level)
-        track.tone(start, 0.085,
-                   lambda progress, _, base=pitch: base - 500 * progress,
-                   lambda progress, time, size=level: size * swell(0.1, 0.4)(progress, 0)
-                   * (0.55 + 0.45 * math.sin(TAU * 90 * time)),
-                   (1.0, 0.15))
-        start += gap
-        gap *= 1.05
-        level *= 0.86
-    return track.finish(room=0.75, mix=0.4)
-
-
-# Reminder sounds: softer and shorter, meant as a gentle nudge.
-
-def shizuku(rng):
-    """Shizuku: dew dripping from a leaf."""
-    track = Track(1.3)
-    track.partial(0.0, 900, 1.0, 0.09, glide=(1900, 0.05))
-    track.partial(0.38, 1100, 0.5, 0.07, glide=(2300, 0.04))
-    return track.finish(room=0.7, mix=0.45)
-
-
-def hotaru(rng):
-    """Hotaru: fireflies glowing one after another over a rice paddy."""
-    track = Track(1.7)
-    for start, pitch in ((0.0, "E7"), (0.22, "G7"), (0.44, "B7")):
-        track.partial(start, note(pitch) / 2, 0.8, 0.35, attack=0.03)
-        track.partial(start, note(pitch) / 2 * 2.01, 0.2, 0.2, attack=0.03)
-    return track.finish(room=0.6, mix=0.4)
-
-
-def kaeru(rng):
-    """Kaeru: a tree frog's soft kero kero after rain."""
-    track = Track(1.2)
-    for croak_start in (0.0, 0.42):
-        for syllable, pitch in ((0.0, 720), (0.12, 600)):
-            for pulse in range(5):
-                track.partial(croak_start + syllable + pulse * 0.016, pitch, 0.6, 0.006)
-                track.partial(croak_start + syllable + pulse * 0.016, pitch * 2.5, 0.15, 0.003)
-    return track.finish(room=0.4, mix=0.25)
-
-
-def suzumushi(rng):
-    """Suzumushi: a bell cricket's ringing riin in autumn grass."""
-    track = Track(1.4)
-    for start, seconds, level in ((0.0, 0.42, 1.0), (0.55, 0.28, 0.7)):
-        track.tone(start, seconds, lambda progress, _: 4100 - 80 * progress,
-                   lambda progress, time, size=level: size * swell(0.08, 0.3)(progress, 0)
-                   * (0.5 + 0.5 * math.sin(TAU * 42 * time)))
-    return track.finish(room=0.55, mix=0.3)
-
-
-def momiji(rng):
-    """Momiji: a maple leaf falling, two soft wooden notes."""
-    track = Track(1.3)
-    for start, pitch in ((0.0, "A5"), (0.2, "E5")):
-        track.partial(start, note(pitch), 1.0, 0.28)
-        track.partial(start, note(pitch) * 3.93, 0.25, 0.04)
-        track.click(start, 0.15, 3000, rng)
-    return track.finish(room=0.5, mix=0.3)
-
-
-def take(rng):
-    """Take: hollow bamboo tubes knocking together in the grove."""
-    track = Track(1.4)
-    for start, pitch in ((0.0, "D5"), (0.11, "A5"), (0.3, "F5")):
-        track.click(start, 0.3, 1800, rng)
-        track.partial(start, note(pitch), 0.9, 0.12)
-        track.partial(start, note(pitch) * 2.75, 0.3, 0.05)
-    return track.finish(room=0.6, mix=0.35)
-
-
-def mejiro(rng):
-    """Mejiro: a white-eye's quick chirps among plum blossoms."""
-    track = Track(1.1)
-    for start, low, high in ((0.0, 3200, 4600), (0.09, 4400, 3300), (0.25, 3400, 5000), (0.33, 4800, 3500)):
-        track.tone(start, 0.06, lambda progress, _, a=low, b=high: a + (b - a) * progress,
-                   swell(0.2, 0.4), (1.0, 0.08))
-    return track.finish(room=0.5, mix=0.3)
-
-
-def kiri(rng):
-    """Kiri: morning mist lifting off a lake."""
-    track = Track(1.9)
-    for pitch, level in (("A4", 0.6), ("E5", 0.5), ("B5", 0.35), ("F#6", 0.2)):
-        track.tone(0.0, 1.85, lambda progress, time, base=note(pitch): base * (1 + 0.002 * math.sin(TAU * 3 * time)),
-                   lambda progress, _, size=level: size * swell(0.3, 0.55)(progress, 0))
-    return track.finish(room=0.7, mix=0.35, fade=0.05)
-
-
-def hamon(rng):
-    """Hamon: a pebble dropped in a pond, its ripples spreading out."""
-    track = Track(1.5)
-    track.partial(0.0, 420, 0.8, 0.05, glide=(1250, 0.04))
-    for index in range(4):
-        track.partial(0.12 + index * 0.17, note("E6"), 0.5 * 0.6 ** index, 0.12, attack=0.01)
-    return track.finish(room=0.75, mix=0.45)
-
-
-def rin(rng):
-    """Rin: a small singing bowl rung at a quiet shrine."""
-    track = Track(2.2)
-    track.click(0.0, 0.2, 5000, rng)
-    track.bell(0.0, 1180, 1.0, (1, 2.71, 5.15, 8.2), (1, 0.4, 0.15, 0.06), (1.1, 0.6, 0.3, 0.15), beat=3.0)
-    return track.finish(room=0.6, mix=0.3, fade=0.4)
+def mejiro():
+    """White-eye: a quick grace-note hop and a reply."""
+    track = Instruments(0.9)
+    track.glockenspiel(0.0, "D6", 0.35, decay=0.2)
+    track.glockenspiel(0.04, "A6", 0.7, decay=0.35)
+    track.glockenspiel(0.2, "F#6", 0.6, decay=0.4)
+    return track.finish(room=0.45, mix=0.25)
 
 
 SOUNDS = {
     "Calendar-Furin": furin,
-    "Calendar-ShishiOdoshi": shishiodoshi,
-    "Calendar-Bonsho": bonsho,
-    "Calendar-Suikinkutsu": suikinkutsu,
-    "Calendar-Uguisu": uguisu,
-    "Calendar-Koto": koto,
-    "Calendar-Shakuhachi": shakuhachi,
+    "Calendar-Asahi": asahi,
     "Calendar-Sakura": sakura,
+    "Calendar-Uguisu": uguisu,
     "Calendar-Seseragi": seseragi,
-    "Calendar-Higurashi": higurashi,
+    "Calendar-Hoshizora": hoshizora,
+    "Calendar-Niji": niji,
+    "Calendar-Kumo": kumo,
+    "Calendar-Nami": nami,
+    "Calendar-Kaze": kaze,
     "Reminder-Shizuku": shizuku,
     "Reminder-Hotaru": hotaru,
-    "Reminder-Kaeru": kaeru,
-    "Reminder-Suzumushi": suzumushi,
     "Reminder-Momiji": momiji,
-    "Reminder-Take": take,
-    "Reminder-Mejiro": mejiro,
+    "Reminder-Tsuki": tsuki,
     "Reminder-Kiri": kiri,
     "Reminder-Hamon": hamon,
-    "Reminder-Rin": rin,
+    "Reminder-Suzu": suzu,
+    "Reminder-Hana": hana,
+    "Reminder-Yuki": yuki,
+    "Reminder-Mejiro": mejiro,
 }
 
 
@@ -466,7 +421,7 @@ def main():
     for name, generator in SOUNDS.items():
         if only and name not in only:
             continue
-        samples = generator(random.Random(name))
+        samples = generator()
         write(samples, os.path.join(output, f"{name}.caf"))
         print(f"{name}: {len(samples) / SAMPLE_RATE:.2f}s")
 

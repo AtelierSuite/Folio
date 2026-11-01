@@ -131,67 +131,67 @@
         }
       }
     },
-    "Sound.Bonsho": {
+    "Sound.Asahi": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempelglocke"
+            "value": "Sonnenaufgang"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temple Bell"
+            "value": "Sunrise"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cloche de temple"
+            "value": "Lever du soleil"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Campana del tempio"
+            "value": "Alba"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "梵鐘"
+            "value": "朝日"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "범종"
+            "value": "아침 해"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempelklok"
+            "value": "Zonsopgang"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chuông chùa"
+            "value": "Bình minh"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "梵钟"
+            "value": "朝阳"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "梵鐘"
+            "value": "朝陽"
           }
         }
       }
@@ -326,67 +326,132 @@
         }
       }
     },
-    "Sound.Higurashi": {
+    "Sound.Hana": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abendzikade"
+            "value": "Blume"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Evening Cicada"
+            "value": "Flower"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cigale du soir"
+            "value": "Fleur"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cicala della sera"
+            "value": "Fiore"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "蜩"
+            "value": "花"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "저녁매미"
+            "value": "꽃"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avondcicade"
+            "value": "Bloem"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ve sầu chiều"
+            "value": "Hoa"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "暮蝉"
+            "value": "花朵"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "暮蟬"
+            "value": "花朵"
+          }
+        }
+      }
+    },
+    "Sound.Hoshizora": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sternenhimmel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starry Sky"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ciel étoilé"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cielo stellato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星空"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "별하늘"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sterrenhemel"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bầu trời sao"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星空"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星空"
           }
         }
       }
@@ -456,67 +521,67 @@
         }
       }
     },
-    "Sound.Kaeru": {
+    "Sound.Kaze": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laubfrosch"
+            "value": "Brise"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tree Frog"
+            "value": "Breeze"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rainette"
+            "value": "Brise"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Raganella"
+            "value": "Brezza"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "雨蛙"
+            "value": "風"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "청개구리"
+            "value": "산들바람"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Boomkikker"
+            "value": "Bries"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ếch cây"
+            "value": "Gió nhẹ"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "雨蛙"
+            "value": "微风"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "雨蛙"
+            "value": "微風"
           }
         }
       }
@@ -586,67 +651,67 @@
         }
       }
     },
-    "Sound.Koto": {
+    "Sound.Kumo": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Koto"
+            "value": "Wolken"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Koto"
+            "value": "Clouds"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Koto"
+            "value": "Nuages"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Koto"
+            "value": "Nuvole"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "琴"
+            "value": "雲"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "고토"
+            "value": "구름"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Koto"
+            "value": "Wolken"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đàn koto"
+            "value": "Mây"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "筝"
+            "value": "云朵"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "箏"
+            "value": "雲朵"
           }
         }
       }
@@ -781,67 +846,132 @@
         }
       }
     },
-    "Sound.Rin": {
+    "Sound.Nami": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Klangschale"
+            "value": "Wellen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Singing Bowl"
+            "value": "Waves"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bol chantant"
+            "value": "Vagues"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Campana tibetana"
+            "value": "Onde"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "おりん"
+            "value": "波"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "싱잉볼"
+            "value": "파도"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Klankschaal"
+            "value": "Golven"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chuông xoay"
+            "value": "Sóng biển"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "颂钵"
+            "value": "海浪"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "頌缽"
+            "value": "海浪"
+          }
+        }
+      }
+    },
+    "Sound.Niji": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regenbogen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arc-en-ciel"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arcobaleno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "虹"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "무지개"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regenboog"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cầu vồng"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "彩虹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "彩虹"
           }
         }
       }
@@ -976,136 +1106,6 @@
         }
       }
     },
-    "Sound.Shakuhachi": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shakuhachi"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shakuhachi"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shakuhachi"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shakuhachi"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "尺八"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "샤쿠하치"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shakuhachi"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sáo shakuhachi"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "尺八"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "尺八"
-          }
-        }
-      }
-    },
-    "Sound.ShishiOdoshi": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bambusbrunnen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bamboo Fountain"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fontaine en bambou"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fontana di bambù"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "鹿威し"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "시시오도시"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bamboefontein"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ống tre nước"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "惊鹿"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "驚鹿"
-          }
-        }
-      }
-    },
     "Sound.Shizuku": {
       "extractionState": "manual",
       "localizations": {
@@ -1171,132 +1171,67 @@
         }
       }
     },
-    "Sound.Suikinkutsu": {
+    "Sound.Suzu": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wasserharfe"
+            "value": "Glöckchen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Water Harp"
+            "value": "Little Bell"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Harpe d’eau"
+            "value": "Clochette"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Arpa d’acqua"
+            "value": "Campanellino"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "水琴窟"
+            "value": "鈴"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "수금굴"
+            "value": "방울"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Waterharp"
+            "value": "Belletje"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đàn nước"
+            "value": "Chuông nhỏ"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "水琴窟"
+            "value": "铃铛"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "水琴窟"
-          }
-        }
-      }
-    },
-    "Sound.Suzumushi": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Glockengrille"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bell Cricket"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grillon clochette"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grillo campanello"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "鈴虫"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "방울벌레"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Belkrekel"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dế chuông"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "铃虫"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "鈴蟲"
+            "value": "鈴鐺"
           }
         }
       }
@@ -1366,67 +1301,67 @@
         }
       }
     },
-    "Sound.Take": {
+    "Sound.Tsuki": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bambushain"
+            "value": "Mond"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bamboo Grove"
+            "value": "Moon"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bambouseraie"
+            "value": "Lune"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bosco di bambù"
+            "value": "Luna"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "竹林"
+            "value": "月"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "대나무 숲"
+            "value": "달"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bamboebos"
+            "value": "Maan"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rừng tre"
+            "value": "Trăng"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "竹林"
+            "value": "月亮"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "竹林"
+            "value": "月亮"
           }
         }
       }
@@ -1492,6 +1427,71 @@
           "stringUnit": {
             "state": "translated",
             "value": "樹鶯"
+          }
+        }
+      }
+    },
+    "Sound.Yuki": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnee"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snow"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neige"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neve"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "雪"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "눈"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sneeuw"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuyết"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "雪花"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "雪花"
           }
         }
       }
