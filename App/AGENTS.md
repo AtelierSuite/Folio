@@ -4,6 +4,7 @@
 - `Folio`: the app target. Views and app-only glue, grouped in one folder per feature (`Calendar`, `Notes`, `Search`, `Settings`, ...). Default actor isolation is `MainActor`.
 - `Planner`: the framework holding the core calendar, reminders and notes logic (EventKit data layer, timeline layout, notes storage, Markdown, scheduling, search index, capability layer). Anything the widgets, App Intents or tests need lives here, not in the app. Default actor isolation is `nonisolated`. It is linked by the app and the widget extension, so it must stay extension-safe (`APPLICATION_EXTENSION_API_ONLY`).
 - `Widgets`: the widget extension (widgets, Live Activity, Control Center controls).
+- `NotificationContent`: the notification content extension (iOS and iPadOS only) that draws the expanded view of Folio's alerts. Its `Info.plist` lists every alert category; `NotificationContentExtensionTests` checks the list matches `NotificationCategoryRegistry`.
 - `PlannerTests`: Swift Testing unit tests for `Planner`.
 - `FolioUITests`: XCTest UI tests for the app.
 - `Scripts`: developer scripts, such as `mac-vm.sh` for testing in the Mac VM.
@@ -11,7 +12,7 @@
 Every target folder is a synchronized folder: add, move and delete files on disk and Xcode picks them up. Only touch `project.pbxproj` for build settings, capabilities or new targets, and keep those edits small.
 
 Shared identifiers:
-- Bundle ID `com.tsubuzaki.Folio`, widgets `com.tsubuzaki.Folio.Widgets`, framework `com.tsubuzaki.Folio.Planner`.
+- Bundle ID `com.tsubuzaki.Folio`, widgets `com.tsubuzaki.Folio.Widgets`, notification content `com.tsubuzaki.Folio.NotificationContent`, framework `com.tsubuzaki.Folio.Planner`.
 - App Group `group.com.tsubuzaki.Folio` (`AppGroup` in `Planner`).
 - URL scheme `folio://`.
 - Entitlements: `Folio/Folio.entitlements` is used on macOS and `Folio/Folio-iOS.entitlements` on iOS and iPadOS (it adds HealthKit). Add shared entitlements to both files.
