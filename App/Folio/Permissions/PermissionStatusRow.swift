@@ -9,8 +9,10 @@ struct PermissionStatusRow: View {
         let status = center.status(of: kind) ?? .notDetermined
         LabeledContent {
             HStack {
-                Text(status.label)
-                    .foregroundStyle(.secondary)
+                if !status.mayHideMissingAccess {
+                    Text(status.label)
+                        .foregroundStyle(.secondary)
+                }
                 PermissionActionButton(
                     kind: kind,
                     status: status,
