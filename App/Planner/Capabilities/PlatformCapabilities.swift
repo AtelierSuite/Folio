@@ -15,7 +15,7 @@ public struct PlatformCapabilities: Sendable, Equatable {
             platform != .mac && areLiveActivitiesSupported
         case .timeSensitiveNotifications, .weather:
             true
-        case .alarms, .invitationResponses:
+        case .alarms, .invitationResponses, .notificationThumbnails:
             platform != .mac
         case .sleep, .geofencedNotifications, .leaveAlerts:
             platform == .iPhone

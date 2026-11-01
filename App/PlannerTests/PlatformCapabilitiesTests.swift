@@ -16,6 +16,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.timeSensitiveNotifications))
         #expect(capabilities.supports(.weather))
         #expect(capabilities.supports(.invitationResponses))
+        #expect(capabilities.supports(.notificationThumbnails))
         #expect(capabilities.supports(.calendarPagingButtons))
         #expect(capabilities.supports(.timelineZoomMenu))
         #expect(!capabilities.supports(.sleep))

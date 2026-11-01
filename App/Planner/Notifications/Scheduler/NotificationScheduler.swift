@@ -32,7 +32,7 @@ public final class NotificationScheduler {
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
-        center: any NotificationCenterClient = UserNotificationCenterClient(),
+        center: (any NotificationCenterClient)? = nil,
         alarmClient: (any AlarmSchedulingClient)? = nil,
         alarmLedger: AlarmLedger = AlarmLedger(),
         settings: NotificationSettings = NotificationSettings(),
@@ -45,7 +45,7 @@ public final class NotificationScheduler {
         clock: @escaping @Sendable () -> Date = { .now }
     ) {
         self.source = source
-        self.center = center
+        self.center = center ?? UserNotificationCenterClient(capabilities: capabilities)
         self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
         self.alarmLedger = alarmLedger
         self.settings = settings
