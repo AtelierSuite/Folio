@@ -9,6 +9,7 @@ struct SettingsCategoryView: View {
         case .calendars: CalendarsSettingsView()
         case .notes: NotesSettingsView()
         case .notifications: NotificationSettingsView()
+        case .alarms: AlarmSettingsView()
         case .sleep: SleepSettingsView()
         case .weather: WeatherSettingsView()
         case .search: SearchSettingsView()

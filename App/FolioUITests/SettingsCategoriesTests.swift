@@ -6,7 +6,8 @@ final class SettingsCategoriesTests: XCTestCase {
         ("calendars", "CalendarVisibilityLink"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),
         ("search", "Search.Settings.MonthsBack"),
-        ("weather", "WeatherToggle")
+        ("weather", "WeatherToggle"),
+        ("alarms", "WakeUpAlarmToggle")
     ]
 
     @MainActor

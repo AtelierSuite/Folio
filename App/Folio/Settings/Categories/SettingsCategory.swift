@@ -6,6 +6,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case calendars
     case notes
     case notifications
+    case alarms
     case sleep
     case weather
     case search
@@ -22,6 +23,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
         case .notes: String(localized: "Category.Notes", table: "Settings")
         case .notifications: String(localized: "Category.Notifications", table: "Settings")
+        case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
         case .search: String(localized: "Category.Search", table: "Settings")
@@ -38,6 +40,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .calendars: "calendar"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
+        case .alarms: "alarm.fill"
         case .sleep: "bed.double.fill"
         case .weather: "cloud.sun.fill"
         case .search: "magnifyingglass"
@@ -54,6 +57,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .calendars: .red
         case .notes: .orange
         case .notifications: .pink
+        case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan
         case .search: .purple
@@ -81,6 +85,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
 
     func isAvailable(with capabilities: PlatformCapabilities) -> Bool {
         switch self {
+        case .alarms: capabilities.supports(.alarms)
         case .sleep: capabilities.supports(.sleep)
         default: true
         }
@@ -98,7 +103,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         var groups: [[SettingsCategory]] = [
             [.general, .calendars, .notes],
             [.weather],
-            [.notifications, .sleep] + systemCategories
+            [.notifications, .alarms, .sleep] + systemCategories
         ]
         #if DEBUG
         groups.append([.debug])
