@@ -23,12 +23,24 @@ public struct HolidayRepository: Sendable {
             return cached.holidays
         }
         do {
-            let holidays = try await fetch(source, years: years)
-            cache.store(HolidayCacheEntry(fetchedAt: now, years: years, holidays: holidays), for: source)
-            return holidays
+            return try await refresh(source, now: now)
         } catch {
             return cached?.holidays ?? []
         }
+    }
+
+    /// Downloads again regardless of the cache, keeping the cache untouched if the download fails.
+    @concurrent
+    @discardableResult
+    public func refresh(_ source: HolidaySource, now: Date = .now) async throws -> [Holiday] {
+        let years = Self.years(around: now)
+        let holidays = try await fetch(source, years: years)
+        cache.store(HolidayCacheEntry(fetchedAt: now, years: years, holidays: holidays), for: source)
+        return holidays
+    }
+
+    public func lastUpdated(_ source: HolidaySource) -> Date? {
+        cache.entry(for: source)?.fetchedAt
     }
 
     static func years(around date: Date) -> ClosedRange<Int> {

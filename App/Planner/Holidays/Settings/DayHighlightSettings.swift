@@ -5,6 +5,8 @@ public enum DayHighlightSettings {
     public static let highlightsHolidaysKey = "Calendar.HighlightsHolidays"
     /// Empty follows the device region.
     public static let holidayRegionKey = "Calendar.HolidayRegion"
+    /// Bumped after a manual refresh so calendar views reload the downloaded holidays.
+    public static let holidaysRefreshedAtKey = "Calendar.HolidaysRefreshedAt"
 
     public static func resolvedRegionCode(stored: String, locale: Locale = .current) -> String? {
         let code = stored.isEmpty ? locale.region?.identifier : stored

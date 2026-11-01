@@ -17,6 +17,10 @@ struct DayHighlightSection: View {
                 .accessibilityIdentifier("HighlightHolidaysToggle")
             if highlightsHolidays {
                 HolidayRegionPicker(storedRegion: $storedRegion)
+                if let regionCode = DayHighlightSettings.resolvedRegionCode(stored: storedRegion),
+                   let source = HolidaySource(regionCode: regionCode) {
+                    HolidayRefreshButton(source: source)
+                }
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "Holidays"))

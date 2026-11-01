@@ -60,4 +60,24 @@ struct HolidayRepositoryTests {
             .holidays(for: .govUK, now: Self.now)
         #expect(holidays.isEmpty)
     }
+
+    @Test func refreshBypassesFreshCache() async throws {
+        let directory = try TemporaryDirectory()
+        let log = RequestLog()
+        let repository = Self.repository(in: directory, log: log)
+        _ = await repository.holidays(for: .govUK, now: Self.now)
+        let later = Self.now.addingTimeInterval(60)
+        try await repository.refresh(.govUK, now: later)
+        #expect(log.count == 2)
+        #expect(repository.lastUpdated(.govUK) == later)
+    }
+
+    @Test func failedRefreshThrowsAndKeepsCache() async throws {
+        let directory = try TemporaryDirectory()
+        let log = RequestLog()
+        _ = await Self.repository(in: directory, log: log).holidays(for: .govUK, now: Self.now)
+        let offline = Self.repository(in: directory, log: log, failing: true)
+        await #expect(throws: (any Error).self) { try await offline.refresh(.govUK, now: Self.staleNow) }
+        #expect(offline.lastUpdated(.govUK) == Self.now)
+    }
 }

@@ -10,6 +10,8 @@ struct DayHighlightEnvironment: ViewModifier {
     private var highlightsHolidays = false
     @AppStorage(DayHighlightSettings.holidayRegionKey, store: AppGroup.userDefaults)
     private var storedRegion = ""
+    @AppStorage(DayHighlightSettings.holidaysRefreshedAtKey, store: AppGroup.userDefaults)
+    private var refreshedAt = 0.0
     @State private var holidays: [Holiday] = []
 
     func body(content: Content) -> some View {
@@ -32,13 +34,16 @@ struct DayHighlightEnvironment: ViewModifier {
     private var holidayRequest: HolidayRequest? {
         guard highlightsHolidays,
               let regionCode = DayHighlightSettings.resolvedRegionCode(stored: storedRegion) else { return nil }
-        return HolidayRequest(regionCode: regionCode, systemTimeChangeCount: systemTime.changeCount)
+        return HolidayRequest(
+            regionCode: regionCode, systemTimeChangeCount: systemTime.changeCount, refreshedAt: refreshedAt
+        )
     }
 }
 
 private struct HolidayRequest: Hashable {
     let regionCode: String
     let systemTimeChangeCount: Int
+    let refreshedAt: Double
 }
 
 extension View {
