@@ -38,7 +38,8 @@ struct CalendarMonthView: View {
         // page keeps clear of the safe area itself.
         .ignoresSafeArea(.container, edges: .horizontal)
         .onGeometryChange(for: EdgeInsets.self) { proxy in
-            EdgeInsets(top: 0, leading: proxy.safeAreaInsets.leading, bottom: 0, trailing: proxy.safeAreaInsets.trailing)
+            let insets = proxy.safeAreaInsets
+            return EdgeInsets(top: 0, leading: insets.leading, bottom: 0, trailing: insets.trailing)
         } action: { pageInsets = $0 }
         .onScrollPhaseChange { _, phase in
             scrollPhase = phase
