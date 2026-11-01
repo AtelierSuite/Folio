@@ -55,7 +55,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         switch self {
         case .general: .gray
         case .calendars: .red
-        case .notes: .orange
+        case .notes: .blue
         case .notifications: .pink
         case .alarms: .orange
         case .sleep: .indigo
