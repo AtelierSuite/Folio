@@ -1,7 +1,6 @@
 #if canImport(AlarmKit) && os(iOS)
 import AlarmKit
 import Foundation
-import SwiftUI
 
 public struct AlarmKitClient: AlarmSchedulingClient {
     public init() {}
@@ -24,17 +23,7 @@ public struct AlarmKitClient: AlarmSchedulingClient {
     }
 
     public func schedule(_ request: AlarmRequest) async throws {
-        let alert = AlarmPresentation.Alert(title: LocalizedStringResource("\(request.title)"))
-        let attributes = AlarmAttributes<FolioAlarmMetadata>(
-            presentation: AlarmPresentation(alert: alert),
-            metadata: FolioAlarmMetadata(request),
-            tintColor: request.tint?.color ?? .accentColor
-        )
-        let configuration = AlarmManager.AlarmConfiguration<FolioAlarmMetadata>.alarm(
-            schedule: .fixed(request.fireDate),
-            attributes: attributes
-        )
-        _ = try await manager.schedule(id: request.id, configuration: configuration)
+        _ = try await manager.schedule(id: request.id, configuration: request.alarmConfiguration)
     }
 
     public func cancel(identifiers: [UUID]) async {

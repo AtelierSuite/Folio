@@ -21,5 +21,8 @@ struct FolioWidgetsBundle: WidgetBundle {
         RemainingRemindersWidget()
         EventCountdownLiveActivity()
         #endif
+        #if canImport(AlarmKit) && os(iOS)
+        FolioAlarmLiveActivity()
+        #endif
     }
 }
