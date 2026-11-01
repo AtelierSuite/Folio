@@ -16,6 +16,7 @@ struct CalendarsSettingsView: View {
             TravelTimeSettingsSection()
             SecondaryTimeZoneSection()
             AlternateCalendarSection()
+            DayHighlightSection()
         }
         .settingsCategoryStyle(.calendars)
     }

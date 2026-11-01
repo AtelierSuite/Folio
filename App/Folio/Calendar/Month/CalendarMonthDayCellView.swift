@@ -14,7 +14,7 @@ struct CalendarMonthDayCellView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(alignment: .top, spacing: 2) {
-                CalendarMonthDayNumberView(day: day, isToday: calendar.isDateInToday(day.date))
+                CalendarMonthDayNumberView(day: day, calendar: calendar, isToday: calendar.isDateInToday(day.date))
                 AlternateCalendarDayLabel(date: day.date)
                     .padding(.top, 3)
                 Spacer(minLength: 0)
