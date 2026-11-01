@@ -14,7 +14,7 @@ struct TimelineTravelTimeBand: View {
         }
         .padding(.leading, 6)
         .padding(.trailing, 3)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.secondary.opacity(0.12), in: shape)
         .overlay(alignment: .leading) {
             Rectangle()
