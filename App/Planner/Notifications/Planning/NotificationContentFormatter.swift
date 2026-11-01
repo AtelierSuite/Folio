@@ -17,14 +17,26 @@ public struct NotificationContentFormatter: Sendable {
 
     public func content(for event: CalendarEvent, firingAt fireDate: Date) -> NotificationContent {
         let location = event.location?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let startTime = event.isAllDay ? nil : time(of: event.startDate, firingAt: fireDate)
         return NotificationContent(
             title: event.title,
-            body: joined([eventTime(for: event, firingAt: fireDate), location])
+            body: joined([eventTime(for: event, firingAt: fireDate), location]),
+            alarmTitle: joined([event.title, startTime])
         )
     }
 
     public func content(for reminder: ReminderItem, firingAt fireDate: Date) -> NotificationContent {
-        NotificationContent(title: reminder.title, body: reminderTime(for: reminder, firingAt: fireDate) ?? "")
+        let dueTime = reminder.hasDueTime ? reminder.dueDate.map { time(of: $0, firingAt: fireDate) } : nil
+        return NotificationContent(
+            title: reminder.title,
+            body: reminderTime(for: reminder, firingAt: fireDate) ?? "",
+            alarmTitle: joined([reminder.title, dueTime])
+        )
+    }
+
+    func time(of date: Date, firingAt fireDate: Date) -> String {
+        let isSameDay = calendar.isDate(date, inSameDayAs: fireDate)
+        return date.formatted(dateStyle(date: isSameDay ? .omitted : .abbreviated, time: .shortened))
     }
 
     private func eventTime(for event: CalendarEvent, firingAt fireDate: Date) -> String {

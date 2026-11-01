@@ -61,7 +61,7 @@ struct NotificationSchedulerStyleTests {
         let harness = try makeHarness(events: [work, wake], foreignAlarms: [foreign])
         await harness.scheduler.setDefaultStyle(.alarm, forCalendar: "wake")
         #expect(harness.center.pendingNotifications.map(\.content.title) == ["work"])
-        #expect(harness.alarms.scheduledAlarms.map(\.content.title) == ["wake"])
+        #expect(harness.alarms.scheduledAlarms.map(\.item.reference) == [wake.reference])
         #expect(harness.scheduler.lastReport?.alarmCount == 1)
         #expect(harness.scheduler.lastReport?.nextFireDate == work.startDate.addingTimeInterval(-600))
 
@@ -92,6 +92,15 @@ struct NotificationSchedulerStyleTests {
         await harness.scheduler.replan()
         #expect(harness.center.pendingCount == 0)
         #expect(harness.alarms.scheduledCount == 1)
+    }
+
+    @Test func alarmsAlarmKitRefusesBecomeTimeSensitiveNotifications() async throws {
+        let harness = try makeHarness(events: [wake])
+        harness.alarms.setLimit(0)
+        await harness.scheduler.setStyleOverride(.alarm, for: wake.reference)
+        #expect(harness.alarms.scheduledCount == 0)
+        #expect(harness.scheduler.lastReport?.alarmCount == 0)
+        #expect(harness.center.pendingNotifications.map(\.style) == [.timeSensitive])
     }
 
     @Test func macNeverSchedulesAlarms() async throws {

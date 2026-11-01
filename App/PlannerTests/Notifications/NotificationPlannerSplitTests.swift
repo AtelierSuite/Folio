@@ -41,7 +41,8 @@ struct NotificationPlannerSplitTests {
             alarmBudget: NotificationPlanner.alarmLimit
         )
         #expect(plan.alarms.count == NotificationPlanner.alarmLimit)
-        #expect(plan.notifications.isEmpty)
+        #expect(plan.notifications.count == 40 - NotificationPlanner.alarmLimit)
+        #expect(plan.notifications.allSatisfy { $0.style == .timeSensitive })
     }
 
     @Test func withoutAlarmPermissionAlarmsBecomeTimeSensitiveNotifications() {

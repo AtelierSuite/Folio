@@ -10,6 +10,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let place: NotificationPlace?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
+    public let color: PlannerColor?
 
     public init(_ candidate: NotificationCandidate, style: NotificationAlertStyle = .standard) {
         let category = NotificationCategory(
@@ -24,6 +25,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.place = candidate.place
         self.category = category
         self.style = style
+        self.color = candidate.color
     }
 
     public var categoryIdentifier: String {

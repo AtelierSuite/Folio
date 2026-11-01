@@ -53,7 +53,8 @@ public struct NotificationPlanner: Sendable {
                     reference: event.reference,
                     content: formatter.content(for: event, firingAt: fireDate),
                     meeting: meeting,
-                    place: place
+                    place: place,
+                    color: event.color
                 )
             }
         }
@@ -67,7 +68,8 @@ public struct NotificationPlanner: Sendable {
                     fireDate: fireDate,
                     kind: .reminder,
                     reference: reminder.reference,
-                    content: formatter.content(for: reminder, firingAt: fireDate)
+                    content: formatter.content(for: reminder, firingAt: fireDate),
+                    color: reminder.color
                 )
             }
         }

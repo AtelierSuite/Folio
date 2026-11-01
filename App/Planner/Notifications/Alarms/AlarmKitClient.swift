@@ -23,18 +23,18 @@ public struct AlarmKitClient: AlarmSchedulingClient {
         return alarms.filter { $0.state != .alerting }.map(\.id)
     }
 
-    public func schedule(_ alarm: PlannedNotification, identifier: UUID) async throws {
-        let alert = AlarmPresentation.Alert(title: LocalizedStringResource(stringLiteral: alarm.content.title))
+    public func schedule(_ request: AlarmRequest) async throws {
+        let alert = AlarmPresentation.Alert(title: LocalizedStringResource("\(request.title)"))
         let attributes = AlarmAttributes<FolioAlarmMetadata>(
             presentation: AlarmPresentation(alert: alert),
-            metadata: FolioAlarmMetadata(alarm),
-            tintColor: .accentColor
+            metadata: FolioAlarmMetadata(request),
+            tintColor: request.tint?.color ?? .accentColor
         )
         let configuration = AlarmManager.AlarmConfiguration<FolioAlarmMetadata>.alarm(
-            schedule: .fixed(alarm.fireDate),
+            schedule: .fixed(request.fireDate),
             attributes: attributes
         )
-        _ = try await manager.schedule(id: identifier, configuration: configuration)
+        _ = try await manager.schedule(id: request.id, configuration: configuration)
     }
 
     public func cancel(identifiers: [UUID]) async {
