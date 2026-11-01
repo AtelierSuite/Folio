@@ -3,6 +3,7 @@ import SwiftUI
 
 struct TimelineTravelTimeBand: View {
     let estimate: TravelEstimate
+    let color: Color
     @ScaledMetric(relativeTo: .caption2) private var detailPointSize = TimelineMetrics.cardDetailPointSize
 
     private let shape = Rectangle()
@@ -15,14 +16,16 @@ struct TimelineTravelTimeBand: View {
         .padding(.leading, 6)
         .padding(.trailing, 3)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.secondary.opacity(0.12), in: shape)
+        .background(color.opacity(0.1), in: shape)
         .overlay(alignment: .leading) {
             Rectangle()
-                .fill(Color.secondary.opacity(0.5))
+                .fill(color.opacity(0.45))
                 .frame(width: 3)
         }
         .clipShape(shape)
         .padding(.horizontal, 1)
+        // Reaches under the event card's 1pt inset so the band joins the card.
+        .padding(.bottom, -1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(String(
             format: String(localized: "Accessibility.Label", table: "TravelTime"), duration, estimate.transport.title
@@ -37,7 +40,7 @@ struct TimelineTravelTimeBand: View {
             Text(duration)
         }
         .font(.system(size: detailPointSize))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(color.opacity(0.75))
         .lineLimit(1)
         .padding(.vertical, 1)
     }

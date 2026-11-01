@@ -14,7 +14,7 @@ struct TimelineTravelTimeView: View {
                 ForEach(layout.timedPlacements) { placement in
                     if placement.entry.id != draggedEntryIdentifier, !placement.continuesFromPreviousDay,
                        let estimate = estimates[placement.entry.id] {
-                        TimelineTravelTimeBand(estimate: estimate)
+                        TimelineTravelTimeBand(estimate: estimate, color: Color(placement.entry.color))
                             .timelineSlot(slot(for: placement, travelTime: estimate.travelTime))
                     }
                 }
