@@ -68,7 +68,7 @@ class Track:
         if mix:
             wet = reverb(samples, room, damping)
             samples = [dry * (1 - mix * 0.5) + echo * mix for dry, echo in zip(samples, wet)]
-        samples = lowpass(highpass(samples, 120), 7000)
+        samples = lowpass(lowpass(highpass(samples, 150), 3000), 3000)
         fade_length = int(fade * SAMPLE_RATE)
         for index in range(fade_length):
             samples[-1 - index] *= index / fade_length
@@ -76,9 +76,13 @@ class Track:
 
 
 def level(samples, target_decibels=-20.0, ceiling=0.8):
-    """Matches loudness across sounds, softly limiting peaks instead of clipping them."""
+    """Matches perceived loudness across sounds, softly limiting peaks instead of clipping them.
+
+    Loudness is measured with the treble lifted by about 4 dB, roughly like K-weighting,
+    so brighter sounds are turned down to feel as loud as the mellow ones."""
     loudest = max(abs(value) for value in samples) or 1
-    power = math.sqrt(sum(value * value for value in samples) / len(samples)) or 1
+    weighted = [value + 0.58 * treble for value, treble in zip(samples, highpass(samples, 1500))]
+    power = math.sqrt(sum(value * value for value in weighted) / len(weighted)) or 1
     gain = min(10 ** (target_decibels / 20) / power, 1.6 * ceiling / loudest)
     knee = ceiling * 0.7
 
@@ -166,31 +170,37 @@ def swell(attack, release):
 
 
 class Instruments(Track):
-    """Soft synth-pop voices. Every attack is a few milliseconds so nothing clicks."""
+    """Warm, rounded voices. Melodies sound an octave below their written pitch so they sit
+    around 250 Hz to 1 kHz, below the 2 to 4 kHz band where the ear is most sensitive.
+    Overtones are kept harmonic and quiet, and attacks are soft so nothing pings."""
+
+    @staticmethod
+    def frequency(pitch):
+        return note(pitch) / 2
 
     def glockenspiel(self, start, pitch, amplitude=1.0, decay=0.8):
-        frequency = note(pitch)
-        self.partial(start, frequency, amplitude, decay, attack=0.003)
-        self.partial(start, frequency + 1.2, amplitude * 0.35, decay, attack=0.003)
-        self.partial(start, frequency * 2.0, amplitude * 0.12, decay * 0.3, attack=0.003)
-        self.partial(start, frequency * 2.76, amplitude * 0.05, decay * 0.15, attack=0.003)
+        frequency = self.frequency(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.008)
+        self.partial(start, frequency + 0.8, amplitude * 0.3, decay, attack=0.008)
+        self.partial(start, frequency * 2.0, amplitude * 0.08, decay * 0.25, attack=0.008)
+        self.partial(start, frequency * 3.0, amplitude * 0.02, decay * 0.12, attack=0.008)
 
     def celesta(self, start, pitch, amplitude=1.0, decay=0.6):
-        frequency = note(pitch)
-        self.partial(start, frequency, amplitude, decay, attack=0.004)
-        self.partial(start, frequency * 2.0, amplitude * 0.2, decay * 0.35, attack=0.004)
-        self.partial(start, frequency * 3.0, amplitude * 0.05, decay * 0.2, attack=0.004)
+        frequency = self.frequency(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.01)
+        self.partial(start, frequency * 2.0, amplitude * 0.1, decay * 0.3, attack=0.01)
+        self.partial(start, frequency * 3.0, amplitude * 0.02, decay * 0.15, attack=0.01)
 
     def music_box(self, start, pitch, amplitude=1.0, decay=0.5):
-        frequency = note(pitch)
-        self.partial(start, frequency, amplitude, decay, attack=0.003)
-        self.partial(start, frequency * 3.0, amplitude * 0.1, decay * 0.25, attack=0.003)
-        self.partial(start, frequency * 5.4, amplitude * 0.03, decay * 0.1, attack=0.003)
+        frequency = self.frequency(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.007)
+        self.partial(start, frequency * 2.0, amplitude * 0.08, decay * 0.25, attack=0.007)
+        self.partial(start, frequency * 4.0, amplitude * 0.02, decay * 0.1, attack=0.007)
 
-    def marimba(self, start, pitch, amplitude=1.0, decay=0.3):
-        frequency = note(pitch)
-        self.partial(start, frequency, amplitude, decay, attack=0.005)
-        self.partial(start, frequency * 3.93, amplitude * 0.15, decay * 0.15, attack=0.005)
+    def marimba(self, start, pitch, amplitude=1.0, decay=0.35):
+        frequency = self.frequency(pitch)
+        self.partial(start, frequency, amplitude, decay, attack=0.008)
+        self.partial(start, frequency * 3.93, amplitude * 0.05, decay * 0.12, attack=0.008)
 
     def pad(self, start, seconds, pitches, amplitude=0.25, attack=0.35, release=0.5):
         for pitch in pitches:
