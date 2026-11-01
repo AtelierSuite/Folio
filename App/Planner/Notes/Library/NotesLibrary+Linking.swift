@@ -9,8 +9,8 @@ extension NotesLibrary {
         linkedNotes.dailyNote(on: date)
     }
 
-    public func eventLink(forNote url: URL) -> NoteLink? {
-        store?.relativePath(of: url).flatMap { noteLinks[$0] }
+    public func eventLinks(forNote url: URL) -> [NoteLink] {
+        store?.relativePath(of: url).flatMap { noteLinks[$0] } ?? []
     }
 
     public func deepLink(for url: URL) -> URL? {
@@ -56,6 +56,15 @@ extension NotesLibrary {
         removeLinks(index.unlink(notePath: path, in: location))
     }
 
+    public func unlink(_ url: URL, fromEventKey eventKey: String) {
+        guard let location = indexLocation, let path = store?.relativePath(of: url) else { return }
+        removeLinks(index.unlink(notePath: path, from: eventKey, in: location))
+    }
+
+    public func eventLink(forNote url: URL, to event: CalendarEvent) -> NoteLink? {
+        eventLinks(forNote: url).first { $0.event.matches(event) }
+    }
+
     /// The event is gone, so there is no URL to clean up on it.
     func unlinkEvent(_ eventKey: String) {
         guard let location = indexLocation else { return }
@@ -86,9 +95,9 @@ extension NotesLibrary {
             linkedNotes = LinkedNoteIndex()
             return
         }
-        let links = Dictionary(index.links(in: location).map { ($0.notePath, $0) }, uniquingKeysWith: { $1 })
+        let links = Dictionary(grouping: index.links(in: location), by: \.notePath)
         let files = Dictionary(notes.map { ($0.relativePath, $0) }, uniquingKeysWith: { first, _ in first })
-        let linked = links.values.compactMap { link in
+        let linked = links.values.joined().compactMap { link in
             files[link.notePath].map { LinkedNote(file: $0, eventKey: link.event.eventKey, dayKey: link.event.dayKey) }
         }
         let daily = notes.filter { DailyNoteNaming.dayKey(ofRelativePath: $0.relativePath) != nil }
