@@ -261,132 +261,67 @@
         }
       }
     },
-    "Action.Snooze15": {
+    "Action.Snooze %@": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "In 15 Minuten erinnern"
+            "value": "In %@ erinnern"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Snooze 15 Minutes"
+            "value": "Snooze %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rappeler dans 15 minutes"
+            "value": "Rappeler dans %@"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posticipa di 15 minuti"
+            "value": "Posticipa di %@"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "15分後に再通知"
+            "value": "%@後に再通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "15분 후 다시 알림"
+            "value": "%@ 후 다시 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Over 15 minuten herinneren"
+            "value": "Over %@ herinneren"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Báo lại sau 15 phút"
+            "value": "Báo lại sau %@"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "15 分钟后再提醒"
+            "value": "%@后再提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "15 分鐘後再提醒"
-          }
-        }
-      }
-    },
-    "Action.Snooze5": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In 5 Minuten erinnern"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Snooze 5 Minutes"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rappeler dans 5 minutes"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Posticipa di 5 minuti"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5分後に再通知"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5분 후 다시 알림"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Over 5 minuten herinneren"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Báo lại sau 5 phút"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 分钟后再提醒"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 分鐘後再提醒"
+            "value": "%@後再提醒"
           }
         }
       }

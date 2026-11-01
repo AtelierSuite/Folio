@@ -97,6 +97,17 @@ struct NotificationResponseRouterTests {
         #expect(!NotificationIdentifier.isOwned(shortSnooze.identifier))
     }
 
+    @Test func snoozeUsesTheChosenDurations() throws {
+        let durations = NotificationSnoozeDurations(shortMinutes: 30, longMinutes: 180)
+        let router = NotificationResponseRouter(now: NotificationFixtures.now, snoozeDurations: durations)
+        let long = router.outcome(actionIdentifier: NotificationAction.snoozeLong.identifier, userInfo: try meeting())
+        guard case .snooze(let snooze) = long else {
+            Issue.record("Expected a snooze")
+            return
+        }
+        #expect(snooze.fireDate == NotificationFixtures.now.addingTimeInterval(180 * 60))
+    }
+
     @Test func openNoteOpensTheEventNoteOrTheDailyNote() throws {
         let router = NotificationResponseRouter(now: NotificationFixtures.now)
         let openNote = NotificationAction.openNote.identifier
