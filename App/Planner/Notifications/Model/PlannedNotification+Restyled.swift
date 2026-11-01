@@ -8,6 +8,6 @@ extension PlannedNotification {
     }
 
     public func restyled(_ style: NotificationAlertStyle) -> PlannedNotification {
-        style == self.style ? self : PlannedNotification(candidate, style: style)
+        style == self.style ? self : PlannedNotification(candidate, style: style, sound: sound)
     }
 }

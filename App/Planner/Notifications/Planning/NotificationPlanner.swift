@@ -8,17 +8,20 @@ public struct NotificationPlanner: Sendable {
     public var formatter: NotificationContentFormatter
     public var styleResolver: @Sendable (NotificationCandidate) -> NotificationAlertStyle
     public var allDayAlertMinutes: @Sendable (String) -> Int?
+    public var soundResolver: @Sendable (CalendarItemKind) -> NotificationSound
 
     public init(
         reservedSlots: Int = defaultReservedSlots,
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
         styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard },
-        allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil }
+        allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil },
+        soundResolver: @escaping @Sendable (CalendarItemKind) -> NotificationSound = { _ in .system }
     ) {
         self.reservedSlots = reservedSlots
         self.formatter = formatter
         self.styleResolver = styleResolver
         self.allDayAlertMinutes = allDayAlertMinutes
+        self.soundResolver = soundResolver
     }
 
     public func budget(foreignPendingCount: Int) -> Int {
@@ -35,7 +38,7 @@ public struct NotificationPlanner: Sendable {
         let candidates = eventCandidates(events, after: now) + reminderCandidates(reminders, after: now)
         var seenIdentifiers = Set<String>()
         let planned = candidates
-            .map { PlannedNotification($0, style: styleResolver($0)) }
+            .map { PlannedNotification($0, style: styleResolver($0), sound: soundResolver($0.kind)) }
             .filter { seenIdentifiers.insert($0.id).inserted }
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         return Array(planned.prefix(max(0, budget)))

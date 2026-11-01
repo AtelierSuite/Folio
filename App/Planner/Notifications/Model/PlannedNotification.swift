@@ -10,12 +10,17 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let place: NotificationPlace?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
+    public let sound: NotificationSound
 
-    public init(_ candidate: NotificationCandidate, style: NotificationAlertStyle = .standard) {
+    public init(
+        _ candidate: NotificationCandidate,
+        style: NotificationAlertStyle = .standard,
+        sound: NotificationSound = .system
+    ) {
         let category = NotificationCategory(
             candidate.kind, hasMeeting: candidate.meeting != nil, hasPlace: candidate.place != nil
         )
-        self.id = NotificationIdentifier.make(for: candidate, category: category, style: style)
+        self.id = NotificationIdentifier.make(for: candidate, category: category, style: style, sound: sound)
         self.fireDate = candidate.fireDate
         self.kind = candidate.kind
         self.reference = candidate.reference
@@ -24,6 +29,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.place = candidate.place
         self.category = category
         self.style = style
+        self.sound = sound
     }
 
     public var categoryIdentifier: String {

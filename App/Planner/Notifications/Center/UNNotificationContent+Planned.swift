@@ -10,17 +10,21 @@ extension UNNotificationContent {
         content.threadIdentifier = notification.category.threadIdentifier
         content.userInfo = NotificationUserInfo.make(for: notification)
         apply(notification.style, to: content)
+        content.sound = sound(for: notification.sound)
         return content
     }
 
     private static func apply(_ style: NotificationAlertStyle, to content: UNMutableNotificationContent) {
         switch style {
         case .standard:
-            content.sound = .default
             content.interruptionLevel = .active
         case .timeSensitive, .alarm:
-            content.sound = .default
             content.interruptionLevel = .timeSensitive
         }
+    }
+
+    private static func sound(for sound: NotificationSound) -> UNNotificationSound {
+        guard let fileName = sound.fileName else { return .default }
+        return UNNotificationSound(named: UNNotificationSoundName(fileName))
     }
 }
