@@ -2,14 +2,15 @@ import Planner
 import SwiftUI
 
 struct NotificationSoundRow: View {
-    let sound: NotificationSound
+    let title: String
+    let identifier: String
     let isSelected: Bool
     let onSelect: () -> Void
 
     var body: some View {
         Button(action: onSelect) {
             HStack {
-                Text(sound.title)
+                Text(title)
                     .foregroundStyle(.primary)
                 Spacer()
                 if isSelected {
@@ -22,6 +23,6 @@ struct NotificationSoundRow: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-        .accessibilityIdentifier("NotificationSound.\(sound.rawValue)")
+        .accessibilityIdentifier("NotificationSound.\(identifier)")
     }
 }

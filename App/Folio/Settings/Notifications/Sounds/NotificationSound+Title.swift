@@ -28,3 +28,9 @@ extension NotificationSound {
         }
     }
 }
+
+extension NotificationSound {
+    static func inheritedTitle(_ sound: NotificationSound) -> String {
+        String(localized: "Sound.Inherited \(sound.title)", table: "NotificationSounds")
+    }
+}
