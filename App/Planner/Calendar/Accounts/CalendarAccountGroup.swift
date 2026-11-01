@@ -12,7 +12,12 @@ public struct CalendarAccountGroup: Identifiable, Sendable, Hashable {
         self.calendars = calendars
     }
 
-    /// Groups in the order each account first appears, keeping the calendar order within each group.
+    /// One section per account. Calendars come before reminder lists, and accounts stay in first-seen order.
+    public static func groups(calendars: [PlannerCalendar], lists: [PlannerCalendar]) -> [CalendarAccountGroup] {
+        groups(from: calendars + lists)
+    }
+
+    /// Groups in the order each account first appears, keeping the given order within each group.
     public static func groups(from calendars: [PlannerCalendar]) -> [CalendarAccountGroup] {
         var order: [String] = []
         var titles: [String: String] = [:]

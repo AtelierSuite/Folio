@@ -10,19 +10,13 @@ struct CalendarVisibilityRow: View {
             get: { store.isVisible(calendar) },
             set: { store.setVisible($0, for: calendar) }
         )) {
-            HStack(spacing: 10) {
-                Circle()
-                    .fill(calendar.color.color)
-                    .frame(width: 12, height: 12)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(calendar.title)
-                    if calendar.isReadOnly {
-                        Text(String(localized: "Subtitle.ReadOnly", table: "CalendarVisibility"))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
+            CalendarKindLabel(
+                calendar: calendar,
+                subtitle: calendar.isReadOnly
+                    ? String(localized: "Subtitle.ReadOnly", table: "CalendarVisibility")
+                    : nil,
+                iconSize: 24
+            )
         }
         .accessibilityIdentifier("CalendarVisibility.\(calendar.title)")
     }

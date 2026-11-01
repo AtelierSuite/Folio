@@ -3,12 +3,12 @@ import SwiftUI
 
 struct CalendarAccountSections<Row: View>: View {
     let calendars: [PlannerCalendar]
-    var kindTitle: String?
+    var lists: [PlannerCalendar] = []
     var footer: String?
     @ViewBuilder let row: (PlannerCalendar) -> Row
 
     private var groups: [CalendarAccountGroup] {
-        CalendarAccountGroup.groups(from: calendars)
+        CalendarAccountGroup.groups(calendars: calendars, lists: lists)
     }
 
     var body: some View {
@@ -19,7 +19,7 @@ struct CalendarAccountSections<Row: View>: View {
                     row(calendar)
                 }
             } header: {
-                Text(group.header(kindTitle: kindTitle))
+                Text(group.title)
             } footer: {
                 if let footer, group.id == groups.last?.id {
                     Text(footer)

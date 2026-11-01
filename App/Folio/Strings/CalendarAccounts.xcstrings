@@ -1,67 +1,132 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Header %@ %@": {
+    "Kind.Calendar": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ – %2$@"
+            "value": "Kalender"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ — %2$@"
+            "value": "Calendar"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ — %2$@"
+            "value": "Calendrier"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ — %2$@"
+            "value": "Calendario"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@（%2$@）"
+            "value": "カレンダー"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ (%2$@)"
+            "value": "캘린더"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ – %2$@"
+            "value": "Agenda"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ — %2$@"
+            "value": "Lịch"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@（%2$@）"
+            "value": "日历"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@（%2$@）"
+            "value": "行事曆"
+          }
+        }
+      }
+    },
+    "Kind.List": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elenco"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リスト"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "목록"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lijst"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danh sách"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列表"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列表"
           }
         }
       }

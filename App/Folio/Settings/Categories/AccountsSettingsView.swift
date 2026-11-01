@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-struct CalendarVisibilityView: View {
+struct AccountsSettingsView: View {
     @Environment(CalendarStore.self) private var store
 
     var body: some View {
@@ -12,18 +12,12 @@ struct CalendarVisibilityView: View {
             }
             CalendarAccountSections(
                 calendars: store.eventCalendars,
-                kindTitle: String(localized: "Section.Calendars", table: "CalendarVisibility")
-            ) { calendar in
-                CalendarVisibilityRow(calendar: calendar)
-            }
-            CalendarAccountSections(
-                calendars: store.reminderLists,
-                kindTitle: String(localized: "Section.ReminderLists", table: "CalendarVisibility")
+                lists: store.reminderLists
             ) { calendar in
                 CalendarVisibilityRow(calendar: calendar)
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "Title", table: "CalendarVisibility"))
+        .accessibilityIdentifier("AccountsForm")
+        .settingsCategoryStyle(.accounts)
     }
 }

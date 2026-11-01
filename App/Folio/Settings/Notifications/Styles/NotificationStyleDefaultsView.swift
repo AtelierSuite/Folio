@@ -17,12 +17,8 @@ struct NotificationStyleDefaultsView: View {
             }
             CalendarAccountSections(
                 calendars: store.eventCalendars,
-                kindTitle: String(localized: "Defaults.Calendars", table: "NotificationStyles"),
+                lists: store.reminderLists,
                 footer: footer
-            ) { NotificationStyleCalendarRow(calendar: $0) }
-            CalendarAccountSections(
-                calendars: store.reminderLists,
-                kindTitle: String(localized: "Defaults.ReminderLists", table: "NotificationStyles")
             ) { NotificationStyleCalendarRow(calendar: $0) }
         }
         .formStyle(.grouped)

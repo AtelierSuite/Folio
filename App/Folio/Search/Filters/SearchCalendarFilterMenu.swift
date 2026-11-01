@@ -25,27 +25,17 @@ struct SearchCalendarFilterMenu: View {
         ) {
             Picker(String(localized: "Filter.Calendar", table: "Search"), selection: $filters.containerIdentifier) {
                 Text(String(localized: "Filter.Calendar.All", table: "Search")).tag(String?.none)
-                accountSections(
-                    for: calendars,
-                    kindTitle: String(localized: "Filter.Calendar.Calendars", table: "Search")
-                )
-                accountSections(
-                    for: lists,
-                    kindTitle: String(localized: "Filter.Calendar.Lists", table: "Search")
-                )
+                ForEach(CalendarAccountGroup.groups(calendars: calendars, lists: lists)) { group in
+                    Section(group.title) {
+                        ForEach(group.calendars) { calendar in
+                            CalendarKindLabel(calendar: calendar)
+                                .tag(Optional(calendar.id))
+                        }
+                    }
+                }
             }
             .pickerStyle(.inline)
         }
         .accessibilityIdentifier("Search.Filter.Calendar")
-    }
-
-    private func accountSections(for calendars: [PlannerCalendar], kindTitle: String) -> some View {
-        ForEach(CalendarAccountGroup.groups(from: calendars)) { group in
-            Section(group.header(kindTitle: kindTitle)) {
-                ForEach(group.calendars) { calendar in
-                    Text(calendar.title).tag(Optional(calendar.id))
-                }
-            }
-        }
     }
 }

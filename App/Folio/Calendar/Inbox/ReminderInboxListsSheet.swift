@@ -5,7 +5,7 @@ struct ReminderInboxListsSheet: View {
 
     var body: some View {
         NavigationStack {
-            CalendarVisibilityView()
+            AccountsSettingsView()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button(role: .confirm) { dismiss() }

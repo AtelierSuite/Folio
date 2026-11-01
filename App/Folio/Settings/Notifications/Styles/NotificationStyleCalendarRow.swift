@@ -12,12 +12,7 @@ struct NotificationStyleCalendarRow: View {
             style = newValue
             await scheduler.setDefaultStyle(newValue, forCalendar: calendar.id)
         } label: {
-            HStack(spacing: 10) {
-                Circle()
-                    .fill(calendar.color.color)
-                    .frame(width: 12, height: 12)
-                Text(calendar.title)
-            }
+            CalendarKindLabel(calendar: calendar)
         }
         .accessibilityIdentifier("NotificationStyle.\(calendar.title)")
         .onAppear {

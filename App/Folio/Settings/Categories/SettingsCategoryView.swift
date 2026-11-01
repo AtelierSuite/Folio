@@ -6,6 +6,7 @@ struct SettingsCategoryView: View {
     var body: some View {
         switch category {
         case .general: GeneralSettingsView()
+        case .accounts: AccountsSettingsView()
         case .calendars: CalendarsSettingsView()
         case .notes: NotesSettingsView()
         case .notifications: NotificationSettingsView()
