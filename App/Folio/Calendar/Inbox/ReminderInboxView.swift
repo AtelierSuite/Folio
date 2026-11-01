@@ -13,6 +13,26 @@ struct ReminderInboxView: View {
     @State private var isShowingLists = false
 
     var body: some View {
+        inbox
+            .presentationDetents([.medium, .large])
+            .sheet(item: $openedReminder) { reminder in
+                ReminderEditorView(reminder: reminder)
+            }
+            .sheet(isPresented: $isComposing) {
+                ReminderEditorView(initialDate: nil)
+            }
+            .sheet(isPresented: $isShowingLists) {
+                ReminderInboxListsSheet()
+            }
+            .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
+                reminders = await store.undatedReminders(calendar: systemTime.calendar)
+                hasLoaded = true
+            }
+    }
+
+    #if os(macOS)
+    /// The inspector's toolbar items would join the window toolbar on macOS, so the header lives in the view.
+    private var inbox: some View {
         VStack(spacing: 0) {
             ReminderInboxHeader(
                 isPresented: $isPresented, isComposing: $isComposing, isShowingLists: $isShowingLists
@@ -20,21 +40,21 @@ struct ReminderInboxView: View {
             content
                 .frame(maxHeight: .infinity)
         }
-        .presentationDetents([.medium, .large])
-        .sheet(item: $openedReminder) { reminder in
-            ReminderEditorView(reminder: reminder)
-        }
-        .sheet(isPresented: $isComposing) {
-            ReminderEditorView(initialDate: nil)
-        }
-        .sheet(isPresented: $isShowingLists) {
-            ReminderInboxListsSheet()
-        }
-        .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
-            reminders = await store.undatedReminders(calendar: systemTime.calendar)
-            hasLoaded = true
+    }
+    #else
+    private var inbox: some View {
+        NavigationStack {
+            content
+                .navigationTitle(String(localized: "Inbox.Title", table: "Reminders"))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ReminderInboxToolbar(
+                        isPresented: $isPresented, isComposing: $isComposing, isShowingLists: $isShowingLists
+                    )
+                }
         }
     }
+    #endif
 
     @ViewBuilder
     private var content: some View {

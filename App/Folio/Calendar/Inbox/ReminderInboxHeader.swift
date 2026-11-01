@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Kept in the view rather than the toolbar: on macOS an inspector's toolbar items join the window toolbar.
 struct ReminderInboxHeader: View {
     @Binding var isPresented: Bool
     @Binding var isComposing: Bool
