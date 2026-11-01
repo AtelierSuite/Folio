@@ -42,6 +42,7 @@ struct NotificationSettingsView: View {
                 .accessibilityIdentifier("AllDayAlertTimesLink")
             }
             .disabled(!scheduler.isEnabled)
+            SnoozeDurationsSection()
             LeaveAlertsSection()
             ArrivalAlertsSection()
             if scheduler.isEnabled {
