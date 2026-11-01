@@ -9,6 +9,7 @@ struct CalendarMonthView: View {
     @State private var visibleMonth: Date?
     @State private var scrollPhase = ScrollPhase.idle
     @State private var pageSize = CGSize.zero
+    @State private var displayedWeekCount = 5
 
     private static let window = SlidingPageWindow(radius: 24)
 
@@ -19,13 +20,18 @@ struct CalendarMonthView: View {
     var body: some View {
         ScrollView(.horizontal) {
             if pageSize != .zero {
-                CalendarMonthPageStack(months: months, pageSize: pageSize, calendar: navigation.calendar) { day in
+                CalendarMonthPageStack(
+                    months: months,
+                    pageSize: pageSize,
+                    displayedWeekCount: displayedWeekCount,
+                    calendar: navigation.calendar
+                ) { day in
                     navigation.show(day.date)
                     mode = .day
                 }
             }
         }
-        .scrollTargetBehavior(.paging)
+        .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
         .scrollPosition(id: $visibleMonth)
         .scrollIndicators(.hidden)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -35,13 +41,18 @@ struct CalendarMonthView: View {
             guard phase == .idle else { return }
             selectVisibleMonth()
             recenterIfNeeded()
+            fitRowsToVisibleMonth(animated: true)
         }
         .onAppear(perform: recenter)
         .onChange(of: navigation.selectedDate) {
             showSelectedMonth()
         }
         .onChange(of: visibleMonth) {
-            if scrollPhase == .interacting || scrollPhase == .decelerating { selectVisibleMonth() }
+            if scrollPhase == .interacting || scrollPhase == .decelerating {
+                selectVisibleMonth()
+            } else if scrollPhase == .idle {
+                fitRowsToVisibleMonth(animated: true)
+            }
         }
         .onChange(of: navigation.calendar) {
             recenter()
@@ -51,6 +62,16 @@ struct CalendarMonthView: View {
     private func recenter() {
         months = paging.months(around: navigation.selectedDate, radius: Self.window.radius)
         visibleMonth = paging.monthStart(containing: navigation.selectedDate)
+        fitRowsToVisibleMonth(animated: false)
+    }
+
+    private func fitRowsToVisibleMonth(animated: Bool) {
+        guard let visibleMonth else { return }
+        let weekCount = MonthGrid(containing: visibleMonth, calendar: navigation.calendar).weeks.count
+        guard weekCount != displayedWeekCount else { return }
+        withAnimation(animated && !reduceMotion ? .snappy : nil) {
+            displayedWeekCount = weekCount
+        }
     }
 
     /// Slides the window of months once the scrolling has stopped; the month in view keeps its identity.

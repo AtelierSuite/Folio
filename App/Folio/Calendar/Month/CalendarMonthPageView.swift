@@ -7,6 +7,7 @@ struct CalendarMonthPageView: View {
     @AppStorage(MonthSettings.showsWeekNumbersKey) private var showsWeekNumbers = false
     @ScaledMetric(relativeTo: .caption2) private var weekNumberWidth: CGFloat = 22
     let grid: MonthGrid
+    let displayedWeekCount: Int
     let onSelectDay: (MonthDay) -> Void
     @State private var buckets = MonthDayBuckets.empty
     @State private var events: [CalendarEvent] = []
@@ -21,19 +22,24 @@ struct CalendarMonthPageView: View {
                 grid: grid, showsWeekNumbers: showsWeekNumbers, weekNumberWidth: weekNumberWidth
             )
             Divider()
-            ForEach(grid.weeks) { week in
-                CalendarMonthWeekRowView(
-                    week: week,
-                    buckets: buckets,
-                    calendar: grid.calendar,
-                    showsWeekNumber: showsWeekNumbers,
-                    weekNumberWidth: weekNumberWidth,
-                    onSelectDay: onSelectDay,
-                    onDrop: drop
-                )
-                .frame(maxHeight: .infinity)
-                Divider()
+            CalendarMonthWeekRowsLayout(displayedWeekCount: Double(displayedWeekCount)) {
+                ForEach(grid.weeks) { week in
+                    VStack(spacing: 0) {
+                        CalendarMonthWeekRowView(
+                            week: week,
+                            buckets: buckets,
+                            calendar: grid.calendar,
+                            showsWeekNumber: showsWeekNumbers,
+                            weekNumberWidth: weekNumberWidth,
+                            onSelectDay: onSelectDay,
+                            onDrop: drop
+                        )
+                        .frame(maxHeight: .infinity)
+                        Divider()
+                    }
+                }
             }
+            .clipped()
         }
         .environment(\.weatherSnapshot, weather)
         .reminderCompletion(undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier)
