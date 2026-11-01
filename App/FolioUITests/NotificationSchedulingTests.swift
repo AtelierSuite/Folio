@@ -8,7 +8,7 @@ final class NotificationSchedulingTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
         let toggle = app.switches["NotificationsEnabledToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
@@ -18,7 +18,12 @@ final class NotificationSchedulingTests: XCTestCase {
         }
 
         let scheduledCount = app.descendants(matching: .any)["NotificationsScheduledCount"]
-        XCTAssertTrue(scheduledCount.waitForExistence(timeout: 10))
+        var swipes = 0
+        while !scheduledCount.waitForExistence(timeout: 2), swipes < 4 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(scheduledCount.exists)
         let hasScheduled = NSPredicate { _, _ in !scheduledCount.label.hasSuffix(" 0") && scheduledCount.label != "0" }
         expectation(for: hasScheduled, evaluatedWith: nil)
         waitForExpectations(timeout: 10)

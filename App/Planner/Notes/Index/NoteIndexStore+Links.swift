@@ -2,16 +2,17 @@ import Foundation
 import SwiftData
 
 extension NoteIndexStore {
-    /// One link per note: when devices disagree, the most recent link wins and the others are deleted.
+    /// One link per note and event: when devices both add the same link, the most recent is kept.
     public func links(in location: String) -> [NoteLink] {
-        var newest: [String: NoteLinkRecord] = [:]
+        var newest: [LinkPair: NoteLinkRecord] = [:]
         for record in linkRecords(in: location) {
-            guard let current = newest[record.notePath] else {
-                newest[record.notePath] = record
+            let pair = LinkPair(notePath: record.notePath, eventKey: record.eventKey)
+            guard let current = newest[pair] else {
+                newest[pair] = record
                 continue
             }
             let (keep, drop) = record.linkedAt > current.linkedAt ? (record, current) : (current, record)
-            newest[record.notePath] = keep
+            newest[pair] = keep
             context.delete(drop)
         }
         if context.hasChanges {
@@ -21,7 +22,7 @@ extension NoteIndexStore {
     }
 
     public func link(notePath: String, in location: String, to event: NoteLinkEvent, at date: Date = .now) {
-        for record in linkRecords(in: location, notePath: notePath) {
+        for record in linkRecords(in: location, notePath: notePath) where record.eventKey == event.eventKey {
             context.delete(record)
         }
         context.insert(NoteLinkRecord(location: location, notePath: notePath, event: event, linkedAt: date))
@@ -31,6 +32,15 @@ extension NoteIndexStore {
     @discardableResult
     public func unlink(notePath: String, in location: String) -> [NoteLink] {
         let records = linkRecords(in: location, notePath: notePath)
+        let links = records.map(\.link)
+        records.forEach(context.delete)
+        save()
+        return links
+    }
+
+    @discardableResult
+    public func unlink(notePath: String, from eventKey: String, in location: String) -> [NoteLink] {
+        let records = linkRecords(in: location, notePath: notePath).filter { $0.eventKey == eventKey }
         let links = records.map(\.link)
         records.forEach(context.delete)
         save()
@@ -64,6 +74,11 @@ extension NoteIndexStore {
         if context.hasChanges {
             save()
         }
+    }
+
+    private struct LinkPair: Hashable {
+        let notePath: String
+        let eventKey: String
     }
 
     private func linkRecords(in location: String, notePath: String? = nil) -> [NoteLinkRecord] {

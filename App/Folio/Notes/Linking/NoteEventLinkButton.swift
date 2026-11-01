@@ -7,7 +7,7 @@ struct NoteEventLinkButton: View {
     @State private var isPicking = false
 
     var body: some View {
-        let isLinked = library.eventLink(forNote: noteURL) != nil
+        let isLinked = !library.eventLinks(forNote: noteURL).isEmpty
         Button(
             String(localized: "LinkEvent.Title", table: "LinkedNotes"),
             systemImage: isLinked ? "calendar.badge.checkmark" : "calendar.badge.plus"
@@ -21,6 +21,8 @@ struct NoteEventLinkButton: View {
     }
 
     private var initialDate: Date {
-        library.eventLink(forNote: noteURL).flatMap { DailyNoteNaming.date(forDayKey: $0.event.dayKey) } ?? .now
+        library.eventLinks(forNote: noteURL)
+            .max { $0.linkedAt < $1.linkedAt }
+            .flatMap { DailyNoteNaming.date(forDayKey: $0.event.dayKey) } ?? .now
     }
 }

@@ -2,7 +2,11 @@ import Foundation
 import UserNotifications
 
 public struct UserNotificationCenterClient: NotificationCenterClient {
-    public init() {}
+    let attachmentFactory: NotificationAttachmentFactory?
+
+    public init(capabilities: PlatformCapabilities) {
+        attachmentFactory = capabilities.supports(.notificationThumbnails) ? NotificationAttachmentFactory() : nil
+    }
 
     private var center: UNUserNotificationCenter {
         .current()
@@ -29,7 +33,9 @@ public struct UserNotificationCenterClient: NotificationCenterClient {
         let interval = max(1, notification.fireDate.timeIntervalSince(now))
         let request = UNNotificationRequest(
             identifier: notification.id,
-            content: UNNotificationContent.make(notification),
+            content: UNNotificationContent.make(
+                notification, attachments: attachmentFactory?.attachments(for: notification) ?? []
+            ),
             trigger: UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
         )
         try await center.add(request)

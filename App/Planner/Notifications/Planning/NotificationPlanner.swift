@@ -30,9 +30,11 @@ public struct NotificationPlanner: Sendable {
         events: [CalendarEvent],
         reminders: [ReminderItem],
         after now: Date,
-        budget: Int
+        budget: Int,
+        eventImages: [CalendarItemReference: URL] = [:]
     ) -> [PlannedNotification] {
-        let candidates = eventCandidates(events, after: now) + reminderCandidates(reminders, after: now)
+        let candidates = eventCandidates(events, after: now, images: eventImages)
+            + reminderCandidates(reminders, after: now)
         var seenIdentifiers = Set<String>()
         let planned = candidates
             .map { PlannedNotification($0, style: styleResolver($0)) }
@@ -41,7 +43,11 @@ public struct NotificationPlanner: Sendable {
         return Array(planned.prefix(max(0, budget)))
     }
 
-    private func eventCandidates(_ events: [CalendarEvent], after now: Date) -> [NotificationCandidate] {
+    private func eventCandidates(
+        _ events: [CalendarEvent],
+        after now: Date,
+        images: [CalendarItemReference: URL]
+    ) -> [NotificationCandidate] {
         events.flatMap { event in
             let eventFireDates = fireDates(for: event, after: now)
             let meeting = eventFireDates.isEmpty ? nil : NotificationMeeting(event: event)
@@ -54,7 +60,8 @@ public struct NotificationPlanner: Sendable {
                     content: formatter.content(for: event, firingAt: fireDate),
                     meeting: meeting,
                     place: place,
-                    color: event.color
+                    color: event.color,
+                    imageURL: images[event.reference]
                 )
             }
         }

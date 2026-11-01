@@ -7,6 +7,7 @@ struct NotesLibraryLinkingTests {
     private let directory: TemporaryDirectory
     private let library: NotesLibrary
     private let event = Fixtures.event(local: "standup", start: Fixtures.date(2026, 10, 29, hour: 9))
+    private let review = Fixtures.event(local: "review", start: Fixtures.date(2026, 10, 30, hour: 14))
 
     init() async throws {
         directory = try TemporaryDirectory()
@@ -24,7 +25,7 @@ struct NotesLibraryLinkingTests {
         let url = try await library.createNote(for: event)
         #expect(try await library.read(url).text == "# standup\n")
         #expect(library.linkedNote(for: event)?.url == url)
-        #expect(library.eventLink(forNote: url)?.event.eventKey == event.reference.storageKey)
+        #expect(library.eventLinks(forNote: url).map(\.event.eventKey) == [event.reference.storageKey])
         #expect(try await library.createNote(for: event) == url)
     }
 
@@ -68,5 +69,33 @@ struct NotesLibraryLinkingTests {
         library.unlink(url)
         #expect(library.linkedNote(for: event) == nil)
         #expect(removed.count == 1)
+    }
+
+    @Test func linksOneNoteToSeveralEventsAndUnlinksThemOneByOne() async throws {
+        var removed: [NoteLink] = []
+        library.onLinksRemoved = { removed += $0 }
+        let url = try await library.createNote(for: event)
+        library.link(url, to: review)
+        #expect(library.linkedNote(for: event)?.url == url)
+        #expect(library.linkedNote(for: review)?.url == url)
+        #expect(library.eventLinks(forNote: url).count == 2)
+        #expect(library.eventLink(forNote: url, to: review)?.event.eventKey == review.reference.storageKey)
+
+        library.unlink(url, fromEventKey: event.reference.storageKey)
+        #expect(library.linkedNote(for: event) == nil)
+        #expect(library.linkedNote(for: review)?.url == url)
+        #expect(removed.map(\.event.eventKey) == [event.reference.storageKey])
+
+        library.unlink(url)
+        #expect(library.linkedNote(for: review) == nil)
+        #expect(library.noteLinks.isEmpty)
+    }
+
+    @Test func keepsEveryLinkThroughARename() async throws {
+        let url = try await library.createNote(for: event)
+        library.link(url, to: review)
+        let renamed = try await library.rename(url, to: "Agenda")
+        #expect(library.linkedNote(for: event)?.url == renamed)
+        #expect(library.linkedNote(for: review)?.url == renamed)
     }
 }

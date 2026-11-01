@@ -38,9 +38,9 @@ struct NoteLinkMaintenanceTests {
         source.replaceEvents([])
         let now = Date.now
         await maintenance.checkLinkedEvents(now: now)
-        #expect(library.eventLink(forNote: url) != nil)
+        #expect(!library.eventLinks(forNote: url).isEmpty)
         await maintenance.checkLinkedEvents(now: now.addingTimeInterval(NoteLinkMaintenance.missingEventGrace + 1))
-        #expect(library.eventLink(forNote: url) == nil)
+        #expect(library.eventLinks(forNote: url).isEmpty)
     }
 
     @Test func forgetsAMissedEventThatComesBack() async throws {
@@ -52,7 +52,7 @@ struct NoteLinkMaintenanceTests {
         await maintenance.checkLinkedEvents(now: now.addingTimeInterval(60))
         source.replaceEvents([])
         await maintenance.checkLinkedEvents(now: now.addingTimeInterval(NoteLinkMaintenance.missingEventGrace + 1))
-        #expect(library.eventLink(forNote: url) != nil)
+        #expect(!library.eventLinks(forNote: url).isEmpty)
     }
 
     @Test func keepsLinksWhenTheEventsCalendarIsGone() async throws {
@@ -63,6 +63,18 @@ struct NoteLinkMaintenanceTests {
         let now = Date.now
         await maintenance.checkLinkedEvents(now: now)
         await maintenance.checkLinkedEvents(now: now.addingTimeInterval(NoteLinkMaintenance.missingEventGrace + 1))
-        #expect(library.eventLink(forNote: url) != nil)
+        #expect(!library.eventLinks(forNote: url).isEmpty)
+    }
+
+    @Test func unlinksOnlyTheDeletedEventOfANoteLinkedToSeveral() async throws {
+        let review = Fixtures.event(local: "review", start: Fixtures.date(2026, 10, 30, hour: 14))
+        source.replaceEvents([event, review])
+        let url = try await library.createNote(for: event)
+        library.link(url, to: review)
+        source.replaceEvents([review])
+        let now = Date.now
+        await maintenance.checkLinkedEvents(now: now)
+        await maintenance.checkLinkedEvents(now: now.addingTimeInterval(NoteLinkMaintenance.missingEventGrace + 1))
+        #expect(library.eventLinks(forNote: url).map(\.event.eventKey) == [review.reference.storageKey])
     }
 }

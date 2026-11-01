@@ -3,9 +3,11 @@ import UserNotifications
 
 public struct NotificationResponseRouter: Sendable {
     public var now: Date
+    public var snoozeDurations: NotificationSnoozeDurations
 
-    public init(now: Date) {
+    public init(now: Date, snoozeDurations: NotificationSnoozeDurations = .standard) {
         self.now = now
+        self.snoozeDurations = snoozeDurations
     }
 
     public func outcome(actionIdentifier: String, userInfo: [AnyHashable: Any]) -> NotificationResponseOutcome? {
@@ -33,7 +35,7 @@ public struct NotificationResponseRouter: Sendable {
         case .markDone:
             return item.kind == .reminder ? .markDone(item) : nil
         case .snoozeShort, .snoozeLong:
-            let duration = action.snoozeDuration ?? 0
+            let duration = action.snoozeDuration(in: snoozeDurations) ?? 0
             return .snooze(NotificationSnooze(item: item, fireDate: now.addingTimeInterval(duration)))
         case .openNote:
             switch item.kind {

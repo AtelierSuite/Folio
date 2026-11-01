@@ -1,3 +1,4 @@
+import Planner
 import SwiftUI
 
 /// Menu sections handed to UIKit or AppKit, for menus opened at a point.
@@ -6,6 +7,7 @@ struct PlatformMenu {
     struct Entry {
         let title: String
         let systemImage: String
+        var symbolColor: PlannerColor?
         var isDestructive = false
         let identifier: String
         var children: [Entry] = []

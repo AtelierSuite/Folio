@@ -14,6 +14,8 @@
 		A1D0C0DE0000000000000001 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = A1D0C0DE0000000000000003 /* Markdown */; };
 		EE4F42DAE8856F1A2AC4A4AB /* FolioWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2D1776F9E773F75107F07B2C /* FolioWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F08A7111160B1A3738CF5A3B /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
+		B10C0DE00000000000000001 /* FolioNotificationContent.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B10C0DE00000000000000004 /* FolioNotificationContent.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B10C0DE00000000000000002 /* Planner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB50B7C60308378A0D2FDFB /* Planner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,13 @@
 			remoteGlobalIDString = 9F75055B5BAB749AFEA6E476;
 			remoteInfo = Planner;
 		};
+		B10C0DE00000000000000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 383A8F7C70F35B855AA13D98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B10C0DE0000000000000000A;
+			remoteInfo = FolioNotificationContent;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -73,6 +82,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				EE4F42DAE8856F1A2AC4A4AB /* FolioWidgets.appex in Embed Foundation Extensions */,
+				B10C0DE00000000000000001 /* FolioNotificationContent.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +106,7 @@
 		43A00E9AE034A862E41F8D60 /* PlannerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PlannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B8BAAD0990BFEBF5AC22207 /* Folio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CEC680A68AB0D3810F2F61D /* FolioUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FolioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10C0DE00000000000000004 /* FolioNotificationContent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FolioNotificationContent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -112,6 +123,13 @@
 				Info.plist,
 			);
 			target = 0C56AF64BE26DB444D566E60 /* Folio */;
+		};
+		B10C0DE00000000000000005 /* Exceptions for "NotificationContent" folder in "FolioNotificationContent" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B10C0DE0000000000000000A /* FolioNotificationContent */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -145,6 +163,14 @@
 				226FEB5D6D8CE06FF6E2DF03 /* Exceptions for "Widgets" folder in "FolioWidgets" target */,
 			);
 			path = Widgets;
+			sourceTree = "<group>";
+		};
+		B10C0DE00000000000000006 /* NotificationContent */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B10C0DE00000000000000005 /* Exceptions for "NotificationContent" folder in "FolioNotificationContent" target */,
+			);
+			path = NotificationContent;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -182,6 +208,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B10C0DE00000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10C0DE00000000000000002 /* Planner.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -190,6 +224,7 @@
 			children = (
 				406D77D6C5F7E2CB211E327D /* Folio */,
 				0CF649188740A7A6D5F77473 /* FolioUITests */,
+				B10C0DE00000000000000006 /* NotificationContent */,
 				804A749D76E288CA353976E7 /* Planner */,
 				EE30883B29DE8FA34FCCEDB1 /* PlannerTests */,
 				F7E643641B26DE2403A8F285 /* Widgets */,
@@ -202,6 +237,7 @@
 			children = (
 				5B8BAAD0990BFEBF5AC22207 /* Folio.app */,
 				9CEC680A68AB0D3810F2F61D /* FolioUITests.xctest */,
+				B10C0DE00000000000000004 /* FolioNotificationContent.appex */,
 				2D1776F9E773F75107F07B2C /* FolioWidgets.appex */,
 				2FB50B7C60308378A0D2FDFB /* Planner.framework */,
 				43A00E9AE034A862E41F8D60 /* PlannerTests.xctest */,
@@ -251,6 +287,7 @@
 			dependencies = (
 				589052EEF092E00A31942CDD /* PBXTargetDependency */,
 				024E2D64AED8063248079345 /* PBXTargetDependency */,
+				B10C0DE0000000000000000B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				406D77D6C5F7E2CB211E327D /* Folio */,
@@ -330,6 +367,28 @@
 			productReference = 9CEC680A68AB0D3810F2F61D /* FolioUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		B10C0DE0000000000000000A /* FolioNotificationContent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B10C0DE0000000000000000E /* Build configuration list for PBXNativeTarget "FolioNotificationContent" */;
+			buildPhases = (
+				B10C0DE00000000000000008 /* Sources */,
+				B10C0DE00000000000000009 /* Resources */,
+				B10C0DE00000000000000007 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B10C0DE00000000000000006 /* NotificationContent */,
+			);
+			name = FolioNotificationContent;
+			packageProductDependencies = (
+			);
+			productName = FolioNotificationContent;
+			productReference = B10C0DE00000000000000004 /* FolioNotificationContent.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -352,6 +411,10 @@
 						ProvisioningStyle = Automatic;
 					};
 					C8B13B880FD2FB1F6E320B8E = {
+						DevelopmentTeam = YYM4Z6MU8F;
+						ProvisioningStyle = Automatic;
+					};
+					B10C0DE0000000000000000A = {
 						DevelopmentTeam = YYM4Z6MU8F;
 						ProvisioningStyle = Automatic;
 					};
@@ -381,6 +444,7 @@
 			targets = (
 				0C56AF64BE26DB444D566E60 /* Folio */,
 				C8B13B880FD2FB1F6E320B8E /* FolioWidgets */,
+				B10C0DE0000000000000000A /* FolioNotificationContent */,
 				9F75055B5BAB749AFEA6E476 /* Planner */,
 				015FD379A8B9657FF4E3E7C7 /* PlannerTests */,
 				E9A949E9A6596932E120989F /* FolioUITests */,
@@ -418,6 +482,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CD8BE34E50D05E439A06A4C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B10C0DE00000000000000009 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -462,6 +533,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B10C0DE00000000000000008 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -489,6 +567,12 @@
 			isa = PBXTargetDependency;
 			target = 9F75055B5BAB749AFEA6E476 /* Planner */;
 			targetProxy = 94C2E509CE2CCCE83897DEA2 /* PBXContainerItemProxy */;
+		};
+		B10C0DE0000000000000000B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = B10C0DE0000000000000000A /* FolioNotificationContent */;
+			targetProxy = B10C0DE00000000000000003 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -984,6 +1068,64 @@
 			};
 			name = Release;
 		};
+		B10C0DE0000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationContent/Info.plist;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					UserNotificationsUI,
+				);
+				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio.NotificationContent;
+				PRODUCT_NAME = FolioNotificationContent;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B10C0DE0000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationContent/Info.plist;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					UserNotificationsUI,
+				);
+				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tsubuzaki.Folio.NotificationContent;
+				PRODUCT_NAME = FolioNotificationContent;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1037,6 +1179,15 @@
 			buildConfigurations = (
 				0AA063ED697C594D47A23FB7 /* Debug */,
 				1B0A9AEC288CB72B1EF65BD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B10C0DE0000000000000000E /* Build configuration list for PBXNativeTarget "FolioNotificationContent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B10C0DE0000000000000000C /* Debug */,
+				B10C0DE0000000000000000D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

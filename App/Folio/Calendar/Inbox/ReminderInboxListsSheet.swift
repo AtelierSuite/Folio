@@ -8,7 +8,8 @@ struct ReminderInboxListsSheet: View {
             CalendarVisibilityView()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button(String(localized: "Inbox.Close", table: "Reminders")) { dismiss() }
+                        Button(role: .confirm) { dismiss() }
+                            .accessibilityLabel(String(localized: "Inbox.Close", table: "Reminders"))
                     }
                 }
         }

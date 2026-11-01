@@ -49,18 +49,20 @@ struct TimelinePageHeaderView: View {
 
 struct TimelineDayHeaderLabel: View {
     @Environment(\.alternateCalendarFormatter) private var alternateCalendarFormatter
+    @Environment(\.dayHighlighter) private var dayHighlighter
     let day: DateInterval
     let calendar: Calendar
 
     var body: some View {
         let isToday = calendar.isDateInToday(day.start)
+        let isHighlighted = dayHighlighter.isHighlighted(day.start, calendar: calendar)
         VStack(spacing: 2) {
             Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).weekday(.abbreviated)))
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.secondary))
             Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).day()))
                 .font(.callout.weight(isToday ? .bold : .regular))
-                .foregroundStyle(isToday ? .white : .primary)
+                .foregroundStyle(isToday ? .white : isHighlighted ? Color.dayHighlight : .primary)
                 .lineLimit(1)
                 .fixedSize()
                 .padding(.horizontal, 6)
@@ -73,8 +75,11 @@ struct TimelineDayHeaderLabel: View {
     }
 
     private var accessibilityLabel: String {
-        let gregorianDate = day.start.formatted(Date.FormatStyle(date: .complete, timeZone: calendar.timeZone))
-        guard let alternateCalendarFormatter else { return gregorianDate }
-        return "\(gregorianDate), \(alternateCalendarFormatter.fullDate(for: day.start))"
+        let labels = [
+            day.start.formatted(Date.FormatStyle(date: .complete, timeZone: calendar.timeZone)),
+            alternateCalendarFormatter?.fullDate(for: day.start),
+            dayHighlighter.holidayName(on: day.start, calendar: calendar)
+        ]
+        return labels.compactMap(\.self).joined(separator: ", ")
     }
 }

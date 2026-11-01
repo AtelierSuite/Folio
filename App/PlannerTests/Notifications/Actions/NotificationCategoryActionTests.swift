@@ -33,9 +33,21 @@ struct NotificationCategoryActionTests {
     }
 
     @Test func snoozeDurations() {
-        #expect(NotificationAction.snoozeShort.snoozeDuration == 300)
-        #expect(NotificationAction.snoozeLong.snoozeDuration == 900)
-        #expect(NotificationAction.markDone.snoozeDuration == nil)
+        #expect(NotificationAction.snoozeShort.snoozeDuration(in: .standard) == 300)
+        #expect(NotificationAction.snoozeLong.snoozeDuration(in: .standard) == 900)
+        #expect(NotificationAction.markDone.snoozeDuration(in: .standard) == nil)
+        let custom = NotificationSnoozeDurations(shortMinutes: 10, longMinutes: 120)
+        #expect(NotificationAction.snoozeShort.snoozeDuration(in: custom) == 600)
+        #expect(NotificationAction.snoozeLong.snoozeDuration(in: custom) == 7200)
+    }
+
+    @Test func snoozeTitlesFollowTheChosenDurations() {
+        let custom = NotificationSnoozeDurations(shortMinutes: 10, longMinutes: 120)
+        let category = NotificationCategoryRegistry.makeCategory(.reminder, snoozing: custom)
+        let titles = category.actions.map(\.title)
+        #expect(titles.contains(NotificationAction.snoozeShort.title(snoozing: custom)))
+        #expect(titles.contains(NotificationAction.snoozeLong.title(snoozing: custom)))
+        #expect(NotificationAction.snoozeShort.title(snoozing: custom) != NotificationAction.snoozeShort.title)
     }
 
     @Test func registeredCategoriesCarryTheirActions() {
@@ -59,7 +71,7 @@ struct NotificationCategoryActionTests {
     }
 
     @Test func everyProviderVariantIsRegistered() {
-        let identifiers = Set(NotificationCategoryRegistry.allCategories.map(\.identifier))
+        let identifiers = Set(NotificationCategoryRegistry.allCategories(snoozing: .standard).map(\.identifier))
         for provider in MeetingProvider.allCases {
             #expect(identifiers.contains(NotificationCategory.eventWithMeeting.identifier(joining: provider)))
             #expect(identifiers.contains(NotificationCategory.eventWithMeetingAndPlace.identifier(joining: provider)))

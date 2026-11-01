@@ -10,7 +10,7 @@ public final class NotesLibrary {
         didSet { updateLinkedNotes() }
     }
     public internal(set) var linkedNotes = LinkedNoteIndex()
-    public internal(set) var noteLinks: [String: NoteLink] = [:]
+    public internal(set) var noteLinks: [String: [NoteLink]] = [:]
     /// Called with the links removed with their notes, so the events can drop the notes' URLs.
     @ObservationIgnored public var onLinksRemoved: (([NoteLink]) -> Void)?
     public internal(set) var trashedNotes: [NoteFile] = []

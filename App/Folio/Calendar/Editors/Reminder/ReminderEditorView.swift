@@ -91,12 +91,14 @@ struct ReminderEditorView: View {
             }
         } else {
             ToolbarItem(placement: .cancellationAction) {
-                Button(String(localized: "Action.Cancel", table: "ReminderEditor"), role: .cancel) { dismiss() }
+                Button(role: .cancel) { dismiss() }
+                    .accessibilityLabel(String(localized: "Action.Cancel", table: "ReminderEditor"))
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button(String(localized: "Action.Save", table: "ReminderEditor")) {
+                Button(role: .confirm) {
                     Task { await save() }
                 }
+                .accessibilityLabel(String(localized: "Action.Save", table: "ReminderEditor"))
                 .disabled(!draft.isValid || isWorking)
             }
         }

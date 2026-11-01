@@ -3,7 +3,7 @@ import SwiftUI
 
 struct NoteEventPickerList: View {
     let events: [CalendarEvent]?
-    let linkedKey: String?
+    let isLinked: (CalendarEvent) -> Bool
     let onSelect: (CalendarEvent) -> Void
 
     var body: some View {
@@ -16,7 +16,7 @@ struct NoteEventPickerList: View {
                 Button {
                     onSelect(event)
                 } label: {
-                    NoteEventPickerRow(event: event, isLinked: event.reference.storageKey == linkedKey)
+                    NoteEventPickerRow(event: event, isLinked: isLinked(event))
                 }
                 .buttonStyle(.plain)
             }

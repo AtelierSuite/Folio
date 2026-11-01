@@ -18,6 +18,7 @@ struct FolioApp: App {
     @State private var notificationNavigator = NotificationNavigator()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
+    @State private var travelTimeStore = TravelTimeStore()
     @State private var sleepStore: SleepStore
     @State private var systemTime = SystemTimeObserver()
     @State private var undoCoordinator: UndoCoordinator
@@ -45,6 +46,7 @@ struct FolioApp: App {
         ))
         _permissionCenter = State(initialValue: PermissionCenter(calendarStore: calendarStore, capabilities: .current))
         let notesLibrary = NotesLibrary(searchIndexer: NoteSpotlightIndexer(), index: .persistent())
+        notificationScheduler.attachesLinkedNoteImages(from: notesLibrary)
         _noteLinkMaintenance = State(
             initialValue: NoteLinkMaintenance(library: notesLibrary, calendarStore: calendarStore)
         )
@@ -86,9 +88,12 @@ struct FolioApp: App {
                 .environment(wakeUpAlarms)
                 .environment(notificationNavigator)
                 .environment(weatherStore)
+            .environment(travelTimeStore)
+                .environment(travelTimeStore)
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
                 .notificationReplanTriggers(notificationScheduler)
+                .replansNotificationsOnLinkedNoteChanges(notificationScheduler, library: notesLibrary)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
                 .opensNoteDeepLinks(library: notesLibrary, navigator: noteNavigator)
                 .opensMeetingJoinDeepLinks()
@@ -133,6 +138,7 @@ struct FolioApp: App {
             .environment(wakeUpAlarms)
             .environment(searchIndexer)
             .environment(weatherStore)
+            .environment(travelTimeStore)
             .environment(sleepStore)
             .followsSystemTime(systemTime)
         }

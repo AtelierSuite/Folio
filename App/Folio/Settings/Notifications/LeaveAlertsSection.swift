@@ -14,7 +14,10 @@ struct LeaveAlertsSection: View {
             .disabled(!leaveAlerts.isSupported || !scheduler.isEnabled)
             .accessibilityIdentifier("LeaveAlertsToggle")
             if leaveAlerts.isSupported && leaveAlerts.isEnabled {
-                TravelTransportPicker()
+                TravelTransportPicker(selection: Binding(
+                    get: { leaveAlerts.transport },
+                    set: { newValue in Task { await leaveAlerts.setTransport(newValue) } }
+                ), accessibilityIdentifier: "TravelTransportPicker")
                 LeaveAlarmRows()
                 LocationAlertAccessRows(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
             }
