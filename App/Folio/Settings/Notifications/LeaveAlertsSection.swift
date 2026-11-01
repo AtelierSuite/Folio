@@ -18,7 +18,6 @@ struct LeaveAlertsSection: View {
                     get: { leaveAlerts.transport },
                     set: { newValue in Task { await leaveAlerts.setTransport(newValue) } }
                 ), accessibilityIdentifier: "TravelTransportPicker")
-                LeaveAlarmRows()
                 LocationAlertAccessRows(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
             }
         } header: {

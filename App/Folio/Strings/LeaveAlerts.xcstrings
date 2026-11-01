@@ -391,6 +391,71 @@
         }
       }
     },
+    "Settings.AlarmFooter": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufbruchshinweise als Wecker statt als Mitteilung klingeln lassen. Aktiviere dazu Aufbruchshinweise unter Mitteilungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ring time to leave alerts as alarms instead of notifications. Turn on Time to Leave Alerts in Notifications to use this."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faites sonner les alertes de départ comme des alarmes plutôt que comme des notifications. Activez Alertes de départ dans Notifications pour utiliser cette option."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fai suonare gli avvisi di partenza come sveglie invece che come notifiche. Per usare questa opzione, attiva Avvisi di partenza in Notifiche."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出発時刻の通知を、通知の代わりにアラームで知らせます。使用するには「通知」で「出発時刻の通知」をオンにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "출발 시간 알림을 일반 알림 대신 알람으로 울립니다. 이 기능을 사용하려면 알림에서 출발 시간 알림을 켜십시오."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laat vertrekmeldingen afgaan als wekker in plaats van als melding. Zet Vertrekmeldingen aan bij Meldingen om dit te gebruiken."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đổ chuông cảnh báo giờ khởi hành dưới dạng báo thức thay vì thông báo. Bật Cảnh báo giờ khởi hành trong Thông báo để sử dụng tính năng này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以闹钟而非通知的形式响铃出发时间提醒。要使用此功能，请在“通知”中打开“出发时间提醒”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以鬧鐘而非通知的形式響鈴出發時間提醒。若要使用此功能，請在「通知」中開啟「出發時間提醒」。"
+          }
+        }
+      }
+    },
     "Settings.Denied": {
       "extractionState": "manual",
       "localizations": {
