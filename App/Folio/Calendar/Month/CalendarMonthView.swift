@@ -9,6 +9,7 @@ struct CalendarMonthView: View {
     @State private var visibleMonth: Date?
     @State private var scrollPhase = ScrollPhase.idle
     @State private var pageSize = CGSize.zero
+    @State private var pageInsets = EdgeInsets()
 
     private static let window = SlidingPageWindow(radius: 24)
 
@@ -19,7 +20,9 @@ struct CalendarMonthView: View {
     var body: some View {
         ScrollView(.horizontal) {
             if pageSize != .zero {
-                CalendarMonthPageStack(months: months, pageSize: pageSize, calendar: navigation.calendar) { day in
+                CalendarMonthPageStack(
+                    months: months, pageSize: pageSize, pageInsets: pageInsets, calendar: navigation.calendar
+                ) { day in
                     navigation.show(day.date)
                     mode = .day
                 }
@@ -30,6 +33,13 @@ struct CalendarMonthView: View {
         .scrollIndicators(.hidden)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
         .onGeometryChange(for: CGSize.self) { $0.size } action: { pageSize = $0 }
+        // The scroll view pages by its full width, but in landscape it would size its pages to
+        // the safe area and lay them out off the paging grid, so it spans the screen and each
+        // page keeps clear of the safe area itself.
+        .ignoresSafeArea(.container, edges: .horizontal)
+        .onGeometryChange(for: EdgeInsets.self) { proxy in
+            EdgeInsets(top: 0, leading: proxy.safeAreaInsets.leading, bottom: 0, trailing: proxy.safeAreaInsets.trailing)
+        } action: { pageInsets = $0 }
         .onScrollPhaseChange { _, phase in
             scrollPhase = phase
             guard phase == .idle else { return }

@@ -6,6 +6,7 @@ import SwiftUI
 struct CalendarMonthPageStack: View {
     let months: [Date]
     let pageSize: CGSize
+    let pageInsets: EdgeInsets
     let calendar: Calendar
     let onSelectDay: (MonthDay) -> Void
 
@@ -13,6 +14,7 @@ struct CalendarMonthPageStack: View {
         LazyHStack(spacing: 0) {
             ForEach(months, id: \.self) { month in
                 CalendarMonthPageView(grid: MonthGrid(containing: month, calendar: calendar), onSelectDay: onSelectDay)
+                    .padding(pageInsets)
                     .containerRelativeFrame([.horizontal, .vertical])
             }
         }
