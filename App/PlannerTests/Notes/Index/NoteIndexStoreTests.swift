@@ -12,21 +12,34 @@ struct NoteIndexStoreTests {
         eventKey: "event-2", calendarIdentifier: "work", title: "Review", dayKey: "2026-11-01"
     )
 
-    @Test func linksANoteToOneEventAtATime() {
+    @Test func linksANoteToSeveralEvents() {
         let store = NoteIndexStore.inMemory()
         store.link(notePath: "a.md", in: "icloud", to: event)
         store.link(notePath: "a.md", in: "icloud", to: other)
-        #expect(store.links(in: "icloud").map(\.event) == [other])
+        store.link(notePath: "a.md", in: "icloud", to: event)
+        #expect(Set(store.links(in: "icloud").map(\.event)) == [event, other])
         #expect(store.links(in: "device").isEmpty)
     }
 
     @Test func keepsTheNewestOfDuplicatedLinks() {
         let store = NoteIndexStore.inMemory()
+        let renamed = NoteLinkEvent(
+            eventKey: "event-1", calendarIdentifier: "work", title: "Daily Standup", dayKey: "2026-10-31"
+        )
         store.context.insert(NoteLinkRecord(location: "icloud", notePath: "a.md", event: event, linkedAt: .distantPast))
+        store.context.insert(NoteLinkRecord(location: "icloud", notePath: "a.md", event: renamed, linkedAt: .now))
         store.context.insert(NoteLinkRecord(location: "icloud", notePath: "a.md", event: other, linkedAt: .now))
         store.save()
+        #expect(Set(store.links(in: "icloud").map(\.event)) == [renamed, other])
+        #expect(store.links(in: "icloud").count == 2)
+    }
+
+    @Test func unlinksANoteFromOneEvent() {
+        let store = NoteIndexStore.inMemory()
+        store.link(notePath: "a.md", in: "icloud", to: event)
+        store.link(notePath: "a.md", in: "icloud", to: other)
+        #expect(store.unlink(notePath: "a.md", from: "event-1", in: "icloud").map(\.event) == [event])
         #expect(store.links(in: "icloud").map(\.event) == [other])
-        #expect(store.links(in: "icloud").count == 1)
     }
 
     @Test func unlinksByNoteOrEventAndFollowsRenames() {

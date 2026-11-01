@@ -21,6 +21,16 @@ public struct NoteLinkEvent: Hashable, Sendable {
             dayKey: DailyNoteNaming.dayKey(for: event.startDate, timeZone: timeZone)
         )
     }
+
+    /// Also matches a link made before the event's identifiers changed, as `LinkedNoteIndex` does.
+    public func matches(_ event: CalendarEvent) -> Bool {
+        let reference = event.reference
+        if eventKey == reference.storageKey {
+            return true
+        }
+        guard let linked = CalendarItemReference(storageKey: eventKey) else { return false }
+        return reference.bestMatch(in: [linked]) != nil
+    }
 }
 
 public struct NoteLink: Hashable, Sendable {

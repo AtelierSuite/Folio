@@ -54,6 +54,17 @@ struct LinkedNoteIndexTests {
         #expect(index.note(linkedTo: reference)?.title == "New")
     }
 
+    @Test func findsANoteFromEachOfItsEvents() {
+        let standup = Fixtures.reference()
+        let review = Fixtures.reference(external: "external-2", local: "local-2")
+        let index = LinkedNoteIndex(notes: [
+            note("Project.md", event: standup.storageKey),
+            note("Project.md", event: review.storageKey)
+        ])
+        #expect(index.note(linkedTo: standup)?.title == "Project")
+        #expect(index.note(linkedTo: review)?.title == "Project")
+    }
+
     @Test func findsTheDailyNoteByItsPathOnly() {
         let day = Fixtures.date(2026, 10, 29, hour: 15)
         let index = LinkedNoteIndex(notes: [

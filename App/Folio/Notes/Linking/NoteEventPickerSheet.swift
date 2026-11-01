@@ -17,11 +17,10 @@ struct NoteEventPickerSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                if linkedKey != nil {
-                    Section {
-                        Button(String(localized: "LinkEvent.Remove", table: "LinkedNotes"), role: .destructive) {
-                            library.unlink(noteURL)
-                            dismiss()
+                if !links.isEmpty {
+                    Section(String(localized: "LinkEvent.Linked", table: "LinkedNotes")) {
+                        NoteLinkedEventList(links: links) { link in
+                            library.unlink(noteURL, fromEventKey: link.event.eventKey)
                         }
                     }
                 }
@@ -33,7 +32,7 @@ struct NoteEventPickerSheet: View {
                     )
                 }
                 Section(String(localized: "LinkEvent.Events", table: "LinkedNotes")) {
-                    NoteEventPickerList(events: events, linkedKey: linkedKey, onSelect: link)
+                    NoteEventPickerList(events: events, isLinked: isLinked, onSelect: toggleLink)
                 }
             }
             .permissionGate(.calendar)
@@ -42,8 +41,8 @@ struct NoteEventPickerSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(role: .confirm) {
                         dismiss()
                     }
                 }
@@ -70,17 +69,24 @@ struct NoteEventPickerSheet: View {
         let authorization: CalendarAuthorizationStatus
     }
 
-    private var linkedKey: String? {
-        library.eventLink(forNote: noteURL)?.event.eventKey
+    private var links: [NoteLink] {
+        library.eventLinks(forNote: noteURL).sorted { ($0.event.dayKey, $0.linkedAt) < ($1.event.dayKey, $1.linkedAt) }
     }
 
-    private func link(_ event: CalendarEvent) {
+    private func isLinked(_ event: CalendarEvent) -> Bool {
+        library.eventLink(forNote: noteURL, to: event) != nil
+    }
+
+    private func toggleLink(_ event: CalendarEvent) {
+        if let link = library.eventLink(forNote: noteURL, to: event) {
+            library.unlink(noteURL, fromEventKey: link.event.eventKey)
+            return
+        }
         library.link(noteURL, to: event)
         if LinkedNoteSettings.writesLinkToEvent(), let deepLink = library.deepLink(for: noteURL) {
             Task {
                 _ = try? await calendarStore.addNoteLink(deepLink, to: event)
             }
         }
-        dismiss()
     }
 }
