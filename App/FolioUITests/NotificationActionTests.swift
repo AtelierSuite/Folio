@@ -45,7 +45,7 @@ final class NotificationActionTests: XCTestCase {
         XCUIDevice.shared.press(.home)
 
         let alert = expandDeliveredAlert(titled: "Folio Test Meeting")
-        XCTAssertTrue(alert.buttons["Join Meeting"].firstMatch.exists)
+        XCTAssertTrue(alert.buttons["Join Zoom"].firstMatch.exists)
         XCTAssertTrue(alert.buttons["Directions"].firstMatch.exists)
         attachScreenshot(named: "MeetingActions")
         deliveredAlert(titled: "Folio Test Meeting").tap()
@@ -120,7 +120,7 @@ final class NotificationActionTests: XCTestCase {
         XCTAssertTrue(banner.waitForExistence(timeout: 150))
         banner.press(forDuration: 1.5)
         if !springboard.buttons["Mark as Done"].waitForExistence(timeout: 3),
-           !springboard.buttons["Join Meeting"].exists {
+           !springboard.buttons["Join Zoom"].exists {
             openNotificationCenter()
             deliveredAlert(titled: title).press(forDuration: 1.5)
         }
