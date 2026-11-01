@@ -8,16 +8,20 @@ extension NotificationPlanner {
         reminders: [ReminderItem],
         after now: Date,
         budget: Int,
-        alarmBudget: Int?
+        alarmBudget: Int?,
+        eventImages: [CalendarItemReference: URL] = [:]
     ) -> NotificationPlan {
-        let everything = plan(events: events, reminders: reminders, after: now, budget: .max)
+        let everything = plan(events: events, reminders: reminders, after: now, budget: .max, eventImages: eventImages)
             .map { alarmBudget != nil || $0.style != .alarm ? $0 : $0.restyled(.timeSensitive) }
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
-        let alarms = everything.filter { $0.style == .alarm }
-        let notifications = everything.filter { $0.style != .alarm }
+        let allAlarms = everything.filter { $0.style == .alarm }
+        let alarms = Array(allAlarms.prefix(max(0, alarmBudget ?? 0)))
+        let overflow = allAlarms.dropFirst(alarms.count).map { $0.restyled(.timeSensitive) }
+        let notifications = (everything.filter { $0.style != .alarm } + overflow)
+            .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         return NotificationPlan(
             notifications: Array(notifications.prefix(max(0, budget))),
-            alarms: Array(alarms.prefix(max(0, alarmBudget ?? 0)))
+            alarms: alarms
         )
     }
 }

@@ -14,7 +14,8 @@ struct NotificationResponseHandlerTests {
             reminders: target,
             routing: target,
             replan: { [target] in target.replanCount += 1 },
-            clock: { NotificationFixtures.now }
+            clock: { NotificationFixtures.now },
+            snoozeDurations: { .standard }
         )
     }
 

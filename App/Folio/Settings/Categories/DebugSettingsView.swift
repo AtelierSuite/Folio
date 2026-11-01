@@ -6,6 +6,7 @@ struct DebugSettingsView: View {
         Form {
             TimelineDebugSettingsSection()
             MarkdownDebugSection()
+            WakeUpAlarmDebugSection()
         }
         .settingsCategoryStyle(.debug)
     }

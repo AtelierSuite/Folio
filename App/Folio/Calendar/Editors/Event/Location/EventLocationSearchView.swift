@@ -52,9 +52,10 @@ struct EventLocationSearchView: View {
             #endif
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "Cancel", table: "EventEditor"), role: .cancel) {
+                    Button(role: .cancel) {
                         dismiss()
                     }
+                    .accessibilityLabel(String(localized: "Cancel", table: "EventEditor"))
                 }
             }
         }

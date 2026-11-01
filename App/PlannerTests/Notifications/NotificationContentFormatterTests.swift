@@ -33,6 +33,17 @@ struct NotificationContentFormatterTests {
         #expect(dayBefore.hasSuffix(" · \(NotificationContentFormatter.allDayText)"))
     }
 
+    @Test func alarmTitleAddsTheStartTime() {
+        let event = NotificationFixtures.event("Standup", start: start, location: "Room 4")
+        #expect(formatter.content(for: event, firingAt: start).alarmTitle == "Standup · 9:00")
+        let dayBefore = formatter.content(for: event, firingAt: start.addingTimeInterval(-86_400)).alarmTitle
+        #expect(dayBefore.hasPrefix("Standup · "))
+        #expect(dayBefore.contains("29"))
+        let day = Fixtures.date(2026, 10, 29)
+        let allDay = NotificationFixtures.event("Holiday", start: day, hours: 24, isAllDay: true)
+        #expect(formatter.content(for: allDay, firingAt: start).alarmTitle == "Holiday")
+    }
+
     @Test func eventWithoutLocationHasNoSeparator() {
         let content = formatter.content(for: NotificationFixtures.event("Focus", start: start), firingAt: start)
         #expect(!content.body.contains("·"))

@@ -17,6 +17,9 @@ struct TimelinePageGridView: View {
             TimelineHourGridView(dayCount: layout.days.count, hourHeight: hourHeight)
                 .timelineCreationTap(days: layout.days, hourHeight: hourHeight)
             TimelineLayersView(layers: layers.filter { $0.placement == .belowEntries }, context: context)
+            TimelineTravelTimeView(
+                layout: layout, hourHeight: hourHeight, draggedEntryIdentifier: drag?.session?.entry.id
+            )
             TimelineCardsView(
                 layout: layout,
                 hourHeight: hourHeight,

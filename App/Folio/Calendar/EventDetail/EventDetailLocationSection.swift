@@ -30,9 +30,28 @@ struct EventDetailLocationSection: View {
                     Marker(location.title, coordinate: center)
                 }
                 .frame(height: 180)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
                 .allowsHitTesting(false)
+                .overlay {
+                    Button {
+                        openInMaps(at: center)
+                    } label: {
+                        Color.clear
+                            .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(String(localized: "Event.Location.OpenInMaps", table: "Calendar"))
+                }
+                .listRowInsets(EdgeInsets())
             }
         }
+    }
+
+    private func openInMaps(at center: CLLocationCoordinate2D) {
+        let mapItem = MKMapItem(
+            location: CLLocation(latitude: center.latitude, longitude: center.longitude),
+            address: nil
+        )
+        mapItem.name = location.title
+        mapItem.openInMaps()
     }
 }

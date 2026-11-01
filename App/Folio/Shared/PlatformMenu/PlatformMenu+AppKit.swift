@@ -18,7 +18,8 @@ extension PlatformMenu {
         let item = NSMenuItem(title: entry.title, action: #selector(PlatformMenuActionTarget.run), keyEquivalent: "")
         item.target = target
         item.representedObject = target
-        item.image = NSImage(systemSymbolName: entry.systemImage, accessibilityDescription: nil)
+        item.image = entry.symbolColor.flatMap { NSImage.coloredSymbol(entry.systemImage, color: $0) }
+            ?? NSImage(systemSymbolName: entry.systemImage, accessibilityDescription: nil)
         item.setAccessibilityIdentifier(entry.identifier)
         if !entry.children.isEmpty {
             let submenu = NSMenu(title: entry.title)

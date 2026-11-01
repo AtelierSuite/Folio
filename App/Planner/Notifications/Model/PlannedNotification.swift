@@ -8,9 +8,12 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let content: NotificationContent
     public let meeting: NotificationMeeting?
     public let place: NotificationPlace?
+    /// The first image in the event's linked note, shown as the alert's thumbnail.
+    public let imageURL: URL?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
     public let sound: NotificationSound
+    public let color: PlannerColor?
 
     public init(
         _ candidate: NotificationCandidate,
@@ -27,9 +30,11 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.content = candidate.content
         self.meeting = candidate.meeting
         self.place = candidate.place
+        self.imageURL = candidate.imageURL
         self.category = category
         self.style = style
         self.sound = sound
+        self.color = candidate.color
     }
 
     public var categoryIdentifier: String {

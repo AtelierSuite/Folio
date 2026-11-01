@@ -9,6 +9,7 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case leaveAlerts
     case weather
     case invitationResponses
+    case notificationThumbnails
     case calendarPagingButtons
     case timelineZoomMenu
 }

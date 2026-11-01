@@ -30,10 +30,6 @@ struct CalendarView: View {
                         pendingInvitationCount: pendingInvitationCount
                     )
                 }
-                .inspector(isPresented: $isShowingInbox) {
-                    ReminderInboxView(isPresented: $isShowingInbox)
-                        .inspectorColumnWidth(min: 260, ideal: 320, max: 420)
-                }
                 .sheet(item: $composer) { composer in
                     switch composer {
                     case .newEvent: EventEditorView(initialDate: navigation.selectedDate)
@@ -41,8 +37,13 @@ struct CalendarView: View {
                     }
                 }
         }
+        .inspector(isPresented: $isShowingInbox) {
+            ReminderInboxView(isPresented: $isShowingInbox)
+                .inspectorColumnWidth(min: 260, ideal: 320, max: 420)
+        }
         .calendarItemSheet(request: $itemRequest)
         .providesAlternateCalendar()
+        .providesDayHighlights()
         .environment(navigation)
         .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)

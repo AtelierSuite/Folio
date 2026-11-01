@@ -1,7 +1,7 @@
 import Foundation
 
 /// Keeps links and events in step: notes whose event was deleted are unlinked, and events whose linked note was
-/// deleted lose the note's `folio://` URL.
+/// deleted lose the note's `folio://` URL once no other note is linked to them.
 @MainActor
 public final class NoteLinkMaintenance {
     static let missingEventGrace: TimeInterval = 6 * 60 * 60
@@ -23,7 +23,7 @@ public final class NoteLinkMaintenance {
         guard calendarStore.eventAuthorization.allowsReading, let location = library.indexLocation else { return }
         let prefix = "event:\(location)/"
         var missingKeys = Set<String>()
-        for link in library.noteLinks.values {
+        for link in library.noteLinks.values.joined() {
             guard let reference = CalendarItemReference(storageKey: link.event.eventKey) else { continue }
             let key = prefix + link.event.eventKey
             switch await calendarStore.containsEvent(matching: reference) {
@@ -45,7 +45,8 @@ public final class NoteLinkMaintenance {
         for link in links {
             guard let reference = CalendarItemReference(storageKey: link.event.eventKey),
                   let day = DailyNoteNaming.date(forDayKey: link.event.dayKey),
-                  let event = await calendarStore.event(matching: reference, on: day) else {
+                  let event = await calendarStore.event(matching: reference, on: day),
+                  library.linkedNote(for: event) == nil else {
                 continue
             }
             _ = try? await calendarStore.removeNoteLink(from: event)

@@ -9,7 +9,8 @@ extension PlatformMenu {
     }
 
     private func element(for entry: Entry) -> UIMenuElement {
-        let image = UIImage(systemName: entry.systemImage)
+        let image = entry.symbolColor.flatMap { UIImage.coloredSymbol(entry.systemImage, color: $0) }
+            ?? UIImage(systemName: entry.systemImage)
         guard entry.children.isEmpty else {
             return UIMenu(title: entry.title, image: image, children: entry.children.map(element(for:)))
         }

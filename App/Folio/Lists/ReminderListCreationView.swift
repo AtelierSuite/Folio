@@ -52,12 +52,14 @@ struct ReminderListCreationView: View {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button(String(localized: "NewList.Cancel", table: "Lists"), role: .cancel) { dismiss() }
+            Button(role: .cancel) { dismiss() }
+                .accessibilityLabel(String(localized: "NewList.Cancel", table: "Lists"))
         }
         ToolbarItem(placement: .confirmationAction) {
-            Button(String(localized: "NewList.Create", table: "Lists")) {
+            Button(role: .confirm) {
                 Task { await create() }
             }
+            .accessibilityLabel(String(localized: "NewList.Create", table: "Lists"))
             .disabled(!draft.isValid || isWorking)
             .accessibilityIdentifier("NewListCreate")
         }

@@ -1,0 +1,76 @@
+import Foundation
+import Testing
+@testable import Planner
+
+@MainActor
+struct WakeUpAlarmCenterTests {
+    private let now = Fixtures.date(2026, 10, 29, hour: 3)
+    private let standup = NotificationFixtures.event("standup", start: Fixtures.date(2026, 10, 29, hour: 9))
+
+    private func makeCenter(
+        events: [CalendarEvent],
+        alarms: FakeAlarmClient = FakeAlarmClient(),
+        platform: DevicePlatform = .iPhone
+    ) throws -> WakeUpAlarmCenter {
+        let defaults = try #require(UserDefaults(suiteName: "WakeUpAlarmCenterTests.\(UUID().uuidString)"))
+        let now = now
+        return WakeUpAlarmCenter(
+            capabilities: PlatformCapabilities(platform: platform, areLiveActivitiesSupported: false),
+            source: FakeCalendarDataSource(events: events),
+            settings: WakeUpAlarmSettings(defaults: defaults),
+            visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
+            alarmClient: alarms,
+            ledger: AlarmLedger(key: "Wake", defaults: defaults),
+            formatter: NotificationFixtures.formatter,
+            clock: { now }
+        )
+    }
+
+    @Test func enablingSchedulesASnoozableAlarmForTheFirstEvent() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        let scheduled = try #require(alarms.scheduledAlarms.first)
+        #expect(alarms.scheduledCount == 1)
+        #expect(scheduled.fireDate == Fixtures.date(2026, 10, 29).addingTimeInterval(7.5 * 3600))
+        #expect(scheduled.title.contains("standup"))
+        #expect(scheduled.title.contains("9:00"))
+        #expect(scheduled.secondaryAction == .snooze(WakeUpAlarmPlanner.snoozeDuration))
+        #expect(center.upcomingAlarms.map(\.event.title) == ["standup"])
+    }
+
+    @Test func changingTheLeadTimeReschedulesAndDisablingCancels() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        await center.setLeadMinutes(60)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 8)])
+        await center.setEnabled(false)
+        #expect(alarms.scheduledCount == 0)
+        #expect(center.upcomingAlarms.isEmpty)
+    }
+
+    @Test func leavesOtherFeaturesAlarmsAlone() async throws {
+        let foreign = UUID()
+        let alarms = FakeAlarmClient(foreignIdentifiers: [foreign])
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        await center.setEnabled(false)
+        #expect(await alarms.scheduledIdentifiers() == [foreign])
+    }
+
+    @Test func deniedPermissionSchedulesNothing() async throws {
+        let alarms = FakeAlarmClient(authorization: .denied)
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        #expect(alarms.scheduledCount == 0)
+        #expect(center.authorization == .denied)
+    }
+
+    @Test func macDoesNotSupportWakeUpAlarms() async throws {
+        let center = try makeCenter(events: [standup], platform: .mac)
+        await center.setEnabled(true)
+        #expect(!center.isSupported)
+        #expect(!center.isEnabled)
+    }
+}

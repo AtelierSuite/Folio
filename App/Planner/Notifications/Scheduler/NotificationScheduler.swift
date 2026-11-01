@@ -33,10 +33,11 @@ public final class NotificationScheduler {
     @ObservationIgnored var debouncedReplan: Task<Void, Never>?
     @ObservationIgnored var periodicReplanning: Task<Void, Never>?
     @ObservationIgnored public var didReplan: (@MainActor () async -> Void)?
+    @ObservationIgnored var eventImages: (@MainActor ([CalendarEvent]) async -> [CalendarItemReference: URL])?
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
-        center: any NotificationCenterClient = UserNotificationCenterClient(),
+        center: (any NotificationCenterClient)? = nil,
         alarmClient: (any AlarmSchedulingClient)? = nil,
         alarmLedger: AlarmLedger = AlarmLedger(),
         settings: NotificationSettings = NotificationSettings(),
@@ -50,7 +51,7 @@ public final class NotificationScheduler {
         clock: @escaping @Sendable () -> Date = { .now }
     ) {
         self.source = source
-        self.center = center
+        self.center = center ?? UserNotificationCenterClient(capabilities: capabilities)
         self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
         self.alarmLedger = alarmLedger
         self.settings = settings
@@ -102,14 +103,16 @@ public final class NotificationScheduler {
         let plan = isEnabled && authorization.allowsScheduling
             ? await plan(after: now, budget: budget)
             : .empty
-        let diff = NotificationPlanDiff(planned: plan.notifications, pendingIdentifiers: pendingIdentifiers)
+        let alarms = await replanAlarms(plan.alarms)
+        let notifications = plan.notifications(adding: alarms.fallbacks, budget: budget)
+        let diff = NotificationPlanDiff(planned: notifications, pendingIdentifiers: pendingIdentifiers)
         await center.removePending(withIdentifiers: diff.identifiersToRemove)
         var addedCount = 0
         for notification in diff.notificationsToAdd where (try? await center.add(notification, now: now)) != nil {
             addedCount += 1
         }
-        let alarmCount = await replanAlarms(plan.alarms)
-        let scheduledCount = plan.notifications.count - diff.notificationsToAdd.count + addedCount
+        let alarmCount = alarms.count
+        let scheduledCount = notifications.count - diff.notificationsToAdd.count + addedCount
         lastReport = NotificationReplanReport(
             date: now,
             budget: budget,
@@ -129,12 +132,15 @@ public final class NotificationScheduler {
         let reminders = includesReminders
             ? await source.reminders(completedIn: DateInterval(start: now, duration: 0))
             : []
+        let visibleEvents = events.filter { !hiddenCalendars.contains($0.calendarIdentifier) }
+        let images = await eventImages?(visibleEvents.filter { !$0.alarms.isEmpty }) ?? [:]
         return planner.plan(
-            events: events.filter { !hiddenCalendars.contains($0.calendarIdentifier) },
+            events: visibleEvents,
             reminders: reminders.filter { !hiddenCalendars.contains($0.listIdentifier) },
             after: now,
             budget: budget,
-            alarmBudget: alarmAuthorization.allowsScheduling ? NotificationPlanner.alarmLimit : nil
+            alarmBudget: alarmAuthorization.allowsScheduling ? NotificationPlanner.alarmLimit : nil,
+            eventImages: images
         )
     }
 }

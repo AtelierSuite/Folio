@@ -45,8 +45,12 @@ final class NotificationActionTests: XCTestCase {
         XCUIDevice.shared.press(.home)
 
         let alert = expandDeliveredAlert(titled: "Folio Test Meeting")
-        XCTAssertTrue(alert.buttons["Join Meeting"].firstMatch.exists)
+        XCTAssertTrue(alert.buttons["Join Zoom"].firstMatch.exists)
         XCTAssertTrue(alert.buttons["Directions"].firstMatch.exists)
+        let detail = alert.descendants(matching: .any)
+        XCTAssertTrue(detail["NotificationDetail.Title"].firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(detail["NotificationDetail.Time"].firstMatch.exists)
+        XCTAssertTrue(detail["NotificationDetail.Meeting"].firstMatch.exists)
         attachScreenshot(named: "MeetingActions")
         deliveredAlert(titled: "Folio Test Meeting").tap()
         let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
@@ -83,7 +87,7 @@ final class NotificationActionTests: XCTestCase {
 
     @MainActor
     private func enableNotifications(in app: XCUIApplication) {
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
         let toggle = app.switches["NotificationsEnabledToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
@@ -95,7 +99,12 @@ final class NotificationActionTests: XCTestCase {
             }
         }
         let scheduledCount = app.descendants(matching: .any)["NotificationsScheduledCount"]
-        XCTAssertTrue(scheduledCount.waitForExistence(timeout: 10))
+        var swipes = 0
+        while !scheduledCount.waitForExistence(timeout: 2), swipes < 4 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(scheduledCount.exists)
         let hasScheduled = NSPredicate { _, _ in !scheduledCount.label.hasSuffix(" 0") && scheduledCount.label != "0" }
         expectation(for: hasScheduled, evaluatedWith: nil)
         waitForExpectations(timeout: 15)
@@ -115,7 +124,7 @@ final class NotificationActionTests: XCTestCase {
         XCTAssertTrue(banner.waitForExistence(timeout: 150))
         banner.press(forDuration: 1.5)
         if !springboard.buttons["Mark as Done"].waitForExistence(timeout: 3),
-           !springboard.buttons["Join Meeting"].exists {
+           !springboard.buttons["Join Zoom"].exists {
             openNotificationCenter()
             deliveredAlert(titled: title).press(forDuration: 1.5)
         }

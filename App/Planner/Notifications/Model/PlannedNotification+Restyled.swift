@@ -3,7 +3,14 @@ import Foundation
 extension PlannedNotification {
     public var candidate: NotificationCandidate {
         NotificationCandidate(
-            fireDate: fireDate, kind: kind, reference: reference, content: content, meeting: meeting, place: place
+            fireDate: fireDate,
+            kind: kind,
+            reference: reference,
+            content: content,
+            meeting: meeting,
+            place: place,
+            color: color,
+            imageURL: imageURL
         )
     }
 

@@ -33,6 +33,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State private var eventActionsController = EventActionsController()
     @State private var events: [CalendarEvent] = []
     @State private var weather = WeatherSnapshot.empty
+    @State private var travelEstimates: [String: TravelEstimate] = [:]
     @State var zoom: TimelineZoomController
 
     init(
@@ -76,6 +77,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             )
             .environment(drag)
             .environment(\.weatherSnapshot, weather)
+            .environment(\.travelEstimates, travelEstimates)
             .reminderCompletion(
                 undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier
             )
@@ -99,6 +101,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             for: strip.intervals(aroundPage: settledPage, pageRadius: weatherPageRadius),
             calendar: strip.calendar, events: events, detail: .dailyAndHourly, into: $weather
         )
+        .loadsTravelTimes(for: events, into: $travelEstimates)
         .eventActionsHost(events: events, controller: eventActionsController) { drag.suppressesSelection }
         .onAppear {
             drag.onReleaseInPlace = { entry in

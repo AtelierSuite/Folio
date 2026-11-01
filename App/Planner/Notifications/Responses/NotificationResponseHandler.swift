@@ -10,6 +10,7 @@ public final class NotificationResponseHandler {
     let snoozePlanner: NotificationSnoozePlanner
     let replan: @MainActor () async -> Void
     let clock: @Sendable () -> Date
+    let snoozeDurations: @Sendable () -> NotificationSnoozeDurations
 
     public init(
         snoozes: any NotificationSnoozeClient = UserNotificationSnoozeClient(),
@@ -17,7 +18,10 @@ public final class NotificationResponseHandler {
         routing: any NotificationRouting,
         snoozePlanner: NotificationSnoozePlanner = NotificationSnoozePlanner(),
         replan: @escaping @MainActor () async -> Void,
-        clock: @escaping @Sendable () -> Date = { .now }
+        clock: @escaping @Sendable () -> Date = { .now },
+        snoozeDurations: @escaping @Sendable () -> NotificationSnoozeDurations = {
+            NotificationSnoozeSettings().durations
+        }
     ) {
         self.snoozes = snoozes
         self.reminders = reminders
@@ -25,11 +29,12 @@ public final class NotificationResponseHandler {
         self.snoozePlanner = snoozePlanner
         self.replan = replan
         self.clock = clock
+        self.snoozeDurations = snoozeDurations
     }
 
     public func handle(actionIdentifier: String, content: UNNotificationContent) async {
         let now = clock()
-        let router = NotificationResponseRouter(now: now)
+        let router = NotificationResponseRouter(now: now, snoozeDurations: snoozeDurations())
         guard let outcome = router.outcome(actionIdentifier: actionIdentifier, userInfo: content.userInfo) else {
             return
         }

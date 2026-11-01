@@ -22,6 +22,7 @@ struct CalendarMonthWeekdayHeaderView: View {
 }
 
 struct CalendarMonthWeekdayLabel: View {
+    @Environment(\.dayHighlighter) private var dayHighlighter
     let weekday: Int
     let calendar: Calendar
 
@@ -31,8 +32,12 @@ struct CalendarMonthWeekdayLabel: View {
             Text(calendar.veryShortStandaloneWeekdaySymbols[weekday - 1])
         }
         .font(.caption.weight(.medium))
-        .foregroundStyle(.secondary)
+        .foregroundStyle(labelStyle)
         .lineLimit(1)
         .accessibilityLabel(calendar.standaloneWeekdaySymbols[weekday - 1])
+    }
+
+    private var labelStyle: AnyShapeStyle {
+        dayHighlighter.isWeekend(weekday: weekday) ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.secondary)
     }
 }

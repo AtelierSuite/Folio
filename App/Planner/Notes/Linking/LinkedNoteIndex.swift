@@ -1,20 +1,20 @@
 import Foundation
 
-/// The links of every note in the library, kept in memory so finding an event's note or a day's note never
-/// reads files.
+/// The links of every note in the library, one entry per note and event, kept in memory so finding an event's
+/// note or a day's note never reads files.
 public struct LinkedNoteIndex: Sendable, Equatable {
-    public private(set) var notes: [URL: LinkedNote] = [:]
+    public private(set) var notes: Set<LinkedNote> = []
 
     public init(notes: [LinkedNote] = []) {
-        self.notes = Dictionary(notes.map { ($0.url, $0) }, uniquingKeysWith: { _, last in last })
+        self.notes = Set(notes)
     }
 
     public mutating func insert(_ note: LinkedNote) {
-        notes[note.url] = note
+        notes.insert(note)
     }
 
     public func note(linkedTo reference: CalendarItemReference) -> LinkedNote? {
-        let linkedNotes = notes.values.filter { $0.eventKey != nil }
+        let linkedNotes = notes.filter { $0.eventKey != nil }
         if let exact = Self.newest(linkedNotes.filter { $0.eventKey == reference.storageKey }) {
             return exact
         }
@@ -30,7 +30,7 @@ public struct LinkedNoteIndex: Sendable, Equatable {
     /// The note at `Daily/yyyy-MM-dd.md`.
     public func dailyNote(on date: Date, timeZone: TimeZone = .current) -> LinkedNote? {
         let dayKey = DailyNoteNaming.dayKey(for: date, timeZone: timeZone)
-        return Self.newest(notes.values.filter {
+        return Self.newest(notes.filter {
             DailyNoteNaming.dayKey(ofRelativePath: $0.file.relativePath) == dayKey
         })
     }
