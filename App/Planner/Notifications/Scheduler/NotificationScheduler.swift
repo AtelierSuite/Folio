@@ -100,6 +100,7 @@ public final class NotificationScheduler {
         let foreignCount = pendingIdentifiers.count(where: { !NotificationIdentifier.isOwned($0) })
         let budget = planner.budget(foreignPendingCount: foreignCount)
         let now = clock()
+        await dismissEndedNotifications(at: now)
         let plan = isEnabled && authorization.allowsScheduling
             ? await plan(after: now, budget: budget)
             : .empty

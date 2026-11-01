@@ -22,6 +22,7 @@ public struct UserNotificationLeaveAlertScheduler: LeaveAlertScheduling {
         let event = alert.event
         let planned = PlannedNotification(NotificationCandidate(
             fireDate: alert.fireDate,
+            endDate: event.endDate,
             kind: .event,
             reference: event.reference,
             content: formatter.leaveContent(for: alert),

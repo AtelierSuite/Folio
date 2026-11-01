@@ -2,6 +2,7 @@ import Foundation
 
 public struct NotificationCandidate: Sendable, Hashable {
     public let fireDate: Date
+    public let endDate: Date?
     public let kind: CalendarItemKind
     public let reference: CalendarItemReference
     public let content: NotificationContent
@@ -12,6 +13,7 @@ public struct NotificationCandidate: Sendable, Hashable {
 
     public init(
         fireDate: Date,
+        endDate: Date? = nil,
         kind: CalendarItemKind,
         reference: CalendarItemReference,
         content: NotificationContent,
@@ -21,6 +23,7 @@ public struct NotificationCandidate: Sendable, Hashable {
         imageURL: URL? = nil
     ) {
         self.fireDate = fireDate
+        self.endDate = endDate
         self.kind = kind
         self.reference = reference
         self.content = content

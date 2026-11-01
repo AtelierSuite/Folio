@@ -4,6 +4,7 @@ public enum NotificationUserInfo {
     static let kindKey = "kind"
     static let referenceKey = "reference"
     static let fireDateKey = "fireDate"
+    static let endDateKey = "endDate"
     static let meetingKey = "meeting"
 
     static func make(for notification: PlannedNotification) -> [String: Any] {
@@ -11,6 +12,9 @@ public enum NotificationUserInfo {
             kindKey: notification.kind.rawValue,
             fireDateKey: notification.fireDate.timeIntervalSince1970
         ]
+        if let endDate = notification.endDate {
+            userInfo[endDateKey] = endDate.timeIntervalSince1970
+        }
         if let data = try? JSONEncoder().encode(notification.reference) {
             userInfo[referenceKey] = data
         }
@@ -38,5 +42,9 @@ public enum NotificationUserInfo {
 
     public static func fireDate(from userInfo: [AnyHashable: Any]) -> Date? {
         (userInfo[fireDateKey] as? TimeInterval).map(Date.init(timeIntervalSince1970:))
+    }
+
+    public static func endDate(from userInfo: [AnyHashable: Any]) -> Date? {
+        (userInfo[endDateKey] as? TimeInterval).map(Date.init(timeIntervalSince1970:))
     }
 }

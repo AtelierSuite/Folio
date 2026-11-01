@@ -45,4 +45,20 @@ public struct UserNotificationCenterClient: NotificationCenterClient {
         guard !identifiers.isEmpty else { return }
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
+
+    public func deliveredEndDates() async -> [String: Date] {
+        var endDates: [String: Date] = [:]
+        for notification in await center.deliveredNotifications() {
+            let request = notification.request
+            if let endDate = NotificationUserInfo.endDate(from: request.content.userInfo) {
+                endDates[request.identifier] = endDate
+            }
+        }
+        return endDates
+    }
+
+    public func removeDelivered(withIdentifiers identifiers: [String]) async {
+        guard !identifiers.isEmpty else { return }
+        center.removeDeliveredNotifications(withIdentifiers: identifiers)
+    }
 }
