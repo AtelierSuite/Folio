@@ -3,6 +3,7 @@ import Foundation
 public struct LeaveAlertSettings: @unchecked Sendable {
     public static let isEnabledKey = "LeaveAlerts.Enabled"
     public static let transportKey = "LeaveAlerts.Transport"
+    public static let ringsAsAlarmKey = "LeaveAlerts.RingsAsAlarm"
 
     private let defaults: UserDefaults
 
@@ -18,5 +19,10 @@ public struct LeaveAlertSettings: @unchecked Sendable {
     public var transport: TravelTransport {
         get { defaults.string(forKey: Self.transportKey).flatMap(TravelTransport.init(rawValue:)) ?? .driving }
         nonmutating set { defaults.set(newValue.rawValue, forKey: Self.transportKey) }
+    }
+
+    public var ringsAsAlarm: Bool {
+        get { defaults.bool(forKey: Self.ringsAsAlarmKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.ringsAsAlarmKey) }
     }
 }

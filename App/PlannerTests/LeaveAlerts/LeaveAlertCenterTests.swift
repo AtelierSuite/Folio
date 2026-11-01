@@ -9,6 +9,7 @@ struct LeaveAlertCenterTests {
         let locator: FakeLeaveLocator?
         let estimator: FakeTravelTimeEstimator
         let scheduler: RecordingLeaveAlertScheduler
+        let alarms: FakeAlarmClient
         let clock: TestClock
     }
 
@@ -22,7 +23,8 @@ struct LeaveAlertCenterTests {
         isEnabled: Bool = true,
         authorization: ArrivalAuthorization = .always,
         travelTime: TimeInterval? = 1800,
-        enabledEvents: [CalendarEvent]? = nil
+        enabledEvents: [CalendarEvent]? = nil,
+        alarms: FakeAlarmClient = FakeAlarmClient()
     ) throws -> Harness {
         let defaults = try #require(UserDefaults(suiteName: "LeaveAlertCenterTests.\(UUID().uuidString)"))
         let settings = LeaveAlertSettings(defaults: defaults)
@@ -51,9 +53,14 @@ struct LeaveAlertCenterTests {
             estimator: estimator,
             scheduler: scheduler,
             ledger: LeaveAlertLedger(defaults: defaults),
+            alarmClient: alarms,
+            alarmLedger: AlarmLedger(key: "Leave", defaults: defaults),
+            formatter: NotificationFixtures.formatter,
             clock: { clock.now }
         )
-        return Harness(center: center, locator: locator, estimator: estimator, scheduler: scheduler, clock: clock)
+        return Harness(
+            center: center, locator: locator, estimator: estimator, scheduler: scheduler, alarms: alarms, clock: clock
+        )
     }
 
     @Test func schedulesAlertsOnlyForEventsWithTheToggleOn() async throws {

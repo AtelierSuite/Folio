@@ -2,19 +2,27 @@ import Foundation
 
 extension NotificationContentFormatter {
     public func leaveContent(for alert: LeaveAlert) -> NotificationContent {
-        let leave = alert.isLate
-            ? String(localized: "Notification.LeaveNow", table: "LeaveAlerts", bundle: #bundle)
-            : String(
-                format: String(localized: "Notification.LeaveBy", table: "LeaveAlerts", bundle: #bundle),
-                alert.leaveDate.formatted(Date.FormatStyle(
-                    date: .omitted, time: .shortened, locale: locale, calendar: calendar, timeZone: calendar.timeZone
-                ))
-            )
         let travel = String(format: travelFormat(for: alert.transport), travelDuration(alert.travelTime))
         let details = content(for: alert.event, firingAt: alert.fireDate).body
         return NotificationContent(
             title: alert.event.title,
-            body: [leave, travel, details].filter { !$0.isEmpty }.joined(separator: Self.separator)
+            body: [leaveText(for: alert), travel, details].filter { !$0.isEmpty }.joined(separator: Self.separator)
+        )
+    }
+
+    public func leaveAlarmTitle(for alert: LeaveAlert) -> String {
+        [alert.event.title, leaveText(for: alert)].joined(separator: Self.separator)
+    }
+
+    private func leaveText(for alert: LeaveAlert) -> String {
+        guard !alert.isLate else {
+            return String(localized: "Notification.LeaveNow", table: "LeaveAlerts", bundle: #bundle)
+        }
+        return String(
+            format: String(localized: "Notification.LeaveBy", table: "LeaveAlerts", bundle: #bundle),
+            alert.leaveDate.formatted(Date.FormatStyle(
+                date: .omitted, time: .shortened, locale: locale, calendar: calendar, timeZone: calendar.timeZone
+            ))
         )
     }
 

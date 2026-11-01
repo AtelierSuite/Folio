@@ -15,6 +15,7 @@ struct LeaveAlertsSection: View {
             .accessibilityIdentifier("LeaveAlertsToggle")
             if leaveAlerts.isSupported && leaveAlerts.isEnabled {
                 TravelTransportPicker()
+                LeaveAlarmRows()
                 LocationAlertAccessRows(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
             }
         } header: {
