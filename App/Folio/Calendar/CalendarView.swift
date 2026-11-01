@@ -43,6 +43,7 @@ struct CalendarView: View {
         }
         .calendarItemSheet(request: $itemRequest)
         .providesAlternateCalendar()
+        .providesDayHighlights()
         .environment(navigation)
         .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
