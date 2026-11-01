@@ -9,6 +9,7 @@ extension PlannedNotification {
             content: content,
             meeting: meeting,
             place: place,
+            color: color,
             imageURL: imageURL
         )
     }

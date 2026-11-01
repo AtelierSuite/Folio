@@ -1,20 +1,15 @@
 import Foundation
 
 extension NotificationScheduler {
-    func replanAlarms(_ planned: [PlannedNotification]) async -> Int {
-        let owned = alarmLedger.identifiers
-        let scheduled = await alarmClient.scheduledIdentifiers()
-        let diff = AlarmPlanDiff(planned: planned, scheduledIdentifiers: scheduled, ownedIdentifiers: owned)
-        await alarmClient.cancel(identifiers: diff.identifiersToCancel)
-        var live = Set(scheduled).intersection(diff.plannedIdentifiers)
-        for alarm in diff.alarmsToSchedule {
-            let identifier = AlarmIdentifier.make(for: alarm)
-            if (try? await alarmClient.schedule(alarm, identifier: identifier)) != nil {
-                live.insert(identifier)
-            }
-        }
-        alarmLedger.identifiers = live
-        return live.count
+    /// Schedules the alarms and returns the alerts AlarmKit refused, restyled as Time Sensitive notifications.
+    func replanAlarms(_ planned: [PlannedNotification]) async -> (count: Int, fallbacks: [PlannedNotification]) {
+        let synchronizer = AlarmSynchronizer(client: alarmClient, ledger: alarmLedger)
+        let outcome = await synchronizer.synchronize(planned.map(AlarmRequest.init(alert:)))
+        let failedIdentifiers = Set(outcome.failed.map(\.id))
+        let fallbacks = planned
+            .filter { failedIdentifiers.contains(AlarmIdentifier.make(for: $0)) }
+            .map { $0.restyled(.timeSensitive) }
+        return (outcome.scheduledCount, fallbacks)
     }
 
     @discardableResult

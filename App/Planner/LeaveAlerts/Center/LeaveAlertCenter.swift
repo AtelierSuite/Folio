@@ -12,6 +12,8 @@ public final class LeaveAlertCenter {
     public internal(set) var transport: TravelTransport
     public internal(set) var authorization: ArrivalAuthorization = .notDetermined
     public internal(set) var scheduledAlerts: [LeaveAlert] = []
+    public internal(set) var ringsAsAlarm: Bool
+    public internal(set) var alarmAuthorization: NotificationAuthorization = .notDetermined
 
     @ObservationIgnored let locator: (any LeaveLocating)?
     @ObservationIgnored let source: any CalendarDataSource
@@ -24,6 +26,9 @@ public final class LeaveAlertCenter {
     @ObservationIgnored let planner: LeaveAlertPlanner
     @ObservationIgnored let scheduler: any LeaveAlertScheduling
     @ObservationIgnored let ledger: LeaveAlertLedger
+    @ObservationIgnored let alarmClient: any AlarmSchedulingClient
+    @ObservationIgnored let alarmLedger: AlarmLedger
+    @ObservationIgnored let formatter: NotificationContentFormatter
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
@@ -41,6 +46,9 @@ public final class LeaveAlertCenter {
         planner: LeaveAlertPlanner = LeaveAlertPlanner(),
         scheduler: any LeaveAlertScheduling = UserNotificationLeaveAlertScheduler(),
         ledger: LeaveAlertLedger = LeaveAlertLedger(),
+        alarmClient: (any AlarmSchedulingClient)? = nil,
+        alarmLedger: AlarmLedger = AlarmLedger(key: LeaveAlertCenter.alarmLedgerKey),
+        formatter: NotificationContentFormatter = NotificationContentFormatter(),
         clock: @escaping @Sendable () -> Date = { .now }
     ) {
         isSupported = capabilities.supports(.leaveAlerts)
@@ -55,7 +63,11 @@ public final class LeaveAlertCenter {
         self.planner = planner
         self.scheduler = scheduler
         self.ledger = ledger
+        self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
+        self.alarmLedger = alarmLedger
+        self.formatter = formatter
         self.clock = clock
+        ringsAsAlarm = settings.ringsAsAlarm
         isEnabled = isSupported && settings.isEnabled
         transport = settings.transport
         authorization = locator?.authorization ?? .notDetermined
@@ -65,6 +77,8 @@ public final class LeaveAlertCenter {
             Task { await self.replan() }
         }
     }
+
+    public static let alarmLedgerKey = "LeaveAlerts.ScheduledAlarms"
 
     var isActive: Bool {
         isEnabled && notificationSettings.isEnabled && authorization.allowsMonitoring
@@ -99,10 +113,11 @@ public final class LeaveAlertCenter {
             }
             alerts = await plannedAlerts(from: origin, now: now)
         }
-        let desired = Set(alerts.map(\.id))
+        let notifiedAlerts = await replanAlarms(for: alerts, now: now)
+        let desired = Set(notifiedAlerts.map(\.id))
         let pending = await scheduler.pendingIdentifiers()
         await scheduler.removePending(withIdentifiers: pending.filter { !desired.contains($0) })
-        for alert in alerts where !pending.contains(alert.id) {
+        for alert in notifiedAlerts where !pending.contains(alert.id) {
             await scheduler.schedule(alert, now: now)
         }
         ledger.record(alerts, now: now)

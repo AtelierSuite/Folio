@@ -14,6 +14,7 @@ struct NotificationContentExtensionTests {
         )
         let attributes = (plist["NSExtension"] as? [String: Any])?["NSExtensionAttributes"] as? [String: Any]
         let categories = try #require(attributes?["UNNotificationExtensionCategory"] as? [String])
-        #expect(Set(categories) == Set(NotificationCategoryRegistry.allCategories.map(\.identifier)))
+        let registered = NotificationCategoryRegistry.allCategories(snoozing: .standard)
+        #expect(Set(categories) == Set(registered.map(\.identifier)))
     }
 }

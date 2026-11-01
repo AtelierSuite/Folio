@@ -12,6 +12,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
     public let imageURL: URL?
     public let category: NotificationCategory
     public let style: NotificationAlertStyle
+    public let color: PlannerColor?
 
     public init(_ candidate: NotificationCandidate, style: NotificationAlertStyle = .standard) {
         let category = NotificationCategory(
@@ -27,6 +28,7 @@ public struct PlannedNotification: Identifiable, Sendable, Hashable {
         self.imageURL = candidate.imageURL
         self.category = category
         self.style = style
+        self.color = candidate.color
     }
 
     public var categoryIdentifier: String {

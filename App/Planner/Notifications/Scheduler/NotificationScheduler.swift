@@ -93,14 +93,16 @@ public final class NotificationScheduler {
         let plan = isEnabled && authorization.allowsScheduling
             ? await plan(after: now, budget: budget)
             : .empty
-        let diff = NotificationPlanDiff(planned: plan.notifications, pendingIdentifiers: pendingIdentifiers)
+        let alarms = await replanAlarms(plan.alarms)
+        let notifications = plan.notifications(adding: alarms.fallbacks, budget: budget)
+        let diff = NotificationPlanDiff(planned: notifications, pendingIdentifiers: pendingIdentifiers)
         await center.removePending(withIdentifiers: diff.identifiersToRemove)
         var addedCount = 0
         for notification in diff.notificationsToAdd where (try? await center.add(notification, now: now)) != nil {
             addedCount += 1
         }
-        let alarmCount = await replanAlarms(plan.alarms)
-        let scheduledCount = plan.notifications.count - diff.notificationsToAdd.count + addedCount
+        let alarmCount = alarms.count
+        let scheduledCount = notifications.count - diff.notificationsToAdd.count + addedCount
         lastReport = NotificationReplanReport(
             date: now,
             budget: budget,

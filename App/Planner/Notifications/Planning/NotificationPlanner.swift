@@ -60,6 +60,7 @@ public struct NotificationPlanner: Sendable {
                     content: formatter.content(for: event, firingAt: fireDate),
                     meeting: meeting,
                     place: place,
+                    color: event.color,
                     imageURL: images[event.reference]
                 )
             }
@@ -74,7 +75,8 @@ public struct NotificationPlanner: Sendable {
                     fireDate: fireDate,
                     kind: .reminder,
                     reference: reminder.reference,
-                    content: formatter.content(for: reminder, firingAt: fireDate)
+                    content: formatter.content(for: reminder, firingAt: fireDate),
+                    color: reminder.color
                 )
             }
         }
