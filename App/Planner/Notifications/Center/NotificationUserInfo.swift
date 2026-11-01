@@ -18,6 +18,7 @@ public enum NotificationUserInfo {
             userInfo[meetingKey] = data
         }
         userInfo.merge(make(for: notification.place)) { _, new in new }
+        userInfo.merge(make(for: notification.content)) { _, new in new }
         return userInfo
     }
 

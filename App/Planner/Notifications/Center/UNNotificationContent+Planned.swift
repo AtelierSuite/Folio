@@ -2,13 +2,17 @@ import Foundation
 import UserNotifications
 
 extension UNNotificationContent {
-    static func make(_ notification: PlannedNotification) -> UNNotificationContent {
+    static func make(
+        _ notification: PlannedNotification,
+        attachments: [UNNotificationAttachment] = []
+    ) -> UNNotificationContent {
         let content = UNMutableNotificationContent()
         content.title = notification.content.title
         content.body = notification.content.body
         content.categoryIdentifier = notification.categoryIdentifier
         content.threadIdentifier = notification.category.threadIdentifier
         content.userInfo = NotificationUserInfo.make(for: notification)
+        content.attachments = attachments
         apply(notification.style, to: content)
         return content
     }

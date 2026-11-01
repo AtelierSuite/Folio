@@ -17,14 +17,18 @@ public struct NotificationContentFormatter: Sendable {
 
     public func content(for event: CalendarEvent, firingAt fireDate: Date) -> NotificationContent {
         let location = event.location?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let time = eventTime(for: event, firingAt: fireDate)
         return NotificationContent(
             title: event.title,
-            body: joined([eventTime(for: event, firingAt: fireDate), location])
+            body: joined([time, location]),
+            time: time,
+            color: event.color
         )
     }
 
     public func content(for reminder: ReminderItem, firingAt fireDate: Date) -> NotificationContent {
-        NotificationContent(title: reminder.title, body: reminderTime(for: reminder, firingAt: fireDate) ?? "")
+        let time = reminderTime(for: reminder, firingAt: fireDate)
+        return NotificationContent(title: reminder.title, body: time ?? "", time: time, color: reminder.color)
     }
 
     private func eventTime(for event: CalendarEvent, firingAt fireDate: Date) -> String {

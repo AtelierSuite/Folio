@@ -8,9 +8,10 @@ extension NotificationPlanner {
         reminders: [ReminderItem],
         after now: Date,
         budget: Int,
-        alarmBudget: Int?
+        alarmBudget: Int?,
+        eventImages: [CalendarItemReference: URL] = [:]
     ) -> NotificationPlan {
-        let everything = plan(events: events, reminders: reminders, after: now, budget: .max)
+        let everything = plan(events: events, reminders: reminders, after: now, budget: .max, eventImages: eventImages)
             .map { alarmBudget != nil || $0.style != .alarm ? $0 : $0.restyled(.timeSensitive) }
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         let alarms = everything.filter { $0.style == .alarm }
