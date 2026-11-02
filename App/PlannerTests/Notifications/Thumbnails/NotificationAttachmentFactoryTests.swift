@@ -22,5 +22,13 @@ struct NotificationAttachmentFactoryTests {
         #expect(event != nil)
         #expect(event != NotificationThumbnailArtwork.pngData(for: .reminder))
     }
+
+    @Test func artworkIsTintedWithTheCalendarColor() {
+        let blue = PlannerColor(red: 0, green: 0.4, blue: 1)
+        let tinted = NotificationThumbnailArtwork.pngData(for: .event, color: blue)
+        #expect(tinted != nil)
+        #expect(tinted != NotificationThumbnailArtwork.pngData(for: .event))
+        #expect(tinted == NotificationThumbnailArtwork.pngData(for: .event, color: blue))
+    }
     #endif
 }
