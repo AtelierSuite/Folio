@@ -25,7 +25,7 @@ extension AlarmRequest {
                 countdownDuration: Alarm.CountdownDuration(preAlert: nil, postAlert: duration),
                 attributes: attributes(
                     button: AlarmButton(
-                        text: Self.localized("Button.Snooze"), textColor: tintColor, systemImageName: "zzz"
+                        text: Self.localized("Button.Snooze"), textColor: .white, systemImageName: "zzz"
                     ),
                     behavior: .countdown
                 ),
@@ -37,7 +37,7 @@ extension AlarmRequest {
                 attributes: attributes(
                     button: AlarmButton(
                         text: Self.localized("Button.Open"),
-                        textColor: tintColor,
+                        textColor: .white,
                         systemImageName: "arrow.up.forward.app"
                     ),
                     behavior: .custom
