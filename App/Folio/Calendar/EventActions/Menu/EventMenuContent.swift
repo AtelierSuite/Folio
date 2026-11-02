@@ -29,14 +29,18 @@ private struct EventMenuItemView: View {
             JoinMeetingButton(link: link, style: .menu)
         case .moveToCalendar(let calendars):
             Menu {
-                ForEach(calendars) { calendar in
-                    Button {
-                        actions.move(event, to: calendar)
-                    } label: {
-                        Label {
-                            Text(calendar.title)
-                        } icon: {
-                            Image(coloredSymbol: "circle.fill", color: calendar.color)
+                ForEach(CalendarAccountGroup.groups(from: calendars)) { group in
+                    Section(group.title) {
+                        ForEach(group.calendars) { calendar in
+                            Button {
+                                actions.move(event, to: calendar)
+                            } label: {
+                                Label {
+                                    Text(calendar.title)
+                                } icon: {
+                                    Image(coloredSymbol: "circle.fill", color: calendar.color)
+                                }
+                            }
                         }
                     }
                 }

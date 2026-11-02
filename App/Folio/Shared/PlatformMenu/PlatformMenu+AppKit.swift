@@ -23,7 +23,13 @@ extension PlatformMenu {
         item.setAccessibilityIdentifier(entry.identifier)
         if !entry.children.isEmpty {
             let submenu = NSMenu(title: entry.title)
-            entry.children.forEach { submenu.addItem(self.item(for: $0)) }
+            for (index, section) in entry.children.enumerated() {
+                if index > 0 {
+                    submenu.addItem(.separator())
+                }
+                submenu.addItem(.sectionHeader(title: section.title))
+                section.entries.forEach { submenu.addItem(self.item(for: $0)) }
+            }
             item.submenu = submenu
         }
         if entry.isDestructive {

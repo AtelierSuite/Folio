@@ -12,7 +12,9 @@ extension PlatformMenu {
         let image = entry.symbolColor.flatMap { UIImage.coloredSymbol(entry.systemImage, color: $0) }
             ?? UIImage(systemName: entry.systemImage)
         guard entry.children.isEmpty else {
-            return UIMenu(title: entry.title, image: image, children: entry.children.map(element(for:)))
+            return UIMenu(title: entry.title, image: image, children: entry.children.map { section in
+                UIMenu(title: section.title, options: .displayInline, children: section.entries.map(element(for:)))
+            })
         }
         let action = UIAction(
             title: entry.title,
