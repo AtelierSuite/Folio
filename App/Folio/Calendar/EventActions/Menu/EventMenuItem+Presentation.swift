@@ -12,6 +12,7 @@ extension EventMenuItem {
         case .edit: String(localized: "Menu.Edit", table: "EventActions")
         case .duplicate: String(localized: "Menu.Duplicate", table: "EventActions")
         case .moveToCalendar: String(localized: "Menu.MoveToCalendar", table: "EventActions")
+        case .convertToReminder: String(localized: "Menu.ConvertToReminder", table: "EventActions")
         case .copy: String(localized: "Menu.Copy", table: "EventActions")
         case .openLinkedNote: String(localized: "Event.OpenNote", table: "LinkedNotes")
         case .createLinkedNote: String(localized: "Event.CreateNote", table: "LinkedNotes")
@@ -30,6 +31,7 @@ extension EventMenuItem {
         case .edit: "pencil"
         case .duplicate: "plus.square.on.square"
         case .moveToCalendar: "calendar"
+        case .convertToReminder: "checklist"
         case .copy: "doc.on.doc"
         case .openLinkedNote: "note.text"
         case .createLinkedNote: "square.and.pencil"
@@ -52,6 +54,7 @@ extension EventMenuItem {
         case .edit: "EventMenu.Edit"
         case .duplicate: "EventMenu.Duplicate"
         case .moveToCalendar: "EventMenu.MoveToCalendar"
+        case .convertToReminder: "EventMenu.ConvertToReminder"
         case .copy: "EventMenu.Copy"
         case .openLinkedNote: "EventMenu.OpenNote"
         case .createLinkedNote: "EventMenu.CreateNote"

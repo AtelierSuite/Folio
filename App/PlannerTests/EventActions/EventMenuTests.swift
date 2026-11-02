@@ -15,6 +15,20 @@ struct EventMenuTests {
         ])
     }
 
+    @Test func writableEventCanConvertToReminderWhenAListIsAvailable() {
+        let items = EventMenu.items(for: event(), context: context(canConvertToReminder: true))
+        #expect(items.firstIndex(of: .convertToReminder) == items.firstIndex(of: .copy).map { $0 - 1 })
+    }
+
+    @Test func readOnlyEventCannotConvertToReminder() {
+        let holidays = calendar("holidays", isReadOnly: true)
+        let readOnly = event(calendarIdentifier: "holidays", isReadOnly: true)
+        let items = EventMenu.items(
+            for: readOnly, context: context(eventCalendar: holidays, canConvertToReminder: true)
+        )
+        #expect(!items.contains(.convertToReminder))
+    }
+
     @Test func showDetailsComesFirst() {
         let items = EventMenu.items(for: event(location: "1 Infinite Loop"), context: context())
         #expect(items.first == .showDetails)
@@ -117,7 +131,8 @@ struct EventMenuTests {
         hasLinkedNote: Bool = false,
         canStartCountdown: Bool = false,
         isCountingDown: Bool = false,
-        canRespondToInvitations: Bool = false
+        canRespondToInvitations: Bool = false,
+        canConvertToReminder: Bool = false
     ) -> EventMenuContext {
         EventMenuContext(
             eventCalendar: eventCalendar ?? calendar("home"),
@@ -125,7 +140,8 @@ struct EventMenuTests {
             hasLinkedNote: hasLinkedNote,
             canStartCountdown: canStartCountdown,
             isCountingDown: isCountingDown,
-            canRespondToInvitations: canRespondToInvitations
+            canRespondToInvitations: canRespondToInvitations,
+            canConvertToReminder: canConvertToReminder
         )
     }
 

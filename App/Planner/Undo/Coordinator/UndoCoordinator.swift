@@ -97,7 +97,7 @@ public final class UndoCoordinator {
                 self.pending = nil
                 pending.change.unstage(pending.stagedIdentifier)
             }
-            return UndoStep.Outcome(inverse: restaging(change), work: nil)
+            return UndoStep.Outcome(inverse: restaging(change), work: change.revert)
         }
         pending = PendingCommit(
             stepIdentifier: step.id, stagedIdentifier: stagedIdentifier, target: target, change: change
@@ -119,7 +119,7 @@ public final class UndoCoordinator {
 
     private func restaging(_ change: DeferredChange) -> UndoStep {
         UndoStep(action: change.action, target: UndoTarget(), isRedo: true) { [unowned self] in
-            UndoStep.Outcome(inverse: stage(change), work: nil)
+            UndoStep.Outcome(inverse: stage(change), work: change.reapply)
         }
     }
 

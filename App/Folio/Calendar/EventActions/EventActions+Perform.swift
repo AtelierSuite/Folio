@@ -20,6 +20,8 @@ extension EventActions {
             EventPasteboard.copy(EventCopyText.text(for: event))
         case .moveToCalendar:
             break
+        case .convertToReminder:
+            controller.pendingConversion = event
         case .edit, .duplicate, .openLinkedNote, .createLinkedNote, .delete:
             performChange(item, on: event)
         }
@@ -62,6 +64,13 @@ extension EventActions {
     func finishMove(_ request: EventMoveRequest, span: EventEditSpan) {
         run {
             try await undoCoordinator.updateEvent(request.event, with: request.draft, span: span, action: .move(.event))
+        }
+    }
+
+    func convertToReminder(_ event: CalendarEvent) {
+        run {
+            guard let listIdentifier = store.defaultReminderListIdentifier else { return }
+            try await undoCoordinator.convertEvent(event, toReminderIn: listIdentifier)
         }
     }
 

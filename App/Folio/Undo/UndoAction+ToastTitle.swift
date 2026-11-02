@@ -7,6 +7,7 @@ extension UndoAction {
         case .delete: String(localized: "Toast.Deleted", table: "Undo")
         case .edit: String(localized: "Toast.Edited", table: "Undo")
         case .move: String(localized: "Toast.Moved", table: "Undo")
+        case .convert: String(localized: "Toast.Converted", table: "Undo")
         case .complete: String(localized: "Toast.Completed", table: "Undo")
         case .uncomplete: String(localized: "Toast.Uncompleted", table: "Undo")
         }

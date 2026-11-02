@@ -7,8 +7,10 @@ struct ReminderEditorForm: View {
     @Binding var alertStyle: NotificationAlertStyle?
     let isReadOnly: Bool
     let canDelete: Bool
+    let canConvert: Bool
     let isNew: Bool
     let defaultDate: Date
+    let onConvert: () -> Void
     let onDelete: () -> Void
 
     var body: some View {
@@ -31,6 +33,10 @@ struct ReminderEditorForm: View {
             }
             .disabled(isReadOnly)
             Section {
+                if canConvert {
+                    Button(String(localized: "Action.ConvertToEvent", table: "ReminderEditor"), action: onConvert)
+                        .accessibilityIdentifier("ReminderEditor.ConvertToEvent")
+                }
                 if canDelete {
                     Button(
                         String(localized: "Action.Delete", table: "ReminderEditor"),

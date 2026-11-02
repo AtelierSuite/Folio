@@ -8,6 +8,9 @@ struct DeferredChange {
     let stage: @MainActor () -> UUID
     let unstage: @MainActor (UUID) -> Void
     let commit: @MainActor () async throws -> Void
+    /// Work to run on undo and redo besides unstaging and restaging, such as a conversion's new item.
+    var revert: (@MainActor () async throws -> Void)?
+    var reapply: (@MainActor () async throws -> Void)?
 }
 
 @MainActor

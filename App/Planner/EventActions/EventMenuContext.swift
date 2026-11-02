@@ -10,6 +10,8 @@ public struct EventMenuContext: Sendable {
     public var isCountingDown: Bool
     /// Whether this device can answer an invitation, in the app or by handing over to Calendar.
     public var canRespondToInvitations: Bool
+    /// Whether there's a writable reminder list to convert the event into.
+    public var canConvertToReminder: Bool
 
     public init(
         eventCalendar: PlannerCalendar?,
@@ -17,7 +19,8 @@ public struct EventMenuContext: Sendable {
         hasLinkedNote: Bool,
         canStartCountdown: Bool = false,
         isCountingDown: Bool = false,
-        canRespondToInvitations: Bool = false
+        canRespondToInvitations: Bool = false,
+        canConvertToReminder: Bool = false
     ) {
         self.eventCalendar = eventCalendar
         self.writableCalendars = writableCalendars
@@ -25,5 +28,6 @@ public struct EventMenuContext: Sendable {
         self.canStartCountdown = canStartCountdown
         self.isCountingDown = isCountingDown
         self.canRespondToInvitations = canRespondToInvitations
+        self.canConvertToReminder = canConvertToReminder
     }
 }

@@ -13,6 +13,7 @@ struct ReminderEditorView: View {
     @State private var styleDraft: NotificationStyleDraft
     @State private var isWorking = false
     @State private var failure: ReminderEditorFailure?
+    @State private var isConfirmingConversion = false
 
     init(initialDate: Date?, hasDueTime: Bool = false, listIdentifier: String? = nil) {
         self.init(mode: .create(initialDate: initialDate, hasDueTime: hasDueTime, listIdentifier: listIdentifier))
@@ -75,11 +76,16 @@ struct ReminderEditorView: View {
                 alertStyle: $styleDraft.style,
                 isReadOnly: mode.isReadOnly,
                 canDelete: mode.reminder.map { !$0.isReadOnly } ?? false,
+                canConvert: canConvert,
                 isNew: mode.reminder == nil,
                 defaultDate: mode.reminder?.dueDate ?? .now,
+                onConvert: { isConfirmingConversion = true },
                 onDelete: { Task { await delete() } }
             )
             .disabled(isWorking)
+            .convertToEventAlert(isPresented: $isConfirmingConversion) {
+                Task { await convert() }
+            }
         }
     }
 
@@ -118,6 +124,25 @@ struct ReminderEditorView: View {
             dismiss()
         } catch {
             failure = .save
+        }
+    }
+
+    private var canConvert: Bool {
+        guard let reminder = mode.reminder else { return false }
+        return !reminder.isReadOnly && store.defaultEventCalendarIdentifier != nil
+    }
+
+    /// Converts the reminder with any unsaved edits, so what's on screen is what becomes the event.
+    private func convert() async {
+        guard draft.isValid, let reminder = mode.reminder,
+              let calendarIdentifier = store.defaultEventCalendarIdentifier else { return }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            try await undoCoordinator.convertReminder(reminder.applying(draft), toEventIn: calendarIdentifier)
+            dismiss()
+        } catch {
+            failure = .convert
         }
     }
 

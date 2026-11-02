@@ -10,6 +10,7 @@ public enum UndoAction: Sendable, Hashable {
     case delete(UndoItemKind)
     case edit(UndoItemKind)
     case move(UndoItemKind)
+    case convert(UndoItemKind)
     case complete
     case uncomplete
 
@@ -24,6 +25,9 @@ public enum UndoAction: Sendable, Hashable {
         case .move(.event): String(localized: "Action.MoveEvent", table: "Undo", bundle: #bundle)
         case .move(.reminder): String(localized: "Action.MoveReminder", table: "Undo", bundle: #bundle)
         case .move(.note): String(localized: "Action.MoveNote", table: "Undo", bundle: #bundle)
+        case .convert(.event): String(localized: "Action.ConvertEvent", table: "Undo", bundle: #bundle)
+        case .convert(.reminder), .convert(.note):
+            String(localized: "Action.ConvertReminder", table: "Undo", bundle: #bundle)
         case .complete: String(localized: "Action.CompleteReminder", table: "Undo", bundle: #bundle)
         case .uncomplete: String(localized: "Action.UncompleteReminder", table: "Undo", bundle: #bundle)
         }
