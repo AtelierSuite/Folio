@@ -33,7 +33,8 @@ struct EventActions {
             hasLinkedNote: library.linkedNote(for: event) != nil,
             canStartCountdown: supportsCountdowns && countdowns.availability(for: event).state != nil,
             isCountingDown: supportsCountdowns && countdowns.isCountingDown(event),
-            canRespondToInvitations: canRespond
+            canRespondToInvitations: canRespond,
+            canConvertToReminder: store.defaultReminderListIdentifier != nil
         ))
     }
 

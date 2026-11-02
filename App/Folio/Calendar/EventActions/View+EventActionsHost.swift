@@ -91,6 +91,9 @@ private struct EventActionsHostModifier: ViewModifier {
                         }
                     }
             }
+            .convertToReminderAlert(event: $controller.pendingConversion) { event in
+                actions.convertToReminder(event)
+            }
             .alert(
                 String(localized: "Error.Title", table: "EventActions"),
                 isPresented: isPresented($controller.errorMessage)

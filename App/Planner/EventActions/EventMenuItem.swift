@@ -9,6 +9,7 @@ public enum EventMenuItem: Sendable, Hashable {
     case edit
     case duplicate
     case moveToCalendar([PlannerCalendar])
+    case convertToReminder
     case copy
     case openLinkedNote
     case createLinkedNote

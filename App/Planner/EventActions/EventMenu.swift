@@ -28,6 +28,9 @@ public enum EventMenu {
         if isWritable && !destinations.isEmpty {
             editing.append(.moveToCalendar(destinations))
         }
+        if isWritable && context.canConvertToReminder {
+            editing.append(.convertToReminder)
+        }
         editing.append(.copy)
         let notes: [EventMenuItem] = [context.hasLinkedNote ? .openLinkedNote : .createLinkedNote]
         let directions: [EventMenuItem] = EventDirections.url(for: event).map { [.getDirections($0)] } ?? []

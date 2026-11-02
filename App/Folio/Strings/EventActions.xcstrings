@@ -131,6 +131,266 @@
         }
       }
     },
+    "Convert.Confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umwandeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convert"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertir"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Converti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "変換"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "변환"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet om"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển đổi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "转换"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轉換"
+          }
+        }
+      }
+    },
+    "Convert.Message": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Erinnerung ist zum Beginn des Ereignisses fällig. Endzeit und Eingeladene werden nicht übernommen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The reminder will be due when the event starts. The end time won’t be kept, and neither will invitees."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le rappel sera dû au début de l’événement. L’heure de fin et les invités ne seront pas conservés."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il promemoria scadrà all’inizio dell’evento. L’ora di fine e gli invitati non verranno mantenuti."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リマインダーの期限はイベントの開始時刻になります。終了時刻と出席者は引き継がれません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "미리 알림의 마감 시간은 이벤트 시작 시간이 됩니다. 종료 시간과 초대된 사람은 유지되지 않습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De herinnering vervalt wanneer de activiteit begint. De eindtijd en genodigden blijven niet behouden."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lời nhắc sẽ đến hạn khi sự kiện bắt đầu. Thời gian kết thúc và người được mời sẽ không được giữ lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提醒事项将在日程开始时到期。结束时间和受邀者不会保留。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提醒事項將在行程開始時到期。結束時間和受邀者不會保留。"
+          }
+        }
+      }
+    },
+    "Convert.Message.Series": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Ereignisse der Serie werden zu einer wiederholten Erinnerung, die zum Beginn der Ereignisse fällig ist. Endzeit und Eingeladene werden nicht übernommen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every event in the series becomes one repeating reminder, due when the events start. The end time won’t be kept, and neither will invitees."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les événements de la série deviennent un seul rappel récurrent, dû au début des événements. L’heure de fin et les invités ne seront pas conservés."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti gli eventi della serie diventano un unico promemoria ripetuto, che scade all’inizio degli eventi. L’ora di fine e gli invitati non verranno mantenuti."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "シリーズのすべてのイベントが、開始時刻を期限とする1つの繰り返しリマインダーになります。終了時刻と出席者は引き継がれません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시리즈의 모든 이벤트가 이벤트 시작 시간을 마감으로 하는 하나의 반복 미리 알림이 됩니다. 종료 시간과 초대된 사람은 유지되지 않습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle activiteiten in de reeks worden één herhalende herinnering die vervalt wanneer de activiteiten beginnen. De eindtijd en genodigden blijven niet behouden."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mọi sự kiện trong chuỗi sẽ trở thành một lời nhắc lặp lại, đến hạn khi các sự kiện bắt đầu. Thời gian kết thúc và người được mời sẽ không được giữ lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此系列中的所有日程将变为一个重复提醒事项，在日程开始时到期。结束时间和受邀者不会保留。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此系列中的所有行程將變為一個重複提醒事項，在行程開始時到期。結束時間和受邀者不會保留。"
+          }
+        }
+      }
+    },
+    "Convert.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Erinnerung umwandeln?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convert to Reminder?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertir en rappel ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertire in promemoria?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リマインダーに変換しますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "미리 알림으로 변환하시겠습니까?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omzetten in herinnering?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển thành lời nhắc?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要转换为提醒事项吗？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要轉換為提醒事項嗎？"
+          }
+        }
+      }
+    },
     "Error.Title": {
       "extractionState": "manual",
       "localizations": {
@@ -192,6 +452,71 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法更新行程"
+          }
+        }
+      }
+    },
+    "Menu.ConvertToReminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Erinnerung umwandeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convert to Reminder"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertir en rappel"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Converti in promemoria"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リマインダーに変換"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "미리 알림으로 변환"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet om in herinnering"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển thành lời nhắc"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "转换为提醒事项"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轉換為提醒事項"
           }
         }
       }
