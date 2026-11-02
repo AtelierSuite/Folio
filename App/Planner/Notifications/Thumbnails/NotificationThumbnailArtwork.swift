@@ -1,17 +1,43 @@
 #if canImport(UIKit)
+import Synchronization
 import UIKit
 
-/// The picture shown on the right of an alert when its item has no image of its own.
+/// The picture shown on the right of an alert when its item has no image of its own,
+/// tinted with the item's calendar or list color.
 enum NotificationThumbnailArtwork {
     static let side: CGFloat = 600
 
-    static let event = pngData(symbol: "calendar", color: .systemRed)
-    static let reminder = pngData(symbol: "checklist", color: .systemOrange)
+    private struct Key: Hashable {
+        let kind: CalendarItemKind
+        let color: PlannerColor?
+    }
 
-    static func pngData(for kind: CalendarItemKind) -> Data? {
+    private static let cache = Mutex<[Key: Data]>([:])
+
+    static func pngData(for kind: CalendarItemKind, color: PlannerColor? = nil) -> Data? {
+        let key = Key(kind: kind, color: color.map(\.opaque))
+        if let cached = cache.withLock({ $0[key] }) {
+            return cached
+        }
+        guard let data = pngData(symbol: symbolName(for: kind), color: uiColor(for: key)) else { return nil }
+        cache.withLock { $0[key] = data }
+        return data
+    }
+
+    private static func symbolName(for kind: CalendarItemKind) -> String {
         switch kind {
-        case .event: event
-        case .reminder: reminder
+        case .event: "calendar"
+        case .reminder: "checklist"
+        }
+    }
+
+    private static func uiColor(for key: Key) -> UIColor {
+        if let color = key.color {
+            return UIColor(red: color.red, green: color.green, blue: color.blue, alpha: 1)
+        }
+        switch key.kind {
+        case .event: return .systemRed
+        case .reminder: return .systemOrange
         }
     }
 
@@ -51,6 +77,11 @@ enum NotificationThumbnailArtwork {
             end: CGPoint(x: bounds.midX, y: bounds.maxY),
             options: []
         )
+    }
+}
+private extension PlannerColor {
+    var opaque: PlannerColor {
+        PlannerColor(red: red, green: green, blue: blue)
     }
 }
 #endif
