@@ -3,12 +3,27 @@ import SwiftUI
 
 extension MarkdownTextCoordinator {
     func apply(_ action: MarkdownFormattingAction) {
-        guard let host else { return }
+        guard let edit = currentEdit()?.applying(action) else { return }
+        perform(edit)
+    }
+
+    /// Returns false when the caret isn't in a list item, so the text view inserts the line break itself.
+    func continueList() -> Bool {
+        guard let edit = currentEdit()?.continuingList() else { return false }
+        perform(edit)
+        return true
+    }
+
+    private func currentEdit() -> MarkdownTextEdit? {
+        guard let host else { return nil }
         let display = host.markdownStorage.string
-        guard let selection = Range(host.markdownSelection, in: display) else { return }
+        guard let selection = Range(host.markdownSelection, in: display) else { return nil }
         let lowerBound = display.distance(from: display.startIndex, to: selection.lowerBound)
         let upperBound = display.distance(from: display.startIndex, to: selection.upperBound)
-        let edit = MarkdownTextEdit(text: display, selection: lowerBound..<upperBound).applying(action)
+        return MarkdownTextEdit(text: display, selection: lowerBound..<upperBound)
+    }
+
+    private func perform(_ edit: MarkdownTextEdit) {
         let newLowerBound = edit.text.index(edit.text.startIndex, offsetBy: edit.selection.lowerBound)
         let newUpperBound = edit.text.index(edit.text.startIndex, offsetBy: edit.selection.upperBound)
         performEdit { storage in

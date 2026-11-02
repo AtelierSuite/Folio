@@ -140,6 +140,13 @@ final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
 }
 
 extension MarkdownTextCoordinator: NSTextViewDelegate {
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard commandSelector == #selector(NSResponder.insertNewline(_:)), !textView.hasMarkedText() else {
+            return false
+        }
+        return continueList()
+    }
+
     func textDidChange(_ notification: Notification) {
         guard let textView = notification.object as? NSTextView, !textView.hasMarkedText() else { return }
         textDidChange()
