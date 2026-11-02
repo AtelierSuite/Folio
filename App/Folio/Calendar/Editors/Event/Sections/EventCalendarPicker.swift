@@ -10,8 +10,12 @@ struct EventCalendarPicker: View {
             ForEach(CalendarAccountGroup.groups(from: calendars)) { group in
                 Section(group.title) {
                     ForEach(group.calendars) { calendar in
-                        Text(calendar.title)
-                            .tag(calendar.id)
+                        Label {
+                            Text(calendar.title)
+                        } icon: {
+                            Image(coloredSymbol: "circle.fill", color: calendar.color)
+                        }
+                        .tag(calendar.id)
                     }
                 }
             }

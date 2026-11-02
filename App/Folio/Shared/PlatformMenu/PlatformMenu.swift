@@ -10,8 +10,13 @@ struct PlatformMenu {
         var symbolColor: PlannerColor?
         var isDestructive = false
         let identifier: String
-        var children: [Entry] = []
+        var children: [ChildSection] = []
         let action: @MainActor () -> Void
+    }
+
+    struct ChildSection {
+        let title: String
+        let entries: [Entry]
     }
 
     let sections: [[Entry]]

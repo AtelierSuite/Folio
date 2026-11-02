@@ -18,7 +18,12 @@ struct ReminderEditorListSection: View {
                 ForEach(CalendarAccountGroup.groups(from: lists)) { group in
                     Section(group.title) {
                         ForEach(group.calendars) { list in
-                            Text(list.title).tag(list.id)
+                            Label {
+                                Text(list.title)
+                            } icon: {
+                                Image(coloredSymbol: "circle.fill", color: list.color)
+                            }
+                            .tag(list.id)
                         }
                     }
                 }
