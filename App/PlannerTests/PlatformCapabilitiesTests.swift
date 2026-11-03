@@ -6,7 +6,9 @@ struct PlatformCapabilitiesTests {
         let capabilities = PlatformCapabilities(platform: .iPhone, areLiveActivitiesSupported: true)
         #expect(
             capabilities.supportedFeatures
-                == Set(PlatformFeature.allCases).subtracting([.calendarPagingButtons, .timelineZoomMenu])
+                == Set(PlatformFeature.allCases).subtracting([
+                    .calendarPagingButtons, .timelineZoomMenu, .calendarViewMenuCommands
+                ])
         )
     }
 
@@ -19,6 +21,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.notificationThumbnails))
         #expect(capabilities.supports(.calendarPagingButtons))
         #expect(capabilities.supports(.timelineZoomMenu))
+        #expect(!capabilities.supports(.calendarViewMenuCommands))
         #expect(!capabilities.supports(.sleep))
         #expect(!capabilities.supports(.geofencedNotifications))
         #expect(!capabilities.supports(.leaveAlerts))
@@ -34,7 +37,10 @@ struct PlatformCapabilitiesTests {
         let capabilities = PlatformCapabilities(platform: .mac, areLiveActivitiesSupported: true)
         #expect(
             capabilities.supportedFeatures
-                == [.timeSensitiveNotifications, .weather, .calendarPagingButtons, .timelineZoomMenu]
+                == [
+                    .timeSensitiveNotifications, .weather, .calendarPagingButtons, .timelineZoomMenu,
+                    .calendarViewMenuCommands
+                ]
         )
     }
 }

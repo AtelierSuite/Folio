@@ -14,6 +14,7 @@ struct CalendarMoreMenu: View {
                 .pickerStyle(.inline)
             if mode == .multiDay {
                 MultiDayCountPicker(dayCount: $dayCount)
+                    .pickerStyle(.menu)
             }
             Section {
                 ReminderInboxButton(isShowingInbox: $isShowingInbox)

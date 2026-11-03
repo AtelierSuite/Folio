@@ -61,8 +61,10 @@ struct CalendarToolbar: ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
             ReminderInboxButton(isShowingInbox: $isShowingInbox)
             CalendarAddMenu(composer: $composer)
-            CalendarViewModePicker(mode: $mode)
-                .pickerStyle(.menu)
+            if !capabilities.supports(.calendarViewMenuCommands) {
+                CalendarViewModePicker(mode: $mode)
+                    .pickerStyle(.menu)
+            }
         }
         if pendingInvitationCount > 0 {
             InvitationsToolbarItem(pendingCount: pendingInvitationCount)

@@ -4,6 +4,7 @@ import SwiftUI
 struct CalendarMultiDayView: View {
     @Environment(CalendarNavigation.self) private var navigation
     @AppStorage("Calendar.MultiDayCount") private var dayCount: MultiDayCount = .three
+    @Environment(\.platformCapabilities) private var capabilities
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     #endif
@@ -18,9 +19,10 @@ struct CalendarMultiDayView: View {
             zoomScope: .multiDay
         )
         .toolbar {
-            if !isCompact {
+            if !isCompact && !capabilities.supports(.calendarViewMenuCommands) {
                 ToolbarItem(placement: .primaryAction) {
                     MultiDayCountPicker(dayCount: $dayCount)
+                        .pickerStyle(.menu)
                 }
             }
         }
