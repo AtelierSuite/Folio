@@ -4,6 +4,7 @@ import SwiftUI
 struct NotificationSoundsView: View {
     @Environment(NotificationScheduler.self) private var scheduler
     @Environment(CalendarStore.self) private var store
+    @State private var player = NotificationSoundPreviewPlayer()
 
     var body: some View {
         Form {
@@ -15,6 +16,9 @@ struct NotificationSoundsView: View {
             }
         }
         .settingsCategoryStyle(.notificationSounds)
+        .onDisappear {
+            player.stop()
+        }
     }
 
     private func section(
@@ -24,16 +28,8 @@ struct NotificationSoundsView: View {
         @ViewBuilder header: () -> some View
     ) -> some View {
         Section {
-            NavigationLink {
-                NotificationSoundPickerView(kind: kind, calendar: nil)
-            } label: {
-                LabeledContent(
-                    String(localized: "Row.Default", table: "NotificationSounds"),
-                    value: scheduler.sound(for: kind).title
-                )
-            }
-            .accessibilityIdentifier("NotificationSoundDefault.\(kind == .event ? "Events" : "Reminders")")
-            ForEach(calendars) { NotificationSoundCalendarLink(kind: kind, calendar: $0) }
+            NotificationSoundPicker(kind: kind, calendar: nil, player: player)
+            ForEach(calendars) { NotificationSoundPicker(kind: kind, calendar: $0, player: player) }
         } header: {
             header()
         } footer: {
