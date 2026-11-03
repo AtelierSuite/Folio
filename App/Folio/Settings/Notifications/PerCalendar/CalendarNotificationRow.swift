@@ -27,7 +27,7 @@ struct CalendarNotificationRow: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isPresented) {
-            SettingsSheet(title: calendar.title) {
+            SettingsSheet(title: calendar.title, height: 360) {
                 detail
             }
         }

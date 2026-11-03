@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsSheet<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
     let title: String
+    var height: CGFloat = 540
     @ViewBuilder let content: () -> Content
 
     var body: some View {
@@ -22,7 +23,7 @@ struct SettingsSheet<Content: View>: View {
             }
             .padding(16)
         }
-        .frame(width: 460, height: 540)
+        .frame(width: 460, height: height)
         #else
         NavigationStack {
             content()
