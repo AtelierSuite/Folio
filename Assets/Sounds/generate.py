@@ -257,21 +257,23 @@ class Instruments(Track):
         self.partial(start, frequency * 4.0, amplitude * 0.22, decay * 0.35, attack=0.004, tremolo=tremolo)
         self.partial(start, frequency * 10.0, amplitude * 0.04, decay * 0.1, attack=0.003)
 
-    def piano(self, start, pitch, amplitude=1.0, decay=1.0):
-        """A grand piano note: three unison strings with slightly stretched overtones, shaped by
-        a hammer striking an eighth of the way along, with a soft felt thump."""
+    def piano(self, start, pitch, amplitude=1.0, decay=1.1):
+        """A grand piano note in the treble, fitted to a sampled piano: a strong fundamental, a quieter
+        octave, faint stretched upper partials, and a two-stage decay where a bright prompt sound
+        drops away within a third of a second, leaving a long, softly beating aftersound."""
         frequency = self.frequency(pitch)
-        stiffness = 0.0003
-        for order in range(1, 11):
+        stiffness = 0.0014
+        partials = ((0.0, 0.34, 0.1), (-7.0, 0.5, 0.1), (-24.0, 0.79, 0.08),
+                    (-23.0, 0.95, 0.06), (-30.0, 1.0, 0.035), (-50.0, 1.0, 0.03))
+        for order, (decibels, prompt, prompt_decay) in enumerate(partials, start=1):
             overtone = frequency * order * math.sqrt(1 + stiffness * order * order)
-            if overtone > 7000:
-                break
-            level = abs(math.sin(math.pi * order / 8)) / order ** 0.9
-            length = decay / (1 + 0.45 * (order - 1))
-            for detune, share in ((-0.35, 0.3), (0.0, 0.4), (0.4, 0.3)):
-                self.partial(start, overtone + detune * order, amplitude * level * share, length, attack=0.002)
-        self.noise(start, 0.03, lambda progress, time: math.exp(-time / 0.006), amplitude * 0.15,
-                   frequency * 0.5, frequency * 3)
+            level = amplitude * 10 ** (decibels / 20)
+            self.partial(start, overtone, level * prompt, prompt_decay, attack=0.003)
+            if prompt < 1.0:
+                for detune, share in ((0.0, 0.8), (0.3, 0.2)):
+                    self.partial(start, overtone + detune, level * (1 - prompt) * share, decay, attack=0.003)
+        self.noise(start, 0.02, lambda progress, time: math.exp(-time / 0.004), amplitude * 0.05,
+                   frequency * 2, 7000)
 
     def chime(self, start, pitch, amplitude=1.0, decay=1.0):
         """Free hanging tubes: inharmonic partials of a free bar, each a shimmering detuned pair."""
@@ -410,8 +412,8 @@ def hoshizora():
     track = Instruments(2.3)
     track.pad(0.0, 2.1, ("D5", "F#5", "A5", "C#6"), amplitude=0.06, attack=0.3)
     sequence(track, Instruments.piano, ((0.0, "A6"), (0.22, "E6"), (0.44, "B6"), (0.66, "F#6")),
-             amplitude=0.6, decay=0.8)
-    return track.finish(room=0.25, mix=0.08, fade=0.35, brightness=4000)
+             amplitude=0.6, decay=1.0)
+    return track.finish(room=0.25, mix=0.08, fade=0.35, brightness=6000)
 
 
 def niji():
@@ -490,8 +492,8 @@ def kiri():
     """Morning Mist: an A major ninth pad that swells up under a single piano note."""
     track = Instruments(1.5)
     track.pad(0.0, 1.4, ("A4", "C#5", "E5", "B5"), amplitude=0.08, attack=0.25, overtones=(0.35, 0.18, 0.08))
-    track.piano(0.2, "E6", 0.6, decay=0.55)
-    return track.finish(room=0.25, mix=0.08, fade=0.3, brightness=3600)
+    track.piano(0.2, "E6", 0.6, decay=0.8)
+    return track.finish(room=0.25, mix=0.08, fade=0.3, brightness=6000)
 
 
 def hamon():
