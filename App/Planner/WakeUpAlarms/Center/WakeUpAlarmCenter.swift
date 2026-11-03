@@ -93,9 +93,12 @@ public final class WakeUpAlarmCenter {
         if isEnabled && authorization.allowsScheduling {
             let now = clock()
             let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+            let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
             let alarmPlanner = planner(skipping: await skippedHolidayDays())
             let events = await source.events(in: alarmPlanner.interval(after: now))
-                .filter { !hiddenCalendars.contains($0.calendarIdentifier) }
+                .filter {
+                    !hiddenCalendars.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
+                }
             alarms = alarmPlanner.alarms(for: events, after: now)
         }
         let requests = alarms.map { $0.request(formatter: formatter) }

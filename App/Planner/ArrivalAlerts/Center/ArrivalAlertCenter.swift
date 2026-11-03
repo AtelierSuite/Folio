@@ -111,9 +111,12 @@ public final class ArrivalAlertCenter {
     private func candidates(after now: Date) async -> [ArrivalCandidate] {
         let interval = DateInterval(start: now.addingTimeInterval(-planner.window.lag), duration: Self.lookAhead)
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var candidates: [ArrivalCandidate] = []
         for event in await source.events(in: interval)
-        where !hiddenCalendars.contains(event.calendarIdentifier) && preferences.isEnabled(for: event.reference) {
+        where !hiddenCalendars.contains(event.calendarIdentifier)
+            && !event.isHiddenInvitation(among: hiddenInvitations)
+            && preferences.isEnabled(for: event.reference) {
             guard planner.window.interval(for: event).map({ $0.end > now }) == true,
                   let coordinate = await resolver.coordinate(for: event),
                   let candidate = planner.candidate(for: event, at: coordinate) else { continue }

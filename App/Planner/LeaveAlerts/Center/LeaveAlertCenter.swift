@@ -127,9 +127,12 @@ public final class LeaveAlertCenter {
 
     private func plannedAlerts(from origin: PlannerCoordinate, now: Date) async -> [LeaveAlert] {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var alerts: [LeaveAlert] = []
         for event in await source.events(in: planner.interval(after: now))
-        where !hiddenCalendars.contains(event.calendarIdentifier) && preferences.isEnabled(for: event.reference) {
+        where !hiddenCalendars.contains(event.calendarIdentifier)
+            && !event.isHiddenInvitation(among: hiddenInvitations)
+            && preferences.isEnabled(for: event.reference) {
             guard planner.isEligible(event, now: now), !ledger.hasFired(for: event, now: now),
                   let destination = await resolver.coordinate(for: event),
                   planner.needsTravel(from: origin, to: destination),

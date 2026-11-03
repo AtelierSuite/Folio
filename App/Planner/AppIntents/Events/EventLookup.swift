@@ -62,8 +62,9 @@ public struct EventLookup: Sendable {
 
     public func visibleEvents(in interval: DateInterval) async -> [CalendarEvent] {
         let hidden = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         return await source.events(in: interval)
-            .filter { !hidden.contains($0.calendarIdentifier) }
+            .filter { !hidden.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations) }
             .sorted { ($0.startDate, $0.endDate) < ($1.startDate, $1.endDate) }
     }
 
