@@ -193,6 +193,13 @@ struct FolioApp: App {
         if arguments.contains(EventKitDataSource.testReminderAlertLaunchArgument) {
             try? await EventKitDataSource.shared.seedTestAlertReminder()
         }
+        await ScreenshotSampleSeeder.seedIfRequested(
+            arguments: arguments,
+            calendarStore: calendarStore,
+            notesLibrary: notesLibrary,
+            standaloneAlarms: standaloneAlarms,
+            notificationScheduler: notificationScheduler
+        )
         await SleepSampleDataSeeder.seedIfRequested(into: sleepStore, arguments: arguments)
         #endif
     }
