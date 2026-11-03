@@ -56,6 +56,10 @@ struct EventActions {
         }
     }
 
+    func clearSelection() {
+        controller.selectedEventID = nil
+    }
+
     func presentMenu(for event: CalendarEvent, at point: CGPoint) {
         controller.menuRequest = EventMenuRequest(event: event, point: point)
     }

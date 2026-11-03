@@ -2,7 +2,8 @@ import Planner
 import SwiftUI
 
 extension View {
-    /// A double tap on the empty grid asks to add an event or reminder in the slot tapped.
+    /// A tap on the empty grid clears the selected event; a double tap asks to add an event or
+    /// reminder in the slot tapped.
     func timelineCreationTap(days: TimelineDays, hourHeight: CGFloat) -> some View {
         modifier(TimelineCreationTapModifier(days: days, hourHeight: hourHeight))
     }
@@ -10,6 +11,7 @@ extension View {
 
 private struct TimelineCreationTapModifier: ViewModifier {
     @Environment(\.calendarCreation) private var creation
+    @Environment(\.eventActions) private var eventActions
     @AppStorage(DragSettings.snapMinutesKey) private var snapMinutes = DragSettings.defaultSnapMinutes
     let days: TimelineDays
     let hourHeight: CGFloat
@@ -23,9 +25,19 @@ private struct TimelineCreationTapModifier: ViewModifier {
             } action: { frame = $0 }
             .gesture(
                 SpatialTapGesture(count: 2, coordinateSpace: CalendarCreationAction.coordinateSpace)
-                    .onEnded { value in handleDoubleTap(at: value.location) },
-                isEnabled: creation != nil
+                    .exclusively(before: TapGesture())
+                    .onEnded(handle),
+                isEnabled: creation != nil || eventActions != nil
             )
+    }
+
+    private func handle(_ value: ExclusiveGesture<SpatialTapGesture, TapGesture>.Value) {
+        switch value {
+        case .first(let doubleTap):
+            handleDoubleTap(at: doubleTap.location)
+        case .second:
+            eventActions?.clearSelection()
+        }
     }
 
     private func handleDoubleTap(at point: CGPoint) {

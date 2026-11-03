@@ -8,7 +8,6 @@ struct EventDetailView: View {
     @State private var event: CalendarEvent
     @State private var draft: EventDraft?
     @State private var isEditing = false
-    @State private var isConfirmingDelete = false
     @State private var errorMessage: String?
     @State private var pendingRefresh: PendingRefresh?
 
@@ -22,7 +21,7 @@ struct EventDetailView: View {
 
     var body: some View {
         NavigationStack {
-            List {
+            Form {
                 EventDetailHeader(event: event, recurrence: draft?.recurrence)
                 if let meetingLink = event.meetingLink {
                     EventDetailJoinSection(link: meetingLink)
@@ -41,26 +40,16 @@ struct EventDetailView: View {
                 EventCountdownSection(event: event)
                 if event.isReadOnly {
                     EventDetailReadOnlySection(event: event, calendar: eventCalendar)
-                } else {
+                }
+                #if os(iOS)
+                if !event.isReadOnly {
                     Section {
-                        Button(String(localized: "Detail.Delete", table: "EventEditor"), role: .destructive) {
-                            if event.isRecurring {
-                                isConfirmingDelete = true
-                            } else {
-                                Task { await delete(span: .thisEvent) }
-                            }
-                        }
-                        .eventSpanDialog(
-                            isPresented: $isConfirmingDelete, action: .delete, spans: deleteSpans
-                        ) { span in
-                            Task { await delete(span: span) }
-                        }
+                        deleteButton
                     }
                 }
+                #endif
             }
-            #if os(macOS)
-            .listStyle(.inset)
-            #endif
+            .formStyle(.grouped)
             .navigationTitle(String(localized: "Detail.Title", table: "EventEditor"))
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -85,7 +74,7 @@ struct EventDetailView: View {
         .undoToastHost()
         .onScreenEntity(event)
         #if os(macOS)
-        .frame(minWidth: 420, minHeight: 520)
+        .frame(minWidth: 440, idealWidth: 480, minHeight: 520, idealHeight: 640)
         #endif
         .task(id: LoadKey(
             revision: store.contentRevision,
@@ -96,8 +85,10 @@ struct EventDetailView: View {
         }
     }
 
-    private var deleteSpans: [EventEditSpan] {
-        event.isRecurring ? EventEditSpan.allCases : [.thisEvent]
+    private var deleteButton: some View {
+        EventDetailDeleteButton(event: event) { span in
+            Task { await delete(span: span) }
+        }
     }
 
     @ToolbarContentBuilder
@@ -108,6 +99,11 @@ struct EventDetailView: View {
             }
         }
         if !event.isReadOnly {
+            #if os(macOS)
+            ToolbarItem(placement: .destructiveAction) {
+                deleteButton
+            }
+            #endif
             ToolbarItem(placement: .primaryAction) {
                 Button(String(localized: "Detail.Edit", table: "EventEditor")) {
                     isEditing = true

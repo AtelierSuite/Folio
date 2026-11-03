@@ -30,6 +30,9 @@ struct EventDetailLocationSection: View {
                     Marker(location.title, coordinate: center)
                 }
                 .frame(height: 180)
+                #if os(macOS)
+                .clipShape(.rect(cornerRadius: 8))
+                #endif
                 .allowsHitTesting(false)
                 .overlay {
                     Button {
@@ -41,7 +44,9 @@ struct EventDetailLocationSection: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel(String(localized: "Event.Location.OpenInMaps", table: "Calendar"))
                 }
+                #if os(iOS)
                 .listRowInsets(EdgeInsets())
+                #endif
             }
         }
     }
