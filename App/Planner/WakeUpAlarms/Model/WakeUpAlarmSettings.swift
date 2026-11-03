@@ -5,6 +5,7 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public static let leadMinutesKey = "WakeUpAlarm.LeadMinutes"
     public static let earliestMinutesKey = "WakeUpAlarm.EarliestMinutes"
     public static let latestEventMinutesKey = "WakeUpAlarm.LatestEventMinutes"
+    public static let skipsHolidaysKey = "WakeUpAlarm.SkipsHolidays"
 
     public static let defaultLeadMinutes = 90
     public static let defaultEarliestMinutes = 6 * 60
@@ -36,6 +37,20 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public var latestEventMinutes: Int {
         get { minutes(forKey: Self.latestEventMinutesKey) ?? Self.defaultLatestEventMinutes }
         nonmutating set { defaults.set(newValue, forKey: Self.latestEventMinutesKey) }
+    }
+
+    /// Only takes effect while holidays are highlighted in the calendar.
+    public var skipsHolidays: Bool {
+        get { defaults.bool(forKey: Self.skipsHolidaysKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.skipsHolidaysKey) }
+    }
+
+    public var highlightedHolidaySource: HolidaySource? {
+        guard defaults.bool(forKey: DayHighlightSettings.highlightsHolidaysKey),
+              let regionCode = DayHighlightSettings.resolvedRegionCode(
+                stored: defaults.string(forKey: DayHighlightSettings.holidayRegionKey) ?? ""
+              ) else { return nil }
+        return HolidaySource(regionCode: regionCode)
     }
 
     private func minutes(forKey key: String) -> Int? {
