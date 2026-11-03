@@ -12,12 +12,14 @@ extension NotificationScheduler {
     func replansDependentAlerts(
         _ arrivalAlerts: ArrivalAlertCenter,
         _ leaveAlerts: LeaveAlertCenter,
-        _ wakeUpAlarms: WakeUpAlarmCenter
+        _ wakeUpAlarms: WakeUpAlarmCenter,
+        _ standaloneAlarms: StandaloneAlarmCenter
     ) {
-        didReplan = { [weak arrivalAlerts, weak leaveAlerts, weak wakeUpAlarms] in
+        didReplan = { [weak arrivalAlerts, weak leaveAlerts, weak wakeUpAlarms, weak standaloneAlarms] in
             await arrivalAlerts?.replan()
             await leaveAlerts?.replan()
             await wakeUpAlarms?.replan()
+            await standaloneAlarms?.replan()
         }
     }
 }

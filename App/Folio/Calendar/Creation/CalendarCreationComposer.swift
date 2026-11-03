@@ -4,11 +4,13 @@ import Planner
 enum CalendarCreationComposer: Identifiable {
     case event(EventDraft)
     case reminder(CalendarCreationSlot)
+    case alarm(CalendarCreationSlot)
 
     var id: String {
         switch self {
         case .event(let draft): "event.\(draft.startDate.timeIntervalSinceReferenceDate)"
         case .reminder(let slot): "reminder.\(slot.date.timeIntervalSinceReferenceDate)"
+        case .alarm(let slot): "alarm.\(slot.date.timeIntervalSinceReferenceDate)"
         }
     }
 
