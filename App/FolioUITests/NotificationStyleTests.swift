@@ -50,6 +50,7 @@ final class NotificationStyleTests: XCTestCase {
         app.activate()
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("eventNotifications")
+        app.openFirstCalendarNotificationSettings()
         chooseStyle("Time Sensitive", in: app)
     }
 
@@ -101,6 +102,7 @@ final class NotificationStyleTests: XCTestCase {
         }
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("eventNotifications")
+        app.openFirstCalendarNotificationSettings()
         return app
     }
 
