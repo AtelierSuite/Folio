@@ -62,59 +62,54 @@ let accent = color(0x8D2A47)
 let gradientTop = accent
 let gradientBottom = accent.blended(withFraction: 0.3, of: .black)!
 
-let calendarCopy = [
-    "en": Copy(header: "Your day, all in one place", caption: "Events, reminders and notes together"),
-    "ja": Copy(header: "一日を、ひとつの場所に", caption: "予定もリマインダーもメモも、まとめて"),
+let weekCopy = [
+    "en": Copy(header: "Your whole week at a glance", caption: "Events, reminders, weather and sleep, side by side"),
+    "ja": Copy(header: "1週間をひと目で", caption: "予定もリマインダーも、天気も睡眠もいっしょに"),
 ]
-let remindersCopy = [
-    "en": Copy(header: "Reminders right on your calendar", caption: "Check them off without leaving the day"),
-    "ja": Copy(header: "カレンダーにリマインダーを", caption: "その日の画面のまま、チェックして完了"),
+let listsCopy = [
+    "en": Copy(header: "A list for everything", caption: "Your reminders, sorted and ready to check off"),
+    "ja": Copy(header: "やることをリストに", caption: "リマインダーを整理して、あとはチェックするだけ"),
 ]
 let notesCopy = [
-    "en": Copy(header: "Notes in plain Markdown", caption: "Stored in iCloud Drive or a folder you choose"),
-    "ja": Copy(header: "メモはMarkdownで", caption: "iCloud Driveや好きなフォルダに保存"),
+    "en": Copy(header: "Notes in plain Markdown", caption: "Headings and checklists, saved as files you own"),
+    "ja": Copy(header: "メモはMarkdownで", caption: "見出しもチェックリストも、自分のファイルに保存"),
 ]
-let monthCopy = [
-    "en": Copy(header: "The month at a glance", caption: "With the weather for the days ahead"),
-    "ja": Copy(header: "1か月をひと目で", caption: "この先の天気もいっしょに"),
+let alarmsCopy = [
+    "en": Copy(header: "Alarms right on your calendar", caption: "Set one on the day with a double tap"),
+    "ja": Copy(header: "カレンダーにアラームを", caption: "その日をダブルタップするだけで設定"),
 ]
-let darkCopy = [
-    "en": Copy(header: "Made for Dark Mode", caption: "A planner that's easy on the eyes at night"),
-    "ja": Copy(header: "ダークモードに対応", caption: "夜でも目にやさしいプランナー"),
+let notificationsCopy = [
+    "en": Copy(header: "Alerts your way", caption: "Choose how each calendar and list lets you know"),
+    "ja": Copy(header: "通知は思いのままに", caption: "カレンダーやリストごとに通知の仕方を選べる"),
+]
+let countdownCopy = [
+    "en": Copy(header: "Count down to what's next", caption: "A Live Activity on your Lock Screen"),
+    "ja": Copy(header: "次の予定までカウントダウン", caption: "ロック画面のライブアクティビティで"),
 ]
 
 let iPhoneScreenshots = [
-    Screenshot(name: "01-day", copy: calendarCopy),
-    Screenshot(name: "02-reminders", copy: remindersCopy),
+    Screenshot(name: "01-week", copy: weekCopy),
+    Screenshot(name: "02-lists", copy: listsCopy),
     Screenshot(name: "03-notes", copy: notesCopy),
-    Screenshot(name: "04-month", copy: monthCopy),
-    Screenshot(name: "05-dark", copy: darkCopy),
+    Screenshot(name: "04-alarms", copy: alarmsCopy),
+    Screenshot(name: "05-notifications", copy: notificationsCopy),
+    Screenshot(name: "06-countdown", copy: countdownCopy),
 ]
 
-let iPadScreenshots = [
-    Screenshot(
-        name: "01-week",
-        copy: [
-            "en": Copy(header: "Plan the whole week", caption: "Every event and reminder, side by side"),
-            "ja": Copy(header: "1週間をまるごと計画", caption: "予定とリマインダーを並べて"),
-        ]
-    ),
-    Screenshot(name: "02-reminders", copy: remindersCopy),
-    Screenshot(name: "03-notes", copy: notesCopy),
-    Screenshot(name: "04-month", copy: monthCopy),
-    Screenshot(name: "05-dark", copy: darkCopy),
-]
+// capture.sh only captures the iPhone so far; iPad shots go here once it captures them too.
+let iPadScreenshots: [Screenshot] = []
 
 let macScreenshots = [
     Screenshot(
         name: "01-week",
         copy: [
-            "en": Copy(header: "A planner for your Mac", caption: "Your calendars, reminders and notes in one window"),
-            "ja": Copy(header: "Macのためのプランナー", caption: "カレンダー・リマインダー・メモをひとつのウインドウに"),
+            "en": Copy(header: "A planner for your Mac", caption: "Events, reminders and the weather in one window"),
+            "ja": Copy(header: "Macのためのプランナー", caption: "予定もリマインダーも天気も、ひとつのウインドウに"),
         ]
     ),
-    Screenshot(name: "02-notes", copy: notesCopy),
-    Screenshot(name: "03-month", copy: monthCopy),
+    Screenshot(name: "02-lists", copy: listsCopy),
+    Screenshot(name: "03-notes", copy: notesCopy),
+    Screenshot(name: "04-notifications", copy: notificationsCopy),
 ]
 
 // MARK: - Text
@@ -304,7 +299,7 @@ func drawWindow(_ raw: NSImage, in rect: NSRect) {
 }
 
 /// The header and caption across the top, and the window below them,
-/// with a second window — the Macros window — overlapping its corner.
+/// with a second window, such as Settings, overlapping its corner.
 func drawMac(copy: Copy, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
     let textWidth = canvasSize.width - 240
     let header = Line(copy.header, size: 120, weight: .bold, color: .white, maxWidth: textWidth)
@@ -316,7 +311,7 @@ func drawMac(copy: Copy, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
     let textBand = inkHeight + 2 * 90
     let bottomMargin: CGFloat = 100
 
-    // Captures are 2880 × 1800, a window of 1440 × 900 points at 2x.
+    // Captures are 2560 × 1600, a window of 1280 × 800 points at 2x.
     let windowHeight = canvasSize.height - textBand - bottomMargin
     let scale = windowHeight / raw.size.height
     let windowSize = NSSize(width: raw.size.width * scale, height: windowHeight)
@@ -364,7 +359,7 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
         .draw(in: NSRect(origin: .zero, size: canvasSize), angle: -90)
 
     if device == .mac {
-        let extra = NSImage(contentsOf: device.rawDir(language).appendingPathComponent("\(shot.name)-macros.png"))
+        let extra = NSImage(contentsOf: device.rawDir(language).appendingPathComponent("\(shot.name)-extra.png"))
         drawMac(copy: copy, raw: raw, extra: extra, canvasSize: canvasSize)
         image.unlockFocus()
         return write(image, canvasSize: canvasSize, shot: shot, language: language, device: device)
