@@ -42,7 +42,7 @@ extension AlarmRequest {
                     ),
                     behavior: .custom
                 ),
-                secondaryIntent: OpenAlarmItemIntent(link: link)
+                secondaryIntent: link.map(OpenAlarmItemIntent.init(link:))
             )
         }
     }
@@ -52,7 +52,7 @@ extension AlarmRequest {
         attributes: AlarmAttributes<FolioAlarmMetadata>,
         secondaryIntent: (any LiveActivityIntent)?
     ) -> AlarmManager.AlarmConfiguration<FolioAlarmMetadata> {
-        if #available(iOS 27, *) {
+        if #available(iOS 27, *), let entityIdentifier {
             return AlarmManager.AlarmConfiguration(
                 countdownDuration: countdownDuration,
                 schedule: .fixed(fireDate),
@@ -69,8 +69,9 @@ extension AlarmRequest {
         )
     }
 
-    private var entityIdentifier: EntityIdentifier {
-        switch item.kind {
+    private var entityIdentifier: EntityIdentifier? {
+        guard let item else { return nil }
+        return switch item.kind {
         case .event: EntityIdentifier(for: EventEntity.self, identifier: item.reference.storageKey)
         case .reminder: EntityIdentifier(for: ReminderEntity.self, identifier: item.reference.storageKey)
         }

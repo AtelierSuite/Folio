@@ -34,6 +34,9 @@ struct CalendarView: View {
                     switch composer {
                     case .newEvent: EventEditorView(initialDate: navigation.selectedDate)
                     case .newReminder: ReminderEditorView(initialDate: navigation.selectedDate)
+                    case .newAlarm: StandaloneAlarmComposerView(initialDate: StandaloneAlarm.suggestedFireDate(
+                        at: navigation.selectedDate, hasTime: false, now: .now, calendar: navigation.calendar
+                    ))
                     }
                 }
         }

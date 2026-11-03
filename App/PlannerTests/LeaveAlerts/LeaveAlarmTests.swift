@@ -52,7 +52,7 @@ struct LeaveAlarmTests {
         #expect(alarm.fireDate == ArrivalFixtures.hours(1.5).addingTimeInterval(-300))
         #expect(alarm.secondaryAction == .open)
         #expect(alarm.title.hasPrefix("Dentist · "))
-        #expect(alarm.item.reference == dentist.reference)
+        #expect(alarm.item?.reference == dentist.reference)
     }
 
     @Test func lateAlertsStayNotifications() async throws {

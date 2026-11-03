@@ -15,6 +15,7 @@ struct FolioApp: App {
     @State private var arrivalAlerts: ArrivalAlertCenter
     @State private var leaveAlerts: LeaveAlertCenter
     @State private var wakeUpAlarms: WakeUpAlarmCenter
+    @State private var standaloneAlarms: StandaloneAlarmCenter
     @State private var notificationNavigator = NotificationNavigator()
     @State private var searchIndexer = SearchIndexer()
     @State private var weatherStore = WeatherStore.makeForApp()
@@ -35,10 +36,12 @@ struct FolioApp: App {
         let arrivalAlerts = ArrivalAlertCenter.makeForApp()
         let leaveAlerts = LeaveAlertCenter(capabilities: .current)
         let wakeUpAlarms = WakeUpAlarmCenter(capabilities: .current)
-        notificationScheduler.replansDependentAlerts(arrivalAlerts, leaveAlerts, wakeUpAlarms)
+        let standaloneAlarms = StandaloneAlarmCenter(capabilities: .current)
+        notificationScheduler.replansDependentAlerts(arrivalAlerts, leaveAlerts, wakeUpAlarms, standaloneAlarms)
         _arrivalAlerts = State(initialValue: arrivalAlerts)
         _leaveAlerts = State(initialValue: leaveAlerts)
         _wakeUpAlarms = State(initialValue: wakeUpAlarms)
+        _standaloneAlarms = State(initialValue: standaloneAlarms)
         NotificationPresentationDelegate.install(responseHandler: NotificationResponseHandler(
             reminders: calendarStore,
             routing: notificationNavigator,
@@ -86,6 +89,7 @@ struct FolioApp: App {
                 .environment(leaveAlerts)
             .environment(wakeUpAlarms)
                 .environment(wakeUpAlarms)
+                .environment(standaloneAlarms)
                 .environment(notificationNavigator)
                 .environment(weatherStore)
             .environment(travelTimeStore)

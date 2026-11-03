@@ -61,7 +61,7 @@ struct NotificationSchedulerStyleTests {
         let harness = try makeHarness(events: [work, wake], foreignAlarms: [foreign])
         await harness.scheduler.setDefaultStyle(.alarm, forCalendar: "wake")
         #expect(harness.center.pendingNotifications.map(\.content.title) == ["work"])
-        #expect(harness.alarms.scheduledAlarms.map(\.item.reference) == [wake.reference])
+        #expect(harness.alarms.scheduledAlarms.map(\.item?.reference) == [wake.reference])
         #expect(harness.scheduler.lastReport?.alarmCount == 1)
         #expect(harness.scheduler.lastReport?.nextFireDate == work.startDate.addingTimeInterval(-600))
 
