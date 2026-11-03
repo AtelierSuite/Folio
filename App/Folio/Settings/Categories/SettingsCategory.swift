@@ -59,12 +59,12 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: .gray
         case .accounts: .blue
         case .calendars: .red
-        case .notes: .blue
+        case .notes: .yellow
         case .notifications: .pink
         case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan
-        case .search: .purple
+        case .search: .gray
         case .privacy: .blue
         #if DEBUG
         case .debug: .green
@@ -107,8 +107,9 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         var groups: [[SettingsCategory]] = [
             [.accounts],
             [.general, .calendars, .notes],
-            [.weather],
-            [.notifications, .alarms, .sleep] + systemCategories
+            [.notifications, .alarms],
+            [.weather, .sleep],
+            systemCategories
         ]
         #if DEBUG
         groups.append([.debug])
