@@ -8,12 +8,7 @@ struct AllDayAlertTimeRow: View {
 
     var body: some View {
         DatePicker(selection: Binding(get: { time }, set: select), displayedComponents: .hourAndMinute) {
-            HStack(spacing: 10) {
-                Circle()
-                    .fill(calendar.color.color)
-                    .frame(width: 12, height: 12)
-                Text(calendar.title)
-            }
+            Text(String(localized: "AllDay.Title", table: "Notifications"))
         }
         .accessibilityIdentifier("AllDayAlertTime.\(calendar.title)")
         .onAppear {

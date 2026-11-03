@@ -49,7 +49,7 @@ final class NotificationStyleTests: XCTestCase {
         attachScreenshot(named: isDenied ? "DeliveredFallbackAlert" : "FiredAlarm")
         app.activate()
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.openSettingsCategory("notificationStyles")
+        app.openSettingsCategory("eventNotifications")
         chooseStyle("Time Sensitive", in: app)
     }
 
@@ -100,7 +100,7 @@ final class NotificationStyleTests: XCTestCase {
             allowSystemPromptIfAsked()
         }
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.openSettingsCategory("notificationStyles")
+        app.openSettingsCategory("eventNotifications")
         return app
     }
 

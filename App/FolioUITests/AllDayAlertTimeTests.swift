@@ -25,7 +25,7 @@ final class AllDayAlertTimeTests: XCTestCase {
         }
         attachScreenshot(named: "NotificationSettings")
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.openSettingsCategory("allDayAlerts")
+        app.openSettingsCategory("eventNotifications")
         let row = app.descendants(matching: .any)
             .matching(NSPredicate(format: "identifier BEGINSWITH %@", "AllDayAlertTime.")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 5))

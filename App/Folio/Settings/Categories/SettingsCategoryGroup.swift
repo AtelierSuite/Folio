@@ -26,7 +26,7 @@ struct SettingsCategoryGroup: Hashable {
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.NotificationsAndAlarms", table: "Settings"),
-                categories: [.notifications, .notificationStyles, .notificationSounds, .allDayAlerts, .alarms]
+                categories: [.notifications, .eventNotifications, .reminderNotifications, .alarms]
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.Integrations", table: "Settings"),

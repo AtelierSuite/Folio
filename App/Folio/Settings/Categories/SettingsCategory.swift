@@ -8,9 +8,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case workWeek
     case notes
     case notifications
-    case notificationStyles
-    case notificationSounds
-    case allDayAlerts
+    case eventNotifications
+    case reminderNotifications
     case alarms
     case sleep
     case weather
@@ -29,10 +28,9 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
         case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .notes: String(localized: "Category.Notes", table: "Settings")
-        case .notifications: String(localized: "Category.Notifications", table: "Settings")
-        case .notificationStyles: String(localized: "Defaults.Title", table: "NotificationStyles")
-        case .notificationSounds: String(localized: "Title", table: "NotificationSounds")
-        case .allDayAlerts: String(localized: "Category.AllDayAlerts", table: "Settings")
+        case .notifications: String(localized: "Category.AllNotifications", table: "Settings")
+        case .eventNotifications: String(localized: "Section.Events", table: "NotificationSounds")
+        case .reminderNotifications: String(localized: "Section.Reminders", table: "NotificationSounds")
         case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
@@ -52,9 +50,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .workWeek: "briefcase.fill"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
-        case .notificationStyles: "app.badge.fill"
-        case .notificationSounds: "speaker.wave.2.fill"
-        case .allDayAlerts: "sun.max.fill"
+        case .eventNotifications: "calendar.badge.clock"
+        case .reminderNotifications: "checklist"
         case .alarms: "alarm.fill"
         case .sleep: "bed.double.fill"
         case .weather: "cloud.sun.fill"
@@ -74,9 +71,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .workWeek: .brown
         case .notes: .yellow
         case .notifications: .pink
-        case .notificationStyles: .red
-        case .notificationSounds: .purple
-        case .allDayAlerts: .orange
+        case .eventNotifications: .red
+        case .reminderNotifications: .orange
         case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan

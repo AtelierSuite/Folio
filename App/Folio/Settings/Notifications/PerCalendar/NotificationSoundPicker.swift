@@ -18,15 +18,10 @@ struct NotificationSoundPicker: View {
                     .tag(NotificationSound?.some(sound))
             }
         } label: {
-            if let calendar {
-                HStack(spacing: 10) {
-                    Circle()
-                        .fill(calendar.color.color)
-                        .frame(width: 12, height: 12)
-                    Text(calendar.title)
-                }
+            if calendar == nil {
+                Text(String(localized: "Row.DefaultSound", table: "NotificationSounds"))
             } else {
-                Text(String(localized: "Row.Default", table: "NotificationSounds"))
+                Text(String(localized: "Row.Sound", table: "NotificationSounds"))
             }
         }
         .accessibilityIdentifier(accessibilityIdentifier)

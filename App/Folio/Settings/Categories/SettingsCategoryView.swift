@@ -1,3 +1,4 @@
+import Planner
 import SwiftUI
 
 struct SettingsCategoryView: View {
@@ -11,9 +12,8 @@ struct SettingsCategoryView: View {
         case .workWeek: WorkWeekSettingsView()
         case .notes: NotesSettingsView()
         case .notifications: NotificationSettingsView()
-        case .notificationStyles: NotificationStyleDefaultsView()
-        case .notificationSounds: NotificationSoundsView()
-        case .allDayAlerts: AllDayAlertTimesView()
+        case .eventNotifications: CalendarNotificationSettingsView(kind: .event)
+        case .reminderNotifications: CalendarNotificationSettingsView(kind: .reminder)
         case .alarms: AlarmSettingsView()
         case .sleep: SleepSettingsView()
         case .weather: WeatherSettingsView()

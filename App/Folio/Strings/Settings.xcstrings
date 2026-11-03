@@ -131,67 +131,67 @@
         }
       }
     },
-    "Category.AllDayAlerts": {
+    "Category.AllNotifications": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ganztägige Hinweise"
+            "value": "Alle Mitteilungen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "All-Day Alerts"
+            "value": "All Notifications"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alertes journée entière"
+            "value": "Toutes les notifications"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avvisi giornalieri"
+            "value": "Tutte le notifiche"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "終日の通知"
+            "value": "すべての通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "하루 종일 알림"
+            "value": "모든 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hele-dagmeldingen"
+            "value": "Alle meldingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cảnh báo cả ngày"
+            "value": "Tất cả thông báo"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "全天提醒"
+            "value": "所有通知"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "全天提醒"
+            "value": "所有通知"
           }
         }
       }
