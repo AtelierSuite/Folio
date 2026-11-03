@@ -48,8 +48,9 @@ struct ReminderListDetailView: View {
         } else {
             List(reminders) { reminder in
                 AgendaReminderRow(reminder: reminder, showsDueDay: true) { openedReminder = reminder }
+                    .padding(.vertical, 2)
             }
-            .listStyle(.plain)
+            .listStyle(.inset)
         }
     }
 
