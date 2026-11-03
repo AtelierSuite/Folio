@@ -64,7 +64,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan
-        case .search: .purple
+        case .search: .gray
         case .privacy: .blue
         #if DEBUG
         case .debug: .green
