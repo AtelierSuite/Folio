@@ -8,7 +8,7 @@ final class CalendarVisibilityTests: XCTestCase {
         app.launch()
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.openSettingsCategory("accounts")
         let sampleToggle = app.switches.matching(identifier: "CalendarVisibility.Folio Samples").firstMatch
         XCTAssertTrue(sampleToggle.waitForExistence(timeout: 5))
@@ -20,7 +20,7 @@ final class CalendarVisibilityTests: XCTestCase {
         let reminderRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Buy groceries")).firstMatch
         XCTAssertTrue(reminderRow.waitForExistence(timeout: 5))
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         sampleToggle.switches.firstMatch.tap()
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 5))

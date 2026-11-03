@@ -7,7 +7,7 @@ final class SecondaryTimeZoneTests: XCTestCase {
         app.launchArguments += ["-Calendar.ViewMode", "day", "-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.openSettingsCategory("calendars")
         let toggle = app.switches.matching(identifier: "SecondaryTimeZoneToggle").firstMatch
         scrollIntoView(toggle, in: app)
@@ -43,7 +43,7 @@ final class SecondaryTimeZoneTests: XCTestCase {
             app.buttons["Done"].firstMatch.tap()
         }
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         scrollIntoView(toggle, in: app)
         setToggle(toggle, isOn: false)
         app.tabBars.buttons.element(boundBy: 0).tap()

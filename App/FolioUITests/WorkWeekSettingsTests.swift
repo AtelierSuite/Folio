@@ -8,7 +8,7 @@ final class WorkWeekSettingsTests: XCTestCase {
         app.launch()
         try XCTSkipUnless(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 10), "Seed sample data first")
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.openSettingsCategory("workWeek")
         let thursday = app.switches.matching(identifier: "WorkWeek.Day.5").firstMatch
         XCTAssertTrue(thursday.waitForExistence(timeout: 5))
@@ -21,7 +21,7 @@ final class WorkWeekSettingsTests: XCTestCase {
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForNonExistence(timeout: 5))
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         sampleToggle.swipeUpIfNeeded(in: app)
         setToggle(sampleToggle, isOn: true)
         app.tabBars.buttons.element(boundBy: 0).tap()
