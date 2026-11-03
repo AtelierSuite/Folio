@@ -43,6 +43,7 @@ struct TimelineZoomScrollView<Content: View>: View {
         } action: { _, height in
             pinch.viewportHeight = height
             zoom?.updateViewport(height: height, verticalInset: verticalInset)
+            scrollToInitialHourForScreenshot()
         }
         .onChange(of: hourHeight) { oldHeight, newHeight in
             keepAnchor(from: oldHeight, to: newHeight)
@@ -85,6 +86,14 @@ struct TimelineZoomScrollView<Content: View>: View {
         pinch.anchorContentY = contentY
         pinch.anchor = anchor.scaleAnchor(contentY: contentY, hourHeight: hourHeight)
         zoom?.isPinching = true
+    }
+
+    /// A screenshot's window is resized after it opens, which leaves the default anchor showing the wrong hours.
+    private func scrollToInitialHourForScreenshot() {
+        #if DEBUG
+        guard ScreenshotStage.requested != nil else { return }
+        position.scrollTo(y: anchor.contentY(ofHour: initialHour, hourHeight: hourHeight))
+        #endif
     }
 
     private func keepAnchor(from oldHeight: CGFloat, to newHeight: CGFloat) {
