@@ -25,23 +25,9 @@ struct SecondaryTimeZonePickerView: View {
                 ContentUnavailableView.search(text: query)
             }
         }
-        .searchable(
-            text: $query,
-            placement: searchPlacement,
-            prompt: String(localized: "Picker.SearchPrompt", table: "TimeZones")
-        )
-        .navigationTitle(String(localized: "Picker.Title", table: "TimeZones"))
-        .toolbarTitleDisplayMode(.inline)
+        .settingsSheetSearchable(text: $query, prompt: String(localized: "Picker.SearchPrompt", table: "TimeZones"))
         .task(id: locale) {
             options = TimeZoneCatalog.options(locale: locale)
         }
-    }
-
-    private var searchPlacement: SearchFieldPlacement {
-        #if os(iOS)
-        .navigationBarDrawer(displayMode: .always)
-        #else
-        .automatic
-        #endif
     }
 }

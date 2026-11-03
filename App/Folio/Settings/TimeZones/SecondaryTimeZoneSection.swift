@@ -16,7 +16,8 @@ struct SecondaryTimeZoneSection: View {
             if isEnabled {
                 SettingsSheetRow(
                     title: String(localized: "Settings.Zone", table: "TimeZones"),
-                    value: selectedName
+                    value: selectedName,
+                    sheetTitle: String(localized: "Picker.Title", table: "TimeZones")
                 ) {
                     SecondaryTimeZonePickerView(identifier: $identifier)
                 }

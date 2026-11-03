@@ -13,7 +13,8 @@ struct WeatherSettingsSection: View {
             if weather.isEnabled {
                 SettingsSheetRow(
                     title: String(localized: "Settings.Location", table: "Weather"),
-                    value: WeatherLocationLabel.text(for: weather)
+                    value: WeatherLocationLabel.text(for: weather),
+                    sheetTitle: String(localized: "Location.Title", table: "Weather")
                 ) {
                     WeatherLocationView()
                 }
