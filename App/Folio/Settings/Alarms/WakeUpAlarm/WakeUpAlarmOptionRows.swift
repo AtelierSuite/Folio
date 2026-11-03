@@ -28,6 +28,7 @@ struct WakeUpAlarmOptionRows: View {
             select: { minutes in Task { await wakeUpAlarms.setLatestEventMinutes(minutes) } }
         )
         .accessibilityIdentifier("WakeUpLatestEventPicker")
+        WakeUpHolidayToggle()
         WakeUpNextAlarmRow(alarm: wakeUpAlarms.upcomingAlarms.first)
     }
 

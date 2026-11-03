@@ -28,4 +28,10 @@ extension WakeUpAlarmCenter {
         settings.latestEventMinutes = minutes
         await replan()
     }
+
+    public func setSkipsHolidays(_ skipsHolidays: Bool) async {
+        self.skipsHolidays = skipsHolidays
+        settings.skipsHolidays = skipsHolidays
+        await replan()
+    }
 }

@@ -10,9 +10,12 @@ struct WakeUpAlarmCenterTests {
     private func makeCenter(
         events: [CalendarEvent],
         alarms: FakeAlarmClient = FakeAlarmClient(),
-        platform: DevicePlatform = .iPhone
+        platform: DevicePlatform = .iPhone,
+        highlightsHolidays: Bool = false
     ) throws -> WakeUpAlarmCenter {
         let defaults = try #require(UserDefaults(suiteName: "WakeUpAlarmCenterTests.\(UUID().uuidString)"))
+        defaults.set(highlightsHolidays, forKey: DayHighlightSettings.highlightsHolidaysKey)
+        defaults.set("JP", forKey: DayHighlightSettings.holidayRegionKey)
         let now = now
         return WakeUpAlarmCenter(
             capabilities: PlatformCapabilities(platform: platform, areLiveActivitiesSupported: false),
@@ -22,6 +25,7 @@ struct WakeUpAlarmCenterTests {
             alarmClient: alarms,
             ledger: AlarmLedger(key: "Wake", defaults: defaults),
             formatter: NotificationFixtures.formatter,
+            loadHolidays: { _ in [Holiday(day: HolidayDay(year: 2026, month: 10, day: 29), name: "Holiday")] },
             clock: { now }
         )
     }
@@ -65,6 +69,24 @@ struct WakeUpAlarmCenterTests {
         await center.setEnabled(true)
         #expect(alarms.scheduledCount == 0)
         #expect(center.authorization == .denied)
+    }
+
+    @Test func skipsHolidaysWhileHolidaysAreHighlighted() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms, highlightsHolidays: true)
+        await center.setEnabled(true)
+        await center.setSkipsHolidays(true)
+        #expect(alarms.scheduledCount == 0)
+        await center.setSkipsHolidays(false)
+        #expect(alarms.scheduledCount == 1)
+    }
+
+    @Test func ringsOnHolidaysWhenHolidaysAreNotHighlighted() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        await center.setSkipsHolidays(true)
+        #expect(alarms.scheduledCount == 1)
     }
 
     @Test func macDoesNotSupportWakeUpAlarms() async throws {

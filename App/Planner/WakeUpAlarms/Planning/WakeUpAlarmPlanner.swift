@@ -2,6 +2,7 @@ import Foundation
 
 /// Rings `leadTime` before each morning's first timed event, but never before the earliest time of day.
 /// Events that start before the earliest time, or from the latest event time on, don't count.
+/// Days in `skippedDays` never ring.
 public struct WakeUpAlarmPlanner: Sendable {
     public static let snoozeDuration: TimeInterval = 9 * 60
 
@@ -9,6 +10,7 @@ public struct WakeUpAlarmPlanner: Sendable {
     public var earliestMinutes: Int
     public var latestEventMinutes: Int
     public var days: Int
+    public var skippedDays: Set<HolidayDay>
     public var calendar: Calendar
 
     public init(
@@ -16,12 +18,14 @@ public struct WakeUpAlarmPlanner: Sendable {
         earliestMinutes: Int,
         latestEventMinutes: Int,
         days: Int = 7,
+        skippedDays: Set<HolidayDay> = [],
         calendar: Calendar = .autoupdatingCurrent
     ) {
         self.leadTime = leadTime
         self.earliestMinutes = earliestMinutes
         self.latestEventMinutes = latestEventMinutes
         self.days = days
+        self.skippedDays = skippedDays
         self.calendar = calendar
     }
 
@@ -42,7 +46,8 @@ public struct WakeUpAlarmPlanner: Sendable {
     }
 
     private func alarm(on day: Date, from events: [CalendarEvent], after now: Date) -> WakeUpAlarm? {
-        guard let earliest = calendar.date(byAdding: .minute, value: earliestMinutes, to: day),
+        guard !skippedDays.contains(HolidayDay(date: day, timeZone: calendar.timeZone)),
+              let earliest = calendar.date(byAdding: .minute, value: earliestMinutes, to: day),
               let latest = calendar.date(byAdding: .minute, value: latestEventMinutes, to: day),
               let first = events
                 .filter({ $0.startDate > earliest && $0.startDate < latest })

@@ -9,6 +9,7 @@ public final class WakeUpAlarmCenter {
     public internal(set) var leadMinutes: Int
     public internal(set) var earliestMinutes: Int
     public internal(set) var latestEventMinutes: Int
+    public internal(set) var skipsHolidays: Bool
     public internal(set) var authorization: NotificationAuthorization = .notDetermined
     public internal(set) var upcomingAlarms: [WakeUpAlarm] = []
 
@@ -18,6 +19,7 @@ public final class WakeUpAlarmCenter {
     @ObservationIgnored let alarmClient: any AlarmSchedulingClient
     @ObservationIgnored let ledger: AlarmLedger
     @ObservationIgnored let formatter: NotificationContentFormatter
+    @ObservationIgnored let loadHolidays: @Sendable (HolidaySource) async -> [Holiday]
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
@@ -32,6 +34,9 @@ public final class WakeUpAlarmCenter {
         alarmClient: (any AlarmSchedulingClient)? = nil,
         ledger: AlarmLedger = AlarmLedger(key: WakeUpAlarmCenter.ledgerKey),
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
+        loadHolidays: @escaping @Sendable (HolidaySource) async -> [Holiday] = {
+            await HolidayRepository().holidays(for: $0)
+        },
         clock: @escaping @Sendable () -> Date = { .now }
     ) {
         isSupported = capabilities.supports(.alarms)
@@ -41,20 +46,28 @@ public final class WakeUpAlarmCenter {
         self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
         self.ledger = ledger
         self.formatter = formatter
+        self.loadHolidays = loadHolidays
         self.clock = clock
         isEnabled = isSupported && settings.isEnabled
         leadMinutes = settings.leadMinutes
         earliestMinutes = settings.earliestMinutes
         latestEventMinutes = settings.latestEventMinutes
+        skipsHolidays = settings.skipsHolidays
     }
 
-    var planner: WakeUpAlarmPlanner {
+    func planner(skipping skippedDays: Set<HolidayDay> = []) -> WakeUpAlarmPlanner {
         WakeUpAlarmPlanner(
             leadTime: TimeInterval(leadMinutes * 60),
             earliestMinutes: earliestMinutes,
             latestEventMinutes: latestEventMinutes,
+            skippedDays: skippedDays,
             calendar: formatter.calendar
         )
+    }
+
+    private func skippedHolidayDays() async -> Set<HolidayDay> {
+        guard skipsHolidays, let source = settings.highlightedHolidaySource else { return [] }
+        return Set(await loadHolidays(source).map(\.day))
     }
 
     public func replan() async {
@@ -80,9 +93,10 @@ public final class WakeUpAlarmCenter {
         if isEnabled && authorization.allowsScheduling {
             let now = clock()
             let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
-            let events = await source.events(in: planner.interval(after: now))
+            let alarmPlanner = planner(skipping: await skippedHolidayDays())
+            let events = await source.events(in: alarmPlanner.interval(after: now))
                 .filter { !hiddenCalendars.contains($0.calendarIdentifier) }
-            alarms = planner.alarms(for: events, after: now)
+            alarms = alarmPlanner.alarms(for: events, after: now)
         }
         let requests = alarms.map { $0.request(formatter: formatter) }
         let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger).synchronize(requests)

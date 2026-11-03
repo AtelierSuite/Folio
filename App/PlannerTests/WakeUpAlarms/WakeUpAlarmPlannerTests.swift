@@ -24,6 +24,15 @@ struct WakeUpAlarmPlannerTests {
         ])
     }
 
+    @Test func skipsHolidays() {
+        var holidayPlanner = planner
+        holidayPlanner.skippedDays = [HolidayDay(year: 2026, month: 10, day: 29)]
+        let alarms = holidayPlanner.alarms(for: [
+            event("holiday", day: 29, hour: 9), event("workday", day: 30, hour: 9)
+        ], after: now)
+        #expect(alarms.map(\.event.title) == ["workday"])
+    }
+
     @Test func neverRingsBeforeTheEarliestTime() {
         let alarms = planner.alarms(for: [event("early", day: 29, hour: 6.5)], after: now)
         #expect(alarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 6)])
