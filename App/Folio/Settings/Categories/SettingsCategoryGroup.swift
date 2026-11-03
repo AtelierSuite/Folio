@@ -38,10 +38,12 @@ struct SettingsCategoryGroup: Hashable {
             )
         ]
         #if DEBUG
-        groups.append(SettingsCategoryGroup(
-            header: String(localized: "Group.Developer", table: "Settings"),
-            categories: [.debug]
-        ))
+        if !ScreenshotStage.isActive {
+            groups.append(SettingsCategoryGroup(
+                header: String(localized: "Group.Developer", table: "Settings"),
+                categories: [.debug]
+            ))
+        }
         #endif
         return groups
     }

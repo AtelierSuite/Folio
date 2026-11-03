@@ -27,6 +27,9 @@ struct FolioApp: App {
     @State private var countdowns: EventCountdownManager
 
     init() {
+        #if DEBUG
+        ScreenshotStage.prepareSettings()
+        #endif
         let calendarStore = CalendarStore()
         _calendarStore = State(initialValue: calendarStore)
         let notificationScheduler = NotificationScheduler()
