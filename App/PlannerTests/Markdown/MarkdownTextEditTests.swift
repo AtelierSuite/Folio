@@ -52,4 +52,29 @@ struct MarkdownTextEditTests {
         let edit = MarkdownTextEdit(text: "intro\nlet a = 1", selection: 8..<8).applying(.codeBlock)
         #expect(edit == MarkdownTextEdit(text: "intro\n```\nlet a = 1\n```", selection: 10..<19))
     }
+
+    @Test func continuesBulletsAndTasks() {
+        let bullet = MarkdownTextEdit(text: "- one", selection: 5..<5).continuingList()
+        #expect(bullet == MarkdownTextEdit(text: "- one\n- ", selection: 8..<8))
+        let task = MarkdownTextEdit(text: "  * [x] done", selection: 12..<12).continuingList()
+        #expect(task == MarkdownTextEdit(text: "  * [x] done\n  * [ ] ", selection: 21..<21))
+        let numbered = MarkdownTextEdit(text: "9. nine", selection: 7..<7).continuingList()
+        #expect(numbered == MarkdownTextEdit(text: "9. nine\n10. ", selection: 12..<12))
+    }
+
+    @Test func splitsItemAtCaret() {
+        let edit = MarkdownTextEdit(text: "- [ ] buy milk", selection: 9..<9).continuingList()
+        #expect(edit == MarkdownTextEdit(text: "- [ ] buy\n- [ ]  milk", selection: 16..<16))
+    }
+
+    @Test func endsListOnEmptyItem() {
+        let edit = MarkdownTextEdit(text: "- one\n- [ ] ", selection: 12..<12).continuingList()
+        #expect(edit == MarkdownTextEdit(text: "- one\n", selection: 6..<6))
+    }
+
+    @Test func leavesPlainLinesAndCaretBeforeMarker() {
+        #expect(MarkdownTextEdit(text: "plain", selection: 5..<5).continuingList() == nil)
+        #expect(MarkdownTextEdit(text: "- one", selection: 0..<0).continuingList() == nil)
+        #expect(MarkdownTextEdit(text: "-one", selection: 4..<4).continuingList() == nil)
+    }
 }

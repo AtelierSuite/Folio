@@ -100,6 +100,11 @@ final class MarkdownUITextView: UITextView, MarkdownTextHost {
 }
 
 extension MarkdownTextCoordinator: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard text == "\n", textView.markedTextRange == nil else { return true }
+        return !continueList()
+    }
+
     func textViewDidChange(_ textView: UITextView) {
         guard textView.markedTextRange == nil else { return }
         textDidChange()
