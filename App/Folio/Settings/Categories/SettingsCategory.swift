@@ -72,7 +72,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notes: .yellow
         case .notifications: .pink
         case .eventNotifications: .red
-        case .reminderNotifications: .orange
+        case .reminderNotifications: .purple
         case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan
