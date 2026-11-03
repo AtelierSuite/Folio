@@ -423,9 +423,6 @@ class Instruments(Track):
                   lambda progress, time: min(1.0, time / 0.004) * math.exp(-time / decay),
                   (amplitude, amplitude * 0.25, amplitude * 0.08))
 
-    def wind(self, start, seconds, amplitude=0.1, low=500, high=2500):
-        self.noise(start, seconds, swell(0.4, 0.5), amplitude, low, high)
-
     def pad(self, start, seconds, pitches, amplitude=0.25, attack=0.35, release=0.5, overtones=(0.12, 0.04)):
         for pitch in pitches:
             for detune in (0.9975, 1.0025):
@@ -528,9 +525,8 @@ def nami():
 
 
 def kaze():
-    """Breeze: a gust of air over an E major pad, with a light glockenspiel falling through it."""
+    """Breeze: a light glockenspiel falling through an airy E major pad."""
     track = Instruments(2.1)
-    track.wind(0.0, 1.9, amplitude=0.12, low=600, high=2400)
     track.pad(0.0, 2.0, ("E5", "G#5", "B5"), amplitude=0.06, attack=0.25)
     sequence(track, Instruments.glockenspiel,
              ((0.25, "B6"), (0.37, "G#6"), (0.49, "E6"), (0.61, "C#6")), amplitude=0.5, decay=0.6)
