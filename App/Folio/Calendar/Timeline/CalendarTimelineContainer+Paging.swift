@@ -26,7 +26,7 @@ extension CalendarTimelineContainer {
     static func strip(
         unit: TimelineStrip.Unit, columnsOnScreen: Int?, around date: Date, calendar: Calendar
     ) -> TimelineStrip {
-        let radius = unit == .day ? 21 * max(columnsOnScreen ?? 1, 1) : 8
+        let radius = unit.pagesByDay ? 21 * max(columnsOnScreen ?? 1, 1) : 8
         return TimelineStrip(unit: unit, around: date, window: SlidingPageWindow(radius: radius), calendar: calendar)
     }
 

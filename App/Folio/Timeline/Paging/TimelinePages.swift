@@ -29,7 +29,7 @@ struct TimelinePages: Equatable {
 extension TimelinePages {
     /// Day pages fling freely and settle on a day; week pages move a week at a time.
     init(strip: TimelineStrip, columnsOnScreen: Int) {
-        let isWeek = strip.unit != .day
+        let isWeek = !strip.unit.pagesByDay
         self.init(
             starts: strip.pages,
             daysPerPage: strip.daysPerPage,

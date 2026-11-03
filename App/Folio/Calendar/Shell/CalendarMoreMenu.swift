@@ -6,6 +6,7 @@ struct CalendarMoreMenu: View {
     @Binding var isShowingInbox: Bool
     let pendingInvitationCount: Int
     @AppStorage("Calendar.MultiDayCount") private var dayCount: MultiDayCount = .three
+    @AppStorage(CalendarWeekLayout.storageKey) private var weekLayout: CalendarWeekLayout = .allDays
     @State private var isShowingInvitations = false
 
     var body: some View {
@@ -14,6 +15,10 @@ struct CalendarMoreMenu: View {
                 .pickerStyle(.inline)
             if mode == .multiDay {
                 MultiDayCountPicker(dayCount: $dayCount)
+                    .pickerStyle(.menu)
+            }
+            if mode.hasWeekLayouts {
+                CalendarWeekLayoutPicker(layout: $weekLayout)
                     .pickerStyle(.menu)
             }
             Section {
