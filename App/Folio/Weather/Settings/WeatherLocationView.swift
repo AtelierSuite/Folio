@@ -31,6 +31,7 @@ struct WeatherLocationView: View {
             search.update(query: query)
         }
         .navigationTitle(String(localized: "Location.Title", table: "Weather"))
+        .toolbarTitleDisplayMode(.inline)
     }
 
     private var searchPlacement: SearchFieldPlacement {
