@@ -40,9 +40,7 @@ struct NotificationSettingsView: View {
                 NotificationStatusSection()
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "Title", table: "Notifications"))
-        .toolbarTitleDisplayMode(.inline)
+        .settingsCategoryStyle(.notifications)
         .task {
             await scheduler.replan()
         }
