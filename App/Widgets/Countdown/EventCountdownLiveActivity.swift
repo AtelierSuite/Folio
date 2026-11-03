@@ -8,6 +8,14 @@ struct EventCountdownLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: EventCountdownAttributes.self) { context in
             CountdownLockScreenView(state: context.state, phase: phase(of: context))
+                .background {
+                    LinearGradient(
+                        colors: [context.state.color.color.opacity(0.1), .clear],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                }
+                .activityBackgroundTint(.clear)
                 .widgetURL(context.attributes.eventURL(for: context.state))
         } dynamicIsland: { context in
             let phase = phase(of: context)
