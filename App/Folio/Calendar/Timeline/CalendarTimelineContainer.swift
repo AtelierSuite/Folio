@@ -84,13 +84,6 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         }
         .modifier(dragHandling)
         .modifier(scrollSync)
-        .toolbar {
-            if capabilities.supports(.timelineZoomMenu) {
-                ToolbarItem(placement: .secondaryAction) {
-                    TimelineZoomMenu(zoom: zoom)
-                }
-            }
-        }
         .focusedSceneValue(\.timelineZoom, zoom)
         .task(id: LoadKey(
             revision: store.contentRevision, span: strip.days.span, excluded: excludedCalendarIdentifiers
