@@ -21,6 +21,8 @@ public struct PlatformCapabilities: Sendable, Equatable {
             platform == .iPhone
         case .calendarPagingButtons, .timelineZoomMenu:
             platform != .iPhone
+        case .calendarViewMenuCommands:
+            platform == .mac
         }
     }
 

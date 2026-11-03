@@ -10,6 +10,5 @@ struct MultiDayCountPicker: View {
                     .tag(count)
             }
         }
-        .pickerStyle(.menu)
     }
 }

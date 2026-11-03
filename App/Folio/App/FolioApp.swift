@@ -126,6 +126,9 @@ struct FolioApp: App {
         #endif
         .notificationRefreshTask(notificationScheduler)
         .commands {
+            if PlatformCapabilities.current.supports(.calendarViewMenuCommands) {
+                CalendarViewCommands()
+            }
             TimelineZoomCommands()
         }
         #if os(macOS)
