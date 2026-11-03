@@ -11,6 +11,7 @@ tones and crackles like clipping. Pure standard library, seeded, so every run pr
 """
 
 import array
+import cmath
 import math
 import os
 import random
@@ -34,6 +35,21 @@ def note(name):
     elif rest.startswith("b"):
         offset, rest = offset - 1, rest[1:]
     return 440.0 * 2 ** ((offset + (int(rest) - 4) * 12) / 12)
+
+
+def allpass_for_delay(target, omega):
+    """Finds the first-order allpass coefficient whose phase delay at omega equals target samples."""
+    def phase_delay(coefficient):
+        response = (coefficient + cmath.exp(-1j * omega)) / (1 + coefficient * cmath.exp(-1j * omega))
+        return -cmath.phase(response) / omega
+    low, high = -0.99, 0.99
+    for _ in range(60):
+        middle = (low + high) / 2
+        if phase_delay(middle) > target:
+            low = middle
+        else:
+            high = middle
+    return (low + high) / 2
 
 
 class Track:
@@ -257,23 +273,74 @@ class Instruments(Track):
         self.partial(start, frequency * 4.0, amplitude * 0.22, decay * 0.35, attack=0.004, tremolo=tremolo)
         self.partial(start, frequency * 10.0, amplitude * 0.04, decay * 0.1, attack=0.003)
 
-    def piano(self, start, pitch, amplitude=1.0, decay=1.1):
-        """A grand piano note in the treble, fitted to a sampled piano: a strong fundamental, a quieter
-        octave, faint stretched upper partials, and a two-stage decay where a bright prompt sound
-        drops away within a third of a second, leaving a long, softly beating aftersound."""
+    def piano(self, start, pitch, amplitude=1.0, decay=1.1, hardness=1.0):
+        """A grand piano note, modelled physically rather than built from sines: a felt hammer pulse,
+        coloured by a wooden soundboard, sets three slightly detuned stiff strings ringing."""
         frequency = self.frequency(pitch)
-        stiffness = 0.0014
-        partials = ((0.0, 0.34, 0.1), (-7.0, 0.5, 0.1), (-24.0, 0.79, 0.08),
-                    (-23.0, 0.95, 0.06), (-30.0, 1.0, 0.035), (-50.0, 1.0, 0.03))
-        for order, (decibels, prompt, prompt_decay) in enumerate(partials, start=1):
-            overtone = frequency * order * math.sqrt(1 + stiffness * order * order)
-            level = amplitude * 10 ** (decibels / 20)
-            self.partial(start, overtone, level * prompt, prompt_decay, attack=0.003)
-            if prompt < 1.0:
-                for detune, share in ((0.0, 0.8), (0.3, 0.2)):
-                    self.partial(start, overtone + detune, level * (1 - prompt) * share, decay, attack=0.003)
-        self.noise(start, 0.02, lambda progress, time: math.exp(-time / 0.004), amplitude * 0.05,
-                   frequency * 2, 7000)
+        first = int(start * SAMPLE_RATE)
+        length = min(len(self) - first, int(decay * 6 * SAMPLE_RATE))
+        if length <= 0:
+            return
+        generator = random.Random(int(frequency * 1000) + int(start * 1000))
+        period = SAMPLE_RATE / frequency
+        width = max(3, int(SAMPLE_RATE * 0.0008 / hardness))
+        hammer = [0.5 - 0.5 * math.cos(TAU * index / width) for index in range(width)]
+        strike = max(1, int(period / 8))
+        hammer = [value - (hammer[index - strike] if 0 <= index - strike < width else 0.0)
+                  for index, value in enumerate(hammer + [0.0] * strike)]
+        board_length = int(SAMPLE_RATE * 0.06)
+        board = lowpass([generator.uniform(-1, 1) * math.exp(-index / (SAMPLE_RATE * 0.012))
+                         for index in range(board_length)], 8000)
+        board[0] += 4.0
+        excitation = [0.0] * (len(hammer) + board_length)
+        for offset, pulse in enumerate(hammer):
+            if pulse:
+                for index, value in enumerate(board):
+                    excitation[offset + index] += pulse * value
+        notes = [0.0] * length
+        for cents, share in ((-0.25, 0.3), (0.0, 0.4), (0.3, 0.3)):
+            self._string(notes, excitation, frequency * 2 ** (cents / 1200), decay, share)
+        knock = highpass([generator.uniform(-1, 1) * math.exp(-index / (SAMPLE_RATE * 0.008))
+                          for index in range(min(length, board_length))], 1500)
+        for index, value in enumerate(knock):
+            notes[index] += 0.8 * value
+        loudest = max(abs(value) for value in notes) or 1
+        for index, value in enumerate(notes):
+            self.samples[first + index] += amplitude * 0.8 * value / loudest
+
+    @staticmethod
+    def _string(output, excitation, frequency, decay, share):
+        """A digital waveguide: a delay loop with a damping lowpass, so treble dies first, and a
+        chain of allpasses that stretch the partials sharp like a stiff steel string. The fractional
+        part of the delay is an allpass too, so it doesn't dull the string the way blending would."""
+        omega = TAU * frequency / SAMPLE_RATE
+        damping = 0.025
+        dispersion = (-0.38,) * 4
+        lowpass_delay = math.atan2(damping * math.sin(omega), 1 - damping * math.cos(omega)) / omega
+        lowpass_gain = (1 - damping) / abs(1 - damping * cmath.exp(-1j * omega))
+        allpass_delay = 0.0
+        for coefficient in dispersion:
+            response = (coefficient + cmath.exp(-1j * omega)) / (1 + coefficient * cmath.exp(-1j * omega))
+            allpass_delay += -cmath.phase(response) / omega
+        delay = SAMPLE_RATE / frequency - lowpass_delay - allpass_delay
+        whole = int(delay - 0.618)
+        tuning = allpass_for_delay(delay - whole, omega)
+        loss = math.exp(-1 / (decay * frequency)) / lowpass_gain
+        line = [0.0] * len(output)
+        smoothed = tuned = previous = 0.0
+        states = [[0.0, 0.0] for _ in dispersion]
+        for index in range(len(output)):
+            fed = line[index - whole] if index >= whole else 0.0
+            tuned = tuning * fed + previous - tuning * tuned
+            previous = fed
+            smoothed = (1 - damping) * tuned + damping * smoothed
+            value = smoothed
+            for state, coefficient in zip(states, dispersion):
+                result = coefficient * value + state[0] - coefficient * state[1]
+                state[0], state[1] = value, result
+                value = result
+            line[index] = (excitation[index] if index < len(excitation) else 0.0) + loss * value
+            output[index] += share * line[index]
 
     def chime(self, start, pitch, amplitude=1.0, decay=1.0):
         """Free hanging tubes: inharmonic partials of a free bar, each a shimmering detuned pair."""
