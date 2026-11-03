@@ -19,6 +19,7 @@ struct CalendarNotificationSection: View {
                 Image(systemName: calendar.kind.accountSymbolName)
                     .foregroundStyle(calendar.color.color)
                 Text(calendar.title)
+                Spacer()
                 Text(accountTitle)
                     .foregroundStyle(.secondary)
             }
