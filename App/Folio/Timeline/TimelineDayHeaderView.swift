@@ -60,7 +60,7 @@ struct TimelineDayHeaderLabel: View {
     let calendar: Calendar
     /// When set, the selected day gets the filled number instead of today, which keeps its colour.
     var isSelected: Bool?
-    @ScaledMetric(relativeTo: .callout) private var selectorDiameter: CGFloat = 32
+    @ScaledMetric(relativeTo: .title3) private var selectorDiameter: CGFloat = 38
 
     private var isToday: Bool {
         calendar.isDateInToday(day.start)
@@ -90,12 +90,12 @@ struct TimelineDayHeaderLabel: View {
     }
 
     var body: some View {
-        VStack(spacing: 2) {
+        VStack(spacing: isSelected == nil ? 2 : 6) {
             Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).weekday(.abbreviated)))
                 .font(.caption2)
                 .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.secondary))
             dayNumber
-                .font(.callout.weight(isToday || isFilled ? .bold : .regular))
+                .font((isSelected == nil ? Font.callout : .title3).weight(isToday || isFilled ? .bold : .regular))
                 .foregroundStyle(numberStyle)
                 .lineLimit(1)
                 .fixedSize()
