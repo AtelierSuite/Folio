@@ -16,8 +16,6 @@ struct CountdownLockScreenView: View {
                     .foregroundStyle(.secondary)
                 CountdownTimerText(phase: phase)
                     .font(.title.weight(.semibold))
-                    .multilineTextAlignment(.trailing)
-                    .frame(maxWidth: 140, alignment: .trailing)
             }
         }
         .padding(16)
