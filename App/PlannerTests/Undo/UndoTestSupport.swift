@@ -26,10 +26,13 @@ struct UndoTestContext {
             source.state.withLock { $0.eventWriting.drafts[event.reference.localIdentifier] = Self.draft(of: event) }
         }
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
+        let today = week.start
         store = CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
-            visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
+            visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
+            reminderSettings: ReminderSettings(defaults: defaults),
+            now: { today }
         )
         coordinator = UndoCoordinator(
             store: store, library: library, toastDuration: toastDuration, assistiveToastDuration: toastDuration
