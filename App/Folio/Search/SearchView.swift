@@ -19,6 +19,7 @@ struct SearchView: View {
                 isIndexing: indexer.isIndexing,
                 onOpen: { router.open($0.destination) }
             )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .top, spacing: 0) {
                 VStack(spacing: 0) {
                     SearchFilterBar(filters: $filters)
