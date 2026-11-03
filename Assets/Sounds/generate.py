@@ -56,17 +56,6 @@ class Track:
                 envelope *= 1 - depth * (0.5 - 0.5 * math.cos(TAU * rate * time))
             self.samples[first + index] += amplitude * envelope * math.sin(step * index)
 
-    def fm(self, start, frequency, amplitude, decay, ratio, index, index_decay, attack=0.003):
-        """Adds a sine phase-modulated by another at ratio times its frequency, the modulation fading."""
-        first = int(start * SAMPLE_RATE)
-        length = min(len(self) - first, int(decay * 7 * SAMPLE_RATE))
-        step = TAU * frequency / SAMPLE_RATE
-        for sample in range(max(0, length)):
-            time = sample / SAMPLE_RATE
-            envelope = min(1.0, time / attack) * math.exp(-time / decay)
-            modulation = index * math.exp(-time / index_decay) * math.sin(step * ratio * sample)
-            self.samples[first + sample] += amplitude * envelope * math.sin(step * sample + modulation)
-
     def pluck(self, start, frequency, amplitude, decay, damping=0.5, position=0.5):
         """Adds a Karplus-Strong string. Damping 0.5 is the darkest; position is where it's plucked."""
         first = int(start * SAMPLE_RATE)
@@ -268,11 +257,21 @@ class Instruments(Track):
         self.partial(start, frequency * 4.0, amplitude * 0.22, decay * 0.35, attack=0.004, tremolo=tremolo)
         self.partial(start, frequency * 10.0, amplitude * 0.04, decay * 0.1, attack=0.003)
 
-    def electric_piano(self, start, pitch, amplitude=1.0, decay=0.8, index=1.6):
-        """A two-operator FM tine: bright as it's struck, mellowing into a round tone."""
+    def piano(self, start, pitch, amplitude=1.0, decay=1.0):
+        """A grand piano note: three unison strings with slightly stretched overtones, shaped by
+        a hammer striking an eighth of the way along, with a soft felt thump."""
         frequency = self.frequency(pitch)
-        self.fm(start, frequency, amplitude, decay, ratio=1.0, index=index, index_decay=decay * 0.25)
-        self.fm(start, frequency, amplitude * 0.05, decay * 0.06, ratio=14.0, index=0.8, index_decay=0.02)
+        stiffness = 0.0003
+        for order in range(1, 11):
+            overtone = frequency * order * math.sqrt(1 + stiffness * order * order)
+            if overtone > 7000:
+                break
+            level = abs(math.sin(math.pi * order / 8)) / order ** 0.9
+            length = decay / (1 + 0.45 * (order - 1))
+            for detune, share in ((-0.35, 0.3), (0.0, 0.4), (0.4, 0.3)):
+                self.partial(start, overtone + detune * order, amplitude * level * share, length, attack=0.002)
+        self.noise(start, 0.03, lambda progress, time: math.exp(-time / 0.006), amplitude * 0.15,
+                   frequency * 0.5, frequency * 3)
 
     def chime(self, start, pitch, amplitude=1.0, decay=1.0):
         """Free hanging tubes: inharmonic partials of a free bar, each a shimmering detuned pair."""
@@ -407,12 +406,12 @@ def seseragi():
 
 
 def hoshizora():
-    """Starry Sky: slow twinkling electric piano over a D major seventh pad."""
+    """Starry Sky: slow twinkling piano over a D major seventh pad."""
     track = Instruments(2.3)
     track.pad(0.0, 2.1, ("D5", "F#5", "A5", "C#6"), amplitude=0.06, attack=0.3)
-    sequence(track, Instruments.electric_piano, ((0.0, "A6"), (0.22, "E6"), (0.44, "B6"), (0.66, "F#6")),
-             amplitude=0.5, decay=0.8)
-    return track.finish(room=0.25, mix=0.08, brightness=2800)
+    sequence(track, Instruments.piano, ((0.0, "A6"), (0.22, "E6"), (0.44, "B6"), (0.66, "F#6")),
+             amplitude=0.6, decay=0.8)
+    return track.finish(room=0.25, mix=0.08, fade=0.35, brightness=4000)
 
 
 def niji():
@@ -488,11 +487,11 @@ def tsuki():
 
 
 def kiri():
-    """Morning Mist: an A major ninth pad that swells up under a single electric piano note."""
+    """Morning Mist: an A major ninth pad that swells up under a single piano note."""
     track = Instruments(1.5)
     track.pad(0.0, 1.4, ("A4", "C#5", "E5", "B5"), amplitude=0.08, attack=0.25, overtones=(0.35, 0.18, 0.08))
-    track.electric_piano(0.2, "E6", 0.5, decay=0.6, index=2.6)
-    return track.finish(room=0.25, mix=0.08, fade=0.05, brightness=3600)
+    track.piano(0.2, "E6", 0.6, decay=0.55)
+    return track.finish(room=0.25, mix=0.08, fade=0.3, brightness=3600)
 
 
 def hamon():
