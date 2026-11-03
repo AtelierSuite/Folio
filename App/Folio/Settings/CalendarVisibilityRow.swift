@@ -14,8 +14,7 @@ struct CalendarVisibilityRow: View {
                 calendar: calendar,
                 subtitle: calendar.isReadOnly
                     ? String(localized: "Subtitle.ReadOnly", table: "CalendarVisibility")
-                    : nil,
-                iconSize: 24
+                    : nil
             )
         }
         .accessibilityIdentifier("CalendarVisibility.\(calendar.title)")
