@@ -14,9 +14,7 @@ struct NotificationSoundsView: View {
                 Text(String(localized: "Section.Reminders", table: "NotificationSounds"))
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "Title", table: "NotificationSounds"))
-        .toolbarTitleDisplayMode(.inline)
+        .settingsCategoryStyle(.notificationSounds)
     }
 
     private func section(
@@ -43,6 +41,6 @@ struct NotificationSoundsView: View {
                 Text(String(localized: "Section.Footer", table: "NotificationSounds"))
             }
         }
-        .disabled(!isIncluded)
+        .disabled(!scheduler.isEnabled || !isIncluded)
     }
 }

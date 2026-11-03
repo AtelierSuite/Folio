@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NotificationStyleDefaultsView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(NotificationScheduler.self) private var scheduler
     @Environment(PermissionCenter.self) private var permissionCenter
     @Environment(\.platformCapabilities) private var capabilities
 
@@ -20,9 +21,10 @@ struct NotificationStyleDefaultsView: View {
                 lists: store.reminderLists,
                 footer: footer
             ) { NotificationStyleCalendarRow(calendar: $0) }
+            .disabled(!scheduler.isEnabled)
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "Defaults.Title", table: "NotificationStyles"))
+        .accessibilityIdentifier("NotificationStyleDefaults")
+        .settingsCategoryStyle(.notificationStyles)
         .task {
             await permissionCenter.refresh(.alarms)
         }

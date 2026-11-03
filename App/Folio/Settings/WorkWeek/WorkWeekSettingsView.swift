@@ -14,7 +14,6 @@ struct WorkWeekSettingsView: View {
                 WorkWeekCalendarsSection()
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "WorkWeek.Title", table: "Week"))
+        .settingsCategoryStyle(.workWeek)
     }
 }

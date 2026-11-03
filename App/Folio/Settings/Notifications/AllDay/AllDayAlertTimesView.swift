@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AllDayAlertTimesView: View {
     @Environment(CalendarStore.self) private var store
+    @Environment(NotificationScheduler.self) private var scheduler
 
     var body: some View {
         Form {
@@ -14,9 +15,10 @@ struct AllDayAlertTimesView: View {
                     calendars: store.eventCalendars,
                     footer: String(localized: "AllDay.Footer", table: "Notifications")
                 ) { AllDayAlertTimeRow(calendar: $0) }
+                .disabled(!scheduler.isEnabled || !scheduler.includesEvents)
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "AllDay.Title", table: "Notifications"))
+        .accessibilityIdentifier("AllDayAlertTimes")
+        .settingsCategoryStyle(.allDayAlerts)
     }
 }

@@ -5,8 +5,12 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case general
     case accounts
     case calendars
+    case workWeek
     case notes
     case notifications
+    case notificationStyles
+    case notificationSounds
+    case allDayAlerts
     case alarms
     case sleep
     case weather
@@ -23,8 +27,12 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: String(localized: "Category.General", table: "Settings")
         case .accounts: String(localized: "Category.Accounts", table: "Settings")
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
+        case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .notes: String(localized: "Category.Notes", table: "Settings")
         case .notifications: String(localized: "Category.Notifications", table: "Settings")
+        case .notificationStyles: String(localized: "Defaults.Title", table: "NotificationStyles")
+        case .notificationSounds: String(localized: "Title", table: "NotificationSounds")
+        case .allDayAlerts: String(localized: "Category.AllDayAlerts", table: "Settings")
         case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
@@ -41,8 +49,12 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: "gearshape.fill"
         case .accounts: "person.crop.circle.fill"
         case .calendars: "calendar"
+        case .workWeek: "briefcase.fill"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
+        case .notificationStyles: "app.badge.fill"
+        case .notificationSounds: "speaker.wave.2.fill"
+        case .allDayAlerts: "sun.max.fill"
         case .alarms: "alarm.fill"
         case .sleep: "bed.double.fill"
         case .weather: "cloud.sun.fill"
@@ -59,8 +71,12 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: .gray
         case .accounts: .blue
         case .calendars: .red
+        case .workWeek: .brown
         case .notes: .yellow
         case .notifications: .pink
+        case .notificationStyles: .red
+        case .notificationSounds: .purple
+        case .allDayAlerts: .orange
         case .alarms: .orange
         case .sleep: .indigo
         case .weather: .cyan
@@ -93,27 +109,5 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .sleep: capabilities.supports(.sleep)
         default: true
         }
-    }
-
-    static var groups: [[SettingsCategory]] {
-        groups(including: [.search])
-    }
-
-    static var windowGroups: [[SettingsCategory]] {
-        groups(including: [.search, .privacy])
-    }
-
-    private static func groups(including systemCategories: [SettingsCategory]) -> [[SettingsCategory]] {
-        var groups: [[SettingsCategory]] = [
-            [.accounts],
-            [.general, .calendars, .notes],
-            [.notifications, .alarms],
-            [.weather, .sleep],
-            systemCategories
-        ]
-        #if DEBUG
-        groups.append([.debug])
-        #endif
-        return groups
     }
 }
