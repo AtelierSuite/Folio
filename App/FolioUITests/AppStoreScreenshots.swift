@@ -84,6 +84,8 @@ final class AppStoreScreenshots: XCTestCase {
     private func stage(_ stage: Stage) throws {
         switch stage {
         case .notifications:
+            // The rows read their styles as they appear, and the prompt only comes once those are set.
+            allowSystemPrompt(timeout: 30)
             app.openSettingsCategory("eventNotifications")
         case .countdown:
             // Long enough for the Live Activity to start, then shown on the Lock Screen.
@@ -91,7 +93,7 @@ final class AppStoreScreenshots: XCTestCase {
             XCUIDevice.shared.perform(NSSelectorFromString("pressLockButton"))
             Thread.sleep(forTimeInterval: 2)
             XCUIDevice.shared.perform(NSSelectorFromString("pressLockButton"))
-            allowLiveActivities()
+            allowSystemPrompt(timeout: 5)
         case .week, .lists, .notes, .alarms:
             break
         }
@@ -105,12 +107,12 @@ final class AppStoreScreenshots: XCTestCase {
         try XCUIScreen.main.screenshot().pngRepresentation.write(to: file)
     }
 
-    /// The first Live Activity asks on the Lock Screen whether to keep showing them.
+    /// Accepts the notifications prompt, or the one the first Live Activity shows on the Lock Screen.
     @MainActor
-    private func allowLiveActivities() {
+    private func allowSystemPrompt(timeout: TimeInterval) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let allow = springboard.buttons[language == "ja" ? "許可" : "Allow"].firstMatch
-        if allow.waitForExistence(timeout: 5) {
+        if allow.waitForExistence(timeout: timeout) {
             allow.tap()
         } else {
             print(springboard.debugDescription)

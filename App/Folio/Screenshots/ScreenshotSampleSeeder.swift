@@ -55,7 +55,8 @@ enum ScreenshotSampleSeeder {
 
     /// Gives each sample calendar its alert style, and keeps holidays, birthdays and anything else off the calendar
     /// with a plain alert. Done on every screenshot launch: these live in the App Group, which an ad hoc build in the
-    /// Mac VM can't keep from one launch to the next.
+    /// Mac VM can't keep from one launch to the next. Notifications come on last, and for the notifications screenshot
+    /// alone, whose rows are disabled without them: anywhere else a sample's alert could land in the shot.
     private static func applySettings(
         of samples: ScreenshotSamples, calendarStore: CalendarStore, notificationScheduler: NotificationScheduler
     ) async {
@@ -68,6 +69,7 @@ enum ScreenshotSampleSeeder {
                 await notificationScheduler.setDefaultStyle(sample?.alertStyle ?? .standard, forCalendar: calendar.id)
             }
         }
+        await notificationScheduler.setEnabled(ScreenshotStage.requested == .notifications)
     }
 }
 #endif
