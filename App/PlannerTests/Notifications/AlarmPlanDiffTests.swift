@@ -69,6 +69,6 @@ struct AlarmPlanDiffTests {
         let request = AlarmRequest(alert: PlannedNotification(candidate, style: .alarm))
         #expect(request.title == "standup · 10:00")
         #expect(request.tint == .gray)
-        #expect(request.item.reference == event.reference)
+        #expect(request.item?.reference == event.reference)
     }
 }

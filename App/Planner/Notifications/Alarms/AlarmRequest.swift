@@ -5,7 +5,8 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
     public let fireDate: Date
     public let title: String
     public let tint: PlannerColor?
-    public let item: NotificationItem
+    /// `nil` for an alarm the user set on its own, not for an event or reminder.
+    public let item: NotificationItem?
     public let secondaryAction: AlarmSecondaryAction
 
     public init(
@@ -13,7 +14,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         fireDate: Date,
         title: String,
         tint: PlannerColor?,
-        item: NotificationItem,
+        item: NotificationItem?,
         secondaryAction: AlarmSecondaryAction
     ) {
         self.id = id
@@ -35,7 +36,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         )
     }
 
-    public var link: URL {
-        CalendarDeepLink.url(forEvent: item.reference, startingAt: item.date)
+    public var link: URL? {
+        item.map { CalendarDeepLink.url(forEvent: $0.reference, startingAt: $0.date) }
     }
 }
