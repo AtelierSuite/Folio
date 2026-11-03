@@ -6,7 +6,8 @@ struct ReminderListRow: View {
     let openCount: Int
 
     var body: some View {
-        Label {
+        HStack(spacing: 10) {
+            ReminderListIcon(color: list.color.color)
             HStack {
                 Text(list.title)
                     .lineLimit(1)
@@ -17,8 +18,6 @@ struct ReminderListRow: View {
                         .monospacedDigit()
                 }
             }
-        } icon: {
-            ReminderListIcon(color: list.color.color)
         }
         .accessibilityIdentifier("ReminderList.\(list.title)")
     }
