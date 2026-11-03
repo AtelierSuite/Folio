@@ -31,4 +31,18 @@ extension Calendar {
     public func workdayDates(inWeekContaining date: Date, workdays: Set<Int>) -> [Date] {
         weekDates(containing: date).filter { workdays.contains(component(.weekday, from: $0)) }
     }
+
+    /// The week's `workdays`, or all seven days when it's `nil` or none of them fall in the week.
+    public func shownDates(inWeekContaining date: Date, workdays: Set<Int>?) -> [Date] {
+        guard let workdays else { return weekDates(containing: date) }
+        let shown = workdayDates(inWeekContaining: date, workdays: workdays)
+        return shown.isEmpty ? weekDates(containing: date) : shown
+    }
+
+    /// `date` if it's shown, otherwise the next shown day of its week, or the last one when none follow.
+    public func closestShownDate(to date: Date, workdays: Set<Int>?) -> Date {
+        let day = startOfDay(for: date)
+        let shown = shownDates(inWeekContaining: day, workdays: workdays)
+        return shown.first { $0 >= day } ?? shown.last ?? day
+    }
 }

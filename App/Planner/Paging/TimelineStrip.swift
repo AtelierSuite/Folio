@@ -5,8 +5,17 @@ import Foundation
 public struct TimelineStrip: Sendable, Equatable {
     public enum Unit: Sendable, Hashable {
         case day
+        /// One day per page, stepping over days that aren't in `workdays` (weekday numbers).
+        case workday(Set<Int>)
         /// A week of `workdays` (weekday numbers), or all seven days when it's `nil`.
         case week(workdays: Set<Int>?)
+
+        public var pagesByDay: Bool {
+            switch self {
+            case .day, .workday: true
+            case .week: false
+            }
+        }
     }
 
     public let unit: Unit
@@ -37,6 +46,10 @@ public struct TimelineStrip: Sendable, Equatable {
         Paging(unit: unit, calendar: calendar).pageStart(containing: date)
     }
 
+    public func page(_ page: Date, movedBy offset: Int) -> Date {
+        Paging(unit: unit, calendar: calendar).page(page, movedBy: offset)
+    }
+
     public func index(ofPage page: Date) -> Int? {
         pages.firstIndex(of: page)
     }
@@ -63,7 +76,7 @@ public struct TimelineStrip: Sendable, Equatable {
     /// `date` carried onto `page`. Weeks keep the day of the week, as the week paging buttons do.
     public func date(_ date: Date, movedToPage page: Date) -> Date {
         switch unit {
-        case .day:
+        case .day, .workday:
             return page
         case .week:
             let paging = Paging(unit: unit, calendar: calendar)
@@ -85,25 +98,37 @@ extension TimelineStrip {
         func pageStart(containing date: Date) -> Date {
             switch unit {
             case .day: calendar.startOfDay(for: date)
+            case .workday(let workdays): calendar.closestShownDate(to: date, workdays: workdays)
             case .week: calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? calendar.startOfDay(for: date)
             }
         }
 
         func page(_ page: Date, movedBy offset: Int) -> Date {
-            let component: Calendar.Component = unit == .day ? .day : .weekOfYear
             let noon = calendar.date(bySettingHour: 12, minute: 0, second: 0, of: page) ?? page
+            if case .workday(let workdays) = unit {
+                return calendar.startOfDay(for: workday(noon, movedBy: offset, workdays: workdays))
+            }
+            let component: Calendar.Component = unit == .day ? .day : .weekOfYear
             return pageStart(containing: calendar.date(byAdding: component, value: offset, to: noon) ?? noon)
         }
 
         func dates(onPage page: Date) -> [Date] {
             switch unit {
-            case .day:
+            case .day, .workday:
                 return [page]
             case .week(let workdays):
-                let week = calendar.weekDates(containing: page)
-                guard let workdays else { return week }
-                let shown = week.filter { workdays.contains(calendar.component(.weekday, from: $0)) }
-                return shown.isEmpty ? week : shown
+                return calendar.shownDates(inWeekContaining: page, workdays: workdays)
+            }
+        }
+
+        private func workday(_ date: Date, movedBy offset: Int, workdays: Set<Int>) -> Date {
+            let step = offset.signum()
+            return (0..<abs(offset)).reduce(date) { day, _ in
+                let nextDays = Calendar.weekdays.lazy.compactMap {
+                    calendar.date(byAdding: .day, value: $0 * step, to: day)
+                }
+                return nextDays.first { workdays.contains(calendar.component(.weekday, from: $0)) }
+                    ?? nextDays.first ?? day
             }
         }
     }
