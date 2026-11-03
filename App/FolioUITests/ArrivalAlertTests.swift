@@ -9,7 +9,7 @@ final class ArrivalAlertTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
         turnOn(app.switches["NotificationsEnabledToggle"], allowing: ["Allow", "許可"])
         turnOn(app.switches["ArrivalAlertsToggle"], allowing: ["Allow While Using App", "アプリの使用中は許可"])

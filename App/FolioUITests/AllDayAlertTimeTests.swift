@@ -12,7 +12,7 @@ final class AllDayAlertTimeTests: XCTestCase {
         app.launchArguments += ["-SeedTestAlertEvent", "-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
         let toggle = app.switches["NotificationsEnabledToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
@@ -26,6 +26,7 @@ final class AllDayAlertTimeTests: XCTestCase {
         attachScreenshot(named: "NotificationSettings")
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("eventNotifications")
+        app.openFirstCalendarNotificationSettings()
         let row = app.descendants(matching: .any)
             .matching(NSPredicate(format: "identifier BEGINSWITH %@", "AllDayAlertTime.")).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 5))

@@ -7,7 +7,7 @@ final class SleepSettingsTests: XCTestCase {
         app.launchArguments += ["-FolioSkipOnboarding"]
         app.launch()
 
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         let toggle = app.switches["SleepTimelineToggle"]
         #if os(iOS)
         let isPhone = UIDevice.current.userInterfaceIdiom == .phone

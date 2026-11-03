@@ -50,6 +50,7 @@ final class NotificationStyleTests: XCTestCase {
         app.activate()
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("eventNotifications")
+        app.openFirstCalendarNotificationSettings()
         chooseStyle("Time Sensitive", in: app)
     }
 
@@ -91,7 +92,7 @@ final class NotificationStyleTests: XCTestCase {
         app.launchArguments += ["-SeedTestAlertEvent", "-FolioSkipOnboarding", "-AppleLanguages", "(en)"]
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 10))
-        app.tabBars.buttons.element(boundBy: 2).tap()
+        app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
         let toggle = app.switches["NotificationsEnabledToggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
@@ -101,6 +102,7 @@ final class NotificationStyleTests: XCTestCase {
         }
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("eventNotifications")
+        app.openFirstCalendarNotificationSettings()
         return app
     }
 

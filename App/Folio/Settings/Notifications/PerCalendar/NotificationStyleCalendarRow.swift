@@ -4,7 +4,7 @@ import SwiftUI
 struct NotificationStyleCalendarRow: View {
     @Environment(NotificationScheduler.self) private var scheduler
     let calendar: PlannerCalendar
-    @State private var style = NotificationStyleSettings.initialStyle
+    @Binding var style: NotificationAlertStyle
 
     var body: some View {
         NotificationStylePicker(selection: style, inheritedStyle: nil) { newValue in
@@ -15,8 +15,5 @@ struct NotificationStyleCalendarRow: View {
             Text(String(localized: "Row.Title", table: "NotificationStyles"))
         }
         .accessibilityIdentifier("NotificationStyle.\(calendar.title)")
-        .onAppear {
-            style = scheduler.defaultStyle(forCalendar: calendar.id)
-        }
     }
 }
