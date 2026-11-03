@@ -5,15 +5,22 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            ForEach(SettingsCategory.groups, id: \.self) { group in
-                Section {
-                    ForEach(group.filter { $0.isAvailable(with: capabilities) }) { category in
-                        NavigationLink {
-                            SettingsCategoryView(category: category)
-                        } label: {
-                            SettingsIconLabel(category: category)
+            ForEach(SettingsCategoryGroup.groups, id: \.self) { group in
+                let categories = group.availableCategories(with: capabilities)
+                if !categories.isEmpty {
+                    Section {
+                        ForEach(categories) { category in
+                            NavigationLink {
+                                SettingsCategoryView(category: category)
+                            } label: {
+                                SettingsIconLabel(category: category)
+                            }
+                            .accessibilityIdentifier(category.accessibilityIdentifier)
                         }
-                        .accessibilityIdentifier(category.accessibilityIdentifier)
+                    } header: {
+                        if let header = group.header {
+                            Text(header)
+                        }
                     }
                 }
             }

@@ -12,7 +12,7 @@ struct NotificationStyleCalendarRow: View {
             style = newValue
             await scheduler.setDefaultStyle(newValue, forCalendar: calendar.id)
         } label: {
-            CalendarKindLabel(calendar: calendar)
+            Text(String(localized: "Row.Title", table: "NotificationStyles"))
         }
         .accessibilityIdentifier("NotificationStyle.\(calendar.title)")
         .onAppear {

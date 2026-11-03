@@ -4,7 +4,10 @@ final class SettingsCategoriesTests: XCTestCase {
     private static let categoryContents: [(category: String, identifier: String)] = [
         ("general", "EventTapBehaviorPicker"),
         ("accounts", "AccountsForm"),
-        ("calendars", "WorkWeekLink"),
+        ("calendars", "SecondaryTimeZoneToggle"),
+        ("workWeek", "WorkWeek.Day.5"),
+        ("eventNotifications", "NotificationSoundDefault.Events"),
+        ("reminderNotifications", "NotificationSoundDefault.Reminders"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),
         ("search", "Search.Settings.MonthsBack"),
         ("weather", "WeatherToggle"),

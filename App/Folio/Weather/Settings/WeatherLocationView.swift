@@ -8,7 +8,7 @@ struct WeatherLocationView: View {
     @State private var query = ""
 
     var body: some View {
-        List {
+        Form {
             if query.isEmpty {
                 WeatherCurrentLocationSection()
                 if let place = weather.chosenPlace {
@@ -22,23 +22,11 @@ struct WeatherLocationView: View {
                 WeatherPlaceResultsSection(results: search.results, select: choose)
             }
         }
-        .searchable(
-            text: $query,
-            placement: searchPlacement,
-            prompt: String(localized: "Location.SearchPrompt", table: "Weather")
-        )
+        .formStyle(.grouped)
+        .settingsSheetSearchable(text: $query, prompt: String(localized: "Location.SearchPrompt", table: "Weather"))
         .onChange(of: query) { _, query in
             search.update(query: query)
         }
-        .navigationTitle(String(localized: "Location.Title", table: "Weather"))
-    }
-
-    private var searchPlacement: SearchFieldPlacement {
-        #if os(iOS)
-        .navigationBarDrawer(displayMode: .always)
-        #else
-        .automatic
-        #endif
     }
 
     private func choose(_ result: PlaceSearchResult) {

@@ -31,20 +31,6 @@ struct NotificationSettingsView: View {
                     get: { scheduler.includesReminders },
                     set: { await scheduler.setIncludesReminders($0) }
                 ))
-                NavigationLink(String(localized: "Defaults.Title", table: "NotificationStyles")) {
-                    NotificationStyleDefaultsView()
-                }
-                .accessibilityIdentifier("NotificationStylesLink")
-                NavigationLink(String(localized: "Title", table: "NotificationSounds")) {
-                    NotificationSoundsView()
-                }
-                .disabled(!scheduler.includesEvents && !scheduler.includesReminders)
-                .accessibilityIdentifier("NotificationSoundsLink")
-                NavigationLink(String(localized: "AllDay.Title", table: "Notifications")) {
-                    AllDayAlertTimesView()
-                }
-                .disabled(!scheduler.includesEvents)
-                .accessibilityIdentifier("AllDayAlertTimesLink")
             }
             .disabled(!scheduler.isEnabled)
             SnoozeDurationsSection()
@@ -54,9 +40,7 @@ struct NotificationSettingsView: View {
                 NotificationStatusSection()
             }
         }
-        .formStyle(.grouped)
-        .navigationTitle(String(localized: "Title", table: "Notifications"))
-        .toolbarTitleDisplayMode(.inline)
+        .settingsCategoryStyle(.notifications)
         .task {
             await scheduler.replan()
         }

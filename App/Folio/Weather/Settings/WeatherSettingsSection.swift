@@ -11,13 +11,12 @@ struct WeatherSettingsSection: View {
             Toggle(String(localized: "Settings.ShowWeather", table: "Weather"), isOn: isEnabled)
                 .accessibilityIdentifier("WeatherToggle")
             if weather.isEnabled {
-                NavigationLink {
+                SettingsSheetRow(
+                    title: String(localized: "Settings.Location", table: "Weather"),
+                    value: WeatherLocationLabel.text(for: weather),
+                    sheetTitle: String(localized: "Location.Title", table: "Weather")
+                ) {
                     WeatherLocationView()
-                } label: {
-                    LabeledContent(
-                        String(localized: "Settings.Location", table: "Weather"),
-                        value: WeatherLocationLabel.text(for: weather)
-                    )
                 }
                 .accessibilityIdentifier("WeatherLocationLink")
                 Toggle(String(localized: "Settings.ShadeNight", table: "Weather"), isOn: $shadesNight)

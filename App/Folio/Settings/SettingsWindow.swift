@@ -8,12 +8,19 @@ struct SettingsWindow: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $selectedCategory) {
-                ForEach(SettingsCategory.windowGroups, id: \.self) { group in
-                    Section {
-                        ForEach(group.filter { $0.isAvailable(with: capabilities) }) { category in
-                            SettingsIconLabel(category: category, iconSize: 22)
-                                .tag(category)
-                                .accessibilityIdentifier(category.accessibilityIdentifier)
+                ForEach(SettingsCategoryGroup.windowGroups, id: \.self) { group in
+                    let categories = group.availableCategories(with: capabilities)
+                    if !categories.isEmpty {
+                        Section {
+                            ForEach(categories) { category in
+                                SettingsIconLabel(category: category, iconSize: 22)
+                                    .tag(category)
+                                    .accessibilityIdentifier(category.accessibilityIdentifier)
+                            }
+                        } header: {
+                            if let header = group.header {
+                                Text(header)
+                            }
                         }
                     }
                 }

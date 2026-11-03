@@ -16,7 +16,7 @@ public final class NotesLibrary {
     public internal(set) var trashedNotes: [NoteFile] = []
     public internal(set) var store: NoteFileStore?
     public internal(set) var isMigrating = false
-    public internal(set) var isICloudSignedIn = NotesLocation.isICloudSignedIn
+    public internal(set) var isICloudSignedIn = NotesLocation.isICloudAvailable
 
     let settings: NotesStorageSettings
     let searchIndexer: NoteSpotlightIndexer?
@@ -38,7 +38,7 @@ public final class NotesLibrary {
         self.settings = settings
         self.searchIndexer = searchIndexer
         self.index = index
-        let mode = settings.mode ?? (NotesLocation.isICloudSignedIn ? .iCloudDrive : .onMyDevice)
+        let mode = settings.mode ?? (NotesLocation.isICloudAvailable ? .iCloudDrive : .onMyDevice)
         settings.mode = mode
         self.mode = mode
         index.observeRemoteChanges { [weak self] in
@@ -72,7 +72,7 @@ public final class NotesLibrary {
     }
 
     public func refresh() async {
-        isICloudSignedIn = NotesLocation.isICloudSignedIn
+        isICloudSignedIn = NotesLocation.isICloudAvailable
         guard let store else {
             notes = []
             trashedNotes = []

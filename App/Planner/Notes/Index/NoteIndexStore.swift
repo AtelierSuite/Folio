@@ -27,7 +27,8 @@ public final class NoteIndexStore {
     public static func persistent(in directory: URL = defaultDirectory) -> NoteIndexStore {
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         removeOutdatedFileStores(in: directory)
-        let container = (try? makeContainer(in: directory, syncsLinks: true))
+        let syncsLinks = NotesLocation.isICloudAvailable
+        let container = (try? makeContainer(in: directory, syncsLinks: syncsLinks))
             ?? (try? makeContainer(in: directory, syncsLinks: false))
         return container.map(NoteIndexStore.init(container:)) ?? inMemory()
     }
@@ -52,7 +53,7 @@ public final class NoteIndexStore {
 
     private static let fullSchema = Schema([NoteLinkRecord.self, NoteFileRecord.self, NoteRemovalCandidate.self])
 
-    /// Without the CloudKit entitlement, such as in an ad hoc build, the links store is kept on the device.
+    /// Without iCloud, such as when signed out or in an ad hoc build, the links store is kept on the device.
     private static func makeContainer(in directory: URL, syncsLinks: Bool) throws -> ModelContainer {
         let links = ModelConfiguration(
             "Links",

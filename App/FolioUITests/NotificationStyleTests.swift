@@ -29,6 +29,7 @@ final class NotificationStyleTests: XCTestCase {
         attachScreenshot(named: "AlertStylesAlarm")
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.buttons["NotificationSettingsLink"].tap()
         let alarmCount = app.descendants(matching: .any)
             .matching(NSPredicate(format: "label BEGINSWITH %@", "Alarms Scheduled")).firstMatch
         XCTAssertTrue(alarmCount.waitForExistence(timeout: 10))
@@ -47,7 +48,8 @@ final class NotificationStyleTests: XCTestCase {
         XCTAssertTrue(alert.waitForExistence(timeout: 150))
         attachScreenshot(named: isDenied ? "DeliveredFallbackAlert" : "FiredAlarm")
         app.activate()
-        app.buttons["NotificationStylesLink"].tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.openSettingsCategory("eventNotifications")
         chooseStyle("Time Sensitive", in: app)
     }
 
@@ -97,7 +99,8 @@ final class NotificationStyleTests: XCTestCase {
             toggle.switches.firstMatch.tap()
             allowSystemPromptIfAsked()
         }
-        app.buttons["NotificationStylesLink"].tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.openSettingsCategory("eventNotifications")
         return app
     }
 
