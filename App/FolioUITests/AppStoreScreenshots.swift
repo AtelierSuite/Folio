@@ -64,7 +64,8 @@ final class AppStoreScreenshots: XCTestCase {
     private func seed() {
         launch(.week, extraArguments: ["-FolioScreenshotSamples"])
         XCTAssertTrue(app.descendants(matching: .any)["DayHeaderWeather"].firstMatch.waitForExistence(timeout: 20))
-        Thread.sleep(forTimeInterval: 5)
+        // Longer than seeding takes after the calendar first shows.
+        Thread.sleep(forTimeInterval: 10)
         app.terminate()
     }
 
