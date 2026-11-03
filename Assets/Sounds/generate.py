@@ -7,11 +7,11 @@ Usage: python3 generate.py <output directory>
 
 Writes one .caf (16-bit linear PCM, mono, 44.1 kHz) per sound, checked to peak below -1 dBFS once
 decoded. IMA4 would be a quarter of the size, but its noise floor sits only 35 dB under these soft
-tones and crackles like clipping. Pure standard library, seeded, so every run produces identical files. Requires macOS for afconvert.
+tones and crackles like clipping. Pure standard library, seeded, so every run produces identical files.
+Requires macOS for afconvert, and Logic Pro's sound library for the sampled Steinway in Hoshizora and Kiri.
 """
 
 import array
-import cmath
 import math
 import os
 import random
@@ -37,19 +37,93 @@ def note(name):
     return 440.0 * 2 ** ((offset + (int(rest) - 4) * 12) / 12)
 
 
-def allpass_for_delay(target, omega):
-    """Finds the first-order allpass coefficient whose phase delay at omega equals target samples."""
-    def phase_delay(coefficient):
-        response = (coefficient + cmath.exp(-1j * omega)) / (1 + coefficient * cmath.exp(-1j * omega))
-        return -cmath.phase(response) / omega
-    low, high = -0.99, 0.99
-    for _ in range(60):
-        middle = (low + high) / 2
-        if phase_delay(middle) > target:
-            low = middle
+LOGIC_LIBRARY = os.path.expanduser("~/Music/Logic Pro Library.bundle")
+STEINWAY_INSTRUMENT = os.path.join(
+    LOGIC_LIBRARY, "Plug-In Settings/Sampler/z_Legacy/Keyboard/Acoustic Piano/Steinway Grand Piano 2.exs")
+STEINWAY_SAMPLES = os.path.join(LOGIC_LIBRARY, "Samples/z_Legacy/Keyboard/Steinway Piano_consolidated.caf")
+
+
+class SampledPiano:
+    """Plays Logic Pro's Steinway Grand from the local Logic library, which has to be installed.
+
+    Reads the legacy EXS instrument directly: each zone names a velocity group, a key range, a root
+    key and a frame range inside one consolidated CAF holding every note."""
+
+    _shared = None
+
+    @classmethod
+    def shared(cls):
+        if cls._shared is None:
+            cls._shared = cls(STEINWAY_INSTRUMENT, STEINWAY_SAMPLES)
+        return cls._shared
+
+    def __init__(self, instrument_path, samples_path):
+        if not os.path.exists(instrument_path) or not os.path.exists(samples_path):
+            raise FileNotFoundError("The piano sounds need Logic Pro's Steinway Grand Piano sound library")
+        self.samples_path = samples_path
+        self.groups, self.zones = [], []
+        with open(instrument_path, "rb") as handle:
+            data = handle.read()
+        position = 0
+        while position + 84 <= len(data):
+            signature, size = struct.unpack("<II", data[position:position + 8])
+            name = data[position + 20:position + 84].split(b"\0")[0].decode("latin-1")
+            body = data[position + 84:position + 84 + size]
+            kind = (signature >> 24) & 0x0F
+            if kind == 1:
+                self.zones.append({
+                    "root": body[1], "fine": struct.unpack("b", body[2:3])[0], "low": body[6], "high": body[7],
+                    "start": struct.unpack("<i", body[12:16])[0], "end": struct.unpack("<i", body[16:20])[0],
+                    "group": struct.unpack("<i", body[88:92])[0]})
+            elif kind == 2:
+                self.groups.append({"name": name, "low": body[5], "high": body[6]})
+            position += 84 + size
+        self.data_offset = self._data_offset()
+
+    def _data_offset(self):
+        with open(self.samples_path, "rb") as handle:
+            handle.read(8)
+            position = 8
+            while True:
+                header = handle.read(12)
+                kind, size = header[:4], struct.unpack(">q", header[4:])[0]
+                if kind == b"desc":
+                    rate, format_id, flags, packet_bytes, _, channels, bits = struct.unpack(">d4sIIIII", handle.read(32))
+                    if (rate, format_id, flags, packet_bytes, channels, bits) != (SAMPLE_RATE, b"lpcm", 0, 4, 2, 16):
+                        raise ValueError("Unexpected sample format in the Steinway library")
+                    handle.seek(size - 32, 1)
+                elif kind == b"data":
+                    return position + 12 + 4
+                else:
+                    handle.seek(size, 1)
+                position += 12 + size
+
+    def note(self, key, velocity):
+        """Returns the note as mono samples, pitch-shifted from the nearest sampled key. The piano is
+        stretch-tuned, about half a cent sharper per key above middle C, so that is taken back out
+        to sit in tune with the synthesized pads."""
+        for zone in self.zones:
+            group = self.groups[zone["group"]] if 0 <= zone["group"] < len(self.groups) else None
+            if (group and group["low"] <= velocity <= group["high"] and zone["low"] <= key <= zone["high"]
+                    and "Dampers" not in group["name"] and "pedal" not in group["name"]):
+                break
         else:
-            high = middle
-    return (low + high) / 2
+            raise ValueError(f"No Steinway zone for key {key} at velocity {velocity}")
+        frames = zone["end"] - zone["start"]
+        with open(self.samples_path, "rb") as handle:
+            handle.seek(self.data_offset + zone["start"] * 4)
+            raw = struct.unpack(f">{frames * 2}h", handle.read(frames * 4))
+        mono = [(raw[index] + raw[index + 1]) / 65536 for index in range(0, len(raw), 2)]
+        stretch = max(0, key - 60) * 0.5
+        ratio = 2 ** ((key - zone["root"] - (zone["fine"] + stretch) / 100) / 12)
+        shifted = []
+        position = 0.0
+        while position < len(mono) - 1:
+            whole = int(position)
+            fraction = position - whole
+            shifted.append(mono[whole] * (1 - fraction) + mono[whole + 1] * fraction)
+            position += ratio
+        return shifted
 
 
 class Track:
@@ -273,74 +347,14 @@ class Instruments(Track):
         self.partial(start, frequency * 4.0, amplitude * 0.22, decay * 0.35, attack=0.004, tremolo=tremolo)
         self.partial(start, frequency * 10.0, amplitude * 0.04, decay * 0.1, attack=0.003)
 
-    def piano(self, start, pitch, amplitude=1.0, decay=1.1, hardness=1.0):
-        """A grand piano note, modelled physically rather than built from sines: a felt hammer pulse,
-        coloured by a wooden soundboard, sets three slightly detuned stiff strings ringing."""
-        frequency = self.frequency(pitch)
+    def piano(self, start, pitch, amplitude=1.0, velocity=50):
+        """A sampled Steinway grand note, from Logic Pro's library."""
+        key = round(69 + 12 * math.log2(self.frequency(pitch) / 440))
+        recording = SampledPiano.shared().note(key, velocity)
+        loudest = max(abs(value) for value in recording) or 1
         first = int(start * SAMPLE_RATE)
-        length = min(len(self) - first, int(decay * 6 * SAMPLE_RATE))
-        if length <= 0:
-            return
-        generator = random.Random(int(frequency * 1000) + int(start * 1000))
-        period = SAMPLE_RATE / frequency
-        width = max(3, int(SAMPLE_RATE * 0.0008 / hardness))
-        hammer = [0.5 - 0.5 * math.cos(TAU * index / width) for index in range(width)]
-        strike = max(1, int(period / 8))
-        hammer = [value - (hammer[index - strike] if 0 <= index - strike < width else 0.0)
-                  for index, value in enumerate(hammer + [0.0] * strike)]
-        board_length = int(SAMPLE_RATE * 0.06)
-        board = lowpass([generator.uniform(-1, 1) * math.exp(-index / (SAMPLE_RATE * 0.012))
-                         for index in range(board_length)], 8000)
-        board[0] += 4.0
-        excitation = [0.0] * (len(hammer) + board_length)
-        for offset, pulse in enumerate(hammer):
-            if pulse:
-                for index, value in enumerate(board):
-                    excitation[offset + index] += pulse * value
-        notes = [0.0] * length
-        for cents, share in ((-0.25, 0.3), (0.0, 0.4), (0.3, 0.3)):
-            self._string(notes, excitation, frequency * 2 ** (cents / 1200), decay, share)
-        knock = highpass([generator.uniform(-1, 1) * math.exp(-index / (SAMPLE_RATE * 0.008))
-                          for index in range(min(length, board_length))], 1500)
-        for index, value in enumerate(knock):
-            notes[index] += 0.8 * value
-        loudest = max(abs(value) for value in notes) or 1
-        for index, value in enumerate(notes):
+        for index, value in enumerate(recording[:max(0, len(self) - first)]):
             self.samples[first + index] += amplitude * 0.8 * value / loudest
-
-    @staticmethod
-    def _string(output, excitation, frequency, decay, share):
-        """A digital waveguide: a delay loop with a damping lowpass, so treble dies first, and a
-        chain of allpasses that stretch the partials sharp like a stiff steel string. The fractional
-        part of the delay is an allpass too, so it doesn't dull the string the way blending would."""
-        omega = TAU * frequency / SAMPLE_RATE
-        damping = 0.025
-        dispersion = (-0.38,) * 4
-        lowpass_delay = math.atan2(damping * math.sin(omega), 1 - damping * math.cos(omega)) / omega
-        lowpass_gain = (1 - damping) / abs(1 - damping * cmath.exp(-1j * omega))
-        allpass_delay = 0.0
-        for coefficient in dispersion:
-            response = (coefficient + cmath.exp(-1j * omega)) / (1 + coefficient * cmath.exp(-1j * omega))
-            allpass_delay += -cmath.phase(response) / omega
-        delay = SAMPLE_RATE / frequency - lowpass_delay - allpass_delay
-        whole = int(delay - 0.618)
-        tuning = allpass_for_delay(delay - whole, omega)
-        loss = math.exp(-1 / (decay * frequency)) / lowpass_gain
-        line = [0.0] * len(output)
-        smoothed = tuned = previous = 0.0
-        states = [[0.0, 0.0] for _ in dispersion]
-        for index in range(len(output)):
-            fed = line[index - whole] if index >= whole else 0.0
-            tuned = tuning * fed + previous - tuning * tuned
-            previous = fed
-            smoothed = (1 - damping) * tuned + damping * smoothed
-            value = smoothed
-            for state, coefficient in zip(states, dispersion):
-                result = coefficient * value + state[0] - coefficient * state[1]
-                state[0], state[1] = value, result
-                value = result
-            line[index] = (excitation[index] if index < len(excitation) else 0.0) + loss * value
-            output[index] += share * line[index]
 
     def chime(self, start, pitch, amplitude=1.0, decay=1.0):
         """Free hanging tubes: inharmonic partials of a free bar, each a shimmering detuned pair."""
@@ -479,7 +493,7 @@ def hoshizora():
     track = Instruments(2.3)
     track.pad(0.0, 2.1, ("D5", "F#5", "A5", "C#6"), amplitude=0.06, attack=0.3)
     sequence(track, Instruments.piano, ((0.0, "A6"), (0.22, "E6"), (0.44, "B6"), (0.66, "F#6")),
-             amplitude=0.6, decay=1.0)
+             amplitude=0.6)
     return track.finish(room=0.25, mix=0.08, fade=0.35, brightness=6000)
 
 
@@ -559,7 +573,7 @@ def kiri():
     """Morning Mist: an A major ninth pad that swells up under a single piano note."""
     track = Instruments(1.5)
     track.pad(0.0, 1.4, ("A4", "C#5", "E5", "B5"), amplitude=0.08, attack=0.25, overtones=(0.35, 0.18, 0.08))
-    track.piano(0.2, "E6", 0.6, decay=0.8)
+    track.piano(0.2, "E6", 0.6)
     return track.finish(room=0.25, mix=0.08, fade=0.3, brightness=6000)
 
 
