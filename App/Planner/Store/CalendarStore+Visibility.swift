@@ -22,7 +22,9 @@ extension CalendarStore {
     }
 
     func isShown(_ event: CalendarEvent) -> Bool {
-        !hiddenCalendarIdentifiers.contains(event.calendarIdentifier) && !(hidesDeclinedEvents && event.isDeclined)
+        !hiddenCalendarIdentifiers.contains(event.calendarIdentifier)
+            && !(hidesDeclinedEvents && event.isDeclined)
+            && !event.isHiddenInvitation(among: hiddenInvitationIdentifiers)
     }
 
     public func calendar(withIdentifier identifier: String) -> PlannerCalendar? {

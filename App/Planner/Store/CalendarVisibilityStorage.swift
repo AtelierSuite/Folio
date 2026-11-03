@@ -4,6 +4,8 @@ public struct CalendarVisibilityStorage: @unchecked Sendable {
     public static let hiddenCalendarIdentifiersKey = "Calendar.HiddenCalendarIdentifiers"
     public static let hidesDeclinedEventsKey = "Calendar.HidesDeclinedEvents"
 
+    public static let hiddenInvitationIdentifiersKey = "Calendar.HiddenInvitationIdentifiers"
+
     private let defaults: UserDefaults
 
     public init(defaults: UserDefaults = AppGroup.userDefaults) {
@@ -13,6 +15,11 @@ public struct CalendarVisibilityStorage: @unchecked Sendable {
     public var hiddenCalendarIdentifiers: Set<String> {
         get { Set(defaults.stringArray(forKey: Self.hiddenCalendarIdentifiersKey) ?? []) }
         nonmutating set { defaults.set(newValue.sorted(), forKey: Self.hiddenCalendarIdentifiersKey) }
+    }
+
+    public var hiddenInvitationIdentifiers: Set<String> {
+        get { Set(defaults.stringArray(forKey: Self.hiddenInvitationIdentifiersKey) ?? []) }
+        nonmutating set { defaults.set(newValue.sorted(), forKey: Self.hiddenInvitationIdentifiersKey) }
     }
 
     public var hidesDeclinedEvents: Bool {

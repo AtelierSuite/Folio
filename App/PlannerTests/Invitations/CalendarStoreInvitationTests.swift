@@ -51,6 +51,50 @@ struct CalendarStoreInvitationTests {
         #expect(await store.events(in: today).count == 3)
     }
 
+    @Test func hiddenInvitationLeavesTheListAndCalendarAndPersists() async throws {
+        let defaults = try makeDefaults()
+        let source = makeSource()
+        let store = makeStore(source: source, defaults: defaults)
+        let start = Fixtures.date(2026, 10, 29)
+        let invitation = try #require(await store.pendingInvitations(from: start).first)
+
+        store.setHidden(true, invitation: invitation)
+        #expect(store.contentRevision == 1)
+        #expect(await store.pendingInvitations(from: start).map(\.title) == ["hidden"])
+        #expect(await store.events(in: today).map(\.title) == ["declined", "hidden"])
+        #expect(await store.hiddenInvitations(from: start).map(\.title) == ["pending"])
+
+        let relaunched = makeStore(source: source, defaults: defaults)
+        #expect(await relaunched.pendingInvitations(from: start).map(\.title) == ["hidden"])
+
+        store.setHidden(false, invitation: invitation)
+        #expect(await store.pendingInvitations(from: start).map(\.title) == ["pending", "hidden"])
+        #expect(await store.hiddenInvitations(from: start).isEmpty)
+    }
+
+    @Test func hiddenInvitationStaysHiddenWhenItResurfaces() async throws {
+        let start = Fixtures.date(2026, 10, 29, hour: 9)
+        func source(_ status: ParticipantStatus) -> FakeCalendarDataSource {
+            FakeCalendarDataSource(
+                events: [InvitationFixtures.invitation(local: "resent", external: "series", start: start, userStatus: status)],
+                calendars: [Fixtures.plannerCalendar("calendar-1")]
+            )
+        }
+        let defaults = try makeDefaults()
+        let declined = makeStore(source: source(.declined), defaults: defaults)
+        let invitation = try #require(await declined.events(in: today).first)
+        declined.setHidden(true, invitation: invitation)
+        #expect(await declined.events(in: today).isEmpty)
+
+        let resurfaced = makeStore(source: source(.pending), defaults: defaults)
+        #expect(await resurfaced.pendingInvitations(from: start).isEmpty)
+        #expect(await resurfaced.events(in: today).isEmpty)
+
+        let accepted = makeStore(source: source(.accepted), defaults: defaults)
+        #expect(await accepted.events(in: today).map(\.title) == ["resent"])
+        #expect(await accepted.hiddenInvitations(from: start).isEmpty)
+    }
+
     @Test func pendingInvitationsSkipHiddenCalendars() async throws {
         let store = makeStore(source: makeSource(), defaults: try makeDefaults())
         #expect(await store.pendingInvitations(from: Fixtures.date(2026, 10, 29)).map(\.title) == ["pending", "hidden"])
