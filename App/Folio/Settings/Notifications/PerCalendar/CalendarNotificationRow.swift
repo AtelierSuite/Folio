@@ -27,7 +27,7 @@ struct CalendarNotificationRow: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isPresented) {
-            SettingsSheet(title: calendar.title, height: 360) {
+            SettingsSheet(title: calendar.title, subtitle: calendar.sourceTitle, height: 380) {
                 detail
             }
         }
@@ -35,6 +35,7 @@ struct CalendarNotificationRow: View {
         NavigationLink {
             detail
                 .navigationTitle(calendar.title)
+                .navigationSubtitle(calendar.sourceTitle)
                 .toolbarTitleDisplayMode(.inline)
         } label: {
             label
