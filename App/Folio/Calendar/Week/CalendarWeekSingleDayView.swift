@@ -22,7 +22,7 @@ struct CalendarWeekSingleDayView: View {
             showsDayLabels: false
         ) {
             CalendarWeekDayRow(workdays: workdays)
-            CalendarDayLinkedNoteSlot(date: navigation.selectedDate)
+            CalendarDayLinkedNoteSlot(date: navigation.selectedDate, showsDivider: false)
         }
         .onChange(of: navigation.selectedDate, initial: true) { moveOntoShownDay() }
         .onChange(of: workdays) { moveOntoShownDay() }

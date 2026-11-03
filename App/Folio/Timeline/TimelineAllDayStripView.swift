@@ -13,28 +13,32 @@ struct TimelineAllDayStripView: View {
     @State private var settledLaneCount: Int?
 
     var body: some View {
-        let laneCount = max(laneCountOnScreen, 1)
+        let laneCount = laneCountOnScreen
         let visibleLaneCount = settledLaneCount ?? laneCount
+        let isHidden = visibleLaneCount == 0
         HStack(alignment: .top, spacing: 0) {
-            Text(String(localized: "AllDay", table: "Timeline"))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .frame(width: gutterWidth - 6, height: metrics.allDayLaneHeight, alignment: .trailing)
-                .padding(.trailing, 6)
-            ScrollView(.vertical) {
-                TimelinePagedRow(frames: frames, pages: pages, scrolledPage: scrolledPage) { page in
-                    TimelineAllDayPageView(
-                        layout: pages.dayRange(of: page).map(layout.page) ?? layout.page(0..<0),
-                        laneCount: laneCount,
-                        laneHeight: metrics.allDayLaneHeight,
-                        onSelectEntry: onSelectEntry
-                    )
+            if !isHidden {
+                Text(String(localized: "AllDay", table: "Timeline"))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .frame(width: gutterWidth - 6, height: metrics.allDayLaneHeight, alignment: .trailing)
+                    .padding(.trailing, 6)
+                ScrollView(.vertical) {
+                    TimelinePagedRow(frames: frames, pages: pages, scrolledPage: scrolledPage) { page in
+                        TimelineAllDayPageView(
+                            layout: pages.dayRange(of: page).map(layout.page) ?? layout.page(0..<0),
+                            laneCount: max(laneCount, 1),
+                            laneHeight: metrics.allDayLaneHeight,
+                            onSelectEntry: onSelectEntry
+                        )
+                    }
                 }
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .scrollBounceBehavior(.basedOnSize)
         }
         .frame(height: min(CGFloat(visibleLaneCount), metrics.maximumVisibleAllDayLanes) * metrics.allDayLaneHeight)
-        .padding(.vertical, 2)
+        .clipped()
+        .padding(.vertical, isHidden ? 0 : 2)
         .onChange(of: laneCount, initial: true) { settleLaneCount(laneCount) }
         .onChange(of: isScrolling) { settleLaneCount(laneCount) }
     }
