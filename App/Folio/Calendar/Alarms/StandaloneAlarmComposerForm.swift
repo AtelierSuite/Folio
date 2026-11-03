@@ -7,6 +7,14 @@ struct StandaloneAlarmComposerForm: View {
     var body: some View {
         Form {
             Section {
+                TextField(
+                    String(localized: "Composer.Label", table: "StandaloneAlarms"),
+                    text: $label,
+                    prompt: Text(String(localized: "Composer.LabelPlaceholder", table: "StandaloneAlarms"))
+                )
+                .accessibilityIdentifier("StandaloneAlarmComposer.Label")
+            }
+            Section {
                 DatePicker(
                     String(localized: "Composer.Time", table: "StandaloneAlarms"),
                     selection: $fireDate,
@@ -14,12 +22,6 @@ struct StandaloneAlarmComposerForm: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
                 .accessibilityIdentifier("StandaloneAlarmComposer.Time")
-                TextField(
-                    String(localized: "Composer.Label", table: "StandaloneAlarms"),
-                    text: $label,
-                    prompt: Text(String(localized: "Composer.LabelPlaceholder", table: "StandaloneAlarms"))
-                )
-                .accessibilityIdentifier("StandaloneAlarmComposer.Label")
             } footer: {
                 Text(String(localized: "Composer.Footer", table: "StandaloneAlarms"))
             }
