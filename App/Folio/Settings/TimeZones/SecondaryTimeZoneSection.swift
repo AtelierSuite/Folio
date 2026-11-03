@@ -14,13 +14,11 @@ struct SecondaryTimeZoneSection: View {
             Toggle(String(localized: "Settings.ShowsSecondary", table: "TimeZones"), isOn: $isEnabled)
                 .accessibilityIdentifier("SecondaryTimeZoneToggle")
             if isEnabled {
-                NavigationLink {
+                SettingsSheetRow(
+                    title: String(localized: "Settings.Zone", table: "TimeZones"),
+                    value: selectedName
+                ) {
                     SecondaryTimeZonePickerView(identifier: $identifier)
-                } label: {
-                    LabeledContent(
-                        String(localized: "Settings.Zone", table: "TimeZones"),
-                        value: selectedName
-                    )
                 }
                 .accessibilityIdentifier("SecondaryTimeZoneLink")
             }

@@ -31,6 +31,7 @@ struct SecondaryTimeZonePickerView: View {
             prompt: String(localized: "Picker.SearchPrompt", table: "TimeZones")
         )
         .navigationTitle(String(localized: "Picker.Title", table: "TimeZones"))
+        .toolbarTitleDisplayMode(.inline)
         .task(id: locale) {
             options = TimeZoneCatalog.options(locale: locale)
         }
