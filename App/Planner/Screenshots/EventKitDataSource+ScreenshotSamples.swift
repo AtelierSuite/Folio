@@ -4,9 +4,11 @@ import EventKit
 extension EventKitDataSource {
     /// Replaces the calendars any earlier run made with the samples', and returns their identifiers by sample key.
     /// With `removesOtherCalendars`, as on a screenshot simulator, every other calendar that can be removed goes too.
+    /// The countdown's event is only added where a countdown can run, as it would crowd the calendar elsewhere.
     public func seedScreenshotSamples(
         _ samples: ScreenshotSamples,
         removesOtherCalendars: Bool,
+        includesCountdown: Bool,
         now: Date = .now,
         calendar: Calendar = .current
     ) async throws -> [String: String] {
@@ -23,7 +25,7 @@ extension EventKitDataSource {
         try saveEvents(samples.events, calendars: identifiers, from: monday, calendar: calendar)
         let today = calendar.startOfDay(for: now)
         try saveReminders(samples.reminders, lists: identifiers, from: today, calendar: calendar)
-        if let countdownCalendar = identifiers[samples.countdown.calendar] {
+        if includesCountdown, let countdownCalendar = identifiers[samples.countdown.calendar] {
             try saveCountdown(samples.countdown, into: countdownCalendar, now: now)
         }
         try eventStore.commit()

@@ -12,41 +12,62 @@ enum ScreenshotSampleSeeder {
         standaloneAlarms: StandaloneAlarmCenter,
         notificationScheduler: NotificationScheduler
     ) async {
-        guard arguments.contains(ScreenshotSamples.launchArgument) else { return }
         let samples = ScreenshotSamples.current
-        let calendar = Calendar.current
-        do {
-            #if targetEnvironment(simulator)
-            let removesOtherCalendars = true
-            #else
-            let removesOtherCalendars = false
-            #endif
-            let identifiers = try await EventKitDataSource.shared.seedScreenshotSamples(
-                samples, removesOtherCalendars: removesOtherCalendars, calendar: calendar
-            )
-            for sample in samples.calendars {
-                if let identifier = identifiers[sample.key] {
-                    await notificationScheduler.setDefaultStyle(sample.alertStyle, forCalendar: identifier)
-                }
-            }
-            // Holidays, birthdays and whatever else can't be removed stay off the calendar, and alert plainly.
-            let sampleIdentifiers = Set(identifiers.values)
-            for kind in CalendarItemKind.allCases {
-                let calendars = EventKitDataSource.shared.calendars(for: kind)
-                for other in calendars where !sampleIdentifiers.contains(other.id) {
-                    calendarStore.setVisible(false, for: other)
-                    if removesOtherCalendars {
-                        await notificationScheduler.setDefaultStyle(.standard, forCalendar: other.id)
-                    }
-                }
-            }
-            try await notesLibrary.seedScreenshotNotes(samples.notes)
-        } catch {
-            Logger(subsystem: "com.tsubuzaki.Folio", category: "Screenshots")
-                .error("Seeding the screenshot samples failed: \(error.localizedDescription, privacy: .public)")
+        if arguments.contains(ScreenshotSamples.launchArgument) {
+            await seed(samples, notesLibrary: notesLibrary, standaloneAlarms: standaloneAlarms)
         }
+        if ScreenshotStage.isActive {
+            await applySettings(of: samples, calendarStore: calendarStore, notificationScheduler: notificationScheduler)
+        }
+    }
+
+    private static func seed(
+        _ samples: ScreenshotSamples, notesLibrary: NotesLibrary, standaloneAlarms: StandaloneAlarmCenter
+    ) async {
+        let calendar = Calendar.current
         let alarmDay = ScreenshotSamples.nextWeekday(after: .now, calendar: calendar)
         await standaloneAlarms.seedScreenshotAlarms(samples.alarms, on: alarmDay, calendar: calendar)
+        do {
+            try await notesLibrary.seedScreenshotNotes(samples.notes)
+        } catch {
+            log("Seeding the screenshot notes failed: \(error.localizedDescription)")
+        }
+        #if targetEnvironment(simulator)
+        let removesOtherCalendars = true
+        #else
+        let removesOtherCalendars = false
+        #endif
+        do {
+            _ = try await EventKitDataSource.shared.seedScreenshotSamples(
+                samples,
+                removesOtherCalendars: removesOtherCalendars,
+                includesCountdown: PlatformCapabilities.current.supports(.liveActivityCountdown),
+                calendar: calendar
+            )
+        } catch {
+            log("Seeding the screenshot calendars failed: \(error.localizedDescription)")
+        }
+    }
+
+    private static func log(_ message: String) {
+        Logger(subsystem: "com.tsubuzaki.Folio", category: "Screenshots").error("\(message, privacy: .public)")
+    }
+
+    /// Gives each sample calendar its alert style, and keeps holidays, birthdays and anything else off the calendar
+    /// with a plain alert. Done on every screenshot launch: these live in the App Group, which an ad hoc build in the
+    /// Mac VM can't keep from one launch to the next.
+    private static func applySettings(
+        of samples: ScreenshotSamples, calendarStore: CalendarStore, notificationScheduler: NotificationScheduler
+    ) async {
+        for kind in CalendarItemKind.allCases {
+            for calendar in EventKitDataSource.shared.calendars(for: kind) {
+                let sample = samples.calendars.first { $0.kind == kind && $0.title == calendar.title }
+                if sample == nil, calendarStore.isVisible(calendar) {
+                    calendarStore.setVisible(false, for: calendar)
+                }
+                await notificationScheduler.setDefaultStyle(sample?.alertStyle ?? .standard, forCalendar: calendar.id)
+            }
+        }
     }
 }
 #endif
