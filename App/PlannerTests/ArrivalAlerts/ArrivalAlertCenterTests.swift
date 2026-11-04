@@ -80,6 +80,15 @@ struct ArrivalAlertCenterTests {
         #expect(harness.center.monitoredRegions.map { $0.candidates[0].event.title } == ["Event 1"])
     }
 
+    @Test func monitorsCopiesOfAnEventAsOneCandidate() async throws {
+        let harness = try makeHarness(events: [
+            ArrivalFixtures.event("Dentist", start: ArrivalFixtures.hours(2)),
+            ArrivalFixtures.event("dentist", start: ArrivalFixtures.hours(2))
+        ])
+        await harness.center.replan()
+        #expect(harness.center.monitoredRegions.flatMap(\.candidates).count == 1)
+    }
+
     @Test func turningOffRemovesEveryRegion() async throws {
         let harness = try makeHarness(events: spreadEvents(3))
         let monitor = try #require(harness.monitor)
