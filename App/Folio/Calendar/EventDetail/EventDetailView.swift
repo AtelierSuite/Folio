@@ -7,6 +7,7 @@ struct EventDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var event: CalendarEvent
     @State private var draft: EventDraft?
+    @State private var duplicates: [CalendarEvent] = []
     @State private var isEditing = false
     @State private var errorMessage: String?
     @State private var pendingRefresh: PendingRefresh?
@@ -33,6 +34,7 @@ struct EventDetailView: View {
                     EventDetailLocationSection(location: location)
                 }
                 EventDetailInfoSection(event: event, draft: draft, calendar: eventCalendar)
+                EventDetailDuplicatesSection(duplicates: duplicates, onSelect: show)
                 EventDetailAttendeesSection(event: event)
                 Section {
                     EventLinkedNoteButton(event: event) { dismiss() }
@@ -126,6 +128,9 @@ struct EventDetailView: View {
                 if hasNewIdentifier { return }
             }
         }
+        let loadedDuplicates = await store.duplicates(of: event)
+        guard !Task.isCancelled else { return }
+        duplicates = loadedDuplicates
         do {
             draft = try await store.eventDraft(for: event)
         } catch {
@@ -134,6 +139,11 @@ struct EventDetailView: View {
                 dismiss()
             }
         }
+    }
+
+    private func show(_ duplicate: CalendarEvent) {
+        draft = nil
+        event = duplicate
     }
 
     private func delete(span: EventEditSpan) async {

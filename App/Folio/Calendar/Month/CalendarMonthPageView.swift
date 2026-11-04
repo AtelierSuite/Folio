@@ -63,7 +63,7 @@ struct CalendarMonthPageView: View {
         self.events = events
         eventsByEntryIdentifier = Dictionary(events.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         remindersByEntryIdentifier = Dictionary(timelineEntriesFor: reminders)
-        let entries = events.map(TimelineEntry.init(event:))
+        let entries = EventDuplicateDetector(calendar: grid.calendar).groups(in: events).map(TimelineEntry.init(group:))
             + reminders.compactMap { TimelineEntry(reminder: $0, calendar: grid.calendar) }
         buckets = MonthDayBuckets(grid: grid, entries: entries)
     }

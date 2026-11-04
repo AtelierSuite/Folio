@@ -18,6 +18,7 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
     public var isCompleted: Bool
     public var isOverdue: Bool
     public var invitationStyle: InvitationCardStyle
+    public var duplicateCount: Int
 
     public init(
         id: String,
@@ -34,7 +35,8 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         meetingLink: MeetingLink? = nil,
         isCompleted: Bool = false,
         isOverdue: Bool = false,
-        invitationStyle: InvitationCardStyle = .standard
+        invitationStyle: InvitationCardStyle = .standard,
+        duplicateCount: Int = 1
     ) {
         self.id = id
         self.title = title
@@ -51,6 +53,11 @@ public struct TimelineEntry: Sendable, Hashable, Identifiable {
         self.isCompleted = isCompleted
         self.isOverdue = isOverdue
         self.invitationStyle = invitationStyle
+        self.duplicateCount = duplicateCount
+    }
+
+    public var hasDuplicates: Bool {
+        duplicateCount > 1
     }
 
     public var hasMeetingLink: Bool {

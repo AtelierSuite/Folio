@@ -5,6 +5,7 @@ struct CalendarsSettingsView: View {
         Form {
             ReminderSettingsSection()
             InvitationSettingsSection()
+            DuplicateDetectionSection()
             TravelTimeSettingsSection()
             SecondaryTimeZoneSection()
             AlternateCalendarSection()

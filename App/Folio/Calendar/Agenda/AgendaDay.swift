@@ -3,15 +3,19 @@ import Planner
 
 struct AgendaDay: Identifiable {
     let interval: DateInterval
-    let events: [CalendarEvent]
+    let eventGroups: [EventDuplicateGroup]
     let reminders: [ReminderItem]
+
+    var events: [CalendarEvent] {
+        eventGroups.map(\.primary)
+    }
 
     var id: Date {
         interval.start
     }
 
     var isEmpty: Bool {
-        events.isEmpty && reminders.isEmpty
+        eventGroups.isEmpty && reminders.isEmpty
     }
 
     static func upcomingInterval(dayCount: Int, calendar: Calendar = .current) -> DateInterval {
@@ -26,6 +30,7 @@ struct AgendaDay: Identifiable {
         reminders: [ReminderItem],
         calendar: Calendar = .current
     ) -> [AgendaDay] {
+        let eventGroups = EventDuplicateDetector(calendar: calendar).groups(in: events)
         var days: [AgendaDay] = []
         var dayStart = interval.start
         while dayStart < interval.end {
@@ -33,7 +38,7 @@ struct AgendaDay: Identifiable {
             let dayInterval = DateInterval(start: dayStart, end: dayEnd)
             days.append(AgendaDay(
                 interval: dayInterval,
-                events: events.filter { $0.overlaps(dayInterval) },
+                eventGroups: eventGroups.filter { $0.primary.overlaps(dayInterval) },
                 reminders: reminders.filter { $0.isDue(in: dayInterval) }
             ))
             dayStart = dayEnd

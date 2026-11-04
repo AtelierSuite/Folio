@@ -12,6 +12,8 @@ public final class CalendarStore {
     public internal(set) var hiddenInvitationIdentifiers: Set<String>
     public internal(set) var hidesDeclinedEvents: Bool
     public internal(set) var contentRevision = 0
+    public internal(set) var duplicateExcludedCalendarIdentifiers =
+        DuplicateDetectionSettings.shared.excludedCalendarIdentifiers
     public internal(set) var overdueReminderPolicy: OverdueReminderPolicy
     @ObservationIgnored var pendingRemovals: [UUID: PendingRemoval] = [:]
     @ObservationIgnored var pendingEventEdits: [UUID: PendingEventEdit] = [:]

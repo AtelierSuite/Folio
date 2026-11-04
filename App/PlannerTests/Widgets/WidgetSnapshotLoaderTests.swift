@@ -30,6 +30,29 @@ struct WidgetSnapshotLoaderTests {
         return storage
     }
 
+    @Test func showsCopiesOfAnEventOnce() async throws {
+        let start = Fixtures.date(2026, 10, 29, hour: 11)
+        let copies = ["work", "home"].map { calendarIdentifier in
+            CalendarEvent(
+                reference: Fixtures.reference(
+                    external: "external-\(calendarIdentifier)",
+                    local: calendarIdentifier,
+                    calendarIdentifier: calendarIdentifier
+                ),
+                calendarIdentifier: calendarIdentifier,
+                title: "Team Sync",
+                startDate: start,
+                endDate: start.addingTimeInterval(3600)
+            )
+        }
+        let loader = WidgetSnapshotLoader(
+            source: FakeCalendarDataSource(events: copies), visibilityStorage: try makeStorage(hidden: [])
+        )
+        let request = WidgetSnapshotRequest.upcoming(from: now, calendar: Fixtures.calendar, includesReminders: false)
+        let snapshot = await loader.load(request, at: now, calendar: Fixtures.calendar)
+        #expect(snapshot.events.map(\.title) == ["Team Sync"])
+    }
+
     @Test func showsVisibleCalendarsByDefault() async throws {
         let storage = try makeStorage(hidden: ["home", "office"])
         let loader = WidgetSnapshotLoader(source: makeSource(), visibilityStorage: storage)

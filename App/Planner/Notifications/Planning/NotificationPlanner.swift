@@ -36,17 +36,13 @@ public struct NotificationPlanner: Sendable {
         budget: Int,
         eventImages: [CalendarItemReference: URL] = [:]
     ) -> [PlannedNotification] {
-        let candidates = eventCandidates(events, after: now, images: eventImages)
-            + reminderCandidates(reminders, after: now)
-        var seenIdentifiers = Set<String>()
-        let planned = candidates
-            .map { PlannedNotification($0, style: styleResolver($0), sound: soundResolver($0)) }
-            .filter { seenIdentifiers.insert($0.id).inserted }
+        let planned = (eventNotifications(events, after: now, images: eventImages)
+            + reminderNotifications(reminders, after: now))
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         return Array(planned.prefix(max(0, budget)))
     }
 
-    private func eventCandidates(
+    func eventCandidates(
         _ events: [CalendarEvent],
         after now: Date,
         images: [CalendarItemReference: URL]
@@ -71,7 +67,7 @@ public struct NotificationPlanner: Sendable {
         }
     }
 
-    private func reminderCandidates(_ reminders: [ReminderItem], after now: Date) -> [NotificationCandidate] {
+    func reminderCandidates(_ reminders: [ReminderItem], after now: Date) -> [NotificationCandidate] {
         reminders.filter { !$0.isCompleted }.flatMap { reminder in
             let alarms = reminder.alarms.map(CalendarAlarm.init)
             return fireDates(for: alarms, anchor: reminder.dueDate, after: now).map { fireDate in

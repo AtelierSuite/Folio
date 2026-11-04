@@ -113,10 +113,12 @@ public final class ArrivalAlertCenter {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var candidates: [ArrivalCandidate] = []
-        for event in await source.events(in: interval)
-        where !hiddenCalendars.contains(event.calendarIdentifier)
-            && !event.isHiddenInvitation(among: hiddenInvitations)
-            && preferences.isEnabled(for: event.reference) {
+        let events = await source.events(in: interval).filter {
+            !hiddenCalendars.contains($0.calendarIdentifier)
+                && !$0.isHiddenInvitation(among: hiddenInvitations)
+                && preferences.isEnabled(for: $0.reference)
+        }
+        for event in EventDuplicateDetector().groups(in: events).map(\.primary) {
             guard planner.window.interval(for: event).map({ $0.end > now }) == true,
                   let coordinate = await resolver.coordinate(for: event),
                   let candidate = planner.candidate(for: event, at: coordinate) else { continue }

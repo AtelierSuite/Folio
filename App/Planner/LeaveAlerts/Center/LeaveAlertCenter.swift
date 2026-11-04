@@ -129,10 +129,12 @@ public final class LeaveAlertCenter {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var alerts: [LeaveAlert] = []
-        for event in await source.events(in: planner.interval(after: now))
-        where !hiddenCalendars.contains(event.calendarIdentifier)
-            && !event.isHiddenInvitation(among: hiddenInvitations)
-            && preferences.isEnabled(for: event.reference) {
+        let events = await source.events(in: planner.interval(after: now)).filter {
+            !hiddenCalendars.contains($0.calendarIdentifier)
+                && !$0.isHiddenInvitation(among: hiddenInvitations)
+                && preferences.isEnabled(for: $0.reference)
+        }
+        for event in EventDuplicateDetector().groups(in: events).map(\.primary) {
             guard planner.isEligible(event, now: now), !ledger.hasFired(for: event, now: now),
                   let destination = await resolver.coordinate(for: event),
                   planner.needsTravel(from: origin, to: destination),

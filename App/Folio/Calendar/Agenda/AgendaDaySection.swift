@@ -8,12 +8,12 @@ struct AgendaDaySection: View {
 
     var body: some View {
         Section {
-            ForEach(day.events) { event in
+            ForEach(day.eventGroups) { group in
                 HStack(spacing: 8) {
-                    AgendaEventRow(event: event)
+                    AgendaEventRow(event: group.primary, duplicateCount: group.count)
                         .accessibilityElement(children: .combine)
-                        .eventInteractions(event, actions: actions)
-                    if let meetingLink = event.meetingLink {
+                        .eventInteractions(group.primary, actions: actions)
+                    if let meetingLink = group.primary.meetingLink {
                         JoinMeetingButton(link: meetingLink, style: .capsule)
                     }
                 }

@@ -3,7 +3,11 @@ import Foundation
 extension TimelineEntry {
     public static let reminderDuration: TimeInterval = 30 * 60
 
-    public init(event: CalendarEvent) {
+    public init(group: EventDuplicateGroup) {
+        self.init(event: group.primary, duplicateCount: group.count)
+    }
+
+    public init(event: CalendarEvent, duplicateCount: Int = 1) {
         self.init(
             id: event.id,
             title: event.title,
@@ -17,7 +21,8 @@ extension TimelineEntry {
             location: event.location.flatMap { $0.isEmpty ? nil : $0 },
             hasLink: event.url != nil,
             meetingLink: event.meetingLink,
-            invitationStyle: event.invitationCardStyle
+            invitationStyle: event.invitationCardStyle,
+            duplicateCount: duplicateCount
         )
     }
 

@@ -7,7 +7,7 @@ struct CalendarMonthSpanningChip: View {
     private let shape = Rectangle()
 
     var body: some View {
-        Text(item.entry.title)
+        TimelineEntryTitleView(entry: item.entry)
             .font(.caption2.weight(.semibold))
             .lineLimit(1)
             .padding(.horizontal, 3)

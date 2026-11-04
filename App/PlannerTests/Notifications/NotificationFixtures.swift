@@ -49,18 +49,19 @@ enum NotificationFixtures {
         hasDueTime: Bool = true,
         alarms: [CalendarAlarm]? = nil,
         isCompleted: Bool = false,
-        listIdentifier: String = "list-1"
+        listIdentifier: String = "list-1",
+        title: String? = nil
     ) -> ReminderItem {
         ReminderItem(
             reference: Fixtures.reference(
                 external: "external-\(local)",
                 local: local,
                 calendarIdentifier: listIdentifier,
-                title: local,
+                title: title ?? local,
                 start: due
             ),
             listIdentifier: listIdentifier,
-            title: local,
+            title: title ?? local,
             dueDate: due,
             hasDueTime: hasDueTime,
             isCompleted: isCompleted,
