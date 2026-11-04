@@ -62,4 +62,23 @@ struct WidgetTimelinePlanTests {
         #expect(plan.entryDates.count == 5)
         #expect(plan.reloadDate == plan.entryDates.last)
     }
+
+    @Test func ticksLandOnRoundTimesBetweenEvents() {
+        let start = Fixtures.date(2026, 10, 29, hour: 8).addingTimeInterval(20 * 60)
+        let event = Fixtures.event(
+            local: "standup",
+            start: Fixtures.date(2026, 10, 29, hour: 8).addingTimeInterval(40 * 60)
+        )
+        let plan = WidgetTimelinePlan(
+            events: [event],
+            from: start,
+            calendar: Fixtures.calendar,
+            refreshInterval: 3_600,
+            tickInterval: 900
+        )
+        let minutesPastEight = plan.entryDates.map {
+            Int($0.timeIntervalSince(Fixtures.date(2026, 10, 29, hour: 8)) / 60)
+        }
+        #expect(minutesPastEight == [20, 30, 40, 45, 60, 75, 80])
+    }
 }

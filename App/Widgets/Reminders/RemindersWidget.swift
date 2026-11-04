@@ -17,5 +17,6 @@ struct RemindersWidget: Widget {
         .configurationDisplayName(String(localized: "Reminders.Name", table: "Widgets"))
         .description(String(localized: "Reminders.Description", table: "Widgets"))
         .supportedFamilies(WidgetFamilies.reminders)
+        .contentMarginsDisabled()
     }
 }

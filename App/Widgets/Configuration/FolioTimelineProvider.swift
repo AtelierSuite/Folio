@@ -12,7 +12,11 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
         let now = Date.now
         let snapshot = await loader.load(configuration.snapshotRequest(at: now, calendar: .current), at: now)
         let isEmptyPreview = context.isPreview && snapshot.events.isEmpty && snapshot.reminders.isEmpty
-        return FolioWidgetEntry(date: now, snapshot: isEmptyPreview ? .placeholder(at: now) : snapshot)
+        return FolioWidgetEntry(
+            date: now,
+            snapshot: isEmptyPreview ? .placeholder(at: now) : snapshot,
+            scheduleHourCount: configuration.scheduleHourCount
+        )
     }
 
     func timeline(for configuration: Intent, in context: Context) async -> Timeline<FolioWidgetEntry> {
@@ -20,8 +24,15 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
         let calendar = Calendar.current
         let request = configuration.snapshotRequest(at: now, calendar: calendar)
         let snapshot = await loader.load(request, at: now)
-        let plan = WidgetTimelinePlan(events: snapshot.events, from: now, calendar: calendar)
-        let entries = plan.entryDates.map { FolioWidgetEntry(date: $0, snapshot: snapshot) }
+        let plan = WidgetTimelinePlan(
+            events: snapshot.events,
+            from: now,
+            calendar: calendar,
+            tickInterval: configuration.timelineTickInterval
+        )
+        let entries = plan.entryDates.map {
+            FolioWidgetEntry(date: $0, snapshot: snapshot, scheduleHourCount: configuration.scheduleHourCount)
+        }
         return Timeline(entries: entries, policy: .after(plan.reloadDate))
     }
 }

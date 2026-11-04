@@ -4,7 +4,7 @@ import SwiftUI
 struct AlternateCalendarEnvironment: ViewModifier {
     @Environment(SystemTimeObserver.self) private var systemTime
     @Environment(\.locale) private var locale
-    @AppStorage(AlternateCalendar.storageKey) private var storedCalendar = ""
+    @AppStorage(AlternateCalendar.storageKey, store: AppGroup.userDefaults) private var storedCalendar = ""
 
     func body(content: Content) -> some View {
         content.environment(\.alternateCalendarFormatter, formatter)

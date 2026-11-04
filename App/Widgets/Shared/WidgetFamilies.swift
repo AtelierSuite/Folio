@@ -4,6 +4,7 @@ import WidgetKit
 enum WidgetFamilies {
     static let upNext: [WidgetFamily] = [.systemSmall, .systemMedium] + lockScreen
     static let today: [WidgetFamily] = [.systemMedium, .systemLarge, .systemExtraLarge]
+    static let hourly: [WidgetFamily] = [.systemMedium]
     static let miniMonth: [WidgetFamily] = [.systemSmall, .systemMedium]
     static let reminders: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
 

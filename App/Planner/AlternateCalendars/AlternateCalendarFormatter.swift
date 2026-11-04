@@ -35,6 +35,12 @@ public struct AlternateCalendarFormatter: Equatable, Sendable {
         date.formatted(formatStyle.year().era().month(.wide).day())
     }
 
+    /// Calendars sharing Gregorian days differ only by their year, so those keep it.
+    public func compactDate(for date: Date) -> String {
+        guard !alternateCalendar.sharesGregorianDays else { return fullDate(for: date) }
+        return date.formatted(formatStyle.month(.wide).day())
+    }
+
     public func monthTitle(for interval: DateInterval) -> String {
         let lastMoment = max(interval.start, interval.end.addingTimeInterval(-1))
         let style = Date.IntervalFormatStyle(locale: locale, calendar: calendar, timeZone: calendar.timeZone)

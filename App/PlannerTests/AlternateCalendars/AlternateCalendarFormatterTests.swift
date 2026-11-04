@@ -62,4 +62,12 @@ struct AlternateCalendarFormatterTests {
             #expect(alternateCalendar.displayName(in: english) != alternateCalendar.rawValue)
         }
     }
+
+    @Test func compactDateKeepsTheYearOnlyWhenItIsTheDifference() {
+        let date = Fixtures.date(2026, 10, 31)
+        #expect(formatter(.hebrew).compactDate(for: date).contains("2026") == false)
+        #expect(formatter(.hebrew).compactDate(for: date).contains("20"))
+        let japanese = formatter(.japanese, locale: Locale(identifier: "ja_JP"))
+        #expect(japanese.compactDate(for: date) == japanese.fullDate(for: date))
+    }
 }
