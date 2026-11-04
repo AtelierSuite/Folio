@@ -2,6 +2,7 @@ import SwiftUI
 
 enum WidgetTitleBarMetrics {
     static let horizontalInset: CGFloat = 14
+    static let cornerClearance: CGFloat = 4
 }
 
 struct WidgetTitleBarLayout<Bar: View, Content: View>: View {
