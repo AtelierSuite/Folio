@@ -33,7 +33,9 @@ public struct WidgetSnapshotLoader: Sendable {
         return WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
             reminderAuthorization: source.authorizationStatus(for: .reminder),
-            events: events.filter { calendarFilter.includes($0.calendarIdentifier) },
+            events: EventDuplicateDetector(calendar: calendar)
+                .groups(in: events.filter { calendarFilter.includes($0.calendarIdentifier) })
+                .map(\.primary),
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:]
         )
