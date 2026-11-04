@@ -6,6 +6,7 @@ struct FolioWidgetsBundle: WidgetBundle {
     var body: some Widget {
         UpNextWidget()
         TodayWidget()
+        HourlyWidget()
         MiniMonthWidget()
         RemindersWidget()
         lockScreenWidgets
