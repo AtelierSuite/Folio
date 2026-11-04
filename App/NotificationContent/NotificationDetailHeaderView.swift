@@ -5,6 +5,7 @@ struct NotificationDetailHeaderView: View {
     let origin: CalendarOrigin?
     let status: String?
     let accentColor: Color
+    let statusColor: Color
 
     var body: some View {
         HStack(spacing: 12) {
@@ -15,7 +16,7 @@ struct NotificationDetailHeaderView: View {
             if let status {
                 Text(status)
                     .font(.footnote.weight(.semibold))
-                    .foregroundStyle(accentColor)
+                    .foregroundStyle(statusColor)
                     .lineLimit(1)
                     .layoutPriority(1)
                     .accessibilityIdentifier("NotificationDetail.Status")
