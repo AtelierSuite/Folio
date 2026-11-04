@@ -12,7 +12,8 @@ extension NotificationContentFormatter {
             body: [Self.arrivedText, details.body].filter { !$0.isEmpty }.joined(separator: Self.separator),
             status: Self.arrivedText,
             time: details.time,
-            color: details.color
+            color: details.color,
+            origin: details.origin
         )
     }
 }

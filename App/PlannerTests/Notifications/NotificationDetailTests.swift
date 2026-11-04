@@ -32,6 +32,40 @@ struct NotificationDetailTests {
         #expect(detail.rows.last?.text == "Room 4")
     }
 
+    @Test func alertCarriesItsAccountAndCalendarNames() throws {
+        let origin = CalendarOrigin(accountName: "iCloud", calendarName: "Work")
+        let event = CalendarEvent(
+            reference: Fixtures.reference(
+                external: "e", local: "e", title: "Review", start: NotificationFixtures.hours(2)
+            ),
+            calendarIdentifier: "calendar-1",
+            title: "Review",
+            startDate: NotificationFixtures.hours(2),
+            endDate: NotificationFixtures.hours(3),
+            alarms: [.relative(offset: -600)],
+            origin: origin
+        )
+        let notification = try #require(NotificationActionFixtures.planned(event))
+        #expect(detail(notification).origin == origin)
+    }
+
+    @Test func renamingACalendarReschedulesItsAlerts() {
+        let start = NotificationFixtures.hours(2)
+        let alerts = ["Work", "Office"].map { name in
+            CalendarEvent(
+                reference: Fixtures.reference(external: "e", local: "e", title: "Review", start: start),
+                calendarIdentifier: "calendar-1",
+                title: "Review",
+                startDate: start,
+                endDate: start.addingTimeInterval(3600),
+                alarms: [.relative(offset: -600)],
+                origin: CalendarOrigin(accountName: "iCloud", calendarName: name)
+            )
+        }.compactMap(NotificationActionFixtures.planned)
+        #expect(alerts.count == 2)
+        #expect(alerts.first?.id != alerts.last?.id)
+    }
+
     @Test func reminderShowsItsDueTime() throws {
         let notification = try #require(NotificationActionFixtures.plannedReminder())
         let detail = detail(notification)

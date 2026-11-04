@@ -21,6 +21,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let attendees: [EventParticipant]
     /// The current user's response, or `nil` when they aren't an invitee (their own event or no attendees).
     public let userStatus: ParticipantStatus?
+    public let origin: CalendarOrigin?
 
     public init(
         reference: CalendarItemReference,
@@ -41,7 +42,8 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         alarms: [CalendarAlarm] = [],
         organizer: EventParticipant? = nil,
         attendees: [EventParticipant] = [],
-        userStatus: ParticipantStatus? = nil
+        userStatus: ParticipantStatus? = nil,
+        origin: CalendarOrigin? = nil
     ) {
         self.reference = reference
         self.calendarIdentifier = calendarIdentifier
@@ -62,6 +64,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         self.organizer = organizer
         self.attendees = attendees
         self.userStatus = userStatus
+        self.origin = origin
     }
 
     public var id: String {

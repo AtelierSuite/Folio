@@ -9,6 +9,7 @@ public struct NotificationContent: Sendable, Hashable {
     public let status: String?
     public let time: String?
     public let color: PlannerColor?
+    public let origin: CalendarOrigin?
 
     public init(
         title: String,
@@ -16,7 +17,8 @@ public struct NotificationContent: Sendable, Hashable {
         alarmTitle: String? = nil,
         status: String? = nil,
         time: String? = nil,
-        color: PlannerColor? = nil
+        color: PlannerColor? = nil,
+        origin: CalendarOrigin? = nil
     ) {
         self.title = title
         self.body = body
@@ -24,5 +26,6 @@ public struct NotificationContent: Sendable, Hashable {
         self.status = status
         self.time = time
         self.color = color
+        self.origin = origin
     }
 }

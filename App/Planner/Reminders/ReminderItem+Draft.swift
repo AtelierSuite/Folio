@@ -24,7 +24,8 @@ extension ReminderItem {
             isReadOnly: isReadOnly,
             url: draft.url,
             alarms: draft.alarms,
-            recurrence: draft.recurrence
+            recurrence: draft.recurrence,
+            origin: draft.listIdentifier == listIdentifier ? origin : nil
         )
     }
 }
