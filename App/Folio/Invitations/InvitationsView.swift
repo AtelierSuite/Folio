@@ -1,16 +1,23 @@
 import Planner
 import SwiftUI
 
+private enum InvitationsDestination: Hashable {
+    case hidden
+}
+
 struct InvitationsView: View {
     @Environment(CalendarStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var invitations: [CalendarEvent]?
-    @State private var hiddenInvitations: [CalendarEvent] = []
+    @State private var hasHiddenInvitations = false
     @State private var selectedEvent: CalendarEvent?
 
     var body: some View {
         NavigationStack {
             content
+                .navigationDestination(for: InvitationsDestination.self) { _ in
+                    HiddenInvitationsView()
+                }
                 .navigationTitle(String(localized: "List.Title", table: "Invitations"))
                 #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
@@ -23,7 +30,7 @@ struct InvitationsView: View {
         }
         .eventDetailSheet(item: $selectedEvent)
         .task(id: store.contentRevision) {
-            hiddenInvitations = await store.hiddenInvitations()
+            hasHiddenInvitations = await !store.hiddenInvitations().isEmpty
             invitations = await store.pendingInvitations()
         }
         #if os(macOS)
@@ -33,7 +40,7 @@ struct InvitationsView: View {
 
     @ViewBuilder
     private var content: some View {
-        if let invitations, invitations.isEmpty, hiddenInvitations.isEmpty {
+        if let invitations, invitations.isEmpty, !hasHiddenInvitations {
             ContentUnavailableView(
                 String(localized: "List.Empty.Title", table: "Invitations"),
                 systemImage: "envelope.open",
@@ -42,11 +49,13 @@ struct InvitationsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             List {
-                if !hiddenInvitations.isEmpty {
-                    Section(String(localized: "Hidden.Header", table: "Invitations")) {
-                        ForEach(hiddenInvitations) { event in
-                            HiddenInvitationRow(event: event)
-                        }
+                if hasHiddenInvitations {
+                    Section {
+                        NavigationLink(
+                            String(localized: "Hidden.Title", table: "Invitations"),
+                            value: InvitationsDestination.hidden
+                        )
+                        .accessibilityIdentifier("HiddenInvitationsLink")
                     }
                 }
                 Section {

@@ -64,12 +64,15 @@ final class InvitationsTests: XCTestCase {
         XCTAssertTrue(row.waitForNonExistence(timeout: 5))
         capture(app, "InvitationHidden")
 
+        let hiddenLink = app.buttons["HiddenInvitationsLink"]
+        XCTAssertTrue(hiddenLink.waitForExistence(timeout: 5))
+        hiddenLink.tap()
         let showButton = app.buttons["ShowInvitationButton"].firstMatch
         XCTAssertTrue(showButton.waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Hidden"].exists || app.staticTexts["HIDDEN"].exists)
+        capture(app, "HiddenInvitations")
         showButton.tap()
         XCTAssertTrue(row.waitForExistence(timeout: 5))
-        XCTAssertFalse(showButton.exists)
+        XCTAssertFalse(hiddenLink.exists)
     }
 
     @MainActor
