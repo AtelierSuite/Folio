@@ -33,6 +33,42 @@ struct NotificationContentFormatterTests {
         #expect(dayBefore.hasSuffix(" · \(NotificationContentFormatter.allDayText)"))
     }
 
+    @Test func expandedTimeSpellsOutTheDuration() throws {
+        let event = NotificationFixtures.event("Review", start: start, hours: 1.5)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time == "9:00 ~ 10:30 (1 hour 30 minutes)")
+    }
+
+    @Test func expandedTimeLeavesOutEmptyUnits() throws {
+        let event = NotificationFixtures.event("Workshop", start: start, hours: 2)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time.hasSuffix("(2 hours)"))
+    }
+
+    @Test func expandedTimeDatesAnEndOnAnotherDay() throws {
+        let event = NotificationFixtures.event("Flight", start: start, hours: 20)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time == "9:00 ~ 30 Oct 5:00 (20 hours)")
+    }
+
+    @Test func expandedTimeCountsTheDaysOfAMultiDayEvent() throws {
+        let day = Fixtures.date(2026, 10, 29)
+        let event = NotificationFixtures.event("Trip", start: day, hours: 72, isAllDay: true)
+        let time = try #require(formatter.content(for: event, firingAt: day).time)
+        #expect(time == "29 Oct ~ 31 Oct (3 days)")
+    }
+
+    @Test func singleAllDayEventHasNoDuration() {
+        let day = Fixtures.date(2026, 10, 29)
+        let event = NotificationFixtures.event("Holiday", start: day, hours: 24, isAllDay: true)
+        #expect(formatter.content(for: event, firingAt: day).time == NotificationContentFormatter.allDayText)
+    }
+
+    @Test func collapsedBodyKeepsItsShortTime() {
+        let event = NotificationFixtures.event("Review", start: start, hours: 1.5)
+        #expect(!formatter.content(for: event, firingAt: start).body.contains("minutes"))
+    }
+
     @Test func alarmTitleAddsTheStartTime() {
         let event = NotificationFixtures.event("Standup", start: start, location: "Room 4")
         #expect(formatter.content(for: event, firingAt: start).alarmTitle == "Standup · 9:00")

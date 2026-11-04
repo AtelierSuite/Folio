@@ -23,7 +23,7 @@ public struct NotificationContentFormatter: Sendable {
             title: event.title,
             body: joined([time, location]),
             alarmTitle: joined([event.title, startTime]),
-            time: time,
+            time: detailedTime(for: event, firingAt: fireDate) ?? time,
             color: event.color
         )
     }
