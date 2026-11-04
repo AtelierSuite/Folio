@@ -39,7 +39,8 @@ public struct NotificationContentFormatter: Sendable {
             alarmTitle: joined([reminder.title, dueTime]),
             time: time,
             color: reminder.color,
-            origin: reminder.origin
+            origin: reminder.origin,
+            reminder: reminderDetails(for: reminder)
         )
     }
 

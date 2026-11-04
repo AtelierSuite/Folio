@@ -85,9 +85,27 @@ struct NotificationDetailTests {
         #expect(!detail(notification).hasStatus)
     }
 
-    @Test func reminderHasNoLiveStatus() throws {
-        let notification = try #require(NotificationActionFixtures.plannedReminder())
-        #expect(!detail(notification).hasStatus)
+    @Test func reminderWorksOutItsStatusWhenRead() throws {
+        let due = NotificationFixtures.hours(1)
+        let notification = try #require(NotificationActionFixtures.plannedReminder(due: due))
+        let detail = detail(notification)
+        #expect(detail.reminder != nil)
+        #expect(detail.hasStatus)
+        #expect(!detail.isOverdue(at: due.addingTimeInterval(-600)))
+        #expect(detail.isOverdue(at: due.addingTimeInterval(600)))
+    }
+
+    @Test func dateOnlyReminderHidesItsTimeRow() {
+        let details = NotificationReminderDetails(dueDate: NotificationFixtures.now, hasDueTime: false)
+        let content = NotificationContent(title: "Card", body: "4 Nov", time: "4 Nov", reminder: details)
+        let detail = NotificationDetail(title: "Card", body: "4 Nov", userInfo: NotificationUserInfo.make(for: content))
+        #expect(detail.row(.time) == nil)
+    }
+
+    @Test func eventHasNoReminderDetails() throws {
+        let event = NotificationFixtures.event("e", start: NotificationFixtures.hours(2))
+        let notification = try #require(NotificationActionFixtures.planned(event))
+        #expect(detail(notification).reminder == nil)
     }
 
     @Test func fixedStatusWinsOverTheLiveOne() {
@@ -103,7 +121,7 @@ struct NotificationDetailTests {
         let notification = try #require(NotificationActionFixtures.plannedReminder())
         let detail = detail(notification)
         #expect(detail.rows.map(\.kind) == [.time])
-        #expect(detail.rows.first?.systemImage == "bell")
+        #expect(detail.rows.first?.systemImage == "clock")
     }
 
     @Test func olderAlertsFallBackToTheirBody() {

@@ -19,14 +19,8 @@ public struct NotificationEventProgress: Sendable, Equatable {
         self.end = end
     }
 
-    /// `Locale.current` is wrong in the notification extension, which declares no localizations of its own,
-    /// so this follows the language the surrounding status text resolves to.
-    static var stringsLocale: Locale {
-        Locale(identifier: (#bundle).preferredLocalizations.first ?? "en")
-    }
-
     public func text(at now: Date) -> String {
-        text(at: now, locale: Self.stringsLocale)
+        text(at: now, locale: NotificationRelativeText.stringsLocale)
     }
 
     func text(at now: Date, locale: Locale) -> String {
@@ -35,25 +29,11 @@ public struct NotificationEventProgress: Sendable, Equatable {
         guard abs(secondsUntilStart) >= 60 else { return Self.startingNowText }
         let minutes = (secondsUntilStart / 60).rounded(.up)
         if secondsUntilStart > 0 {
-            return relativeText(minutes: minutes, from: now, context: .beginningOfSentence, locale: locale)
+            return NotificationRelativeText.minutes(minutes, context: .beginningOfSentence, locale: locale)
         }
         return String(
             format: String(localized: "Status.Started", table: "Notifications", bundle: #bundle),
-            relativeText(minutes: minutes, from: now, context: .middleOfSentence, locale: locale)
+            NotificationRelativeText.minutes(minutes, context: .middleOfSentence, locale: locale)
         )
-    }
-
-    private func relativeText(
-        minutes: Double,
-        from now: Date,
-        context: Formatter.Context,
-        locale: Locale
-    ) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = locale
-        formatter.unitsStyle = .full
-        formatter.dateTimeStyle = .numeric
-        formatter.formattingContext = context
-        return formatter.localizedString(for: now.addingTimeInterval(minutes * 60), relativeTo: now)
     }
 }

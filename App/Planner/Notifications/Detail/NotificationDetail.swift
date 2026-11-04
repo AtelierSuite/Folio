@@ -7,7 +7,9 @@ public struct NotificationDetail: Sendable, Equatable {
     public let color: PlannerColor?
     public let origin: CalendarOrigin?
     public let rows: [NotificationDetailRow]
+    public let reminder: NotificationReminderDetails?
     let progress: NotificationEventProgress?
+    let reminderProgress: NotificationReminderProgress?
 
     public init(title: String, body: String, userInfo: [AnyHashable: Any]) {
         self.title = title
@@ -17,24 +19,35 @@ public struct NotificationDetail: Sendable, Equatable {
         progress = NotificationUserInfo.startDate(from: userInfo).map { start in
             NotificationEventProgress(start: start, end: NotificationUserInfo.endDate(from: userInfo) ?? start)
         }
-        let isReminder = NotificationUserInfo.kind(from: userInfo) == .reminder
+        let reminder = NotificationUserInfo.reminder(from: userInfo)
+        self.reminder = reminder
+        reminderProgress = reminder.flatMap { details in
+            details.dueDate.map { NotificationReminderProgress(dueDate: $0, hasDueTime: details.hasDueTime) }
+        }
         // Alerts scheduled before the details were added only have the body.
-        let time = NotificationUserInfo.time(from: userInfo) ?? (body.isEmpty ? nil : body)
+        let time = reminder?.hasDueTime == false
+            ? nil
+            : NotificationUserInfo.time(from: userInfo) ?? (body.isEmpty ? nil : body)
         let place = NotificationUserInfo.place(from: userInfo)?.name
         let provider = NotificationUserInfo.meeting(from: userInfo)?.link.provider
         rows = [
-            time.map { NotificationDetailRow(kind: .time, text: $0, systemImage: isReminder ? "bell" : "clock") },
+            time.map { NotificationDetailRow(kind: .time, text: $0, systemImage: "clock") },
             place.map { NotificationDetailRow(kind: .place, text: $0, systemImage: "mappin.and.ellipse") },
-            provider.map { NotificationDetailRow(kind: .meeting, text: $0.displayName, systemImage: $0.systemImage) }
+            provider.map { NotificationDetailRow(kind: .meeting, text: $0.displayName, systemImage: $0.systemImage) },
+            reminder?.repeatText.map { NotificationDetailRow(kind: .repeating, text: $0, systemImage: "repeat") }
         ].compactMap { $0 }
     }
 
     public var hasStatus: Bool {
-        status != nil || progress != nil
+        status != nil || progress != nil || reminderProgress != nil
     }
 
     public func status(at now: Date) -> String? {
-        status ?? progress?.text(at: now)
+        status ?? progress?.text(at: now) ?? reminderProgress?.text(at: now)
+    }
+
+    public func isOverdue(at now: Date) -> Bool {
+        status == nil && reminderProgress?.isOverdue(at: now) == true
     }
 
     public func row(_ kind: NotificationDetailRow.Kind) -> NotificationDetailRow? {

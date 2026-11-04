@@ -5,6 +5,7 @@ public struct NotificationDetailRow: Identifiable, Sendable, Equatable {
         case time = "Time"
         case place = "Place"
         case meeting = "Meeting"
+        case repeating = "Repeat"
     }
 
     public let kind: Kind
