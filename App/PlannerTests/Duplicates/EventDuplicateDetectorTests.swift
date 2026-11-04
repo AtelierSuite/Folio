@@ -3,7 +3,11 @@ import Testing
 @testable import Planner
 
 struct EventDuplicateDetectorTests {
-    private let detector = EventDuplicateDetector(calendar: Fixtures.calendar)
+    private let detector: EventDuplicateDetector = {
+        var detector = EventDuplicateDetector(calendar: Fixtures.calendar)
+        detector.excludedCalendarIdentifiers = []
+        return detector
+    }()
     private let start = Fixtures.date(2026, 11, 4, hour: 9)
 
     private func event(
@@ -73,11 +77,6 @@ struct EventDuplicateDetectorTests {
         #expect(groups.map(\.count) == [1, 1])
     }
 
-    @Test func differentDurationsAreDifferentEvents() {
-        let groups = detector.groups(in: [event("first"), event("second", hours: 2)])
-        #expect(groups.map(\.count) == [1, 1])
-    }
-
     @Test func conflictingLocationsAreDifferentEvents() {
         let groups = detector.groups(in: [
             event("first", location: "Tokyo Office"),
@@ -86,30 +85,72 @@ struct EventDuplicateDetectorTests {
         #expect(groups.map(\.count) == [1, 1])
     }
 
-    @Test func aMoreDetailedLocationIsTheSamePlace() {
-        let groups = detector.groups(in: [
-            event("first", location: "Room 4"),
-            event("second", location: "room 4, Tokyo Office"),
-            event("third")
-        ])
-        #expect(groups.map(\.count) == [3])
+    private func offset(_ minutes: Double) -> Date {
+        start.addingTimeInterval(minutes * 60)
     }
 
-    @Test func sharedInvitationIdentifierMatchesDespiteARename() {
+    @Test func startsAndEndsWithinThirtyMinutesMatch() {
         let groups = detector.groups(in: [
-            event("first", title: "Planning", external: "shared"),
-            event("second", title: "Q4 planning (mine)", hours: 2, external: "shared")
+            event("first"),
+            event("second", start: offset(30), hours: 1)
         ])
         #expect(groups.map(\.count) == [2])
     }
 
-    @Test func sharedMeetingLinkMatchesDespiteDifferentTitles() {
-        let notes = "https://zoom.us/j/123456789"
+    @Test func startsMoreThanThirtyMinutesApartAreDifferentEvents() {
+        let groups = detector.groups(in: [event("first"), event("second", start: offset(31))])
+        #expect(groups.map(\.count) == [1, 1])
+    }
+
+    @Test func endsMoreThanThirtyMinutesApartAreDifferentEvents() {
+        let groups = detector.groups(in: [event("first"), event("second", hours: 1.6)])
+        #expect(groups.map(\.count) == [1, 1])
+    }
+
+    @Test func groupsNeverSpanMoreThanTheTolerance() {
         let groups = detector.groups(in: [
-            event("first", title: "Design review", notes: notes),
-            event("second", title: "Weekly catch-up", notes: notes)
+            event("first"),
+            event("second", start: offset(20)),
+            event("third", start: offset(40))
+        ])
+        #expect(groups.map(\.count).sorted() == [1, 2])
+    }
+
+    @Test func titlesWithinFivePercentMatch() {
+        let groups = detector.groups(in: [
+            event("first", title: "Quarterly planning with the finance team"),
+            event("second", title: "Quarterly planing with the finance team")
         ])
         #expect(groups.map(\.count) == [2])
+    }
+
+    @Test func titlesMoreThanFivePercentApartAreDifferentEvents() {
+        let groups = detector.groups(in: [event("first", title: "Team Sync"), event("second", title: "Team Sink")])
+        #expect(groups.map(\.count) == [1, 1])
+    }
+
+    @Test func locationsThatDifferOnlyInFormMatch() {
+        let groups = detector.groups(in: [
+            event("first", location: "Room 4, Tokyo Office"),
+            event("second", location: "room 4 tokyo office")
+        ])
+        #expect(groups.map(\.count) == [2])
+    }
+
+    @Test func aLocationOnOnlyOneEventIsADifference() {
+        let groups = detector.groups(in: [event("first", location: "Room 4"), event("second")])
+        #expect(groups.map(\.count) == [1, 1])
+    }
+
+    @Test func excludedCalendarsAreNeverGrouped() {
+        var detector = detector
+        detector.excludedCalendarIdentifiers = ["home"]
+        let groups = detector.groups(in: [
+            event("first", calendarIdentifier: "work"),
+            event("second", calendarIdentifier: "home"),
+            event("third", calendarIdentifier: "school")
+        ])
+        #expect(groups.map(\.count) == [2, 1])
     }
 
     @Test func allDayEventsMatchWhicheverWayTheyMarkTheirEnd() {
@@ -130,19 +171,10 @@ struct EventDuplicateDetectorTests {
         #expect(groups.map(\.count) == [1, 1])
     }
 
-    @Test func anEventMatchingTwoGroupsMergesThem() {
-        let groups = detector.groups(in: [
-            event("first", title: "Planning", external: "invite"),
-            event("second", title: "Roadmap"),
-            event("third", title: "Roadmap", external: "invite")
-        ])
-        #expect(groups.map(\.count) == [3])
-    }
-
     @Test func primaryIsTheEditableCopyThenTheMostDetailed() {
         let readOnly = event("first", location: "Room 4", notes: "Agenda", isReadOnly: true)
-        let sparse = event("second")
-        let detailed = event("third", location: "Room 4")
+        let sparse = event("second", location: "Room 4")
+        let detailed = event("third", location: "Room 4", notes: "Agenda")
         let group = detector.groups(in: [readOnly, sparse, detailed])[0]
         #expect(group.primary == detailed)
         #expect(group.duplicates == [sparse, readOnly])

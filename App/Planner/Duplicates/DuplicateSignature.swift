@@ -1,46 +1,42 @@
 import Foundation
 
-/// What two events that already start together are compared on.
 struct DuplicateSignature {
+    static let timeTolerance: TimeInterval = 30 * 60
+
     let item: PositionedEvent
-    private let externalIdentifier: String?
-    private let meetingURL: URL?
+    let start: Date
+    private let end: Date
+    private let isAllDay: Bool
     private let titleKey: String?
     private let locationKey: String?
-    private let endKey: Int
 
     init(_ item: PositionedEvent, calendar: Calendar) {
         let event = item.event
         self.item = item
-        externalIdentifier = event.reference.externalIdentifier
-        meetingURL = event.meetingLink?.url
-        titleKey = DuplicateText.titleKey(event.title)
-        locationKey = event.location.map(DuplicateText.folded).flatMap { $0.isEmpty ? nil : $0 }
-        endKey = Self.endKey(of: event, calendar: calendar)
+        isAllDay = event.isAllDay
+        start = event.isAllDay ? calendar.startOfDay(for: event.startDate) : event.startDate
+        end = Self.end(of: event, calendar: calendar)
+        titleKey = DuplicateText.comparisonKey(event.title)
+        locationKey = event.location.flatMap(DuplicateText.comparisonKey)
     }
 
     func isDuplicate(of other: DuplicateSignature) -> Bool {
-        if let externalIdentifier, externalIdentifier == other.externalIdentifier {
-            return true
+        guard isAllDay == other.isAllDay,
+              abs(start.timeIntervalSince(other.start)) <= Self.timeTolerance,
+              abs(end.timeIntervalSince(other.end)) <= Self.timeTolerance,
+              let titleKey, let otherTitle = other.titleKey,
+              DuplicateText.isSimilar(titleKey, otherTitle) else { return false }
+        switch (locationKey, other.locationKey) {
+        case (nil, nil): return true
+        case let (.some(location), .some(otherLocation)): return DuplicateText.isSimilar(location, otherLocation)
+        default: return false
         }
-        guard endKey == other.endKey else { return false }
-        if let meetingURL, meetingURL == other.meetingURL {
-            return true
-        }
-        guard let titleKey, titleKey == other.titleKey else { return false }
-        return !hasConflictingLocation(with: other)
-    }
-
-    /// A shorter address inside a longer one is the same place, so only unrelated locations conflict.
-    private func hasConflictingLocation(with other: DuplicateSignature) -> Bool {
-        guard let locationKey, let otherLocation = other.locationKey else { return false }
-        return !locationKey.contains(otherLocation) && !otherLocation.contains(locationKey)
     }
 
     /// All-day events end at either 23:59:59 or the next midnight depending on the source.
-    private static func endKey(of event: CalendarEvent, calendar: Calendar) -> Int {
-        guard event.isAllDay else { return Int(event.endDate.timeIntervalSinceReferenceDate.rounded(.down)) }
+    private static func end(of event: CalendarEvent, calendar: Calendar) -> Date {
+        guard event.isAllDay else { return event.endDate }
         let lastMoment = event.endDate > event.startDate ? event.endDate.addingTimeInterval(-1) : event.startDate
-        return Int(calendar.startOfDay(for: lastMoment).timeIntervalSinceReferenceDate)
+        return calendar.startOfDay(for: lastMoment)
     }
 }

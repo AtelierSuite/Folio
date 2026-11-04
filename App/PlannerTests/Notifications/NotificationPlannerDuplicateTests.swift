@@ -24,6 +24,29 @@ struct NotificationPlannerDuplicateTests {
         #expect(plan.count == 1)
     }
 
+    @Test func copiesStartingMinutesApartAlertOnceForTheSameLeadTime() {
+        let later = NotificationFixtures.event(
+            "second", start: start.addingTimeInterval(900), title: "Team Sync", calendarIdentifier: "home"
+        )
+        let plan = NotificationFixtures.planner().plan(
+            events: [copy("first", calendarIdentifier: "work"), later],
+            reminders: [], after: now, budget: .max
+        )
+        #expect(plan.count == 1)
+    }
+
+    @Test func differentLeadTimesLandingOnTheSameMomentAlertOnce() {
+        let later = NotificationFixtures.event(
+            "second", start: start.addingTimeInterval(600), alarms: [.relative(offset: -1200)],
+            title: "Team Sync", calendarIdentifier: "home"
+        )
+        let plan = NotificationFixtures.planner().plan(
+            events: [copy("first", calendarIdentifier: "work"), later],
+            reminders: [], after: now, budget: .max
+        )
+        #expect(plan.count == 1)
+    }
+
     @Test func alertsSetOnOnlyOneCopyStillFire() {
         let plan = NotificationFixtures.planner().plan(
             events: [
