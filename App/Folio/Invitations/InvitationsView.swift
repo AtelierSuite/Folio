@@ -39,6 +39,7 @@ struct InvitationsView: View {
                 systemImage: "envelope.open",
                 description: Text(String(localized: "List.Empty.Description", table: "Invitations"))
             )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             List {
                 if !hiddenInvitations.isEmpty {
