@@ -9,6 +9,7 @@ public final class CalendarStore {
     public private(set) var eventCalendars: [PlannerCalendar] = []
     public private(set) var reminderLists: [PlannerCalendar] = []
     public internal(set) var hiddenCalendarIdentifiers: Set<String>
+    public internal(set) var hiddenInvitationIdentifiers: Set<String>
     public internal(set) var hidesDeclinedEvents: Bool
     public internal(set) var contentRevision = 0
     public internal(set) var duplicateExcludedCalendarIdentifiers =
@@ -41,6 +42,7 @@ public final class CalendarStore {
         eventAuthorization = source.authorizationStatus(for: .event)
         reminderAuthorization = source.authorizationStatus(for: .reminder)
         hiddenCalendarIdentifiers = visibilityStorage.hiddenCalendarIdentifiers
+        hiddenInvitationIdentifiers = visibilityStorage.hiddenInvitationIdentifiers
         hidesDeclinedEvents = visibilityStorage.hidesDeclinedEvents
         reloadCalendars()
     }

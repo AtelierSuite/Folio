@@ -22,13 +22,15 @@ extension EventActions {
             break
         case .convertToReminder:
             controller.pendingConversion = event
-        case .edit, .duplicate, .openLinkedNote, .createLinkedNote, .delete:
+        case .hideInvitation, .edit, .duplicate, .openLinkedNote, .createLinkedNote, .delete:
             performChange(item, on: event)
         }
     }
 
     private func performChange(_ item: EventMenuItem, on event: CalendarEvent) {
         switch item {
+        case .hideInvitation:
+            store.setHidden(true, invitation: event)
         case .edit:
             run {
                 let draft = try await store.eventDraft(for: event)

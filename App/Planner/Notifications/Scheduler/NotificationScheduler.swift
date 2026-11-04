@@ -129,11 +129,14 @@ public final class NotificationScheduler {
 
     private func plan(after now: Date, budget: Int) async -> NotificationPlan {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         let events = includesEvents ? await source.events(in: horizon.eventInterval(from: now)) : []
         let reminders = includesReminders
             ? await source.reminders(completedIn: DateInterval(start: now, duration: 0))
             : []
-        let visibleEvents = events.filter { !hiddenCalendars.contains($0.calendarIdentifier) }
+        let visibleEvents = events.filter {
+            !hiddenCalendars.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
+        }
         let images = await eventImages?(visibleEvents.filter { !$0.alarms.isEmpty }) ?? [:]
         return planner.plan(
             events: visibleEvents,

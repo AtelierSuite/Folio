@@ -111,9 +111,12 @@ public final class ArrivalAlertCenter {
     private func candidates(after now: Date) async -> [ArrivalCandidate] {
         let interval = DateInterval(start: now.addingTimeInterval(-planner.window.lag), duration: Self.lookAhead)
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var candidates: [ArrivalCandidate] = []
         let events = await source.events(in: interval).filter {
-            !hiddenCalendars.contains($0.calendarIdentifier) && preferences.isEnabled(for: $0.reference)
+            !hiddenCalendars.contains($0.calendarIdentifier)
+                && !$0.isHiddenInvitation(among: hiddenInvitations)
+                && preferences.isEnabled(for: $0.reference)
         }
         for event in EventDuplicateDetector().groups(in: events).map(\.primary) {
             guard planner.window.interval(for: event).map({ $0.end > now }) == true,

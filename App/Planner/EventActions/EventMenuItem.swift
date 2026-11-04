@@ -6,6 +6,7 @@ public enum EventMenuItem: Sendable, Hashable {
     case startCountdown
     case stopCountdown
     case respond
+    case hideInvitation
     case edit
     case duplicate
     case moveToCalendar([PlannerCalendar])

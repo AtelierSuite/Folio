@@ -18,13 +18,11 @@ struct CalendarMoreMenu: View {
             }
             Section {
                 ReminderInboxButton(isShowingInbox: $isShowingInbox)
-                if pendingInvitationCount > 0 {
-                    Button(String(localized: "Toolbar.Invitations", table: "Invitations"), systemImage: "envelope") {
-                        isShowingInvitations = true
-                    }
-                    .badge(pendingInvitationCount)
-                    .accessibilityIdentifier("InvitationsButton")
+                Button(String(localized: "Toolbar.Invitations", table: "Invitations"), systemImage: "envelope") {
+                    isShowingInvitations = true
                 }
+                .badge(pendingInvitationCount)
+                .accessibilityIdentifier("InvitationsButton")
             }
         }
         .badge(pendingInvitationCount)

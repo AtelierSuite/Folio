@@ -168,6 +168,21 @@ struct NotificationSchedulerTests {
         #expect(!NotificationSettings(defaults: defaults).includesEvents)
     }
 
+    @Test func hiddenInvitationsRaiseNoAlerts() async throws {
+        let defaults = try makeDefaults()
+        let invitation = InvitationFixtures.invitation(
+            local: "resent", start: NotificationFixtures.hours(2),
+            alarms: [.relative(offset: -600)], userStatus: .pending
+        )
+        CalendarVisibilityStorage(defaults: defaults).hiddenInvitationIdentifiers = [invitation.invitationIdentifier]
+        let source = FakeCalendarDataSource(
+            events: [NotificationFixtures.event("visible", start: NotificationFixtures.hours(1)), invitation]
+        )
+        let center = FakeNotificationCenter()
+        await makeScheduler(source: source, center: center, defaults: defaults).replan()
+        #expect(center.pendingNotifications.map(\.content.title) == ["visible"])
+    }
+
     @Test func calendarChangesTriggerAReplan() async throws {
         let source = FakeCalendarDataSource(events: events(2))
         let center = FakeNotificationCenter()

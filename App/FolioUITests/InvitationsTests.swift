@@ -2,12 +2,15 @@ import XCTest
 
 final class InvitationsTests: XCTestCase {
     @MainActor
-    private func launch(mode: String) -> XCUIApplication {
+    private func launch(mode: String, withInvitations: Bool = true) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += [
-            "-Calendar.ViewMode", mode, "-FolioSkipOnboarding", "-SeedSampleCalendarData", "-SampleInvitations",
+            "-Calendar.ViewMode", mode, "-FolioSkipOnboarding", "-SeedSampleCalendarData",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US"
         ]
+        if withInvitations {
+            app.launchArguments.append("-SampleInvitations")
+        }
         app.launch()
         return app
     }
@@ -23,11 +26,7 @@ final class InvitationsTests: XCTestCase {
     @MainActor
     func testInvitationsListOpensDetailWithAttendeesAndRespondSheet() throws {
         let app = launch(mode: "day")
-        let invitationsButton = app.buttons["InvitationsButton"]
-        if !invitationsButton.waitForExistence(timeout: 15) {
-            app.navigationBars.buttons["CalendarMoreMenu"].tap()
-        }
-        app.buttons["Invitations"].firstMatch.tap()
+        openInvitations(in: app)
 
         // "Lunch with Aiko" is a pending invitation too and comes first until it ends, so pick the row by name.
         let row = app.buttons.matching(identifier: "InvitationRow")
@@ -51,6 +50,45 @@ final class InvitationsTests: XCTestCase {
         respond.tap()
         sleep(2)
         capture(app, "RespondSheet")
+    }
+
+    @MainActor
+    func testInvitationCanBeHiddenAndShownAgain() throws {
+        let app = launch(mode: "day")
+        openInvitations(in: app)
+        let row = app.buttons.matching(identifier: "InvitationRow")
+            .matching(NSPredicate(format: "label CONTAINS %@", "Design Review Day")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.swipeLeft()
+        app.buttons["HideInvitationButton"].firstMatch.tap()
+        XCTAssertTrue(row.waitForNonExistence(timeout: 5))
+        capture(app, "InvitationHidden")
+
+        let hiddenLink = app.buttons["HiddenInvitationsLink"]
+        XCTAssertTrue(hiddenLink.waitForExistence(timeout: 5))
+        hiddenLink.tap()
+        let showButton = app.buttons["ShowInvitationButton"].firstMatch
+        XCTAssertTrue(showButton.waitForExistence(timeout: 5))
+        capture(app, "HiddenInvitations")
+        showButton.tap()
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertFalse(hiddenLink.exists)
+    }
+
+    @MainActor
+    func testInvitationsButtonOpensEmptyStateWithoutInvitations() throws {
+        let app = launch(mode: "day", withInvitations: false)
+        openInvitations(in: app)
+        XCTAssertTrue(app.staticTexts["No Invitations"].waitForExistence(timeout: 10))
+        capture(app, "InvitationsEmpty")
+    }
+
+    @MainActor
+    private func openInvitations(in app: XCUIApplication) {
+        if !app.buttons["InvitationsButton"].waitForExistence(timeout: 15) {
+            app.navigationBars.buttons["CalendarMoreMenu"].tap()
+        }
+        app.buttons["Invitations"].firstMatch.tap()
     }
 
     @MainActor
