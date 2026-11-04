@@ -38,8 +38,8 @@ extension ReminderAlarm {
         case .relative(let offset) where offset == 0:
             return String(localized: "Alert.AtDueTime", table: "ReminderEditor")
         case .relative(let offset):
-            let duration = Duration.seconds(abs(offset))
-                .formatted(.units(allowed: [.days, .hours, .minutes], width: .wide))
+            let units: Set<Duration.UnitsFormatStyle.Unit> = spansWholeWeeks ? [.weeks] : [.days, .hours, .minutes]
+            let duration = Duration.seconds(abs(offset)).formatted(.units(allowed: units, width: .wide))
             return offset < 0
                 ? String(localized: "Alert.Before \(duration)", table: "ReminderEditor")
                 : String(localized: "Alert.After \(duration)", table: "ReminderEditor")

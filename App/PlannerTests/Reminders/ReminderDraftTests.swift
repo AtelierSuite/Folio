@@ -86,6 +86,33 @@ struct ReminderDraftTests {
         #expect(ReminderAlarm.absolute(due).fireDate(dueDate: nil) == due)
     }
 
+    @Test func weekPresetFiresAWeekBeforeTheDueDate() {
+        #expect(ReminderAlarm.presetOffsets.contains(ReminderAlarm.weekOffset))
+        let alarm = ReminderAlarm.relative(ReminderAlarm.weekOffset)
+        #expect(alarm.fireDate(dueDate: due) == Fixtures.date(2026, 10, 22, hour: 9))
+    }
+
+    @Test func onlyRelativeAlarmsOfWholeWeeksSpanWeeks() {
+        #expect(ReminderAlarm.relative(ReminderAlarm.weekOffset).spansWholeWeeks)
+        #expect(ReminderAlarm.relative(ReminderAlarm.weekOffset * 2).spansWholeWeeks)
+        #expect(!ReminderAlarm.relative(-86400).spansWholeWeeks)
+        #expect(!ReminderAlarm.relative(0).spansWholeWeeks)
+        #expect(!ReminderAlarm.absolute(due).spansWholeWeeks)
+    }
+
+    @Test func earlyAlarmSurvivesEditingAlongsideTheDueAlarm() {
+        let reminder = ReminderItem(
+            reference: Fixtures.reference(local: "milk"),
+            listIdentifier: "list-1",
+            title: "Milk",
+            dueDate: due,
+            hasDueTime: true,
+            alarms: [.absolute(due), .relative(ReminderAlarm.weekOffset)]
+        )
+        let draft = ReminderDraft(reminder).normalized()
+        #expect(draft.alarms == [.relative(0), .relative(ReminderAlarm.weekOffset)])
+    }
+
     @Test func recurrenceIntervalIsAtLeastOne() {
         #expect(ReminderRecurrence(frequency: .daily, interval: 0).interval == 1)
     }
