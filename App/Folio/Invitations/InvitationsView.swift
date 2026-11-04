@@ -11,9 +11,10 @@ struct InvitationsView: View {
     @State private var invitations: [CalendarEvent]?
     @State private var hasHiddenInvitations = false
     @State private var selectedEvent: CalendarEvent?
+    @State private var path: [InvitationsDestination] = []
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             content
                 .navigationDestination(for: InvitationsDestination.self) { _ in
                     HiddenInvitationsView()
@@ -28,6 +29,14 @@ struct InvitationsView: View {
                     }
                 }
         }
+        #if os(macOS)
+        .overlay(alignment: .topTrailing) {
+            // Toolbar items in a macOS sheet can only sit in its bottom bar.
+            if hasHiddenInvitations, path.isEmpty {
+                hiddenButton
+            }
+        }
+        #endif
         .eventDetailSheet(item: $selectedEvent)
         .task(id: store.contentRevision) {
             hasHiddenInvitations = await !store.hiddenInvitations().isEmpty
@@ -40,7 +49,7 @@ struct InvitationsView: View {
 
     @ViewBuilder
     private var content: some View {
-        if let invitations, invitations.isEmpty, !hasHiddenInvitations {
+        if let invitations, invitations.isEmpty, !showsHiddenRow {
             ContentUnavailableView(
                 String(localized: "List.Empty.Title", table: "Invitations"),
                 systemImage: "envelope.open",
@@ -49,13 +58,10 @@ struct InvitationsView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             List {
-                if hasHiddenInvitations {
+                if showsHiddenRow {
                     Section {
                         NavigationLink(value: InvitationsDestination.hidden) {
-                            Label(
-                                String(localized: "Hidden.Title", table: "Invitations"),
-                                systemImage: "eye.slash"
-                            )
+                            Label(hiddenTitle, systemImage: "eye.slash")
                         }
                         .accessibilityIdentifier("HiddenInvitationsLink")
                     }
@@ -72,6 +78,27 @@ struct InvitationsView: View {
                 }
             }
         }
+    }
+
+    private var showsHiddenRow: Bool {
+        #if os(macOS)
+        false
+        #else
+        hasHiddenInvitations
+        #endif
+    }
+
+    private var hiddenTitle: String {
+        String(localized: "Hidden.Title", table: "Invitations")
+    }
+
+    private var hiddenButton: some View {
+        Button(hiddenTitle, systemImage: "eye.slash") {
+            path.append(.hidden)
+        }
+        .padding(.top, 12)
+        .padding(.trailing, 20)
+        .accessibilityIdentifier("HiddenInvitationsLink")
     }
 
     private func invitationButton(for event: CalendarEvent) -> some View {
