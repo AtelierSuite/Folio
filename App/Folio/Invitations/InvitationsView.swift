@@ -5,6 +5,7 @@ struct InvitationsView: View {
     @Environment(CalendarStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var invitations: [CalendarEvent]?
+    @State private var hiddenInvitations: [CalendarEvent] = []
     @State private var selectedEvent: CalendarEvent?
 
     var body: some View {
@@ -23,6 +24,7 @@ struct InvitationsView: View {
         .eventDetailSheet(item: $selectedEvent)
         .task(id: store.contentRevision) {
             invitations = await store.pendingInvitations()
+            hiddenInvitations = await store.hiddenInvitations()
         }
         #if os(macOS)
         .frame(minWidth: 400, minHeight: 420)
@@ -31,27 +33,25 @@ struct InvitationsView: View {
 
     @ViewBuilder
     private var content: some View {
-        if let invitations, invitations.isEmpty {
+        if let invitations, invitations.isEmpty, hiddenInvitations.isEmpty {
             ContentUnavailableView(
                 String(localized: "List.Empty.Title", table: "Invitations"),
                 systemImage: "envelope.open",
                 description: Text(String(localized: "List.Empty.Description", table: "Invitations"))
             )
         } else {
-            List(invitations ?? []) { event in
-                Button {
-                    selectedEvent = event
-                } label: {
-                    InvitationRow(event: event)
-                        .contentShape(Rectangle())
+            List {
+                if !hiddenInvitations.isEmpty {
+                    Section(String(localized: "Hidden.Header", table: "Invitations")) {
+                        ForEach(hiddenInvitations) { event in
+                            HiddenInvitationRow(event: event)
+                        }
+                    }
                 }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("InvitationRow")
-                .swipeActions(edge: .trailing) {
-                    hideButton(for: event)
-                }
-                .contextMenu {
-                    hideButton(for: event)
+                Section {
+                    ForEach(invitations ?? []) { event in
+                        invitationButton(for: event)
+                    }
                 }
             }
             .overlay {
@@ -59,6 +59,23 @@ struct InvitationsView: View {
                     ProgressView()
                 }
             }
+        }
+    }
+
+    private func invitationButton(for event: CalendarEvent) -> some View {
+        Button {
+            selectedEvent = event
+        } label: {
+            InvitationRow(event: event)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("InvitationRow")
+        .swipeActions(edge: .trailing) {
+            hideButton(for: event)
+        }
+        .contextMenu {
+            hideButton(for: event)
         }
     }
 

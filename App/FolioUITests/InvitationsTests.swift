@@ -60,20 +60,13 @@ final class InvitationsTests: XCTestCase {
         app.buttons["HideInvitationButton"].firstMatch.tap()
         XCTAssertTrue(row.waitForNonExistence(timeout: 5))
         capture(app, "InvitationHidden")
-        app.buttons["Done"].firstMatch.tap()
 
-        app.buttons["Settings"].tap()
-        app.openSettingsCategory("calendars")
-        let hiddenRow = app.buttons.matching(identifier: "HiddenInvitationsRow").firstMatch
-        for _ in 0..<6 where !hiddenRow.isHittable {
-            app.swipeUp()
-        }
-        hiddenRow.tap()
         let showButton = app.buttons["ShowInvitationButton"].firstMatch
         XCTAssertTrue(showButton.waitForExistence(timeout: 5))
-        capture(app, "HiddenInvitations")
+        XCTAssertTrue(app.staticTexts["Hidden"].exists || app.staticTexts["HIDDEN"].exists)
         showButton.tap()
-        XCTAssertTrue(app.staticTexts["No Hidden Invitations"].waitForExistence(timeout: 5))
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertFalse(showButton.exists)
     }
 
     @MainActor
