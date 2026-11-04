@@ -8,22 +8,26 @@ public final class EventCountdownManager {
     public private(set) var running: [RunningCountdown] = []
     @ObservationIgnored let controller: any CountdownActivityControlling
     @ObservationIgnored let source: any CountdownEventSource
-    @ObservationIgnored let reconciler: CountdownReconciler
+    @ObservationIgnored let settings: CountdownSettings
     @ObservationIgnored private var finishTask: Task<Void, Never>?
 
     public init(
         source: any CountdownEventSource,
         controller: (any CountdownActivityControlling)? = nil,
-        window: CountdownWindow = CountdownWindow()
+        settings: CountdownSettings = CountdownSettings()
     ) {
         self.source = source
         self.controller = controller ?? Self.platformController()
-        reconciler = CountdownReconciler(window: window)
+        self.settings = settings
         running = self.controller.runningCountdowns
     }
 
     public var window: CountdownWindow {
-        reconciler.window
+        CountdownWindow(phases: settings.phases)
+    }
+
+    var reconciler: CountdownReconciler {
+        CountdownReconciler(window: window)
     }
 
     public func availability(for event: CalendarEvent, at now: Date = .now) -> CountdownAvailability {

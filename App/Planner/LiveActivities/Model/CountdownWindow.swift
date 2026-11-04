@@ -6,9 +6,11 @@ public struct CountdownWindow: Sendable {
     public static let defaultLength: TimeInterval = 8 * 60 * 60
 
     public let length: TimeInterval
+    public let phases: CountdownPhases
 
-    public init(length: TimeInterval = CountdownWindow.defaultLength) {
+    public init(length: TimeInterval = CountdownWindow.defaultLength, phases: CountdownPhases = CountdownPhases()) {
         self.length = length
+        self.phases = phases
     }
 
     public func availability(for event: CalendarEvent, at now: Date) -> CountdownAvailability {
@@ -16,7 +18,7 @@ public struct CountdownWindow: Sendable {
             return .available(state)
         }
         let opensAt = opensAt(for: event)
-        if !event.isAllDay && now < opensAt {
+        if canCountDown(to: event) && now < opensAt {
             return .notYet(availableFrom: opensAt)
         }
         return .unavailable
@@ -31,18 +33,26 @@ public struct CountdownWindow: Sendable {
         guard !event.isAllDay, now < max(event.startDate, event.endDate), startedAt >= opensAt(for: event) else {
             return nil
         }
-        let countsToEnd = event.endDate > event.startDate && event.endDate <= startedAt.addingTimeInterval(length)
-        guard now < event.startDate || countsToEnd else { return nil }
+        let countsToEnd = phases.countsToEnd
+            && event.endDate > event.startDate
+            && event.endDate <= startedAt.addingTimeInterval(length)
+        guard (phases.countsToStart && now < event.startDate) || countsToEnd else { return nil }
         return EventCountdownAttributes.ContentState(
             title: event.title,
             location: event.location,
             color: event.color,
             startDate: event.startDate,
-            endDate: countsToEnd ? event.endDate : nil
+            endDate: countsToEnd ? event.endDate : nil,
+            countsToStart: phases.countsToStart
         )
     }
 
+    private func canCountDown(to event: CalendarEvent) -> Bool {
+        guard !event.isAllDay else { return false }
+        return phases.countsToStart || (phases.countsToEnd && event.endDate > event.startDate)
+    }
+
     private func opensAt(for event: CalendarEvent) -> Date {
-        event.startDate.addingTimeInterval(-length)
+        (phases.countsToStart ? event.startDate : event.endDate).addingTimeInterval(-length)
     }
 }

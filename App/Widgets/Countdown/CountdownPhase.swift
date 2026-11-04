@@ -10,10 +10,11 @@ enum CountdownPhase {
 
     init(state: EventCountdownAttributes.ContentState, startedAt: Date, isStale: Bool) {
         let now = Date.now
-        if !isStale && now < state.startDate {
+        if state.countsToStart && !isStale && now < state.startDate {
             self = .untilStart(min(startedAt, state.startDate)...state.startDate)
         } else if let endDate = state.endDate, now < endDate {
-            self = .untilEnd(state.startDate...endDate)
+            let countedFrom = state.countsToStart ? state.startDate : min(startedAt, state.startDate)
+            self = .untilEnd(countedFrom...endDate)
         } else {
             self = .started
         }

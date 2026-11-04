@@ -64,6 +64,45 @@ struct CountdownWindowTests {
         #expect(window.state(for: moved, startedAt: hoursBeforeStart(6), now: hoursBeforeStart(5)) == nil)
     }
 
+    @Test func withoutTimeToEndTheCountdownFinishesAtTheStart() {
+        let window = CountdownWindow(phases: CountdownPhases(countsToEnd: false))
+        let event = Fixtures.countdownEvent(local: "dinner", start: start, hours: 2)
+        let state = window.availability(for: event, at: hoursBeforeStart(1)).state
+        #expect(state?.endDate == nil)
+        #expect(state?.countsToStart == true)
+        #expect(window.availability(for: event, at: start.addingTimeInterval(60)) == .unavailable)
+    }
+
+    @Test func withoutTimeToStartTheCountdownShowsTheEndStraightAway() {
+        let window = CountdownWindow(phases: CountdownPhases(countsToStart: false))
+        let event = Fixtures.countdownEvent(local: "dinner", start: start, hours: 2)
+        let state = window.availability(for: event, at: hoursBeforeStart(1)).state
+        #expect(state?.endDate == event.endDate)
+        #expect(state?.countsToStart == false)
+    }
+
+    @Test func withoutTimeToStartTheWindowOpensEightHoursBeforeTheEnd() {
+        let window = CountdownWindow(phases: CountdownPhases(countsToStart: false))
+        let event = Fixtures.countdownEvent(local: "dinner", start: start, hours: 2)
+        let opensAt = hoursBeforeStart(6)
+        #expect(window.availability(for: event, at: hoursBeforeStart(7)) == .notYet(availableFrom: opensAt))
+        #expect(window.availability(for: event, at: hoursBeforeStart(6)).state != nil)
+    }
+
+    @Test func withoutTimeToStartAZeroLengthEventIsUnavailable() {
+        let window = CountdownWindow(phases: CountdownPhases(countsToStart: false))
+        let event = Fixtures.countdownEvent(local: "deadline", start: start, hours: 0)
+        #expect(window.availability(for: event, at: hoursBeforeStart(9)) == .unavailable)
+        #expect(window.availability(for: event, at: hoursBeforeStart(1)) == .unavailable)
+    }
+
+    @Test func withBothPhasesOffNothingIsAvailable() {
+        let window = CountdownWindow(phases: CountdownPhases(countsToStart: false, countsToEnd: false))
+        let event = Fixtures.countdownEvent(local: "dinner", start: start)
+        #expect(window.availability(for: event, at: hoursBeforeStart(9)) == .unavailable)
+        #expect(window.availability(for: event, at: hoursBeforeStart(1)) == .unavailable)
+    }
+
     @Test func nextEventSkipsStartedAndFarEvents() {
         let now = hoursBeforeStart(2)
         let events = [

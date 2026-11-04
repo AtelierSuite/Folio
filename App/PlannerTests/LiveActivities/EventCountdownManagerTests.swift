@@ -9,9 +9,12 @@ struct EventCountdownManagerTests {
     /// Far enough ahead that the manager's real-clock finish timer never fires mid-test.
     private let start = Fixtures.date(2036, 10, 29, hour: 18)
     private var now: Date { start.addingTimeInterval(-3600) }
+    private let settings = CountdownSettings(
+        defaults: UserDefaults(suiteName: "EventCountdownManagerTests.\(UUID().uuidString)")!
+    )
 
     private func makeManager() -> EventCountdownManager {
-        EventCountdownManager(source: source, controller: controller)
+        EventCountdownManager(source: source, controller: controller, settings: settings)
     }
 
     @Test func startsOneCountdownPerEvent() throws {
@@ -49,6 +52,20 @@ struct EventCountdownManagerTests {
         await manager.dismiss(countdown)
         #expect(!manager.isCountingDown(dinner))
         #expect(manager.isCountingDown(lunch))
+    }
+
+    @Test func reconcileAppliesAChangedPhaseToRunningCountdowns() async throws {
+        let manager = makeManager()
+        let event = Fixtures.countdownEvent(local: "dinner", start: start)
+        try manager.start(event, at: now)
+        source.events = [event]
+        settings.phases = CountdownPhases(countsToEnd: false)
+        await manager.reconcile(at: now)
+        #expect(manager.running.map(\.state.endDate) == [nil])
+        settings.phases = CountdownPhases(countsToStart: false)
+        await manager.reconcile(at: now)
+        #expect(manager.running.map(\.state.countsToStart) == [false])
+        #expect(manager.running.map(\.state.endDate) == [event.endDate])
     }
 
     @Test func reconcileFollowsAMoveAndEndsADelete() async throws {
