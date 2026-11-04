@@ -20,7 +20,12 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
         let calendar = Calendar.current
         let request = configuration.snapshotRequest(at: now, calendar: calendar)
         let snapshot = await loader.load(request, at: now)
-        let plan = WidgetTimelinePlan(events: snapshot.events, from: now, calendar: calendar)
+        let plan = WidgetTimelinePlan(
+            events: snapshot.events,
+            from: now,
+            calendar: calendar,
+            tickInterval: configuration.timelineTickInterval
+        )
         let entries = plan.entryDates.map { FolioWidgetEntry(date: $0, snapshot: snapshot) }
         return Timeline(entries: entries, policy: .after(plan.reloadDate))
     }
