@@ -23,8 +23,8 @@ struct InvitationsView: View {
         }
         .eventDetailSheet(item: $selectedEvent)
         .task(id: store.contentRevision) {
-            invitations = await store.pendingInvitations()
             hiddenInvitations = await store.hiddenInvitations()
+            invitations = await store.pendingInvitations()
         }
         #if os(macOS)
         .frame(minWidth: 400, minHeight: 420)

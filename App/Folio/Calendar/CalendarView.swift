@@ -9,7 +9,7 @@ struct CalendarView: View {
     @State var composer: CalendarComposer?
     @State var itemRequest: CalendarItemRequest?
     @State var isShowingInbox = false
-    @State private var invitationCounts = InvitationCounts()
+    @State private var pendingInvitationCount = 0
 
     var body: some View {
         NavigationStack {
@@ -27,7 +27,7 @@ struct CalendarView: View {
                         composer: $composer,
                         isShowingInbox: $isShowingInbox,
                         navigation: navigation,
-                        invitationCounts: invitationCounts
+                        pendingInvitationCount: pendingInvitationCount
                     )
                 }
                 .sheet(item: $composer) { composer in
@@ -48,7 +48,7 @@ struct CalendarView: View {
         .providesAlternateCalendar()
         .providesDayHighlights()
         .environment(navigation)
-        .loadsInvitationCounts(into: $invitationCounts, from: store)
+        .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
         .onChange(of: systemTime.calendar, initial: true) {
             navigation.adopt(systemTime.calendar)

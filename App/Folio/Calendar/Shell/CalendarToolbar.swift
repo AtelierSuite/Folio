@@ -6,7 +6,7 @@ struct CalendarToolbar: ToolbarContent {
     @Binding var composer: CalendarComposer?
     @Binding var isShowingInbox: Bool
     let navigation: CalendarNavigation
-    var invitationCounts = InvitationCounts()
+    var pendingInvitationCount = 0
     @Environment(\.platformCapabilities) private var capabilities
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -46,7 +46,7 @@ struct CalendarToolbar: ToolbarContent {
     private var compactActions: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
             CalendarMoreMenu(
-                mode: $mode, isShowingInbox: $isShowingInbox, invitationCounts: invitationCounts
+                mode: $mode, isShowingInbox: $isShowingInbox, pendingInvitationCount: pendingInvitationCount
             )
         }
         ToolbarSpacer(.fixed, placement: .primaryAction)
@@ -66,8 +66,6 @@ struct CalendarToolbar: ToolbarContent {
                     .pickerStyle(.menu)
             }
         }
-        if invitationCounts.hasPendingInvitations {
-            InvitationsToolbarItem(pendingCount: invitationCounts.pending)
-        }
+        InvitationsToolbarItem(pendingCount: pendingInvitationCount)
     }
 }

@@ -2,12 +2,15 @@ import XCTest
 
 final class InvitationsTests: XCTestCase {
     @MainActor
-    private func launch(mode: String) -> XCUIApplication {
+    private func launch(mode: String, withInvitations: Bool = true) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += [
-            "-Calendar.ViewMode", mode, "-FolioSkipOnboarding", "-SeedSampleCalendarData", "-SampleInvitations",
+            "-Calendar.ViewMode", mode, "-FolioSkipOnboarding", "-SeedSampleCalendarData",
             "-AppleLanguages", "(en)", "-AppleLocale", "en_US"
         ]
+        if withInvitations {
+            app.launchArguments.append("-SampleInvitations")
+        }
         app.launch()
         return app
     }
@@ -67,6 +70,14 @@ final class InvitationsTests: XCTestCase {
         showButton.tap()
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertFalse(showButton.exists)
+    }
+
+    @MainActor
+    func testInvitationsButtonOpensEmptyStateWithoutInvitations() throws {
+        let app = launch(mode: "day", withInvitations: false)
+        openInvitations(in: app)
+        XCTAssertTrue(app.staticTexts["No Invitations"].waitForExistence(timeout: 10))
+        capture(app, "InvitationsEmpty")
     }
 
     @MainActor
