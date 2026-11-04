@@ -16,7 +16,8 @@ extension CalendarStore {
         let events = await upcomingEvents(from: start)
         return InvitationCounts(
             pending: visiblePendingInvitations(in: events).count,
-            hidden: events.hiddenInvitations(among: hiddenInvitationIdentifiers).count
+            hiddenPending: events.filter(\.isPendingInvitation)
+                .hiddenInvitations(among: hiddenInvitationIdentifiers).count
         )
     }
 

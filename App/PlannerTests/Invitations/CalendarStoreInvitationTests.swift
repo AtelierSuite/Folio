@@ -63,7 +63,7 @@ struct CalendarStoreInvitationTests {
         #expect(await store.pendingInvitations(from: start).map(\.title) == ["hidden"])
         #expect(await store.events(in: today).map(\.title) == ["declined", "hidden"])
         #expect(await store.hiddenInvitations(from: start).map(\.title) == ["pending"])
-        #expect(await store.invitationCounts(from: start) == InvitationCounts(pending: 1, hidden: 1))
+        #expect(await store.invitationCounts(from: start) == InvitationCounts(pending: 1, hiddenPending: 1))
 
         let relaunched = makeStore(source: source, defaults: defaults)
         #expect(await relaunched.pendingInvitations(from: start).map(\.title) == ["hidden"])
@@ -80,9 +80,20 @@ struct CalendarStoreInvitationTests {
             store.setHidden(true, invitation: invitation)
         }
         let counts = await store.invitationCounts(from: start)
-        #expect(counts == InvitationCounts(pending: 0, hidden: 2))
-        #expect(counts.hasInvitations)
-        #expect(!InvitationCounts().hasInvitations)
+        #expect(counts == InvitationCounts(pending: 0, hiddenPending: 2))
+        #expect(counts.hasPendingInvitations)
+        #expect(!InvitationCounts().hasPendingInvitations)
+    }
+
+    @Test func hiddenDeclinedInvitationsDoNotCountAsPending() async throws {
+        let start = Fixtures.date(2026, 10, 29, hour: 9)
+        let declined = InvitationFixtures.invitation(local: "declined", start: start, userStatus: .declined)
+        let source = FakeCalendarDataSource(events: [declined], calendars: [Fixtures.plannerCalendar("calendar-1")])
+        let store = makeStore(source: source, defaults: try makeDefaults())
+        store.setHidden(true, invitation: declined)
+
+        #expect(await !store.invitationCounts(from: start).hasPendingInvitations)
+        #expect(await store.hiddenInvitations(from: start).map(\.title) == ["declined"])
     }
 
     @Test func hiddenInvitationStaysHiddenWhenItResurfaces() async throws {

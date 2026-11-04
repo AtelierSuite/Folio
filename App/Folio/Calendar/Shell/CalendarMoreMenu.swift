@@ -19,7 +19,7 @@ struct CalendarMoreMenu: View {
             }
             Section {
                 ReminderInboxButton(isShowingInbox: $isShowingInbox)
-                if invitationCounts.hasInvitations {
+                if invitationCounts.hasPendingInvitations {
                     Button(String(localized: "Toolbar.Invitations", table: "Invitations"), systemImage: "envelope") {
                         isShowingInvitations = true
                     }

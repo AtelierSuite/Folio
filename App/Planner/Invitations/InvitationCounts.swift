@@ -2,14 +2,14 @@ import Foundation
 
 public struct InvitationCounts: Sendable, Equatable {
     public var pending: Int
-    public var hidden: Int
+    public var hiddenPending: Int
 
-    public init(pending: Int = 0, hidden: Int = 0) {
+    public init(pending: Int = 0, hiddenPending: Int = 0) {
         self.pending = pending
-        self.hidden = hidden
+        self.hiddenPending = hiddenPending
     }
 
-    public var hasInvitations: Bool {
-        pending > 0 || hidden > 0
+    public var hasPendingInvitations: Bool {
+        pending > 0 || hiddenPending > 0
     }
 }

@@ -66,7 +66,7 @@ struct CalendarToolbar: ToolbarContent {
                     .pickerStyle(.menu)
             }
         }
-        if invitationCounts.hasInvitations {
+        if invitationCounts.hasPendingInvitations {
             InvitationsToolbarItem(pendingCount: invitationCounts.pending)
         }
     }
