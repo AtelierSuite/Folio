@@ -10,6 +10,8 @@ struct DuplicateCountBadge: View {
     var body: some View {
         if count > 1 {
             Text(count, format: .number)
+                .fontWeight(.bold)
+                .textScale(.secondary)
                 .monospacedDigit()
                 .lineLimit(1)
                 .padding(.horizontal, 4)
