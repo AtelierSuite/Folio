@@ -39,6 +39,18 @@ struct EventCountdownManagerTests {
         #expect(!manager.isCountingDown(event))
     }
 
+    @Test func dismissEndsOnlyThatCountdown() async throws {
+        let manager = makeManager()
+        let dinner = Fixtures.countdownEvent(local: "dinner", start: start)
+        let lunch = Fixtures.countdownEvent(local: "lunch", start: start)
+        try manager.start(dinner, at: now)
+        try manager.start(lunch, at: now)
+        let countdown = try #require(manager.running.first { $0.belongs(to: dinner) })
+        await manager.dismiss(countdown)
+        #expect(!manager.isCountingDown(dinner))
+        #expect(manager.isCountingDown(lunch))
+    }
+
     @Test func reconcileFollowsAMoveAndEndsADelete() async throws {
         let manager = makeManager()
         let dinner = Fixtures.countdownEvent(local: "dinner", start: start)

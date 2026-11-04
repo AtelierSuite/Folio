@@ -51,6 +51,11 @@ public final class EventCountdownManager {
         refresh()
     }
 
+    public func dismiss(_ countdown: RunningCountdown) async {
+        await controller.end(id: countdown.id)
+        refresh()
+    }
+
     func refresh() {
         running = controller.runningCountdowns
         scheduleFinish()
