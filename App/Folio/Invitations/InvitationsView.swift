@@ -11,10 +11,9 @@ struct InvitationsView: View {
     @State private var invitations: [CalendarEvent]?
     @State private var hasHiddenInvitations = false
     @State private var selectedEvent: CalendarEvent?
-    @State private var path: [InvitationsDestination] = []
 
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack {
             content
                 .navigationDestination(for: InvitationsDestination.self) { _ in
                     HiddenInvitationsView()
@@ -27,16 +26,15 @@ struct InvitationsView: View {
                     ToolbarItem(placement: .cancellationAction) {
                         Button(role: .confirm) { dismiss() }
                     }
+                    #if os(macOS)
+                    if hasHiddenInvitations {
+                        ToolbarItem(placement: .automatic) {
+                            hiddenLink
+                        }
+                    }
+                    #endif
                 }
         }
-        #if os(macOS)
-        .overlay(alignment: .topTrailing) {
-            // Toolbar items in a macOS sheet can only sit in its bottom bar.
-            if hasHiddenInvitations, path.isEmpty {
-                hiddenButton
-            }
-        }
-        #endif
         .eventDetailSheet(item: $selectedEvent)
         .task(id: store.contentRevision) {
             hasHiddenInvitations = await !store.hiddenInvitations().isEmpty
@@ -60,10 +58,7 @@ struct InvitationsView: View {
             List {
                 if showsHiddenRow {
                     Section {
-                        NavigationLink(value: InvitationsDestination.hidden) {
-                            Label(hiddenTitle, systemImage: "eye.slash")
-                        }
-                        .accessibilityIdentifier("HiddenInvitationsLink")
+                        hiddenLink
                     }
                 }
                 Section {
@@ -88,16 +83,10 @@ struct InvitationsView: View {
         #endif
     }
 
-    private var hiddenTitle: String {
-        String(localized: "Hidden.Title", table: "Invitations")
-    }
-
-    private var hiddenButton: some View {
-        Button(hiddenTitle, systemImage: "eye.slash") {
-            path.append(.hidden)
+    private var hiddenLink: some View {
+        NavigationLink(value: InvitationsDestination.hidden) {
+            Label(String(localized: "Hidden.Title", table: "Invitations"), systemImage: "eye.slash")
         }
-        .padding(.top, 12)
-        .padding(.trailing, 20)
         .accessibilityIdentifier("HiddenInvitationsLink")
     }
 
