@@ -5,8 +5,16 @@ struct HourlyHourColumns: View {
     let hours: [Date]
     let hiddenCount: Int
 
+    private var hasNarrowColumns: Bool {
+        hours.count > HourlySchedule.defaultHourCount
+    }
+
     private var amPMStyle: Date.FormatStyle.Symbol.Hour.AMPMStyle {
-        hours.count > HourlySchedule.defaultHourCount ? .narrow : .abbreviated
+        hasNarrowColumns ? .narrow : .abbreviated
+    }
+
+    private func yieldsLabelToHiddenCount(_ hour: Date) -> Bool {
+        hasNarrowColumns && hiddenCount > 0 && hour == hours.last
     }
 
     var body: some View {
@@ -18,6 +26,7 @@ struct HourlyHourColumns: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .padding(.leading, 3)
+                        .opacity(yieldsLabelToHiddenCount(hour) ? 0 : 1)
                     Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
