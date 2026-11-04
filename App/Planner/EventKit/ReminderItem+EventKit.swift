@@ -18,7 +18,8 @@ extension ReminderItem {
             isReadOnly: !(reminder.calendar?.allowsContentModifications ?? false),
             url: reminder.url,
             alarms: (reminder.alarms ?? []).compactMap(ReminderAlarm.init),
-            recurrence: reminder.recurrenceRules?.first.map(ReminderRecurrence.init)
+            recurrence: reminder.recurrenceRules?.first.map(ReminderRecurrence.init),
+            origin: CalendarOrigin(reminder.calendar)
         )
     }
 }

@@ -10,7 +10,8 @@ extension NotificationContentFormatter {
             body: [leave, travel, details.body].filter { !$0.isEmpty }.joined(separator: Self.separator),
             status: [leave, travel].joined(separator: Self.separator),
             time: details.time,
-            color: details.color
+            color: details.color,
+            origin: details.origin
         )
     }
 

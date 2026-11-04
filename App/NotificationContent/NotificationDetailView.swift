@@ -5,29 +5,45 @@ struct NotificationDetailView: View {
     let detail: NotificationDetail
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            RoundedRectangle(cornerRadius: 2)
-                .fill(accentColor)
-                .frame(width: 4)
-            VStack(alignment: .leading, spacing: 6) {
-                Text(detail.title)
-                    .font(.headline)
-                    .lineLimit(3)
-                    .accessibilityIdentifier("NotificationDetail.Title")
-                if let status = detail.status {
-                    Text(status)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(accentColor)
-                        .accessibilityIdentifier("NotificationDetail.Status")
+        VStack(spacing: 12) {
+            if detail.origin != nil || detail.hasStatus {
+                // The schedule's date is rounded down to the minute, so it only triggers the refresh.
+                TimelineView(.everyMinute) { _ in
+                    NotificationDetailHeaderView(
+                        origin: detail.origin,
+                        status: detail.status(at: .now),
+                        accentColor: accentColor,
+                        statusColor: detail.isOverdue(at: .now) ? .red : accentColor
+                    )
                 }
-                ForEach(detail.rows) { row in
-                    NotificationDetailRowView(row: row)
-                }
+                Divider()
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            if let reminder = detail.reminder {
+                NotificationReminderTaskView(title: detail.title, reminder: reminder, accentColor: accentColor)
+                NotificationDetailFooterView(leading: detail.row(.time), trailing: detail.row(.repeating))
+            } else {
+                eventSummary
+                NotificationDetailFooterView(leading: detail.row(.place), trailing: detail.row(.meeting))
+            }
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding(16)
+    }
+
+    private var eventSummary: some View {
+        VStack(spacing: 6) {
+            Text(detail.title)
+                .font(.title3.bold())
+                .lineLimit(3)
+                .accessibilityIdentifier("NotificationDetail.Title")
+            if let time = detail.row(.time) {
+                Text(time.text)
+                    .font(.subheadline)
+                    .accessibilityIdentifier("NotificationDetail.Time")
+            }
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
     }
 
     private var accentColor: Color {

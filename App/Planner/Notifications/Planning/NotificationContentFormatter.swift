@@ -23,8 +23,10 @@ public struct NotificationContentFormatter: Sendable {
             title: event.title,
             body: joined([time, location]),
             alarmTitle: joined([event.title, startTime]),
-            time: time,
-            color: event.color
+            time: detailedTime(for: event, firingAt: fireDate) ?? time,
+            color: event.color,
+            origin: event.origin,
+            startDate: event.isAllDay ? nil : event.startDate
         )
     }
 
@@ -36,7 +38,9 @@ public struct NotificationContentFormatter: Sendable {
             body: time ?? "",
             alarmTitle: joined([reminder.title, dueTime]),
             time: time,
-            color: reminder.color
+            color: reminder.color,
+            origin: reminder.origin,
+            reminder: reminderDetails(for: reminder)
         )
     }
 

@@ -38,7 +38,8 @@ public struct PendingEventEdit: Sendable, Hashable {
             isRecurring: event.isRecurring,
             hasAttendees: event.hasAttendees,
             isReadOnly: event.isReadOnly,
-            alarms: event.alarms
+            alarms: event.alarms,
+            origin: draft.calendarIdentifier == event.calendarIdentifier ? event.origin : nil
         )
     }
 

@@ -16,6 +16,7 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
     public let url: URL?
     public let alarms: [ReminderAlarm]
     public let recurrence: ReminderRecurrence?
+    public let origin: CalendarOrigin?
     /// Set on overdue reminders shown on a later day instead of their due date.
     public internal(set) var carriedForwardDate: Date?
 
@@ -34,7 +35,8 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
         isReadOnly: Bool = false,
         url: URL? = nil,
         alarms: [ReminderAlarm] = [],
-        recurrence: ReminderRecurrence? = nil
+        recurrence: ReminderRecurrence? = nil,
+        origin: CalendarOrigin? = nil
     ) {
         self.reference = reference
         self.listIdentifier = listIdentifier
@@ -51,6 +53,7 @@ public struct ReminderItem: Identifiable, Sendable, Hashable {
         self.url = url
         self.alarms = alarms
         self.recurrence = recurrence
+        self.origin = origin
     }
 
     public var id: String {

@@ -27,7 +27,8 @@ extension CalendarEvent {
             alarms: CalendarAlarm.alarms(of: event),
             organizer: organizer,
             attendees: attendees,
-            userStatus: .currentUserStatus(organizer: organizer, attendees: attendees)
+            userStatus: .currentUserStatus(organizer: organizer, attendees: attendees),
+            origin: CalendarOrigin(event.calendar)
         )
     }
 }

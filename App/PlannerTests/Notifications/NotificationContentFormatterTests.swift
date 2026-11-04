@@ -33,6 +33,42 @@ struct NotificationContentFormatterTests {
         #expect(dayBefore.hasSuffix(" · \(NotificationContentFormatter.allDayText)"))
     }
 
+    @Test func expandedTimeSpellsOutTheDuration() throws {
+        let event = NotificationFixtures.event("Review", start: start, hours: 1.5)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time == "9:00 ~ 10:30 (1 hour 30 minutes)")
+    }
+
+    @Test func expandedTimeLeavesOutEmptyUnits() throws {
+        let event = NotificationFixtures.event("Workshop", start: start, hours: 2)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time.hasSuffix("(2 hours)"))
+    }
+
+    @Test func expandedTimeDatesAnEndOnAnotherDay() throws {
+        let event = NotificationFixtures.event("Flight", start: start, hours: 20)
+        let time = try #require(formatter.content(for: event, firingAt: start).time)
+        #expect(time == "9:00 ~ 30 Oct 5:00 (20 hours)")
+    }
+
+    @Test func expandedTimeCountsTheDaysOfAMultiDayEvent() throws {
+        let day = Fixtures.date(2026, 10, 29)
+        let event = NotificationFixtures.event("Trip", start: day, hours: 72, isAllDay: true)
+        let time = try #require(formatter.content(for: event, firingAt: day).time)
+        #expect(time == "29 Oct ~ 31 Oct (3 days)")
+    }
+
+    @Test func singleAllDayEventHasNoDuration() {
+        let day = Fixtures.date(2026, 10, 29)
+        let event = NotificationFixtures.event("Holiday", start: day, hours: 24, isAllDay: true)
+        #expect(formatter.content(for: event, firingAt: day).time == NotificationContentFormatter.allDayText)
+    }
+
+    @Test func collapsedBodyKeepsItsShortTime() {
+        let event = NotificationFixtures.event("Review", start: start, hours: 1.5)
+        #expect(!formatter.content(for: event, firingAt: start).body.contains("minutes"))
+    }
+
     @Test func alarmTitleAddsTheStartTime() {
         let event = NotificationFixtures.event("Standup", start: start, location: "Room 4")
         #expect(formatter.content(for: event, firingAt: start).alarmTitle == "Standup · 9:00")
@@ -56,5 +92,48 @@ struct NotificationContentFormatterTests {
         #expect(formatter.content(for: undated, firingAt: start).body.isEmpty)
         let dateOnly = NotificationFixtures.reminder("Invoice", due: Fixtures.date(2026, 10, 30), hasDueTime: false)
         #expect(formatter.content(for: dateOnly, firingAt: start).body.contains("30"))
+    }
+}
+
+extension NotificationContentFormatterTests {
+    private func reminder(
+        priority: Int = 0,
+        notes: String? = nil,
+        recurrence: ReminderRecurrence? = nil
+    ) -> ReminderItem {
+        let base = NotificationFixtures.reminder("task", due: start)
+        return ReminderItem(
+            reference: base.reference,
+            listIdentifier: base.listIdentifier,
+            title: base.title,
+            notes: notes,
+            dueDate: start,
+            hasDueTime: true,
+            priority: priority,
+            isRecurring: recurrence != nil,
+            recurrence: recurrence
+        )
+    }
+
+    private func details(_ item: ReminderItem) -> NotificationReminderDetails? {
+        NotificationFixtures.formatter.content(for: item, firingAt: start).reminder
+    }
+
+    @Test func priorityBecomesMarks() {
+        #expect(details(reminder(priority: 1))?.priorityMarks == "!!!")
+        #expect(details(reminder(priority: 5))?.priorityMarks == "!!")
+        #expect(details(reminder(priority: 9))?.priorityMarks == "!")
+        #expect(details(reminder())?.priorityMarks == nil)
+    }
+
+    @Test func notesAreTrimmedAndCapped() {
+        #expect(details(reminder(notes: "  Blue form \n"))?.notes == "Blue form")
+        #expect(details(reminder(notes: "   "))?.notes == nil)
+        #expect(details(reminder(notes: String(repeating: "a", count: 500)))?.notes?.count == 200)
+    }
+
+    @Test func repeatTextOnlyAppearsOnRepeatingReminders() {
+        #expect(details(reminder())?.repeatText == nil)
+        #expect(details(reminder(recurrence: ReminderRecurrence(frequency: .monthly)))?.repeatText != nil)
     }
 }
