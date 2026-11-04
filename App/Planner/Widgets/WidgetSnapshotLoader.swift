@@ -21,6 +21,7 @@ public struct WidgetSnapshotLoader: Sendable {
         calendar: Calendar = .current
     ) async -> WidgetSnapshot {
         let hidden = visibilityStorage.hiddenCalendarIdentifiers
+        let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         let calendarFilter = WidgetCalendarFilter(selectedIdentifiers: request.calendars, hiddenIdentifiers: hidden)
         let listFilter = WidgetCalendarFilter(selectedIdentifiers: request.lists, hiddenIdentifiers: hidden)
         var events: [CalendarEvent] = []
@@ -33,7 +34,9 @@ public struct WidgetSnapshotLoader: Sendable {
         return WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
             reminderAuthorization: source.authorizationStatus(for: .reminder),
-            events: events.filter { calendarFilter.includes($0.calendarIdentifier) },
+            events: events.filter {
+                calendarFilter.includes($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
+            },
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:]
         )

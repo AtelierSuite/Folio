@@ -20,6 +20,7 @@ enum InvitationFixtures {
         external: String? = nil,
         calendarIdentifier: String = "calendar-1",
         start: Date,
+        alarms: [CalendarAlarm] = [],
         userStatus: ParticipantStatus?
     ) -> CalendarEvent {
         let organizer = participant("Organizer", status: .accepted)
@@ -38,6 +39,7 @@ enum InvitationFixtures {
             endDate: start.addingTimeInterval(3600),
             hasAttendees: true,
             isReadOnly: userStatus != nil,
+            alarms: alarms,
             organizer: organizer,
             attendees: attendees,
             userStatus: userStatus
