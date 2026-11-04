@@ -51,10 +51,12 @@ struct InvitationsView: View {
             List {
                 if hasHiddenInvitations {
                     Section {
-                        NavigationLink(
-                            String(localized: "Hidden.Title", table: "Invitations"),
-                            value: InvitationsDestination.hidden
-                        )
+                        NavigationLink(value: InvitationsDestination.hidden) {
+                            Label(
+                                String(localized: "Hidden.Title", table: "Invitations"),
+                                systemImage: "eye.slash"
+                            )
+                        }
                         .accessibilityIdentifier("HiddenInvitationsLink")
                     }
                 }
