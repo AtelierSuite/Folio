@@ -40,6 +40,7 @@ struct RootView: View {
         .handlesNotificationRoutes()
         .environment(router)
         .opensCalendarDeepLinks(with: router)
+        .stagesScreenshot(selectedTab: $selectedTab, router: router)
         .onChange(of: router.pendingDestination) { _, destination in
             if let destination {
                 selectedTab = destination.tab

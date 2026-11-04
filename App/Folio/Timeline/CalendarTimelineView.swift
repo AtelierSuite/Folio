@@ -12,7 +12,7 @@ struct CalendarTimelineView: View {
     var hourHeight: CGFloat = 48
     var zoom: TimelineZoomController?
     var layers: [TimelineLayer] = []
-    var initialHour: Double = 8
+    var initialHour: Double = Self.defaultInitialHour
     var metrics = TimelineMetrics()
     var onSelectEntry: ((TimelineEntry) -> Void)?
     var onScrollPhaseChange: ((ScrollPhase) -> Void)?

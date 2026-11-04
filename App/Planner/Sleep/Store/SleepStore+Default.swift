@@ -2,10 +2,15 @@ import Foundation
 
 extension SleepStore {
     public static func systemSource() -> (any SleepDataSource)? {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains(SampleSleepDataSource.launchArgument) {
+            return SampleSleepDataSource()
+        }
+        #endif
         #if os(iOS)
-        HealthKitSleepDataSource()
+        return HealthKitSleepDataSource()
         #else
-        nil
+        return nil
         #endif
     }
 

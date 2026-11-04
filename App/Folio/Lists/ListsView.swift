@@ -11,6 +11,7 @@ struct ListsView: View {
         } detail: {
             detail
         }
+        .selectsScreenshotList($selectedListIdentifier)
     }
 
     @ViewBuilder
