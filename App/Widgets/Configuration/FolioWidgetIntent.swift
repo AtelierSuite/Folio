@@ -5,10 +5,12 @@ import Planner
 nonisolated protocol FolioWidgetIntent: WidgetConfigurationIntent {
     func snapshotRequest(at now: Date, calendar: Calendar) -> WidgetSnapshotRequest
     var timelineTickInterval: TimeInterval? { get }
+    var scheduleHourCount: Int { get }
 }
 
 extension FolioWidgetIntent {
     nonisolated var timelineTickInterval: TimeInterval? { nil }
+    nonisolated var scheduleHourCount: Int { HourlySchedule.defaultHourCount }
 }
 
 extension Array where Element: Identifiable, Element.ID == String {

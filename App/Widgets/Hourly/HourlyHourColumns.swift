@@ -1,14 +1,19 @@
+import Planner
 import SwiftUI
 
 struct HourlyHourColumns: View {
     let hours: [Date]
     let hiddenCount: Int
 
+    private var amPMStyle: Date.FormatStyle.Symbol.Hour.AMPMStyle {
+        hours.count > HourlySchedule.defaultHourCount ? .narrow : .abbreviated
+    }
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(hours, id: \.self) { hour in
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(hour, format: .dateTime.hour())
+                    Text(hour, format: .dateTime.hour(.defaultDigits(amPM: amPMStyle)))
                         .font(.system(size: 10, weight: .medium))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

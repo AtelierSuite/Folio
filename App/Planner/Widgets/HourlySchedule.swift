@@ -14,7 +14,7 @@ public struct HourlySchedule: Sendable, Equatable {
         public var id: String { event.id }
     }
 
-    public static let defaultHourCount = 6
+    public static let defaultHourCount = 5
     public static let defaultLaneLimit = 4
     private static let shortestStripHours = 0.25
 

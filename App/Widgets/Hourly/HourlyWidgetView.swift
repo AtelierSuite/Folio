@@ -17,7 +17,12 @@ struct HourlyWidgetView: View {
                 WidgetDateTitleBar(date: entry.date)
             } content: {
                 HourlyScheduleGrid(
-                    schedule: HourlySchedule(events: entry.snapshot.events, at: entry.date, calendar: .current)
+                    schedule: HourlySchedule(
+                        events: entry.snapshot.events,
+                        at: entry.date,
+                        calendar: .current,
+                        hourCount: entry.scheduleHourCount
+                    )
                 )
             }
         } else {

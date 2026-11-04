@@ -6,7 +6,7 @@ struct HourlyScheduleTests {
     private let now = Fixtures.date(2026, 10, 29, hour: 10).addingTimeInterval(30 * 60)
 
     private func schedule(_ events: [CalendarEvent], laneLimit: Int = 4) -> HourlySchedule {
-        HourlySchedule(events: events, at: now, calendar: Fixtures.calendar, laneLimit: laneLimit)
+        HourlySchedule(events: events, at: now, calendar: Fixtures.calendar, hourCount: 6, laneLimit: laneLimit)
     }
 
     private func allDayEvent(_ title: String) -> CalendarEvent {
@@ -91,5 +91,47 @@ struct HourlyScheduleTests {
         ]
         let strips = schedule(events).strips
         #expect(strips.map(\.titleEndFraction) == [0.5, 1])
+    }
+
+    @Test(arguments: [3, 5, 8]) func windowLengthSetsTheHoursAndScale(hourCount: Int) throws {
+        let event = Fixtures.event(local: "next", start: Fixtures.date(2026, 10, 29, hour: 11))
+        let schedule = HourlySchedule(events: [event], at: now, calendar: Fixtures.calendar, hourCount: hourCount)
+        #expect(schedule.hours.count == hourCount)
+        #expect(schedule.nowFraction == 0.5 / Double(hourCount))
+        let strip = try #require(schedule.strips.first)
+        #expect(strip.startFraction == 1 / Double(hourCount))
+        #expect(strip.endFraction == 2 / Double(hourCount))
+    }
+
+    @Test func shorterWindowsLeaveLaterEventsOut() {
+        let event = Fixtures.event(local: "evening", start: Fixtures.date(2026, 10, 29, hour: 15))
+        let shortSchedule = HourlySchedule(events: [event], at: now, calendar: Fixtures.calendar, hourCount: 3)
+        let longSchedule = HourlySchedule(events: [event], at: now, calendar: Fixtures.calendar, hourCount: 8)
+        #expect(shortSchedule.strips.isEmpty)
+        #expect(longSchedule.strips.map(\.event.title) == ["evening"])
+    }
+
+    @Test func eventsFromDifferentCalendarsShareLanesAndKeepTheirColors() {
+        let red = PlannerColor(red: 1, green: 0, blue: 0)
+        let green = PlannerColor(red: 0, green: 1, blue: 0)
+        func event(_ title: String, calendar: String, hour: Int, color: PlannerColor) -> CalendarEvent {
+            let start = Fixtures.date(2026, 10, 29, hour: hour)
+            return CalendarEvent(
+                reference: Fixtures.reference(local: title, calendarIdentifier: calendar),
+                calendarIdentifier: calendar,
+                title: title,
+                startDate: start,
+                endDate: start.addingTimeInterval(3_600),
+                color: color
+            )
+        }
+        let strips = schedule([
+            event("work", calendar: "work", hour: 11, color: red),
+            event("family", calendar: "family", hour: 11, color: green),
+            event("later", calendar: "family", hour: 12, color: green)
+        ]).strips
+        #expect(strips.map(\.lane) == [0, 1, 0])
+        #expect(strips.map(\.event.color) == [red, green, green])
+        #expect(strips.first?.titleEndFraction == strips.last?.startFraction)
     }
 }
