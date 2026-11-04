@@ -1,9 +1,10 @@
 import Planner
 import SwiftUI
+import WidgetKit
 
 struct AlternateCalendarSection: View {
     @Environment(\.locale) private var locale
-    @AppStorage(AlternateCalendar.storageKey) private var storedCalendar = ""
+    @AppStorage(AlternateCalendar.storageKey, store: AppGroup.userDefaults) private var storedCalendar = ""
 
     var body: some View {
         Section {
@@ -20,6 +21,9 @@ struct AlternateCalendarSection: View {
             Text(String(localized: "Settings.Header", table: "AlternateCalendars"))
         } footer: {
             Text(String(localized: "Settings.Footer", table: "AlternateCalendars"))
+        }
+        .onChange(of: storedCalendar) {
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 }
