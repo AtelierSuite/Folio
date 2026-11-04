@@ -11,6 +11,7 @@ struct CalendarTimelineView: View {
     @Binding var position: ScrollPosition
     var hourHeight: CGFloat = 48
     var zoom: TimelineZoomController?
+    var showsDayLabels = true
     var layers: [TimelineLayer] = []
     var initialHour: Double = Self.defaultInitialHour
     var metrics = TimelineMetrics()
@@ -37,7 +38,8 @@ struct CalendarTimelineView: View {
                 frames: frames,
                 scrolledPage: scrolledPage,
                 gutterWidth: gutterWidth,
-                gutterLayers: gutterLayers
+                gutterLayers: gutterLayers,
+                showsDayLabels: showsDayLabels
             )
             TimelineAllDayStripView(
                 layout: layout,

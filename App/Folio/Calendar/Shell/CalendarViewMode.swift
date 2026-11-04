@@ -33,6 +33,10 @@ enum CalendarViewMode: String, CaseIterable, Identifiable {
         }
     }
 
+    var hasWeekLayouts: Bool {
+        self == .workWeek || self == .week
+    }
+
     var pageStep: CalendarPageStep {
         switch self {
         case .day, .multiDay: .day

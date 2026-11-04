@@ -6,4 +6,6 @@ enum TimelineZoomScope: String {
     case multiDay
     case week
     case workWeek
+    case weekSingleDay
+    case workWeekSingleDay
 }

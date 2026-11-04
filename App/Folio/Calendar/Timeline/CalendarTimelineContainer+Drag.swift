@@ -10,8 +10,17 @@ extension CalendarTimelineContainer {
             snapMinutes: snapMinutes,
             onLift: liftSource,
             onDrop: { session in await drop(session) },
-            onEdgeHold: { direction in navigation.page(by: pageStep, toward: direction) }
+            onEdgeHold: pageAtEdge
         )
+    }
+
+    private func pageAtEdge(toward direction: CalendarPageDirection) {
+        if case .workday = strip.unit {
+            let page = strip.pageStart(containing: navigation.selectedDate)
+            navigation.show(strip.page(page, movedBy: direction.sign))
+        } else {
+            navigation.page(by: pageStep, toward: direction)
+        }
     }
 
     private func liftSource(for entry: TimelineEntry) {

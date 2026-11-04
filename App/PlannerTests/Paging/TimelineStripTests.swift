@@ -60,6 +60,49 @@ struct TimelineStripTests {
         #expect(strip.daysPerPage == 7)
     }
 
+    @Test func workdayPagesStepOverDaysOff() {
+        let strip = TimelineStrip(
+            unit: .workday([2, 3, 4, 5, 6]), around: Support.date(2026, 10, 30), window: SlidingPageWindow(radius: 2),
+            calendar: mondayCalendar()
+        )
+        #expect(strip.pages == [Support.date(2026, 10, 28), Support.date(2026, 10, 29), Support.date(2026, 10, 30),
+                                Support.date(2026, 11, 2), Support.date(2026, 11, 3)])
+        #expect(strip.daysPerPage == 1)
+        #expect(strip.days.count == 5)
+    }
+
+    @Test func workdayPagesKeepDaysOffInTheirOwnWeek() {
+        let workdays: Set<Int> = [2, 3, 4, 5, 6]
+        let mondayFirst = TimelineStrip(
+            unit: .workday(workdays), around: Support.date(2026, 11, 1), window: SlidingPageWindow(radius: 0),
+            calendar: mondayCalendar()
+        )
+        #expect(mondayFirst.pages == [Support.date(2026, 10, 30)])
+        #expect(mondayFirst.pageStart(containing: Support.date(2026, 10, 31, 9)) == Support.date(2026, 10, 30))
+        let sundayFirst = TimelineStrip(
+            unit: .workday(workdays), around: Support.date(2026, 11, 1), window: SlidingPageWindow(radius: 0),
+            calendar: Support.calendar()
+        )
+        #expect(sundayFirst.pages == [Support.date(2026, 11, 2)])
+    }
+
+    @Test func movingAPageSkipsDaysOffInBothDirections() {
+        let strip = TimelineStrip(
+            unit: .workday([2, 3, 4, 5, 6]), around: Support.date(2026, 10, 30), window: SlidingPageWindow(radius: 1),
+            calendar: mondayCalendar()
+        )
+        #expect(strip.page(Support.date(2026, 10, 30), movedBy: 1) == Support.date(2026, 11, 2))
+        #expect(strip.page(Support.date(2026, 11, 2), movedBy: -1) == Support.date(2026, 10, 30))
+    }
+
+    @Test func workdaysOutsideTheWeekFallBackToEveryDay() {
+        let strip = TimelineStrip(
+            unit: .workday([]), around: Support.date(2026, 10, 30), window: SlidingPageWindow(radius: 1),
+            calendar: mondayCalendar()
+        )
+        #expect(strip.pages == (29...31).map { Support.date(2026, 10, $0) })
+    }
+
     @Test func recentersOncePastTheDistanceOrOffTheStrip() {
         let strip = TimelineStrip(
             unit: .day, around: Support.date(2026, 10, 30),

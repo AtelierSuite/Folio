@@ -8,6 +8,7 @@ struct TimelineDayHeaderView: View {
     let scrolledPage: Date?
     let gutterWidth: CGFloat
     var gutterLayers: [TimelineLayer] = []
+    var showsDayLabels = true
 
     var body: some View {
         HStack(spacing: 0) {
@@ -18,10 +19,12 @@ struct TimelineDayHeaderView: View {
             Color.clear
                 .frame(width: gutterWidth - gutterLayers.reduce(0) { $0 + $1.gutterWidth }, height: 1)
             TimelinePagedRow(frames: frames, pages: pages, scrolledPage: scrolledPage) { page in
-                TimelinePageHeaderView(intervals: intervals(of: page), calendar: days.calendar)
+                TimelinePageHeaderView(
+                    intervals: intervals(of: page), calendar: days.calendar, showsDayLabels: showsDayLabels
+                )
             }
         }
-        .padding(.vertical, 6)
+        .padding(.vertical, showsDayLabels ? 6 : 2)
     }
 
     private func intervals(of page: Date) -> ArraySlice<DateInterval> {
@@ -33,12 +36,15 @@ struct TimelineDayHeaderView: View {
 struct TimelinePageHeaderView: View {
     let intervals: ArraySlice<DateInterval>
     let calendar: Calendar
+    var showsDayLabels = true
 
     var body: some View {
         HStack(spacing: 0) {
             ForEach(intervals, id: \.start) { day in
                 VStack(spacing: 2) {
-                    TimelineDayHeaderLabel(day: day, calendar: calendar)
+                    if showsDayLabels {
+                        TimelineDayHeaderLabel(day: day, calendar: calendar)
+                    }
                     TimelineDayHeaderWeather(dayStart: day.start)
                 }
                 .frame(maxWidth: .infinity)
@@ -52,26 +58,66 @@ struct TimelineDayHeaderLabel: View {
     @Environment(\.dayHighlighter) private var dayHighlighter
     let day: DateInterval
     let calendar: Calendar
+    /// When set, the selected day gets the filled number instead of today, which keeps its colour.
+    var isSelected: Bool?
+    @ScaledMetric(relativeTo: .title3) private var selectorDiameter: CGFloat = 38
+
+    private var isToday: Bool {
+        calendar.isDateInToday(day.start)
+    }
+
+    private var isHighlighted: Bool {
+        dayHighlighter.isHighlighted(day.start, calendar: calendar)
+    }
+
+    private var isFilled: Bool {
+        isSelected ?? isToday
+    }
+
+    private var numberStyle: AnyShapeStyle {
+        if isFilled {
+            return isToday ? AnyShapeStyle(.white) : AnyShapeStyle(.background)
+        }
+        if isToday {
+            return AnyShapeStyle(Color.accentColor)
+        }
+        return isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.primary)
+    }
+
+    private var numberFill: Color {
+        guard isFilled else { return .clear }
+        return isToday ? .accentColor : .primary
+    }
 
     var body: some View {
-        let isToday = calendar.isDateInToday(day.start)
-        let isHighlighted = dayHighlighter.isHighlighted(day.start, calendar: calendar)
-        VStack(spacing: 2) {
+        VStack(spacing: isSelected == nil ? 2 : 6) {
             Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).weekday(.abbreviated)))
                 .font(.caption2)
                 .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.secondary))
-            Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).day()))
-                .font(.callout.weight(isToday ? .bold : .regular))
-                .foregroundStyle(isToday ? .white : isHighlighted ? Color.dayHighlight : .primary)
+            dayNumber
+                .font((isSelected == nil ? Font.callout : .title3).weight(isToday || isFilled ? .bold : .regular))
+                .foregroundStyle(numberStyle)
                 .lineLimit(1)
                 .fixedSize()
-                .padding(.horizontal, 6)
-                .frame(minWidth: 26, minHeight: 26)
-                .background(isToday ? Color.accentColor : Color.clear, in: Capsule())
             AlternateCalendarDayLabel(date: day.start)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
+    }
+
+    @ViewBuilder
+    private var dayNumber: some View {
+        if isSelected == nil {
+            Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).day()))
+                .padding(.horizontal, 6)
+                .frame(minWidth: 26, minHeight: 26)
+                .background(numberFill, in: Capsule())
+        } else {
+            Text(calendar.component(.day, from: day.start), format: .number)
+                .monospacedDigit()
+                .frame(width: selectorDiameter, height: selectorDiameter)
+                .background(numberFill, in: Circle())
+        }
     }
 
     private var accessibilityLabel: String {

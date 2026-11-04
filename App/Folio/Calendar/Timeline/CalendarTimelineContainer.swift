@@ -17,6 +17,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     let requestedColumnsOnScreen: Int?
     let pageStep: CalendarPageStep
     let excludedCalendarIdentifiers: Set<String>
+    let showsDayLabels: Bool
     let accessory: Accessory
     @State var strip: TimelineStrip
     @State var position: ScrollPosition
@@ -44,12 +45,14 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         pageStep: CalendarPageStep,
         zoomScope: TimelineZoomScope,
         excludedCalendarIdentifiers: Set<String> = [],
+        showsDayLabels: Bool = true,
         @ViewBuilder accessory: () -> Accessory
     ) {
         self.unit = unit
         requestedColumnsOnScreen = columnsOnScreen
         self.pageStep = pageStep
         self.excludedCalendarIdentifiers = excludedCalendarIdentifiers
+        self.showsDayLabels = showsDayLabels
         self.accessory = accessory()
         let strip = Self.strip(unit: unit, columnsOnScreen: columnsOnScreen, around: initialDate, calendar: calendar)
         let page = strip.pageStart(containing: initialDate)
@@ -68,6 +71,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                 pages: TimelinePages(strip: strip, columnsOnScreen: columnsOnScreen),
                 position: $position,
                 zoom: zoom,
+                showsDayLabels: showsDayLabels,
                 layers: CalendarTimelineOverlays(
                     capabilities: capabilities, weather: weather, shadesNight: shadesNight
                 ).layers(for: strip.days)
@@ -109,7 +113,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     }
 
     private var weatherPageRadius: Int {
-        strip.unit == .day ? columnsOnScreen + 1 : 1
+        strip.unit.pagesByDay ? columnsOnScreen + 1 : 1
     }
 
     private func select(_ entry: TimelineEntry) {
