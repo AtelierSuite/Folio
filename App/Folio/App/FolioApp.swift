@@ -167,6 +167,9 @@ struct FolioApp: App {
         if arguments.contains(EventKitDataSource.sampleDataLaunchArgument) {
             try? await EventKitDataSource.shared.seedSampleData()
         }
+        if arguments.contains(EventKitDataSource.multiCalendarDataLaunchArgument) {
+            try? await EventKitDataSource.shared.seedMultiCalendarData()
+        }
         if arguments.contains(EventKitDataSource.stressDataLaunchArgument) {
             try? await EventKitDataSource.shared.seedStressData()
         }
