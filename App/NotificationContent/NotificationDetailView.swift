@@ -5,26 +5,29 @@ struct NotificationDetailView: View {
     let detail: NotificationDetail
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            RoundedRectangle(cornerRadius: 2)
-                .fill(accentColor)
-                .frame(width: 4)
-            VStack(alignment: .leading, spacing: 6) {
+        VStack(spacing: 12) {
+            if detail.origin != nil || detail.status != nil {
+                NotificationDetailHeaderView(
+                    origin: detail.origin,
+                    status: detail.status,
+                    accentColor: accentColor
+                )
+                Divider()
+            }
+            VStack(spacing: 6) {
                 Text(detail.title)
-                    .font(.headline)
+                    .font(.title3.bold())
                     .lineLimit(3)
                     .accessibilityIdentifier("NotificationDetail.Title")
-                if let status = detail.status {
-                    Text(status)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(accentColor)
-                        .accessibilityIdentifier("NotificationDetail.Status")
-                }
-                ForEach(detail.rows) { row in
-                    NotificationDetailRowView(row: row)
+                if let time = detail.row(.time) {
+                    Text(time.text)
+                        .font(.subheadline)
+                        .accessibilityIdentifier("NotificationDetail.Time")
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            NotificationDetailFooterView(place: detail.row(.place), meeting: detail.row(.meeting))
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding(16)
