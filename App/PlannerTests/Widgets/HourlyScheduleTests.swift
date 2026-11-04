@@ -83,4 +83,13 @@ struct HourlyScheduleTests {
         let strip = try #require(schedule([event]).strips.first)
         #expect(strip.endFraction > strip.startFraction)
     }
+
+    @Test func titlesMayRunUpToTheNextStripInTheirLane() {
+        let events = [
+            Fixtures.event(local: "first", start: Fixtures.date(2026, 10, 29, hour: 10)),
+            Fixtures.event(local: "second", start: Fixtures.date(2026, 10, 29, hour: 13))
+        ]
+        let strips = schedule(events).strips
+        #expect(strips.map(\.titleEndFraction) == [0.5, 1])
+    }
 }

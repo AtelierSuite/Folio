@@ -8,6 +8,8 @@ public struct HourlySchedule: Sendable, Equatable {
         public let lane: Int
         public let startFraction: Double
         public let endFraction: Double
+        /// Where the title has to stop: the next strip in the lane, or the end of the window.
+        public var titleEndFraction = 1.0
 
         public var id: String { event.id }
     }
@@ -56,8 +58,19 @@ public struct HourlySchedule: Sendable, Equatable {
                 hiddenCount += 1
             }
         }
-        self.strips = strips
+        self.strips = Self.limitingTitles(of: strips)
         self.hiddenCount = hiddenCount
+    }
+
+    private static func limitingTitles(of strips: [Strip]) -> [Strip] {
+        strips.map { strip in
+            var limited = strip
+            limited.titleEndFraction = strips
+                .filter { $0.lane == strip.lane && $0.startFraction >= strip.endFraction }
+                .map(\.startFraction)
+                .min() ?? 1
+            return limited
+        }
     }
 
     private static func extent(

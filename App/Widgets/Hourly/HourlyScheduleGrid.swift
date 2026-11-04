@@ -14,12 +14,16 @@ struct HourlyScheduleGrid: View {
             ZStack(alignment: .topLeading) {
                 HourlyHourColumns(hours: schedule.hours, hiddenCount: schedule.hiddenCount)
                 ForEach(schedule.strips) { strip in
-                    HourlyEventStrip(event: strip.event)
-                        .frame(width: stripWidth(strip, in: width), height: laneHeight)
-                        .offset(
-                            x: strip.startFraction * width,
-                            y: Self.labelHeight + CGFloat(strip.lane) * (laneHeight + Self.laneSpacing)
-                        )
+                    HourlyEventStrip(
+                        event: strip.event,
+                        width: stripWidth(strip, in: width),
+                        titleWidth: (strip.titleEndFraction - strip.startFraction) * width - 2
+                    )
+                    .frame(height: laneHeight)
+                    .offset(
+                        x: strip.startFraction * width,
+                        y: Self.labelHeight + CGFloat(strip.lane) * (laneHeight + Self.laneSpacing)
+                    )
                 }
                 if schedule.strips.isEmpty {
                     WidgetEmptyText(text: String(localized: "Hourly.Empty", table: "Widgets"))
