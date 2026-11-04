@@ -50,7 +50,10 @@ struct TimelineEventCardView: View {
     }
 
     private var accessibilityTitle: String {
-        guard entry.kind == .reminder else { return entry.title }
+        guard entry.kind == .reminder else {
+            guard entry.hasDuplicates else { return entry.title }
+            return "\(entry.title), \(DuplicateCountBadge.accessibilityDescription(count: entry.duplicateCount))"
+        }
         return "\(String(localized: "Accessibility.Reminder", table: "Timeline")), \(entry.title)"
     }
 

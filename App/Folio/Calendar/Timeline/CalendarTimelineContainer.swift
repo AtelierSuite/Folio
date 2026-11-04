@@ -128,7 +128,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
         self.events = shownEvents
-        entries = shownEvents.map(TimelineEntry.init(event:))
+        entries = EventDuplicateDetector(calendar: calendar).groups(in: shownEvents).map(TimelineEntry.init(group:))
             + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
         relayout()
     }

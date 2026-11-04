@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AgendaEventRow: View {
     let event: CalendarEvent
+    var duplicateCount = 1
 
     private var outline: some InsettableShape {
         RoundedRectangle(cornerRadius: 6).inset(by: -4)
@@ -14,8 +15,11 @@ struct AgendaEventRow: View {
                 .fill(event.color.color)
                 .frame(width: 4)
             VStack(alignment: .leading, spacing: 2) {
-                Text(event.title)
-                    .font(.body)
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(event.title)
+                    DuplicateCountBadge(count: duplicateCount)
+                }
+                .font(.body)
                 if event.isAllDay {
                     Text(String(localized: "Event.AllDay", table: "Agenda"))
                         .font(.subheadline)
