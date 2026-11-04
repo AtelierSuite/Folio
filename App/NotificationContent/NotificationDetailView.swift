@@ -6,12 +6,15 @@ struct NotificationDetailView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            if detail.origin != nil || detail.status != nil {
-                NotificationDetailHeaderView(
-                    origin: detail.origin,
-                    status: detail.status,
-                    accentColor: accentColor
-                )
+            if detail.origin != nil || detail.hasStatus {
+                // The schedule's date is rounded down to the minute, so it only triggers the refresh.
+                TimelineView(.everyMinute) { _ in
+                    NotificationDetailHeaderView(
+                        origin: detail.origin,
+                        status: detail.status(at: .now),
+                        accentColor: accentColor
+                    )
+                }
                 Divider()
             }
             VStack(spacing: 6) {
