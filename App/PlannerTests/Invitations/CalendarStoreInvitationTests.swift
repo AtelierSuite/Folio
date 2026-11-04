@@ -76,7 +76,9 @@ struct CalendarStoreInvitationTests {
         let start = Fixtures.date(2026, 10, 29, hour: 9)
         func source(_ status: ParticipantStatus) -> FakeCalendarDataSource {
             FakeCalendarDataSource(
-                events: [InvitationFixtures.invitation(local: "resent", external: "series", start: start, userStatus: status)],
+                events: [
+                    InvitationFixtures.invitation(local: "resent", external: "series", start: start, userStatus: status)
+                ],
                 calendars: [Fixtures.plannerCalendar("calendar-1")]
             )
         }

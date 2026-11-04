@@ -171,7 +171,8 @@ struct NotificationSchedulerTests {
     @Test func hiddenInvitationsRaiseNoAlerts() async throws {
         let defaults = try makeDefaults()
         let invitation = InvitationFixtures.invitation(
-            local: "resent", start: NotificationFixtures.hours(2), alarms: [.relative(offset: -600)], userStatus: .pending
+            local: "resent", start: NotificationFixtures.hours(2),
+            alarms: [.relative(offset: -600)], userStatus: .pending
         )
         CalendarVisibilityStorage(defaults: defaults).hiddenInvitationIdentifiers = [invitation.invitationIdentifier]
         let source = FakeCalendarDataSource(
