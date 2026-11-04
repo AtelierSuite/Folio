@@ -1,0 +1,136 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Settings.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ereignisse mit übereinstimmendem Titel und Ort, die innerhalb von 30 Minuten voneinander beginnen und enden, erscheinen als ein Ereignis mit Zahlenkennzeichen und lösen nur eine Mitteilung aus. Deaktiviere einen Kalender, um seine Einträge getrennt zu halten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Events with matching titles and locations that start and end within 30 minutes of each other appear as one event with a number badge and alert once. Turn a calendar off to keep its items separate."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les événements dont le titre et le lieu correspondent et qui commencent et finissent à moins de 30 minutes d’écart apparaissent comme un seul événement avec un badge numéroté et ne déclenchent qu’une alerte. Désactivez un calendrier pour garder ses éléments séparés."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli eventi con titolo e luogo corrispondenti che iniziano e finiscono entro 30 minuti l’uno dall’altro appaiono come un unico evento con un badge numerico e inviano un solo avviso. Disattiva un calendario per mantenere separati i suoi elementi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タイトルと場所が一致し、開始と終了の差が30分以内の予定は、数字バッジ付きの1件の予定として表示され、通知も1回になります。カレンダーをオフにすると、その項目は別々のままになります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "제목과 장소가 일치하고 시작 및 종료 시간 차이가 30분 이내인 일정은 숫자 배지가 있는 하나의 일정으로 표시되며 알림도 한 번만 울립니다. 캘린더를 끄면 해당 항목은 따로 유지됩니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activiteiten met overeenkomende titels en locaties die binnen 30 minuten van elkaar beginnen en eindigen, verschijnen als één activiteit met een cijferbadge en geven één melding. Zet een agenda uit om de onderdelen ervan apart te houden."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các sự kiện có tiêu đề và địa điểm khớp nhau, bắt đầu và kết thúc cách nhau không quá 30 phút sẽ hiển thị thành một sự kiện có huy hiệu số và chỉ báo một lần. Tắt một lịch để giữ các mục của lịch đó riêng biệt."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标题和地点相符、开始和结束时间相差不超过 30 分钟的日程会显示为一个带数字标记的日程，且只提醒一次。关闭某个日历可让其项目保持独立。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "標題和地點相符、開始和結束時間相差不超過 30 分鐘的行程會顯示為一個帶數字標記的行程，且只提醒一次。關閉某個行事曆可讓其項目保持獨立。"
+          }
+        }
+      }
+    },
+    "Settings.Header": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplikaterkennung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicate Detection"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détection des doublons"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rilevamento duplicati"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重複の検出"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "중복 감지"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicaatdetectie"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phát hiện trùng lặp"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复项检测"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重複項目偵測"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
