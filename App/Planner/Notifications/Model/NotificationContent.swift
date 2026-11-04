@@ -12,6 +12,7 @@ public struct NotificationContent: Sendable, Hashable {
     public let origin: CalendarOrigin?
     /// Only timed events have one, so only they get a live status in the expanded alert.
     public let startDate: Date?
+    public let reminder: NotificationReminderDetails?
 
     public init(
         title: String,
@@ -21,7 +22,8 @@ public struct NotificationContent: Sendable, Hashable {
         time: String? = nil,
         color: PlannerColor? = nil,
         origin: CalendarOrigin? = nil,
-        startDate: Date? = nil
+        startDate: Date? = nil,
+        reminder: NotificationReminderDetails? = nil
     ) {
         self.title = title
         self.body = body
@@ -31,5 +33,6 @@ public struct NotificationContent: Sendable, Hashable {
         self.color = color
         self.origin = origin
         self.startDate = startDate
+        self.reminder = reminder
     }
 }

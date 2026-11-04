@@ -20,8 +20,12 @@ public enum NotificationIdentifier {
         let color = candidate.content.color.map { ["\($0.red),\($0.green),\($0.blue)"] } ?? []
         let origin = candidate.content.origin.map { [$0.accountName, $0.calendarName] } ?? []
         let time = candidate.content.time.map { [$0] } ?? []
+        let reminder = candidate.content.reminder.map {
+            [$0.priorityMarks ?? "", $0.notes ?? "", $0.repeatText ?? ""]
+        } ?? []
         let fingerprint = ([candidate.content.title, candidate.content.body, category.rawValue, style.rawValue]
-            + meetingURL + soundName + (candidate.place?.fingerprint ?? []) + imagePath + color + origin + time)
+            + meetingURL + soundName + (candidate.place?.fingerprint ?? []) + imagePath + color
+            + origin + time + reminder)
             .joined(separator: "\u{1F}")
         let item = "\(candidate.kind.rawValue).\(candidate.reference.storageKey)"
         return "\(prefix)\(item)@\(fireSeconds).\(stableDigest(of: fingerprint))"

@@ -94,3 +94,46 @@ struct NotificationContentFormatterTests {
         #expect(formatter.content(for: dateOnly, firingAt: start).body.contains("30"))
     }
 }
+
+extension NotificationContentFormatterTests {
+    private func reminder(
+        priority: Int = 0,
+        notes: String? = nil,
+        recurrence: ReminderRecurrence? = nil
+    ) -> ReminderItem {
+        let base = NotificationFixtures.reminder("task", due: start)
+        return ReminderItem(
+            reference: base.reference,
+            listIdentifier: base.listIdentifier,
+            title: base.title,
+            notes: notes,
+            dueDate: start,
+            hasDueTime: true,
+            priority: priority,
+            isRecurring: recurrence != nil,
+            recurrence: recurrence
+        )
+    }
+
+    private func details(_ item: ReminderItem) -> NotificationReminderDetails? {
+        NotificationFixtures.formatter.content(for: item, firingAt: start).reminder
+    }
+
+    @Test func priorityBecomesMarks() {
+        #expect(details(reminder(priority: 1))?.priorityMarks == "!!!")
+        #expect(details(reminder(priority: 5))?.priorityMarks == "!!")
+        #expect(details(reminder(priority: 9))?.priorityMarks == "!")
+        #expect(details(reminder())?.priorityMarks == nil)
+    }
+
+    @Test func notesAreTrimmedAndCapped() {
+        #expect(details(reminder(notes: "  Blue form \n"))?.notes == "Blue form")
+        #expect(details(reminder(notes: "   "))?.notes == nil)
+        #expect(details(reminder(notes: String(repeating: "a", count: 500)))?.notes?.count == 200)
+    }
+
+    @Test func repeatTextOnlyAppearsOnRepeatingReminders() {
+        #expect(details(reminder())?.repeatText == nil)
+        #expect(details(reminder(recurrence: ReminderRecurrence(frequency: .monthly)))?.repeatText != nil)
+    }
+}

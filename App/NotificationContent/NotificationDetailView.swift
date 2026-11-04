@@ -12,28 +12,38 @@ struct NotificationDetailView: View {
                     NotificationDetailHeaderView(
                         origin: detail.origin,
                         status: detail.status(at: .now),
-                        accentColor: accentColor
+                        accentColor: accentColor,
+                        statusColor: detail.isOverdue(at: .now) ? .red : accentColor
                     )
                 }
                 Divider()
             }
-            VStack(spacing: 6) {
-                Text(detail.title)
-                    .font(.title3.bold())
-                    .lineLimit(3)
-                    .accessibilityIdentifier("NotificationDetail.Title")
-                if let time = detail.row(.time) {
-                    Text(time.text)
-                        .font(.subheadline)
-                        .accessibilityIdentifier("NotificationDetail.Time")
-                }
+            if let reminder = detail.reminder {
+                NotificationReminderTaskView(title: detail.title, reminder: reminder, accentColor: accentColor)
+                NotificationDetailFooterView(leading: detail.row(.time), trailing: detail.row(.repeating))
+            } else {
+                eventSummary
+                NotificationDetailFooterView(leading: detail.row(.place), trailing: detail.row(.meeting))
             }
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
-            NotificationDetailFooterView(place: detail.row(.place), meeting: detail.row(.meeting))
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding(16)
+    }
+
+    private var eventSummary: some View {
+        VStack(spacing: 6) {
+            Text(detail.title)
+                .font(.title3.bold())
+                .lineLimit(3)
+                .accessibilityIdentifier("NotificationDetail.Title")
+            if let time = detail.row(.time) {
+                Text(time.text)
+                    .font(.subheadline)
+                    .accessibilityIdentifier("NotificationDetail.Time")
+            }
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
     }
 
     private var accentColor: Color {
