@@ -1,10 +1,11 @@
+import Planner
 import SwiftUI
 
 /// Holds every calendar toolbar control except Add on narrow screens, so the month title keeps its room.
 struct CalendarMoreMenu: View {
     @Binding var mode: CalendarViewMode
     @Binding var isShowingInbox: Bool
-    let pendingInvitationCount: Int
+    let invitationCounts: InvitationCounts
     @AppStorage("Calendar.MultiDayCount") private var dayCount: MultiDayCount = .three
     @State private var isShowingInvitations = false
 
@@ -18,16 +19,16 @@ struct CalendarMoreMenu: View {
             }
             Section {
                 ReminderInboxButton(isShowingInbox: $isShowingInbox)
-                if pendingInvitationCount > 0 {
+                if invitationCounts.hasInvitations {
                     Button(String(localized: "Toolbar.Invitations", table: "Invitations"), systemImage: "envelope") {
                         isShowingInvitations = true
                     }
-                    .badge(pendingInvitationCount)
+                    .badge(invitationCounts.pending)
                     .accessibilityIdentifier("InvitationsButton")
                 }
             }
         }
-        .badge(pendingInvitationCount)
+        .badge(invitationCounts.pending)
         .accessibilityIdentifier("CalendarMoreMenu")
         .sheet(isPresented: $isShowingInvitations) {
             InvitationsView()

@@ -63,6 +63,7 @@ struct CalendarStoreInvitationTests {
         #expect(await store.pendingInvitations(from: start).map(\.title) == ["hidden"])
         #expect(await store.events(in: today).map(\.title) == ["declined", "hidden"])
         #expect(await store.hiddenInvitations(from: start).map(\.title) == ["pending"])
+        #expect(await store.invitationCounts(from: start) == InvitationCounts(pending: 1, hidden: 1))
 
         let relaunched = makeStore(source: source, defaults: defaults)
         #expect(await relaunched.pendingInvitations(from: start).map(\.title) == ["hidden"])
@@ -70,6 +71,18 @@ struct CalendarStoreInvitationTests {
         store.setHidden(false, invitation: invitation)
         #expect(await store.pendingInvitations(from: start).map(\.title) == ["pending", "hidden"])
         #expect(await store.hiddenInvitations(from: start).isEmpty)
+    }
+
+    @Test func invitationsStayReachableWhenEveryOneIsHidden() async throws {
+        let store = makeStore(source: makeSource(), defaults: try makeDefaults())
+        let start = Fixtures.date(2026, 10, 29)
+        for invitation in await store.pendingInvitations(from: start) {
+            store.setHidden(true, invitation: invitation)
+        }
+        let counts = await store.invitationCounts(from: start)
+        #expect(counts == InvitationCounts(pending: 0, hidden: 2))
+        #expect(counts.hasInvitations)
+        #expect(!InvitationCounts().hasInvitations)
     }
 
     @Test func hiddenInvitationStaysHiddenWhenItResurfaces() async throws {

@@ -5,13 +5,19 @@ extension CalendarStore {
 
     /// Reads the source directly so the long lookahead doesn't replace the cached window of the visible page.
     public func pendingInvitations(from start: Date = .now) async -> [CalendarEvent] {
-        await upcomingEvents(from: start)
-            .filter { !$0.isHiddenInvitation(among: hiddenInvitationIdentifiers) }
-            .pendingInvitations()
+        visiblePendingInvitations(in: await upcomingEvents(from: start))
     }
 
     public func hiddenInvitations(from start: Date = .now) async -> [CalendarEvent] {
         await upcomingEvents(from: start).hiddenInvitations(among: hiddenInvitationIdentifiers)
+    }
+
+    public func invitationCounts(from start: Date = .now) async -> InvitationCounts {
+        let events = await upcomingEvents(from: start)
+        return InvitationCounts(
+            pending: visiblePendingInvitations(in: events).count,
+            hidden: events.hiddenInvitations(among: hiddenInvitationIdentifiers).count
+        )
     }
 
     public func setHidden(_ isHidden: Bool, invitation: CalendarEvent) {
@@ -22,6 +28,10 @@ extension CalendarStore {
         }
         visibilityStorage.hiddenInvitationIdentifiers = hiddenInvitationIdentifiers
         contentRevision += 1
+    }
+
+    private func visiblePendingInvitations(in events: [CalendarEvent]) -> [CalendarEvent] {
+        events.filter { !$0.isHiddenInvitation(among: hiddenInvitationIdentifiers) }.pendingInvitations()
     }
 
     private func upcomingEvents(from start: Date) async -> [CalendarEvent] {
