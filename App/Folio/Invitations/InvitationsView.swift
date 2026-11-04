@@ -47,6 +47,12 @@ struct InvitationsView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("InvitationRow")
+                .swipeActions(edge: .trailing) {
+                    hideButton(for: event)
+                }
+                .contextMenu {
+                    hideButton(for: event)
+                }
             }
             .overlay {
                 if invitations == nil {
@@ -54,5 +60,12 @@ struct InvitationsView: View {
                 }
             }
         }
+    }
+
+    private func hideButton(for event: CalendarEvent) -> some View {
+        Button(String(localized: "List.Hide", table: "Invitations"), systemImage: "eye.slash") {
+            store.setHidden(true, invitation: event)
+        }
+        .accessibilityIdentifier("HideInvitationButton")
     }
 }

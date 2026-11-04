@@ -23,11 +23,7 @@ final class InvitationsTests: XCTestCase {
     @MainActor
     func testInvitationsListOpensDetailWithAttendeesAndRespondSheet() throws {
         let app = launch(mode: "day")
-        let invitationsButton = app.buttons["InvitationsButton"]
-        if !invitationsButton.waitForExistence(timeout: 15) {
-            app.navigationBars.buttons["CalendarMoreMenu"].tap()
-        }
-        app.buttons["Invitations"].firstMatch.tap()
+        openInvitations(in: app)
 
         // "Lunch with Aiko" is a pending invitation too and comes first until it ends, so pick the row by name.
         let row = app.buttons.matching(identifier: "InvitationRow")
@@ -51,6 +47,41 @@ final class InvitationsTests: XCTestCase {
         respond.tap()
         sleep(2)
         capture(app, "RespondSheet")
+    }
+
+    @MainActor
+    func testInvitationCanBeHiddenAndShownAgain() throws {
+        let app = launch(mode: "day")
+        openInvitations(in: app)
+        let row = app.buttons.matching(identifier: "InvitationRow")
+            .matching(NSPredicate(format: "label CONTAINS %@", "Design Review Day")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        row.swipeLeft()
+        app.buttons["HideInvitationButton"].firstMatch.tap()
+        XCTAssertTrue(row.waitForNonExistence(timeout: 5))
+        capture(app, "InvitationHidden")
+        app.buttons["Done"].firstMatch.tap()
+
+        app.buttons["Settings"].tap()
+        app.openSettingsCategory("calendars")
+        let hiddenRow = app.buttons.matching(identifier: "HiddenInvitationsRow").firstMatch
+        for _ in 0..<6 where !hiddenRow.isHittable {
+            app.swipeUp()
+        }
+        hiddenRow.tap()
+        let showButton = app.buttons["ShowInvitationButton"].firstMatch
+        XCTAssertTrue(showButton.waitForExistence(timeout: 5))
+        capture(app, "HiddenInvitations")
+        showButton.tap()
+        XCTAssertTrue(app.staticTexts["No Hidden Invitations"].waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    private func openInvitations(in app: XCUIApplication) {
+        if !app.buttons["InvitationsButton"].waitForExistence(timeout: 15) {
+            app.navigationBars.buttons["CalendarMoreMenu"].tap()
+        }
+        app.buttons["Invitations"].firstMatch.tap()
     }
 
     @MainActor

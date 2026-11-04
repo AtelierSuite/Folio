@@ -9,6 +9,7 @@ extension EventMenuItem {
         case .startCountdown: String(localized: "Countdown.Start", table: "Countdown")
         case .stopCountdown: String(localized: "Countdown.Stop", table: "Countdown")
         case .respond: String(localized: "Detail.Respond", table: "Invitations")
+        case .hideInvitation: String(localized: "List.Hide", table: "Invitations")
         case .edit: String(localized: "Menu.Edit", table: "EventActions")
         case .duplicate: String(localized: "Menu.Duplicate", table: "EventActions")
         case .moveToCalendar: String(localized: "Menu.MoveToCalendar", table: "EventActions")
@@ -28,6 +29,7 @@ extension EventMenuItem {
         case .startCountdown: "timer"
         case .stopCountdown: "stop.circle"
         case .respond: "envelope.badge"
+        case .hideInvitation: "eye.slash"
         case .edit: "pencil"
         case .duplicate: "plus.square.on.square"
         case .moveToCalendar: "calendar"
@@ -51,6 +53,7 @@ extension EventMenuItem {
         case .startCountdown: "EventMenu.StartCountdown"
         case .stopCountdown: "EventMenu.StopCountdown"
         case .respond: "EventMenu.Respond"
+        case .hideInvitation: "EventMenu.HideInvitation"
         case .edit: "EventMenu.Edit"
         case .duplicate: "EventMenu.Duplicate"
         case .moveToCalendar: "EventMenu.MoveToCalendar"

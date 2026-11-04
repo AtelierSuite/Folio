@@ -17,6 +17,9 @@ public enum EventMenu {
         if context.canRespondToInvitations && event.isInvitation {
             primary.append(.respond)
         }
+        if event.canHideInvitation {
+            primary.append(.hideInvitation)
+        }
         var editing: [EventMenuItem] = []
         if isWritable {
             editing.append(.edit)

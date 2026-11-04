@@ -118,6 +118,19 @@ struct EventMenuTests {
         #expect(!elsewhere.contains(.respond))
     }
 
+    @Test func hidingOnlyForUnacceptedInvitations() {
+        func items(_ status: ParticipantStatus) -> [EventMenuItem] {
+            EventMenu.items(
+                for: InvitationFixtures.invitation(local: "Review", start: start, userStatus: status),
+                context: context()
+            )
+        }
+        #expect(items(.pending).contains(.hideInvitation))
+        #expect(items(.declined).contains(.hideInvitation))
+        #expect(!items(.accepted).contains(.hideInvitation))
+        #expect(!EventMenu.items(for: event(hasAttendees: true), context: context()).contains(.hideInvitation))
+    }
+
     private func calendar(_ identifier: String, source: String = "local", isReadOnly: Bool = false) -> PlannerCalendar {
         PlannerCalendar(
             id: identifier, title: identifier, kind: .event, color: .gray, sourceIdentifier: source,
