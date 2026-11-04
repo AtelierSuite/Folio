@@ -66,6 +66,39 @@ struct NotificationDetailTests {
         #expect(alerts.first?.id != alerts.last?.id)
     }
 
+    @Test func timedEventWorksOutItsStatusWhenRead() throws {
+        let start = NotificationFixtures.hours(2)
+        let event = NotificationFixtures.event("e", start: start)
+        let notification = try #require(NotificationActionFixtures.planned(event))
+        let detail = detail(notification)
+        #expect(detail.hasStatus)
+        let before = detail.status(at: start.addingTimeInterval(-600))
+        let after = detail.status(at: start.addingTimeInterval(600))
+        #expect(before != nil)
+        #expect(before != after)
+    }
+
+    @Test func allDayEventHasNoLiveStatus() throws {
+        let start = NotificationFixtures.hours(24)
+        let event = NotificationFixtures.event("e", start: start, hours: 24, isAllDay: true)
+        let notification = try #require(NotificationActionFixtures.planned(event))
+        #expect(!detail(notification).hasStatus)
+    }
+
+    @Test func reminderHasNoLiveStatus() throws {
+        let notification = try #require(NotificationActionFixtures.plannedReminder())
+        #expect(!detail(notification).hasStatus)
+    }
+
+    @Test func fixedStatusWinsOverTheLiveOne() {
+        let content = NotificationContent(
+            title: "Review", body: "", status: "Leave by 9:00", startDate: NotificationFixtures.hours(1)
+        )
+        let userInfo = NotificationUserInfo.make(for: content)
+        let detail = NotificationDetail(title: "Review", body: "", userInfo: userInfo)
+        #expect(detail.status(at: NotificationFixtures.now) == "Leave by 9:00")
+    }
+
     @Test func reminderShowsItsDueTime() throws {
         let notification = try #require(NotificationActionFixtures.plannedReminder())
         let detail = detail(notification)

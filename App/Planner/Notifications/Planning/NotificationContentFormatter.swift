@@ -25,7 +25,8 @@ public struct NotificationContentFormatter: Sendable {
             alarmTitle: joined([event.title, startTime]),
             time: detailedTime(for: event, firingAt: fireDate) ?? time,
             color: event.color,
-            origin: event.origin
+            origin: event.origin,
+            startDate: event.isAllDay ? nil : event.startDate
         )
     }
 
