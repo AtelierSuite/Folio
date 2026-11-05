@@ -22,6 +22,7 @@ public final class NotificationScheduler {
     @ObservationIgnored let soundSettings: NotificationSoundSettings
     @ObservationIgnored public let styleSettings: NotificationStyleSettings
     @ObservationIgnored let allDayAlertTimeSettings: AllDayAlertTimeSettings
+    @ObservationIgnored let earlyAlertSettings: ReminderEarlyAlertSettings
     @ObservationIgnored public let capabilities: PlatformCapabilities
     @ObservationIgnored let visibilityStorage: CalendarVisibilityStorage
     @ObservationIgnored let planner: NotificationPlanner
@@ -44,6 +45,7 @@ public final class NotificationScheduler {
         soundSettings: NotificationSoundSettings = NotificationSoundSettings(),
         styleSettings: NotificationStyleSettings = .shared,
         allDayAlertTimeSettings: AllDayAlertTimeSettings = .shared,
+        earlyAlertSettings: ReminderEarlyAlertSettings = .shared,
         capabilities: PlatformCapabilities = .current,
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
         planner: NotificationPlanner? = nil,
@@ -58,13 +60,15 @@ public final class NotificationScheduler {
         self.soundSettings = soundSettings
         self.styleSettings = styleSettings
         self.allDayAlertTimeSettings = allDayAlertTimeSettings
+        self.earlyAlertSettings = earlyAlertSettings
         self.capabilities = capabilities
         self.visibilityStorage = visibilityStorage
         let resolver = NotificationStyleResolver(settings: styleSettings, capabilities: capabilities)
         self.planner = planner ?? NotificationPlanner(
             styleResolver: resolver.style(for:),
             allDayAlertMinutes: allDayAlertTimeSettings.minutesAfterMidnight(forCalendar:),
-            soundResolver: soundSettings.resolvedSound(for:)
+            soundResolver: soundSettings.resolvedSound(for:),
+            reminderEarlyAlerts: earlyAlertSettings.alerts(for:)
         )
         self.horizon = horizon
         self.clock = clock
