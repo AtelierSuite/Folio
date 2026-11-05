@@ -15,13 +15,8 @@ struct EventLocationSearchView: View {
         NavigationStack {
             List {
                 if !trimmedQuery.isEmpty {
-                    Button {
+                    Button(String(localized: "Location.UseText \(trimmedQuery)", table: "EventEditor")) {
                         choose(EventLocation(title: trimmedQuery))
-                    } label: {
-                        Label(
-                            String(localized: "Location.UseText \(trimmedQuery)", table: "EventEditor"),
-                            systemImage: "text.cursor"
-                        )
                     }
                 }
                 ForEach(search.suggestions) { suggestion in
