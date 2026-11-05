@@ -20,6 +20,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.calendarPagingButtons))
         #expect(!capabilities.supports(.calendarViewMenuCommands))
         #expect(!capabilities.supports(.sleep))
+        #expect(!capabilities.supports(.medications))
         #expect(!capabilities.supports(.geofencedNotifications))
         #expect(!capabilities.supports(.leaveAlerts))
         #expect(!capabilities.supports(.liveActivityCountdown))
