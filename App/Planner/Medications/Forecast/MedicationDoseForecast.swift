@@ -28,9 +28,9 @@ public struct MedicationDoseForecast: Sendable {
         let window = DateInterval(start: start, end: end)
         return Dictionary(grouping: history, by: \.medication)
             .flatMap { medication, doses in
-                slots(in: doses.map(\.date)).flatMap { slot in
+                slots(in: doses).flatMap { slot in
                     dates(for: slot, in: window, today: calendar.startOfDay(for: now)).map {
-                        MedicationDose(medication: medication, date: $0, status: .estimated)
+                        MedicationDose(medication: medication, date: $0, status: .estimated, amount: slot.amount)
                     }
                 }
             }
@@ -38,15 +38,16 @@ public struct MedicationDoseForecast: Sendable {
             .sorted { ($0.date, $0.medication.name) < ($1.date, $1.medication.name) }
     }
 
-    private func slots(in dates: [Date]) -> [DoseSlot] {
-        Dictionary(grouping: dates) { date in
-            let time = calendar.dateComponents([.hour, .minute], from: date)
+    private func slots(in doses: [MedicationDose]) -> [DoseSlot] {
+        Dictionary(grouping: doses) { dose in
+            let time = calendar.dateComponents([.hour, .minute], from: dose.date)
             return DoseTime(hour: time.hour ?? 0, minute: time.minute ?? 0)
         }
-        .compactMap { time, dates in
-            let days = Set(dates.map(calendar.startOfDay(for:))).sorted()
+        .compactMap { time, doses in
+            let days = Set(doses.map { calendar.startOfDay(for: $0.date) }).sorted()
             guard days.count >= Self.minimumObservedDays else { return nil }
-            return DoseSlot(time: time, days: days)
+            let latest = doses.max { $0.date < $1.date }
+            return DoseSlot(time: time, days: days, amount: latest?.amount)
         }
     }
 
@@ -89,5 +90,6 @@ public struct MedicationDoseForecast: Sendable {
     private struct DoseSlot {
         let time: DoseTime
         let days: [Date]
+        let amount: MedicationDoseAmount?
     }
 }

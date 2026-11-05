@@ -5,8 +5,13 @@ import Foundation
 /// Turned on with `-FolioSampleMedications`.
 public struct SampleMedicationDataSource: MedicationDataSource {
     public static let launchArgument = "-FolioSampleMedications"
-    private static let vitamin = Medication(id: "sample.vitamin", name: "Vitamin D")
-    private static let allergy = Medication(id: "sample.allergy", name: "Cetirizine")
+    private static let vitamin = Medication(id: "sample.vitamin", name: "Vitamin D", doseUnit: .capsule)
+    private static let allergy = Medication(
+        id: "sample.allergy",
+        name: "Cetirizine",
+        fullName: "Cetirizine Hydrochloride 10 mg Tablet",
+        doseUnit: .tablet
+    )
 
     private let calendar: Calendar
 
@@ -41,7 +46,13 @@ public struct SampleMedicationDataSource: MedicationDataSource {
         status: MedicationDoseStatus
     ) -> MedicationDoseRecord {
         let date = calendar.date(bySettingHour: hour, minute: 0, second: 0, of: day) ?? day
-        return MedicationDoseRecord(medication: medication, scheduledDate: date, loggedDate: date, status: status)
+        return MedicationDoseRecord(
+            medication: medication,
+            scheduledDate: date,
+            loggedDate: date,
+            status: status,
+            amount: MedicationDoseAmount(quantity: medication == Self.vitamin ? 2 : 1, unit: medication.doseUnit)
+        )
     }
 }
 #endif

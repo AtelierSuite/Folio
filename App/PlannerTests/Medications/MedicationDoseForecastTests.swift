@@ -75,6 +75,22 @@ struct MedicationDoseForecastTests {
         #expect(dates == [local(8, 8), local(9, 8)])
     }
 
+    @Test func estimatedDoseUsesTheLatestAmountAtThatTime() {
+        let amounts = [11: 1.0, 12: 1.0, 13: 2.0]
+        let doses = amounts.map { day, quantity in
+            MedicationDose(
+                medication: Self.vitamin,
+                date: date(day: day, hour: 8),
+                status: .taken,
+                amount: MedicationDoseAmount(quantity: quantity, unit: .tablet)
+            )
+        }
+        let now = date(day: 13, hour: 12)
+        let estimated = MedicationDoseForecast(calendar: calendar)
+            .doses(from: doses, in: DateInterval(start: now, end: date(day: 15, hour: 0)), after: now)
+        #expect(estimated.map(\.amount?.quantity) == [2])
+    }
+
     @Test func latestLogDecidesTheDoseStatus() {
         let scheduled = date(day: 13, hour: 8)
         let doses = MedicationDose.latest(from: [
