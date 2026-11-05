@@ -4,28 +4,15 @@ final class LinkedNotesTests: XCTestCase {
     @MainActor
     func testDayViewCreatesAndShowsTheDailyNote() throws {
         let app = launch()
-        let create = app.buttons["DailyNote.Create"]
-        let open = app.buttons["DailyNote.Open"]
-        XCTAssertTrue(create.waitForExistence(timeout: 10) || open.exists)
-        if create.exists {
-            create.tap()
-            XCTAssertTrue(app.textViews.firstMatch.waitForExistence(timeout: 10))
-            app.tabBars.buttons["Calendar"].firstMatch.tap()
-        }
-        XCTAssertTrue(open.waitForExistence(timeout: 10))
+        openDailyNoteFromAddMenu(in: app)
+        XCTAssertTrue(app.buttons["DailyNote.Open"].waitForExistence(timeout: 10))
         attachScreenshot(named: "day-view-daily-note", app: app)
     }
 
     @MainActor
     func testNoteDeepLinkOpensTheNote() throws {
         let app = launch()
-        let create = app.buttons["DailyNote.Create"]
-        XCTAssertTrue(create.waitForExistence(timeout: 10) || app.buttons["DailyNote.Open"].exists)
-        if create.exists {
-            create.tap()
-            XCTAssertTrue(app.textViews.firstMatch.waitForExistence(timeout: 10))
-            app.tabBars.buttons["Calendar"].firstMatch.tap()
-        }
+        openDailyNoteFromAddMenu(in: app)
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
@@ -35,6 +22,20 @@ final class LinkedNotesTests: XCTestCase {
         confirmOpeningInFolio()
         XCTAssertTrue(app.staticTexts[dayKey].waitForExistence(timeout: 10))
         attachScreenshot(named: "deep-link", app: app)
+    }
+
+    @MainActor
+    private func openDailyNoteFromAddMenu(in app: XCUIApplication) {
+        let addMenu = app.buttons["Add"].firstMatch
+        XCTAssertTrue(addMenu.waitForExistence(timeout: 10))
+        addMenu.tap()
+        let dailyNote = app.buttons
+            .matching(NSPredicate(format: "label IN %@", ["Create Daily Note", "Open Daily Note"])).firstMatch
+        XCTAssertTrue(dailyNote.waitForExistence(timeout: 10))
+        attachScreenshot(named: "add-menu-daily-note", app: app)
+        dailyNote.tap()
+        XCTAssertTrue(app.textViews.firstMatch.waitForExistence(timeout: 10))
+        app.tabBars.buttons["Calendar"].firstMatch.tap()
     }
 
     /// iOS asks before opening a custom URL scheme; the button title follows the system language.

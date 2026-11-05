@@ -7,9 +7,9 @@ struct CalendarDayLinkedNoteSlot: View {
     var showsDivider = true
 
     var body: some View {
-        if library.store != nil {
+        if library.store != nil, let note = library.dailyNote(on: date) {
             VStack(spacing: 0) {
-                DailyNoteCard(date: date)
+                DailyNoteCard(note: note, date: date)
                 if showsDivider {
                     Divider()
                 }
