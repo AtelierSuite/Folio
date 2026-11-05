@@ -2,7 +2,7 @@ import Planner
 import SwiftUI
 
 struct MedicationTimelineLayerView: View {
-    private static let markerHeight: CGFloat = 18
+    private static let markerHeight: CGFloat = 20
 
     @Environment(MedicationStore.self) private var store
     let context: TimelineLayerContext

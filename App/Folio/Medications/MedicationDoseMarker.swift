@@ -40,12 +40,4 @@ extension MedicationDoseStatus {
         case .estimated: String(localized: "Status.Estimated", table: "Medications")
         }
     }
-
-    var systemImage: String {
-        switch self {
-        case .taken: "checkmark"
-        case .skipped: "xmark"
-        case .notLogged, .estimated: "pills.fill"
-        }
-    }
 }
