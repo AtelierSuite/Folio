@@ -6,30 +6,20 @@ struct MedicationDoseMarkerView: View {
     let marker: MedicationDoseMarker
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            pill(showsTitle: true)
-            pill(showsTitle: false)
-        }
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .padding(.trailing, 6)
-    }
-
-    private func pill(showsTitle: Bool) -> some View {
         HStack(spacing: 3) {
             Image(systemName: marker.status.systemImage)
-            if showsTitle {
-                Text(marker.title)
-                    .lineLimit(1)
-            }
+            Text(marker.title)
+                .lineLimit(1)
         }
         .font(.caption2.weight(.medium))
         .foregroundStyle(Color.teal)
         .padding(.horizontal, 5)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 18)
-        .background(.background, in: Capsule())
-        .background(Color.teal.opacity(isEstimated ? 0.06 : 0.16), in: Capsule())
+        .background(.background, in: Rectangle())
+        .background(Color.teal.opacity(isEstimated ? 0.06 : 0.16), in: Rectangle())
         .overlay {
-            Capsule()
+            Rectangle()
                 .strokeBorder(
                     Color.teal.opacity(0.6),
                     style: StrokeStyle(lineWidth: 1, dash: isEstimated ? [3, 2] : [])
