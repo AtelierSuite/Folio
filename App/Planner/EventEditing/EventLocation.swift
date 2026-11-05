@@ -1,6 +1,6 @@
 import Foundation
 
-public struct EventLocation: Sendable, Hashable {
+public struct EventLocation: Codable, Sendable, Hashable {
     public var title: String
     public var address: String?
     public var coordinate: EventCoordinate?
@@ -24,7 +24,7 @@ public struct EventLocation: Sendable, Hashable {
     }
 }
 
-public struct EventCoordinate: Sendable, Hashable {
+public struct EventCoordinate: Codable, Sendable, Hashable {
     public var latitude: Double
     public var longitude: Double
 
