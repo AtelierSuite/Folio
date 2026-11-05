@@ -68,6 +68,17 @@ struct EventCountdownManagerTests {
         #expect(manager.running.map(\.state.endDate) == [event.endDate])
     }
 
+    @Test func reconcileShowsTheNewStateBeforeTheActivityCatchesUp() async throws {
+        let manager = makeManager()
+        let event = Fixtures.countdownEvent(local: "dinner", start: start)
+        try manager.start(event, at: now)
+        source.events = [event]
+        settings.phases = CountdownPhases(countsToEnd: false)
+        controller.ignoresUpdates = true
+        await manager.reconcile(at: now)
+        #expect(manager.running.map(\.state.endDate) == [nil])
+    }
+
     @Test func reconcileFollowsAMoveAndEndsADelete() async throws {
         let manager = makeManager()
         let dinner = Fixtures.countdownEvent(local: "dinner", start: start)

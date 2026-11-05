@@ -60,8 +60,12 @@ public final class EventCountdownManager {
         refresh()
     }
 
-    func refresh() {
-        running = controller.runningCountdowns
+    /// An activity's content can still read as the old state just after an update returns.
+    func refresh(applying updatedStates: [String: EventCountdownAttributes.ContentState] = [:]) {
+        running = controller.runningCountdowns.map { countdown in
+            guard let state = updatedStates[countdown.id] else { return countdown }
+            return RunningCountdown(id: countdown.id, attributes: countdown.attributes, state: state)
+        }
         scheduleFinish()
     }
 
