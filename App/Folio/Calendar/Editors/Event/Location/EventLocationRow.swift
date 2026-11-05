@@ -21,10 +21,8 @@ struct EventLocationRow: View {
                     }
                 }
                 Spacer(minLength: 0)
-                if location?.coordinate != nil {
-                    Image(systemName: "mappin.circle.fill")
-                        .foregroundStyle(.red)
-                        .accessibilityHidden(true)
+                if let coordinate = location?.coordinate {
+                    EventLocationMiniMap(coordinate: coordinate)
                 }
             }
             .contentShape(Rectangle())
