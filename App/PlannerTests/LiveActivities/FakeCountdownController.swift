@@ -5,6 +5,7 @@ import Foundation
 final class FakeCountdownController: CountdownActivityControlling {
     var runningCountdowns: [RunningCountdown] = []
     private(set) var endedIdentifiers: [String] = []
+    var ignoresUpdates = false
     private var nextIdentifier = 0
 
     func start(_ attributes: EventCountdownAttributes, state: EventCountdownAttributes.ContentState) throws {
@@ -14,6 +15,7 @@ final class FakeCountdownController: CountdownActivityControlling {
     }
 
     func update(id: String, state: EventCountdownAttributes.ContentState) async {
+        guard !ignoresUpdates else { return }
         guard let index = runningCountdowns.firstIndex(where: { $0.id == id }) else { return }
         let countdown = runningCountdowns[index]
         runningCountdowns[index] = RunningCountdown(id: id, attributes: countdown.attributes, state: state)

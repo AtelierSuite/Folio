@@ -21,13 +21,23 @@ public struct EventCountdownAttributes: Sendable, Hashable, Codable {
         public let startDate: Date
         /// Set when the countdown continues with "ends in…" after the event starts.
         public let endDate: Date?
+        /// When false, the countdown shows the time to the end from the moment it begins.
+        public let countsToStart: Bool
 
-        public init(title: String, location: String?, color: PlannerColor, startDate: Date, endDate: Date?) {
+        public init(
+            title: String,
+            location: String?,
+            color: PlannerColor,
+            startDate: Date,
+            endDate: Date?,
+            countsToStart: Bool = true
+        ) {
             self.title = title
             self.location = location
             self.color = color
             self.startDate = startDate
             self.endDate = endDate
+            self.countsToStart = countsToStart
         }
 
         public var finishDate: Date {

@@ -14,15 +14,17 @@ extension EventCountdownManager {
         } else {
             changes = reconciler.endingFinished(countdowns, at: now)
         }
+        var updatedStates: [String: EventCountdownAttributes.ContentState] = [:]
         for change in changes {
             switch change {
             case .update(let id, let state):
                 await controller.update(id: id, state: state)
+                updatedStates[id] = state
             case .end(let id):
                 await controller.end(id: id)
             }
         }
-        refresh()
+        refresh(applying: updatedStates)
     }
 
     /// For Siri and Shortcuts: counts down to the next event the window allows.

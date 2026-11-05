@@ -49,12 +49,18 @@ struct EventCountdownSection: View {
                     startButton
                         .disabled(true)
                 } footer: {
-                    Text(String(localized: "Countdown.AvailableLater", table: "Countdown"))
+                    Text(availableLaterFooter)
                 }
             case .unavailable:
                 EmptyView()
             }
         }
+    }
+
+    private var availableLaterFooter: String {
+        countdowns.window.phases.countsToStart
+            ? String(localized: "Countdown.AvailableLater", table: "Countdown")
+            : String(localized: "Countdown.AvailableLaterBeforeEnd", table: "Countdown")
     }
 
     private var startButton: some View {

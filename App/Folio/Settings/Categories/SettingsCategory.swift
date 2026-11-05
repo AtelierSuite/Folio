@@ -11,6 +11,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case eventNotifications
     case reminderNotifications
     case alarms
+    case countdowns
     case sleep
     case weather
     case search
@@ -32,6 +33,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .eventNotifications: String(localized: "Section.Events", table: "NotificationSounds")
         case .reminderNotifications: String(localized: "Section.Reminders", table: "NotificationSounds")
         case .alarms: String(localized: "Category.Alarms", table: "Settings")
+        case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
         case .search: String(localized: "Category.Search", table: "Settings")
@@ -53,6 +55,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .eventNotifications: "calendar.badge.clock"
         case .reminderNotifications: "checklist"
         case .alarms: "alarm.fill"
+        case .countdowns: "timer"
         case .sleep: "bed.double.fill"
         case .weather: "cloud.sun.fill"
         case .search: "magnifyingglass"
@@ -74,6 +77,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .eventNotifications: .red
         case .reminderNotifications: .purple
         case .alarms: .orange
+        case .countdowns: .green
         case .sleep: .indigo
         case .weather: .cyan
         case .search: .gray
@@ -102,6 +106,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     func isAvailable(with capabilities: PlatformCapabilities) -> Bool {
         switch self {
         case .alarms: capabilities.supports(.alarms)
+        case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .sleep: capabilities.supports(.sleep)
         default: true
         }

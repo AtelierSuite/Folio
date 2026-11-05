@@ -15,6 +15,7 @@ struct SettingsCategoryView: View {
         case .eventNotifications: CalendarNotificationSettingsView(kind: .event)
         case .reminderNotifications: CalendarNotificationSettingsView(kind: .reminder)
         case .alarms: AlarmSettingsView()
+        case .countdowns: CountdownSettingsView()
         case .sleep: SleepSettingsView()
         case .weather: WeatherSettingsView()
         case .search: SearchSettingsView()
