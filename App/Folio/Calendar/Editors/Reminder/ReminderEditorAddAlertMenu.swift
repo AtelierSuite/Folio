@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ReminderEditorAddAlertMenu: View {
     @Binding var draft: ReminderDraft
+    @Binding var earlyAlerts: [ReminderEarlyAlert]
 
     var body: some View {
         Menu(String(localized: "Alerts.Add", table: "ReminderEditor"), systemImage: "plus.circle.fill") {
@@ -12,6 +13,10 @@ struct ReminderEditorAddAlertMenu: View {
                     .disabled(!draft.canUseRelativeAlarms || draft.alarms.contains(alarm))
             }
             Divider()
+            Button(String(localized: "Alert.CustomEarly", table: "ReminderEditor")) {
+                earlyAlerts.append(.standard)
+            }
+            .disabled(draft.dueDate == nil)
             Button(String(localized: "Alert.Custom", table: "ReminderEditor")) {
                 draft.alarms.append(.absolute(defaultAbsoluteDate))
             }

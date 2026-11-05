@@ -9,19 +9,22 @@ public struct NotificationPlanner: Sendable {
     public var styleResolver: @Sendable (NotificationCandidate) -> NotificationAlertStyle
     public var allDayAlertMinutes: @Sendable (String) -> Int?
     public var soundResolver: @Sendable (NotificationCandidate) -> NotificationSound
+    public var reminderEarlyAlerts: @Sendable (CalendarItemReference) -> [ReminderEarlyAlert]
 
     public init(
         reservedSlots: Int = defaultReservedSlots,
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
         styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard },
         allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil },
-        soundResolver: @escaping @Sendable (NotificationCandidate) -> NotificationSound = { _ in .system }
+        soundResolver: @escaping @Sendable (NotificationCandidate) -> NotificationSound = { _ in .system },
+        reminderEarlyAlerts: @escaping @Sendable (CalendarItemReference) -> [ReminderEarlyAlert] = { _ in [] }
     ) {
         self.reservedSlots = reservedSlots
         self.formatter = formatter
         self.styleResolver = styleResolver
         self.allDayAlertMinutes = allDayAlertMinutes
         self.soundResolver = soundResolver
+        self.reminderEarlyAlerts = reminderEarlyAlerts
     }
 
     public func budget(foreignPendingCount: Int) -> Int {
@@ -70,7 +73,8 @@ public struct NotificationPlanner: Sendable {
     func reminderCandidates(_ reminders: [ReminderItem], after now: Date) -> [NotificationCandidate] {
         reminders.filter { !$0.isCompleted }.flatMap { reminder in
             let alarms = reminder.alarms.map(CalendarAlarm.init)
-            return fireDates(for: alarms, anchor: reminder.dueDate, after: now).map { fireDate in
+            let alarmFireDates = fireDates(for: alarms, anchor: reminder.dueDate, after: now)
+            return (alarmFireDates + earlyAlertFireDates(for: reminder, after: now)).map { fireDate in
                 NotificationCandidate(
                     fireDate: fireDate,
                     kind: .reminder,
