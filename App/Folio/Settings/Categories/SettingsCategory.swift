@@ -13,6 +13,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case alarms
     case countdowns
     case sleep
+    case medications
     case weather
     case search
     case privacy
@@ -35,6 +36,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
+        case .medications: String(localized: "Category.Medications", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
         case .search: String(localized: "Category.Search", table: "Settings")
         case .privacy: String(localized: "Category.Privacy", table: "Settings")
@@ -57,6 +59,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: "alarm.fill"
         case .countdowns: "timer"
         case .sleep: "bed.double.fill"
+        case .medications: "pills.fill"
         case .weather: "cloud.sun.fill"
         case .search: "magnifyingglass"
         case .privacy: "hand.raised.fill"
@@ -79,6 +82,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: .orange
         case .countdowns: .green
         case .sleep: .indigo
+        case .medications: .teal
         case .weather: .cyan
         case .search: .gray
         case .privacy: .blue
@@ -108,6 +112,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: capabilities.supports(.alarms)
         case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .sleep: capabilities.supports(.sleep)
+        case .medications: capabilities.supports(.medications)
         default: true
         }
     }
