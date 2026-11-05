@@ -15,7 +15,12 @@ enum CalendarCreationComposer: Identifiable {
     }
 
     static func event(at slot: CalendarCreationSlot, calendar: Calendar) -> CalendarCreationComposer {
-        var draft = EventDraft.newEvent(on: slot.date, calendarIdentifier: "", calendar: calendar)
+        var draft = EventDraft.newEvent(
+            on: slot.date,
+            calendarIdentifier: "",
+            location: EventLocationSettings().defaultLocation,
+            calendar: calendar
+        )
         if slot.hasTime {
             draft.moveStart(to: slot.date)
         }

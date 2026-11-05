@@ -24,7 +24,11 @@ struct EventEditorView: View {
         editedEvent = nil
         originalDraft = nil
         self.onSave = onSave
-        _draft = State(initialValue: .newEvent(on: initialDate, calendarIdentifier: ""))
+        _draft = State(initialValue: .newEvent(
+            on: initialDate,
+            calendarIdentifier: "",
+            location: EventLocationSettings().defaultLocation
+        ))
         _urlText = State(initialValue: "")
         _styleDraft = State(initialValue: NotificationStyleDraft(reference: nil))
     }
