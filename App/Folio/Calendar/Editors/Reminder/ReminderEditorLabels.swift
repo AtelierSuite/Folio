@@ -48,3 +48,25 @@ extension ReminderAlarm {
         }
     }
 }
+
+extension ReminderEarlyAlert {
+    var title: String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = unit.formatterUnit
+        formatter.unitsStyle = .full
+        let duration = formatter.string(from: dateComponents) ?? ""
+        return String(localized: "Alert.Before \(duration)", table: "ReminderEditor")
+    }
+}
+
+private extension ReminderEarlyAlert.Unit {
+    var formatterUnit: NSCalendar.Unit {
+        switch self {
+        case .minutes: .minute
+        case .hours: .hour
+        case .days: .day
+        case .weeks: .weekOfMonth
+        case .months: .month
+        }
+    }
+}

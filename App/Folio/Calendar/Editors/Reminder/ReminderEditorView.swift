@@ -11,6 +11,7 @@ struct ReminderEditorView: View {
     @State private var originalDraft: ReminderDraft
     @State private var urlText: String
     @State private var styleDraft: NotificationStyleDraft
+    @State private var earlyAlertDraft: ReminderEarlyAlertDraft
     @State private var isWorking = false
     @State private var failure: ReminderEditorFailure?
     @State private var isConfirmingConversion = false
@@ -30,6 +31,7 @@ struct ReminderEditorView: View {
         _originalDraft = State(initialValue: draft)
         _urlText = State(initialValue: draft.url?.absoluteString ?? "")
         _styleDraft = State(initialValue: NotificationStyleDraft(reference: mode.reminder?.reference))
+        _earlyAlertDraft = State(initialValue: ReminderEarlyAlertDraft(reference: mode.reminder?.reference))
     }
 
     var body: some View {
@@ -45,7 +47,7 @@ struct ReminderEditorView: View {
         #if os(macOS)
         .frame(minWidth: 460, minHeight: 600)
         #endif
-        .interactiveDismissDisabled(draft != originalDraft || styleDraft.hasChanges)
+        .interactiveDismissDisabled(draft != originalDraft || styleDraft.hasChanges || earlyAlertDraft.hasChanges)
         .onChange(of: store.defaultReminderListIdentifier, initial: true) { _, identifier in
             if draft.listIdentifier.isEmpty, let identifier {
                 draft.listIdentifier = identifier
@@ -74,6 +76,7 @@ struct ReminderEditorView: View {
                 draft: $draft,
                 urlText: $urlText,
                 alertStyle: $styleDraft.style,
+                earlyAlerts: $earlyAlertDraft.alerts,
                 isReadOnly: mode.isReadOnly,
                 canDelete: mode.reminder.map { !$0.isReadOnly } ?? false,
                 canConvert: canConvert,
@@ -117,9 +120,14 @@ struct ReminderEditorView: View {
             if let reminder = mode.reminder {
                 try await undoCoordinator.updateReminder(reminder, with: draft)
                 styleDraft.save(for: reminder.reference, in: notificationScheduler)
+                earlyAlertDraft.save(
+                    for: reminder.reference, hasDueDate: draft.dueDate != nil, in: notificationScheduler
+                )
             } else {
                 let identifier = try await store.createReminder(draft)
-                styleDraft.save(for: draft.reference(localIdentifier: identifier), in: notificationScheduler)
+                let reference = draft.reference(localIdentifier: identifier)
+                styleDraft.save(for: reference, in: notificationScheduler)
+                earlyAlertDraft.save(for: reference, hasDueDate: draft.dueDate != nil, in: notificationScheduler)
             }
             dismiss()
         } catch {

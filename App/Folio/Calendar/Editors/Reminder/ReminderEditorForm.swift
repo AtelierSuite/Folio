@@ -5,6 +5,7 @@ struct ReminderEditorForm: View {
     @Binding var draft: ReminderDraft
     @Binding var urlText: String
     @Binding var alertStyle: NotificationAlertStyle?
+    @Binding var earlyAlerts: [ReminderEarlyAlert]
     let isReadOnly: Bool
     let canDelete: Bool
     let canConvert: Bool
@@ -28,7 +29,7 @@ struct ReminderEditorForm: View {
                 if draft.canRepeat {
                     ReminderEditorRepeatSection(recurrence: $draft.recurrence, dueDate: draft.dueDate)
                 }
-                ReminderEditorAlertsSection(draft: $draft)
+                ReminderEditorAlertsSection(draft: $draft, earlyAlerts: $earlyAlerts)
                 NotificationStyleSection(style: $alertStyle, calendarIdentifier: draft.listIdentifier)
             }
             .disabled(isReadOnly)
