@@ -5,6 +5,7 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case timeSensitiveNotifications
     case alarms
     case sleep
+    case medications
     case geofencedNotifications
     case leaveAlerts
     case weather

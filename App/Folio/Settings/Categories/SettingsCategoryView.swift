@@ -17,6 +17,7 @@ struct SettingsCategoryView: View {
         case .alarms: AlarmSettingsView()
         case .countdowns: CountdownSettingsView()
         case .sleep: SleepSettingsView()
+        case .medications: MedicationSettingsView()
         case .weather: WeatherSettingsView()
         case .search: SearchSettingsView()
         case .privacy: PrivacySettingsView()

@@ -202,61 +202,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio liest deinen Schlaf aus der Health-App, um ihn in deinem Kalender anzuzeigen. Schlafdaten bleiben auf diesem iPhone und werden nie hochgeladen oder synchronisiert."
+            "value": "Folio liest deinen Schlaf und deine Medikamente aus der Health-App, um sie in deinem Kalender anzuzeigen und dich an Einnahmen zu erinnern. Diese Daten bleiben auf diesem iPhone und werden nie hochgeladen oder synchronisiert."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio reads your sleep from the Health app to show it on your calendar. Sleep data stays on this iPhone and is never uploaded or synced."
+            "value": "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio lit votre sommeil dans l’app Santé pour l’afficher dans votre calendrier. Les données de sommeil restent sur cet iPhone et ne sont jamais envoyées ni synchronisées."
+            "value": "Folio lit votre sommeil et vos médicaments dans l’app Santé pour les afficher dans votre calendrier et vous rappeler vos prises. Ces données restent sur cet iPhone et ne sont jamais envoyées ni synchronisées."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio legge il tuo sonno dall’app Salute per mostrarlo nel calendario. I dati sul sonno restano su questo iPhone e non vengono mai caricati né sincronizzati."
+            "value": "Folio legge il tuo sonno e i tuoi farmaci dall’app Salute per mostrarli nel calendario e ricordarti le dosi. Questi dati restano su questo iPhone e non vengono mai caricati né sincronizzati."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioはヘルスケアから睡眠を読み取り、カレンダーに表示します。睡眠データはこのiPhoneにのみ保存され、アップロードや同期はされません。"
+            "value": "Folioはヘルスケアから睡眠と服薬を読み取り、カレンダーへの表示と服用のリマインダーに使用します。これらのデータはこのiPhoneにのみ保存され、アップロードや同期はされません。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio는 건강 앱에서 수면 데이터를 읽어 캘린더에 표시합니다. 수면 데이터는 이 iPhone에만 남아 있으며 업로드되거나 동기화되지 않습니다."
+            "value": "Folio는 건강 앱에서 수면 및 복약 데이터를 읽어 캘린더에 표시하고 복용을 알려 줍니다. 이 데이터는 이 iPhone에만 남아 있으며 업로드되거나 동기화되지 않습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio leest je slaap uit de Gezondheid-app om deze in je agenda te tonen. Slaapgegevens blijven op deze iPhone en worden nooit geüpload of gesynchroniseerd."
+            "value": "Folio leest je slaap en medicijnen uit de Gezondheid-app om ze in je agenda te tonen en je aan doses te herinneren. Deze gegevens blijven op deze iPhone en worden nooit geüpload of gesynchroniseerd."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio đọc dữ liệu giấc ngủ từ ứng dụng Sức khỏe để hiển thị trên lịch của bạn. Dữ liệu giấc ngủ chỉ nằm trên iPhone này và không bao giờ được tải lên hay đồng bộ."
+            "value": "Folio đọc dữ liệu giấc ngủ và thuốc từ ứng dụng Sức khỏe để hiển thị trên lịch và nhắc bạn uống thuốc. Dữ liệu này chỉ nằm trên iPhone này và không bao giờ được tải lên hay đồng bộ."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 会从“健康”中读取你的睡眠数据并显示在日历上。睡眠数据只保留在这台 iPhone 上，绝不会上传或同步。"
+            "value": "Folio 会从“健康”中读取你的睡眠和用药数据，显示在日历上并提醒你服药。这些数据只保留在这台 iPhone 上，绝不会上传或同步。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 會從「健康」讀取你的睡眠資料並顯示在行事曆上。睡眠資料只保留在這部 iPhone 上，絕不會上傳或同步。"
+            "value": "Folio 會從「健康」讀取你的睡眠和用藥資料，顯示在行事曆上並提醒你用藥。這些資料只保留在這部 iPhone 上，絕不會上傳或同步。"
           }
         }
       }

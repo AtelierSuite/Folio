@@ -21,6 +21,7 @@ struct FolioApp: App {
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var travelTimeStore = TravelTimeStore()
     @State private var sleepStore: SleepStore
+    @State private var medicationStore: MedicationStore
     @State private var systemTime = SystemTimeObserver()
     @State private var undoCoordinator: UndoCoordinator
     @State private var undoToastHosts = UndoToastHosts()
@@ -40,7 +41,11 @@ struct FolioApp: App {
         let leaveAlerts = LeaveAlertCenter(capabilities: .current)
         let wakeUpAlarms = WakeUpAlarmCenter(capabilities: .current)
         let standaloneAlarms = StandaloneAlarmCenter(capabilities: .current)
-        notificationScheduler.replansDependentAlerts(arrivalAlerts, leaveAlerts, wakeUpAlarms, standaloneAlarms)
+        let medicationStore = MedicationStore.makeForApp(notificationScheduler: notificationScheduler)
+        _medicationStore = State(initialValue: medicationStore)
+        notificationScheduler.replansDependentAlerts(
+            arrivalAlerts, leaveAlerts, wakeUpAlarms, standaloneAlarms, medicationStore
+        )
         _arrivalAlerts = State(initialValue: arrivalAlerts)
         _leaveAlerts = State(initialValue: leaveAlerts)
         _wakeUpAlarms = State(initialValue: wakeUpAlarms)
@@ -99,6 +104,8 @@ struct FolioApp: App {
                 .environment(travelTimeStore)
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
+                .environment(medicationStore)
+                .refreshesMedications(medicationStore)
                 .notificationReplanTriggers(notificationScheduler)
                 .replansNotificationsOnLinkedNoteChanges(notificationScheduler, library: notesLibrary)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
@@ -150,6 +157,7 @@ struct FolioApp: App {
             .environment(weatherStore)
             .environment(travelTimeStore)
             .environment(sleepStore)
+            .environment(medicationStore)
             .followsSystemTime(systemTime)
         }
         #endif

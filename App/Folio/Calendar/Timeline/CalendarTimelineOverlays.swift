@@ -1,14 +1,14 @@
 import Planner
 import SwiftUI
 
-/// Extra timeline layers (sleep, weather, alarms), each gated on `capabilities`.
+/// Extra timeline layers (sleep, medications, weather, alarms), each gated on `capabilities`.
 struct CalendarTimelineOverlays {
     let capabilities: PlatformCapabilities
     var weather: WeatherSnapshot = .empty
     var shadesNight = true
 
     func layers(for days: TimelineDays) -> [TimelineLayer] {
-        sleepLayers + weatherLayers(for: days) + alarmLayers
+        sleepLayers + weatherLayers(for: days) + alarmLayers + medicationLayers
     }
 
     private var alarmLayers: [TimelineLayer] {
@@ -17,6 +17,10 @@ struct CalendarTimelineOverlays {
 
     private var sleepLayers: [TimelineLayer] {
         capabilities.supports(.sleep) ? [.sleep] : []
+    }
+
+    private var medicationLayers: [TimelineLayer] {
+        capabilities.supports(.medications) ? [.medications] : []
     }
 
     private func weatherLayers(for days: TimelineDays) -> [TimelineLayer] {
