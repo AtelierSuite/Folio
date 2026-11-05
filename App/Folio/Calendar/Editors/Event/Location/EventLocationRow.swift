@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EventLocationRow: View {
     @Binding var location: EventLocation?
+    var offersSavedLocations = true
     @State private var isSearching = false
 
     var body: some View {
@@ -30,7 +31,7 @@ struct EventLocationRow: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isSearching) {
-            EventLocationSearchView(location: $location)
+            EventLocationSearchView(location: $location, offersSavedLocations: offersSavedLocations)
         }
     }
 }

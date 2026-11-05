@@ -1,6 +1,396 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Editor.Delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Location"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所を削除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除位置"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위치 삭제"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le lieu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort löschen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina luogo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwijder locatie"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa địa điểm"
+          }
+        }
+      }
+    },
+    "Editor.EditTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Location"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所を編集"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編輯位置"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위치 편집"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier le lieu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort bearbeiten"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica luogo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wijzig locatie"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sửa địa điểm"
+          }
+        }
+      }
+    },
+    "Editor.Name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, like Home or Work"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前（自宅、職場など）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名称，如家庭或工作"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名稱，例如住家或公司"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름(예: 집, 직장)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom, comme Domicile ou Travail"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Zuhause oder Arbeit"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome, come Casa o Lavoro"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naam, zoals Thuis of Werk"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên, như Nhà hoặc Nơi làm việc"
+          }
+        }
+      }
+    },
+    "Editor.NewTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Location"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新規の場所"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新位置"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새로운 위치"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau lieu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Ort"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuovo luogo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuwe locatie"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Địa điểm mới"
+          }
+        }
+      }
+    },
+    "Saved.Header": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved Locations"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存した場所"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已存储的位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已儲存的位置"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장된 위치"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieux enregistrés"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesicherte Orte"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luoghi salvati"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewaarde locaties"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Địa điểm đã lưu"
+          }
+        }
+      }
+    },
+    "Settings.Add": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Location"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所を追加"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加入位置"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위치 추가"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lieu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort hinzufügen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi luogo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voeg locatie toe"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm địa điểm"
+          }
+        }
+      }
+    },
     "Settings.DefaultLocation": {
       "extractionState": "manual",
       "localizations": {
@@ -137,61 +527,61 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "New events start at the default location."
+            "value": "New events start at the default location. Saved locations, like home or work, appear first when you choose a location."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "新規イベントにはデフォルトの場所が設定されます。"
+            "value": "新規イベントにはデフォルトの場所が設定されます。自宅や職場など保存した場所は、場所を選ぶときに最初に表示されます。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "新日程会以默认位置开始。"
+            "value": "新日程会以默认位置开始。已存储的位置（如家庭或工作地点）会在选择位置时最先显示。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "新行程會以預設位置開始。"
+            "value": "新行程會以預設位置開始。已儲存的位置（例如住家或公司）會在選擇位置時最先顯示。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "새로운 이벤트에 기본 위치가 설정됩니다."
+            "value": "새로운 이벤트에 기본 위치가 설정됩니다. 집이나 직장처럼 저장한 위치는 위치를 선택할 때 맨 위에 표시됩니다."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les nouveaux événements commencent au lieu par défaut."
+            "value": "Les nouveaux événements commencent au lieu par défaut. Les lieux enregistrés, comme le domicile ou le travail, apparaissent en premier lorsque vous choisissez un lieu."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neue Ereignisse beginnen mit dem Standardort."
+            "value": "Neue Ereignisse beginnen mit dem Standardort. Gesicherte Orte wie Zuhause oder Arbeit werden bei der Ortsauswahl zuerst angezeigt."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "I nuovi eventi iniziano con il luogo predefinito."
+            "value": "I nuovi eventi iniziano con il luogo predefinito. I luoghi salvati, come casa o lavoro, appaiono per primi quando scegli un luogo."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nieuwe activiteiten beginnen met de standaardlocatie."
+            "value": "Nieuwe activiteiten beginnen met de standaardlocatie. Bewaarde locaties, zoals thuis of werk, staan bovenaan wanneer je een locatie kiest."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sự kiện mới sẽ dùng địa điểm mặc định."
+            "value": "Sự kiện mới sẽ dùng địa điểm mặc định. Các địa điểm đã lưu, như nhà hoặc nơi làm việc, sẽ hiện đầu tiên khi bạn chọn địa điểm."
           }
         }
       }
