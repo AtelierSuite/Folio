@@ -8,6 +8,7 @@ public struct NotificationDetail: Sendable, Equatable {
     public let origin: CalendarOrigin?
     public let rows: [NotificationDetailRow]
     public let reminder: NotificationReminderDetails?
+    public let medication: NotificationMedicationDetails?
     let progress: NotificationEventProgress?
     let reminderProgress: NotificationReminderProgress?
 
@@ -21,9 +22,12 @@ public struct NotificationDetail: Sendable, Equatable {
         }
         let reminder = NotificationUserInfo.reminder(from: userInfo)
         self.reminder = reminder
-        reminderProgress = reminder.flatMap { details in
-            details.dueDate.map { NotificationReminderProgress(dueDate: $0, hasDueTime: details.hasDueTime) }
-        }
+        let medication = NotificationUserInfo.medication(from: userInfo)
+        self.medication = medication
+        reminderProgress = medication.map { NotificationReminderProgress(dueDate: $0.dueDate, hasDueTime: true) }
+            ?? reminder.flatMap { details in
+                details.dueDate.map { NotificationReminderProgress(dueDate: $0, hasDueTime: details.hasDueTime) }
+            }
         // Alerts scheduled before the details were added only have the body.
         let time = reminder?.hasDueTime == false
             ? nil
