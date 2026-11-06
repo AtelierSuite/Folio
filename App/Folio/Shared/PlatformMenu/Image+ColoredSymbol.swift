@@ -27,13 +27,18 @@ extension Image {
 import AppKit
 
 extension NSImage {
-    /// Menus redraw template symbols in the label color, so the color is baked into the image.
+    /// SwiftUI menus redraw any symbol image in the tint or label color, even with a palette and `isTemplate` off,
+    /// so the symbol is drawn into a plain image that they leave alone.
     static func coloredSymbol(_ systemName: String, color: PlannerColor) -> NSImage? {
         let platformColor = NSColor(srgbRed: color.red, green: color.green, blue: color.blue, alpha: color.alpha)
         let configuration = NSImage.SymbolConfiguration(paletteColors: [platformColor])
-        let image = NSImage(systemSymbolName: systemName, accessibilityDescription: nil)?
-            .withSymbolConfiguration(configuration)
-        image?.isTemplate = false
+        guard let symbol = NSImage(systemSymbolName: systemName, accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration) else { return nil }
+        let image = NSImage(size: symbol.size, flipped: false) { bounds in
+            symbol.draw(in: bounds)
+            return true
+        }
+        image.isTemplate = false
         return image
     }
 }
