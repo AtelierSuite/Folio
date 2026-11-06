@@ -7,6 +7,7 @@ struct CalendarView: View {
     @AppStorage("Calendar.ViewMode") var mode: CalendarViewMode = .day
     @State var navigation = CalendarNavigation()
     @State var composer: CalendarComposer?
+    @State var intervalComposer: CalendarCreationComposer?
     @State var itemRequest: CalendarItemRequest?
     @State var isShowingInbox = false
     @State private var pendingInvitationCount = 0
@@ -29,6 +30,11 @@ struct CalendarView: View {
                         navigation: navigation,
                         pendingInvitationCount: pendingInvitationCount
                     )
+                }
+                .sheet(item: $intervalComposer) { composer in
+                    if case .event(let draft) = composer {
+                        EventEditorView(newDraft: draft)
+                    }
                 }
                 .sheet(item: $composer) { composer in
                     switch composer {

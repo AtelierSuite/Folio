@@ -5,6 +5,7 @@ public enum AppDestination: Hashable, Sendable {
     case calendarDay(Date, item: CalendarItemReference? = nil)
     case note(URL)
     case newEvent
+    case newEventInInterval(DateInterval)
     case newReminder
     case newNote
 }

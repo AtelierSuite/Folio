@@ -20,6 +20,21 @@ extension EventDraft {
         )
     }
 
+    /// Starts when `interval` starts and fills at most the usual length of a new event.
+    public static func newEvent(
+        in interval: DateInterval,
+        location: EventLocation? = EventLocationSettings().defaultLocation,
+        calendar: Calendar = .current
+    ) -> EventDraft {
+        EventDraft(
+            calendarIdentifier: "",
+            startDate: interval.start,
+            endDate: interval.start.addingTimeInterval(min(interval.duration, defaultDuration)),
+            timeZone: calendar.timeZone,
+            location: location
+        )
+    }
+
     static func defaultStartDate(on day: Date, now: Date, calendar: Calendar) -> Date {
         let startOfDay = calendar.startOfDay(for: day)
         guard calendar.isDate(day, inSameDayAs: now),
