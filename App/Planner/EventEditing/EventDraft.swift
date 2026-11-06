@@ -50,4 +50,10 @@ public struct EventDraft: Sendable, Hashable {
     public var savedTimeZone: TimeZone? {
         isAllDay ? nil : (timeZone ?? .current)
     }
+
+    /// EventKit includes the whole day an all-day event's end falls on, so midnight after the
+    /// last day would add a day.
+    public var savedEndDate: Date {
+        isAllDay ? max(endDate.addingTimeInterval(-1), startDate) : endDate
+    }
 }

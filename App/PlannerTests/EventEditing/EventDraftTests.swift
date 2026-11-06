@@ -52,6 +52,27 @@ struct EventDraftTests {
         #expect(draft.alerts == [EventAlert.defaultAlert(isAllDay: false)])
     }
 
+    @Test func allDayEventsSaveTheirLastDayAsTheEnd() {
+        var draft = EventDraft(
+            calendarIdentifier: "work",
+            startDate: Fixtures.date(2026, 10, 29, hour: 10),
+            endDate: Fixtures.date(2026, 10, 29, hour: 11)
+        )
+        #expect(draft.savedEndDate == Fixtures.date(2026, 10, 29, hour: 11))
+
+        draft.setAllDay(true, calendar: calendar)
+        #expect(calendar.isDate(draft.savedEndDate, inSameDayAs: Fixtures.date(2026, 10, 29)))
+    }
+
+    @Test func allDayEndIsMidnightAfterTheLastDay() {
+        let start = Fixtures.date(2026, 10, 29)
+        let lastSecond = Fixtures.date(2026, 10, 30).addingTimeInterval(-1)
+        let midnight = Fixtures.date(2026, 10, 30)
+        #expect(EventDraft.allDayEnd(from: start, to: lastSecond, calendar: calendar) == midnight)
+        #expect(EventDraft.allDayEnd(from: start, to: midnight, calendar: calendar) == midnight)
+        #expect(EventDraft.allDayEnd(from: start, to: start, calendar: calendar) == midnight)
+    }
+
     @Test func movingStartKeepsDuration() {
         var draft = EventDraft(
             calendarIdentifier: "work",

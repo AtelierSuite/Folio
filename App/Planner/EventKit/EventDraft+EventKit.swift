@@ -10,7 +10,9 @@ extension EventDraft {
             title: event.title ?? "",
             calendarIdentifier: event.calendar?.calendarIdentifier ?? "",
             startDate: event.startDate,
-            endDate: event.endDate,
+            endDate: event.isAllDay
+                ? Self.allDayEnd(from: event.startDate, to: event.endDate, calendar: .current)
+                : event.endDate,
             isAllDay: event.isAllDay,
             timeZone: event.timeZone,
             recurrence: event.recurrenceRules?.first.flatMap(EventRecurrence.init),
@@ -33,7 +35,7 @@ extension EventDraft {
         }
         event.isAllDay = isAllDay
         event.startDate = startDate
-        event.endDate = endDate
+        event.endDate = savedEndDate
         event.timeZone = savedTimeZone
         event.location = location?.text
         event.structuredLocation = location?.structuredLocation

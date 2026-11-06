@@ -31,13 +31,17 @@ extension EventDraft {
         return nextHour
     }
 
+    static func allDayEnd(from startDate: Date, to endDate: Date, calendar: Calendar) -> Date {
+        let lastDay = calendar.startOfDay(for: max(endDate.addingTimeInterval(-1), startDate))
+        return calendar.date(byAdding: .day, value: 1, to: lastDay) ?? startDate
+    }
+
     public mutating func setAllDay(_ isAllDay: Bool, calendar: Calendar = .current) {
         guard isAllDay != self.isAllDay else { return }
         self.isAllDay = isAllDay
         if isAllDay {
             startDate = calendar.startOfDay(for: startDate)
-            let lastDay = calendar.startOfDay(for: max(endDate.addingTimeInterval(-1), startDate))
-            endDate = calendar.date(byAdding: .day, value: 1, to: lastDay) ?? startDate
+            endDate = Self.allDayEnd(from: startDate, to: endDate, calendar: calendar)
             timeZone = nil
         } else {
             startDate = Self.defaultStartDate(on: startDate, now: .now, calendar: calendar)

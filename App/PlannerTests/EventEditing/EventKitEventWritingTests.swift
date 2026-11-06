@@ -65,6 +65,26 @@ struct EventKitEventWritingTests {
         }
     }
 
+    @Test func allDayEventsKeepTheirNumberOfDays() async throws {
+        try await withTemporaryCalendar { store, eventCalendar in
+            let day = calendar.date(byAdding: .day, value: 30, to: calendar.startOfDay(for: .now)) ?? .now
+            for dayCount in [1, 2] {
+                let end = calendar.date(byAdding: .day, value: dayCount, to: day) ?? day
+                let draft = EventDraft(
+                    title: "\(dayCount) days", calendarIdentifier: eventCalendar.calendarIdentifier,
+                    startDate: day, endDate: end, isAllDay: true, timeZone: nil
+                )
+                try await store.createEvent(draft)
+                let events = await occurrences(in: store, calendar: eventCalendar, from: day)
+                let event = try #require(events.first { $0.title == draft.title })
+                let lastDay = calendar.date(byAdding: .day, value: dayCount - 1, to: day) ?? day
+                #expect(calendar.isDate(event.endDate, inSameDayAs: lastDay))
+                let loaded = try await store.eventDraft(for: event)
+                #expect(loaded.endDate == end)
+            }
+        }
+    }
+
     @Test func recurringSpansEditTheRightOccurrences() async throws {
         try await withTemporaryCalendar { store, eventCalendar in
             let firstDay = try await makeSeries(in: store, calendar: eventCalendar)
