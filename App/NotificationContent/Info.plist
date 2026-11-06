@@ -13,6 +13,7 @@
 				<string>folio.event.place</string>
 				<string>folio.event.meeting.place</string>
 				<string>folio.reminder</string>
+				<string>folio.medication</string>
 				<string>folio.event.meeting.zoom</string>
 				<string>folio.event.meeting.googleMeet</string>
 				<string>folio.event.meeting.microsoftTeams</string>

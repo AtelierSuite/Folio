@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NotificationDetailHeaderView: View {
     let origin: CalendarOrigin?
+    let showsOriginColor: Bool
     let status: String?
     let accentColor: Color
     let statusColor: Color
@@ -26,9 +27,11 @@ struct NotificationDetailHeaderView: View {
 
     private func originLabel(_ origin: CalendarOrigin) -> some View {
         HStack(spacing: 6) {
-            Circle()
-                .fill(accentColor)
-                .frame(width: 9, height: 9)
+            if showsOriginColor {
+                Circle()
+                    .fill(accentColor)
+                    .frame(width: 9, height: 9)
+            }
             HStack(spacing: 4) {
                 if !origin.accountName.isEmpty {
                     Text(origin.accountName)

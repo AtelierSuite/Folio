@@ -4,9 +4,13 @@ import HealthKit
 
 extension Medication {
     init(healthKitMedication medication: HKUserAnnotatedMedication) {
+        let displayText = medication.medication.displayText
+        let name = medication.nickname ?? displayText
         self.init(
-            id: medication.medication.displayText,
-            name: medication.nickname ?? medication.medication.displayText
+            id: displayText,
+            name: name,
+            fullName: name == displayText ? nil : displayText,
+            doseUnit: MedicationDoseUnit(generalForm: medication.medication.generalForm)
         )
     }
 }
@@ -18,8 +22,32 @@ extension MedicationDoseRecord {
             medication: medication,
             scheduledDate: scheduledDate,
             loggedDate: event.startDate,
-            status: MedicationDoseStatus(logStatus: event.logStatus)
+            status: MedicationDoseStatus(logStatus: event.logStatus),
+            amount: event.scheduledDoseQuantity.map { quantity in
+                let isCounted = event.unit == HKUnit.count()
+                return MedicationDoseAmount(
+                    quantity: quantity,
+                    unit: isCounted ? medication.doseUnit : .measured(event.unit.unitString)
+                )
+            }
         )
+    }
+}
+
+extension MedicationDoseUnit {
+    init(generalForm: HKMedicationGeneralForm) {
+        switch generalForm {
+        case .tablet: self = .tablet
+        case .capsule: self = .capsule
+        case .drops: self = .drop
+        case .injection: self = .injection
+        case .inhaler: self = .puff
+        case .patch: self = .patch
+        case .spray: self = .spray
+        case .suppository: self = .suppository
+        case .cream, .foam, .gel, .lotion, .ointment, .topical: self = .application
+        default: self = .dose
+        }
     }
 }
 

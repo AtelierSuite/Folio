@@ -14,7 +14,13 @@ public enum NotificationCategoryRegistry {
         let perProvider = NotificationCategory.allCases.filter(\.offersJoin).flatMap { category in
             MeetingProvider.allCases.map { makeCategory(category, joining: $0, snoozing: durations) }
         }
-        return plain + perProvider
+        let medication = UNNotificationCategory(
+            identifier: MedicationReminder.categoryIdentifier,
+            actions: [],
+            intentIdentifiers: [],
+            options: []
+        )
+        return plain + perProvider + [medication]
     }
 
     static func makeCategory(

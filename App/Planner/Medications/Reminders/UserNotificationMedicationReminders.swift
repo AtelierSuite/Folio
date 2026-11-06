@@ -15,7 +15,9 @@ public struct UserNotificationMedicationReminders: MedicationReminderScheduling 
         content.title = reminder.title
         content.body = reminder.body
         content.sound = .default
+        content.categoryIdentifier = MedicationReminder.categoryIdentifier
         content.threadIdentifier = "folio.medication"
+        content.userInfo = NotificationUserInfo.make(for: reminder)
         let components = Calendar.current.dateComponents(
             [.year, .month, .day, .hour, .minute, .second],
             from: reminder.date

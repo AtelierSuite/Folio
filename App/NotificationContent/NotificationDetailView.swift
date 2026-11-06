@@ -11,6 +11,7 @@ struct NotificationDetailView: View {
                 TimelineView(.everyMinute) { _ in
                     NotificationDetailHeaderView(
                         origin: detail.origin,
+                        showsOriginColor: detail.medication == nil,
                         status: detail.status(at: .now),
                         accentColor: accentColor,
                         statusColor: detail.isOverdue(at: .now) ? .red : accentColor
@@ -18,7 +19,15 @@ struct NotificationDetailView: View {
                 }
                 Divider()
             }
-            if let reminder = detail.reminder {
+            if let medication = detail.medication {
+                NotificationMedicationDosesView(doses: medication.doses, accentColor: accentColor)
+                NotificationDetailFooterView(leading: detail.row(.time), trailing: nil)
+                Text(medication.note)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("NotificationDetail.Note")
+            } else if let reminder = detail.reminder {
                 NotificationReminderTaskView(title: detail.title, reminder: reminder, accentColor: accentColor)
                 NotificationDetailFooterView(leading: detail.row(.time), trailing: detail.row(.repeating))
             } else {
