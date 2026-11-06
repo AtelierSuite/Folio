@@ -1,24 +1,32 @@
 import Foundation
 
 public struct WidgetSnapshotLoader: Sendable {
+    private static let eventsWithBadges = 3
+
     private let source: any CalendarDataSource
     private let visibilityStorage: CalendarVisibilityStorage
     private let weatherReader: WidgetWeatherReader
     private let alarmStorage: StandaloneAlarmStorage
     private let wakeUpSettings: WakeUpAlarmSettings
+    private let eventNoteStore: EventNoteDigestStore
+    private let badgeReader: any ContactBadgeReading
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
         weatherReader: WidgetWeatherReader = WidgetWeatherReader(),
         alarmStorage: StandaloneAlarmStorage = StandaloneAlarmStorage(),
-        wakeUpSettings: WakeUpAlarmSettings = WakeUpAlarmSettings()
+        wakeUpSettings: WakeUpAlarmSettings = WakeUpAlarmSettings(),
+        eventNoteStore: EventNoteDigestStore = EventNoteDigestStore(),
+        badgeReader: any ContactBadgeReading = SystemContactBadgeReader()
     ) {
         self.source = source
         self.visibilityStorage = visibilityStorage
         self.weatherReader = weatherReader
         self.alarmStorage = alarmStorage
         self.wakeUpSettings = wakeUpSettings
+        self.eventNoteStore = eventNoteStore
+        self.badgeReader = badgeReader
     }
 
     public func load(
@@ -37,18 +45,37 @@ public struct WidgetSnapshotLoader: Sendable {
         let reminders = request.includesReminders
             ? await source.reminders(completedIn: DateInterval(start: now, duration: 0))
             : []
+        let visibleEvents = EventDuplicateDetector(calendar: calendar)
+            .groups(in: events.filter {
+                calendarFilter.includes($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
+            })
+            .map(\.primary)
+        let eventNotes = request.includesEventNotes ? eventNoteStore.digests : [:]
         return WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
             reminderAuthorization: source.authorizationStatus(for: .reminder),
-            events: EventDuplicateDetector(calendar: calendar)
-                .groups(in: events.filter {
-                    calendarFilter.includes($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
-                })
-                .map(\.primary),
+            events: visibleEvents,
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
-            alarmDates: request.includesAlarms ? alarmDates(after: now) : []
+            alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
+            eventNotes: eventNotes,
+            contactBadges: badges(for: visibleEvents, withNotes: eventNotes, after: now)
         )
+    }
+
+    private func badges(
+        for events: [CalendarEvent],
+        withNotes eventNotes: [String: EventNoteDigest],
+        after now: Date
+    ) -> [String: ContactBadge] {
+        let upcoming = events
+            .filter { $0.endDate > now && eventNotes[$0.reference.storageKey] != nil }
+            .prefix(Self.eventsWithBadges)
+        var badges: [String: ContactBadge] = [:]
+        for participant in upcoming.flatMap(\.visibleAttendees) where badges[participant.id] == nil {
+            badges[participant.id] = badgeReader.badge(for: participant)
+        }
+        return badges
     }
 
     private func alarmDates(after now: Date) -> [Date] {

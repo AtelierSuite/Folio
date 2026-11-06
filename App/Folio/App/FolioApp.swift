@@ -116,6 +116,7 @@ struct FolioApp: App {
                 .environment(undoCoordinator)
                 .environment(undoToastHosts)
                 .reloadsWidgets(on: calendarStore)
+                .publishesEventNoteDigests(from: notesLibrary, events: calendarStore)
                 .environment(countdowns)
                 .reconcilesCountdowns(countdowns, with: calendarStore)
                 .task(id: calendarStore.contentRevision) {

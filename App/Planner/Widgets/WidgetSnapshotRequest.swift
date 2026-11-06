@@ -8,6 +8,7 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
     public var lists: Set<String>?
     public var includesWeather: Bool
     public var includesAlarms: Bool
+    public var includesEventNotes: Bool
 
     public init(
         eventInterval: DateInterval?,
@@ -15,7 +16,8 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
         includesReminders: Bool = false,
         lists: Set<String>? = nil,
         includesWeather: Bool = false,
-        includesAlarms: Bool = false
+        includesAlarms: Bool = false,
+        includesEventNotes: Bool = false
     ) {
         self.eventInterval = eventInterval
         self.calendars = calendars
@@ -23,6 +25,7 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
         self.lists = lists
         self.includesWeather = includesWeather
         self.includesAlarms = includesAlarms
+        self.includesEventNotes = includesEventNotes
     }
 
     /// Today and tomorrow, enough for Up Next and the agenda to roll over at midnight.
@@ -54,6 +57,19 @@ public struct WidgetSnapshotRequest: Sendable, Hashable {
         return WidgetSnapshotRequest(
             eventInterval: grid.span ?? days(from: now, count: 1, calendar: calendar),
             calendars: calendars
+        )
+    }
+
+    /// The days the app publishes note digests for.
+    public static func eventNotes(
+        from now: Date,
+        calendar: Calendar,
+        calendars: Set<String>? = nil
+    ) -> WidgetSnapshotRequest {
+        WidgetSnapshotRequest(
+            eventInterval: days(from: now, count: EventNoteDigest.lookAheadDays, calendar: calendar),
+            calendars: calendars,
+            includesEventNotes: true
         )
     }
 

@@ -8,6 +8,7 @@ enum WidgetFamilies {
     static let miniMonth: [WidgetFamily] = [.systemSmall, .systemMedium]
     static let reminders: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
 
+    static let eventNotes: [WidgetFamily] = [.systemMedium, .systemLarge]
     static let dayShift: [WidgetFamily] = [.systemSmall, .systemMedium]
     static let dayLoad: [WidgetFamily] = [.systemSmall, .systemMedium] + lockScreenText
 
