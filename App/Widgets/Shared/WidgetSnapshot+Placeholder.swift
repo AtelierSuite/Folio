@@ -15,7 +15,26 @@ nonisolated extension WidgetSnapshot {
             sampleReminder("Placeholder.Reminder.Call", due: now.addingTimeInterval(3_600)),
             sampleReminder("Placeholder.Reminder.Book", due: nil)
         ]
-        return WidgetSnapshot(events: events, reminders: reminders)
+        let review = events[2]
+        return WidgetSnapshot(
+            events: events,
+            reminders: reminders,
+            leaveByPlan: LeaveByPlan(eventKey: review.reference.storageKey, travelTime: 1_500, transport: .driving),
+            isLeaveByTracking: true,
+            eventNotes: [review.reference.storageKey: sampleNote(title: review.title)]
+        )
+    }
+
+    private static func sampleNote(title: String) -> EventNoteDigest {
+        EventNoteDigest(
+            notePath: "",
+            title: title,
+            summary: String(localized: "Placeholder.Note.Summary", table: "Widgets"),
+            checklist: [
+                .init(text: String(localized: "Placeholder.Note.Agenda", table: "Widgets"), isDone: true),
+                .init(text: String(localized: "Placeholder.Note.Slides", table: "Widgets"), isDone: false)
+            ]
+        )
     }
 
     private static func sampleEvent(
