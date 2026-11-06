@@ -17,7 +17,7 @@ struct WidgetTitleBar<Content: View>: View {
         .padding(.top, WidgetTitleBarMetrics.cornerClearance)
         .background {
             Rectangle()
-                .fill(Color("AccentColor"))
+                .fill(Color("AccentColor").gradient)
                 .widgetAccentable()
         }
     }
