@@ -9,8 +9,8 @@ struct RemainingRemindersWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: Self.kind,
-            intent: ReminderListSelectionIntent.self,
-            provider: FolioTimelineProvider<ReminderListSelectionIntent>()
+            intent: RemainingRemindersConfigurationIntent.self,
+            provider: FolioTimelineProvider<RemainingRemindersConfigurationIntent>()
         ) { entry in
             RemainingRemindersView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)

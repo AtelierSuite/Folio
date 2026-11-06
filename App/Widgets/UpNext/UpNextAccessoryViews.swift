@@ -6,15 +6,17 @@ import WidgetKit
 struct UpNextRectangularView: View {
     let upNext: WidgetUpNext?
     let date: Date
+    let showsDetails: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let upNext {
                 let event = upNext.event
-                Text(event.title)
+                Text(showsDetails ? event.title : String(localized: "UpNext.Title", table: "Widgets"))
                     .font(.headline)
                     .widgetAccentable()
                     .lineLimit(1)
+                    .privacySensitive(showsDetails)
                 Group {
                     if upNext.isOngoing {
                         Text(verbatim: upNext.timing(on: date, calendar: .current).summary)
@@ -23,10 +25,11 @@ struct UpNextRectangularView: View {
                     }
                 }
                 .lineLimit(1)
-                if let location = event.location, !location.isEmpty {
+                if showsDetails, let location = event.location, !location.isEmpty {
                     Text(location)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
+                        .privacySensitive()
                 }
             } else {
                 Text(String(localized: "UpNext.Title", table: "Widgets"))
@@ -43,11 +46,12 @@ struct UpNextRectangularView: View {
 struct UpNextInlineView: View {
     let upNext: WidgetUpNext?
     let date: Date
+    let showsDetails: Bool
 
     var body: some View {
         if let upNext {
             let timing = upNext.timing(on: date, calendar: .current)
-            let line = "\(timing.summary) \(upNext.event.title)"
+            let line = showsDetails ? "\(timing.summary) \(upNext.event.title)" : timing.summary
             ViewThatFits {
                 Label {
                     Text(verbatim: line)
@@ -56,6 +60,7 @@ struct UpNextInlineView: View {
                 }
                 Text(verbatim: line)
             }
+            .privacySensitive(showsDetails)
         } else {
             Label(String(localized: "UpNext.Empty", table: "Widgets"), systemImage: "calendar")
         }

@@ -6,11 +6,13 @@ nonisolated protocol FolioWidgetIntent: WidgetConfigurationIntent {
     func snapshotRequest(at now: Date, calendar: Calendar) -> WidgetSnapshotRequest
     var timelineTickInterval: TimeInterval? { get }
     var scheduleHourCount: Int { get }
+    var showsDetails: Bool { get }
 }
 
 extension FolioWidgetIntent {
     nonisolated var timelineTickInterval: TimeInterval? { nil }
     nonisolated var scheduleHourCount: Int { HourlySchedule.defaultHourCount }
+    nonisolated var showsDetails: Bool { true }
 }
 
 extension Array where Element: Identifiable, Element.ID == String {
