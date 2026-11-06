@@ -11,6 +11,7 @@ public struct WidgetSnapshotLoader: Sendable {
     private let eventNoteStore: EventNoteDigestStore
     private let badgeReader: any ContactBadgeReading
     private let medicationReader: WidgetMedicationReader
+    private let leaveBySettings: LeaveBySettings
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
@@ -20,7 +21,8 @@ public struct WidgetSnapshotLoader: Sendable {
         wakeUpSettings: WakeUpAlarmSettings = WakeUpAlarmSettings(),
         eventNoteStore: EventNoteDigestStore = EventNoteDigestStore(),
         badgeReader: any ContactBadgeReading = SystemContactBadgeReader(),
-        medicationReader: WidgetMedicationReader = WidgetMedicationReader()
+        medicationReader: WidgetMedicationReader = WidgetMedicationReader(),
+        leaveBySettings: LeaveBySettings = LeaveBySettings()
     ) {
         self.source = source
         self.visibilityStorage = visibilityStorage
@@ -30,6 +32,7 @@ public struct WidgetSnapshotLoader: Sendable {
         self.eventNoteStore = eventNoteStore
         self.badgeReader = badgeReader
         self.medicationReader = medicationReader
+        self.leaveBySettings = leaveBySettings
     }
 
     public func load(
@@ -54,6 +57,7 @@ public struct WidgetSnapshotLoader: Sendable {
             })
             .map(\.primary)
         let eventNotes = request.includesEventNotes ? eventNoteStore.digests : [:]
+        let leaveByPlan = request.includesLeaveBy ? leaveBySettings.plan : nil
         let doses = request.includesMedications ? await medicationReader.dosesAwaitingAction(at: now) : []
         return WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
@@ -63,9 +67,21 @@ public struct WidgetSnapshotLoader: Sendable {
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
             alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
             medicationDoses: doses,
+            leaveByPlan: leaveByPlan,
+            isLeaveByTracking: request.includesLeaveBy && leaveBySettings.isTracking,
+            leaveByRainChance: leaveByPlan.flatMap { rainChance(for: $0, in: visibleEvents, calendar: calendar) },
             eventNotes: eventNotes,
             contactBadges: badges(for: visibleEvents, withNotes: eventNotes, after: now)
         )
+    }
+
+    private func rainChance(
+        for plan: LeaveByPlan,
+        in events: [CalendarEvent],
+        calendar: Calendar
+    ) -> Double? {
+        guard let event = events.first(where: { $0.reference.storageKey == plan.eventKey }) else { return nil }
+        return weatherReader.hourlyWeather(at: plan.leaveDate(for: event), calendar: calendar)?.precipitationChance
     }
 
     private func badges(

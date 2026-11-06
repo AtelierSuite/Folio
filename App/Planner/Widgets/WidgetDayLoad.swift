@@ -81,6 +81,7 @@ public struct WidgetDayLoad: Sendable, Equatable {
 
 extension WidgetSnapshot {
     public func dayLoad(at date: Date, calendar: Calendar) -> WidgetDayLoad {
-        WidgetDayLoad(events: events, at: date, calendar: calendar)
+        let travel = leaveBy(at: date).map { DateInterval(start: $0.leaveDate, end: $0.event.startDate) }
+        return WidgetDayLoad(events: events, travel: travel.map { [$0] } ?? [], at: date, calendar: calendar)
     }
 }

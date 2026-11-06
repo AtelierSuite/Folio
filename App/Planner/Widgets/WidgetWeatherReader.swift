@@ -20,6 +20,12 @@ public struct WidgetWeatherReader: Sendable {
         return weather
     }
 
+    public func hourlyWeather(at date: Date, calendar: Calendar) -> HourlyWeather? {
+        guard settings.isEnabled, let home = homeCoordinate else { return nil }
+        let dayStart = calendar.startOfDay(for: date)
+        return cache.entry(for: WeatherLocationKey(home), dayStart: dayStart, calendar: calendar)?.day.hour(containing: date)
+    }
+
     private var homeCoordinate: PlannerCoordinate? {
         switch settings.locationMode {
         case .chosen: settings.chosenPlace?.coordinate

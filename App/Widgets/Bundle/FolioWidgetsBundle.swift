@@ -24,6 +24,7 @@ struct FolioWidgetsBundle: WidgetBundle {
     private var lockScreenWidgets: some Widget {
         #if os(iOS)
         RemainingRemindersWidget()
+        LeaveByWidget()
         EventCountdownLiveActivity()
         #endif
         #if canImport(AlarmKit) && os(iOS)

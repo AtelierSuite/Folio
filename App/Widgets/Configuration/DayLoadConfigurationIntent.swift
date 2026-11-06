@@ -15,6 +15,6 @@ struct DayLoadConfigurationIntent: FolioWidgetIntent {
     nonisolated var timelineTickInterval: TimeInterval? { 5 * 60 }
 
     nonisolated func snapshotRequest(at now: Date, calendar: Calendar) -> WidgetSnapshotRequest {
-        .upcoming(from: now, calendar: calendar, calendars: calendars?.identifierSet)
+        .upcoming(from: now, calendar: calendar, calendars: calendars?.identifierSet, includesLeaveBy: true)
     }
 }
