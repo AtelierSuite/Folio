@@ -28,7 +28,8 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
             events: snapshot.events,
             from: now,
             calendar: calendar,
-            tickInterval: configuration.timelineTickInterval
+            tickInterval: configuration.timelineTickInterval,
+            additionalBoundaries: configuration.timelineBoundaries(in: snapshot, at: now, calendar: calendar)
         )
         let entries = plan.entryDates.map {
             FolioWidgetEntry(date: $0, snapshot: snapshot, scheduleHourCount: configuration.scheduleHourCount)
