@@ -6,6 +6,7 @@ extension EventDraft {
     public static func newEvent(
         on day: Date,
         calendarIdentifier: String,
+        location: EventLocation? = nil,
         now: Date = .now,
         calendar: Calendar = .current
     ) -> EventDraft {
@@ -14,7 +15,8 @@ extension EventDraft {
             calendarIdentifier: calendarIdentifier,
             startDate: startDate,
             endDate: startDate.addingTimeInterval(defaultDuration),
-            timeZone: calendar.timeZone
+            timeZone: calendar.timeZone,
+            location: location
         )
     }
 

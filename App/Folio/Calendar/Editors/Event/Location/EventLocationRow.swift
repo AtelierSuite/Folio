@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EventLocationRow: View {
     @Binding var location: EventLocation?
+    var offersSavedLocations = true
     @State private var isSearching = false
 
     var body: some View {
@@ -20,17 +21,15 @@ struct EventLocationRow: View {
                     }
                 }
                 Spacer(minLength: 0)
-                if location?.coordinate != nil {
-                    Image(systemName: "mappin.circle.fill")
-                        .foregroundStyle(.red)
-                        .accessibilityHidden(true)
+                if let coordinate = location?.coordinate {
+                    EventLocationMiniMap(coordinate: coordinate)
                 }
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isSearching) {
-            EventLocationSearchView(location: $location)
+            EventLocationSearchView(location: $location, offersSavedLocations: offersSavedLocations)
         }
     }
 }

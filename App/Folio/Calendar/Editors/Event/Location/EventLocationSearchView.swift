@@ -3,29 +3,51 @@ import SwiftUI
 
 struct EventLocationSearchView: View {
     @Binding var location: EventLocation?
+    var offersSavedLocations = true
     @Environment(\.dismiss) private var dismiss
     @State private var search = LocationSearch()
     @State private var isResolving = false
+    @State private var savedLocations = EventLocationSettings().savedLocations
 
     private var trimmedQuery: String {
         search.query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private var matchingSavedLocations: [SavedLocation] {
+        guard offersSavedLocations else { return [] }
+        let isUntouched = trimmedQuery.isEmpty || trimmedQuery == location?.title
+        return isUntouched ? savedLocations : savedLocations.filter { $0.matches(trimmedQuery) }
+    }
+
     var body: some View {
         NavigationStack {
             List {
+                if !matchingSavedLocations.isEmpty {
+                    Section(String(localized: "Saved.Header", table: "Locations")) {
+                        ForEach(matchingSavedLocations) { saved in
+                            EventLocationChoiceRow(
+                                title: saved.name,
+                                subtitle: saved.summary,
+                                systemImage: "star.circle.fill",
+                                color: .orange
+                            ) {
+                                choose(saved.location)
+                            }
+                        }
+                    }
+                }
                 if !trimmedQuery.isEmpty {
-                    Button {
+                    Button(String(localized: "Location.UseText \(trimmedQuery)", table: "EventEditor")) {
                         choose(EventLocation(title: trimmedQuery))
-                    } label: {
-                        Label(
-                            String(localized: "Location.UseText \(trimmedQuery)", table: "EventEditor"),
-                            systemImage: "text.cursor"
-                        )
                     }
                 }
                 ForEach(search.suggestions) { suggestion in
-                    EventLocationSuggestionRow(suggestion: suggestion) {
+                    EventLocationChoiceRow(
+                        title: suggestion.title,
+                        subtitle: suggestion.subtitle,
+                        systemImage: "mappin.circle.fill",
+                        color: .red
+                    ) {
                         Task { await resolve(suggestion) }
                     }
                 }
@@ -80,22 +102,25 @@ struct EventLocationSearchView: View {
     }
 }
 
-private struct EventLocationSuggestionRow: View {
-    let suggestion: LocationSearchSuggestion
+private struct EventLocationChoiceRow: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+    let color: Color
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                Image(systemName: "mappin.circle.fill")
+                Image(systemName: systemImage)
                     .font(.title2)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(color)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(suggestion.title)
+                    Text(title)
                         .foregroundStyle(.primary)
-                    if !suggestion.subtitle.isEmpty {
-                        Text(suggestion.subtitle)
+                    if !subtitle.isEmpty {
+                        Text(subtitle)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
