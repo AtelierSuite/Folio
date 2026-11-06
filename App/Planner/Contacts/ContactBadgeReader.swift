@@ -27,8 +27,10 @@ public struct SystemContactBadgeReader: ContactBadgeReading {
     }
 
     private static var canReadContacts: Bool {
-        let status = CNContactStore.authorizationStatus(for: .contacts)
-        return status == .authorized || status == .limited
+        switch CNContactStore.authorizationStatus(for: .contacts) {
+        case .notDetermined, .restricted, .denied: false
+        default: true
+        }
     }
 
     private func contact(matching email: String) -> CNContact? {

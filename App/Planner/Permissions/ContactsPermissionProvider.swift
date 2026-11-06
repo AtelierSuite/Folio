@@ -27,7 +27,10 @@ extension PermissionStatus {
         case .notDetermined: self = .notDetermined
         case .restricted: self = .restricted
         case .denied: self = .denied
-        case .authorized, .limited: self = .granted
+        case .authorized: self = .granted
+        #if os(iOS)
+        case .limited: self = .granted
+        #endif
         @unknown default: self = .unknown
         }
     }
