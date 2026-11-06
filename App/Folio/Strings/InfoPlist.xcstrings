@@ -1,656 +1,722 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "CFBundleDisplayName": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio"
-          }
-        }
-      }
-    },
-    "NSAlarmKitUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio verwendet Wecker, um dich an Ereignisse und Erinnerungen mit dem Stil „Wecker“ zu erinnern, auch im Stummmodus oder in einem Fokus."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio utilise des alarmes pour vous signaler les événements et rappels réglés sur le style Alarme, même en mode silencieux ou avec une concentration."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio usa le sveglie per avvisarti di eventi e promemoria impostati sullo stile Sveglia, anche in modalità silenziosa o con una full immersion attiva."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioは、アラームスタイルに設定したイベントやリマインダーを、消音モードや集中モード中でもアラームでお知らせします。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 알람 스타일로 설정한 이벤트와 미리 알림을 무음 모드나 집중 모드에서도 알람으로 알려 줍니다."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio gebruikt wekkers om je te waarschuwen voor activiteiten en herinneringen met de stijl Wekker, ook in de stille modus of tijdens een focus."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio dùng báo thức để nhắc bạn về các sự kiện và lời nhắc được đặt kiểu Báo thức, kể cả khi ở chế độ im lặng hoặc đang bật Tập trung."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 会使用闹钟提醒你设为“闹钟”样式的日程和提醒事项，即使在静音模式或专注模式下也会响起。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 會使用鬧鐘提醒你設為「鬧鐘」樣式的行程和提醒事項，即使在靜音模式或專注模式下也會響起。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         }
       }
     },
-    "NSCalendarsFullAccessUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio zeigt, erstellt und bearbeitet die Termine in deinen Kalendern."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio shows, creates and edits the events in your calendars."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio affiche, crée et modifie les évènements de vos calendriers."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio mostra, crea e modifica gli eventi nei tuoi calendari."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioはカレンダーの予定を表示、作成、編集します。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio가 캘린더의 일정을 표시하고 생성 및 편집합니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio toont, maakt en wijzigt de afspraken in je agenda's."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio hiển thị, tạo và sửa các sự kiện trong lịch của bạn."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 会显示、创建和编辑你日历中的日程。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 會顯示、建立和編輯你行事曆中的活動。"
-          }
-        }
-      }
-    },
-    "NSContactsUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio zeigt die Namen und Fotos der Teilnehmer deiner Termine."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio shows the names and photos of the people attending your events."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio affiche les noms et les photos des participants à vos événements."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio mostra i nomi e le foto dei partecipanti ai tuoi eventi."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioはイベントの参加者の名前と写真を表示します。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 이벤트 참석자의 이름과 사진을 표시합니다."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio toont de namen en foto’s van de deelnemers aan je afspraken."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio hiển thị tên và ảnh của những người tham dự sự kiện."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 会显示日程参加者的姓名和照片。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 會顯示行程參加者的姓名和照片。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio"
           }
         }
       }
     },
-    "NSHealthShareUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio liest deinen Schlaf und deine Medikamente aus der Health-App, um sie in deinem Kalender anzuzeigen und dich an Einnahmen zu erinnern. Diese Daten bleiben auf diesem iPhone und werden nie hochgeladen oder synchronisiert."
+    "NSAlarmKitUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio verwendet Wecker, um dich an Ereignisse und Erinnerungen mit dem Stil „Wecker“ zu erinnern, auch im Stummmodus oder in einem Fokus."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio lit votre sommeil et vos médicaments dans l’app Santé pour les afficher dans votre calendrier et vous rappeler vos prises. Ces données restent sur cet iPhone et ne sont jamais envoyées ni synchronisées."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio utilise des alarmes pour vous signaler les événements et rappels réglés sur le style Alarme, même en mode silencieux ou avec une concentration."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio legge il tuo sonno e i tuoi farmaci dall’app Salute per mostrarli nel calendario e ricordarti le dosi. Questi dati restano su questo iPhone e non vengono mai caricati né sincronizzati."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio usa le sveglie per avvisarti di eventi e promemoria impostati sullo stile Sveglia, anche in modalità silenziosa o con una full immersion attiva."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioはヘルスケアから睡眠と服薬を読み取り、カレンダーへの表示と服用のリマインダーに使用します。これらのデータはこのiPhoneにのみ保存され、アップロードや同期はされません。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioは、アラームスタイルに設定したイベントやリマインダーを、消音モードや集中モード中でもアラームでお知らせします。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 건강 앱에서 수면 및 복약 데이터를 읽어 캘린더에 표시하고 복용을 알려 줍니다. 이 데이터는 이 iPhone에만 남아 있으며 업로드되거나 동기화되지 않습니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 알람 스타일로 설정한 이벤트와 미리 알림을 무음 모드나 집중 모드에서도 알람으로 알려 줍니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio leest je slaap en medicijnen uit de Gezondheid-app om ze in je agenda te tonen en je aan doses te herinneren. Deze gegevens blijven op deze iPhone en worden nooit geüpload of gesynchroniseerd."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio gebruikt wekkers om je te waarschuwen voor activiteiten en herinneringen met de stijl Wekker, ook in de stille modus of tijdens een focus."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio đọc dữ liệu giấc ngủ và thuốc từ ứng dụng Sức khỏe để hiển thị trên lịch và nhắc bạn uống thuốc. Dữ liệu này chỉ nằm trên iPhone này và không bao giờ được tải lên hay đồng bộ."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio dùng báo thức để nhắc bạn về các sự kiện và lời nhắc được đặt kiểu Báo thức, kể cả khi ở chế độ im lặng hoặc đang bật Tập trung."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 会从“健康”中读取你的睡眠和用药数据，显示在日历上并提醒你服药。这些数据只保留在这台 iPhone 上，绝不会上传或同步。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会使用闹钟提醒你设为“闹钟”样式的日程和提醒事项，即使在静音模式或专注模式下也会响起。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 會從「健康」讀取你的睡眠和用藥資料，顯示在行事曆上並提醒你用藥。這些資料只保留在這部 iPhone 上，絕不會上傳或同步。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會使用鬧鐘提醒你設為「鬧鐘」樣式的行程和提醒事項，即使在靜音模式或專注模式下也會響起。"
           }
         }
       }
     },
-    "NSHealthUpdateUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debug-Builds von Folio schreiben Beispiel-Schlafdaten zum Testen in die Health-App."
+    "NSCalendarsFullAccessUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio zeigt, erstellt und bearbeitet die Termine in deinen Kalendern."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debug builds of Folio write sample sleep to the Health app for testing."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio shows, creates and edits the events in your calendars."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les versions de débogage de Folio écrivent des exemples de sommeil dans l’app Santé pour les tests."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio affiche, crée et modifie les évènements de vos calendriers."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le build di debug di Folio scrivono dati di sonno di esempio nell’app Salute per i test."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio mostra, crea e modifica gli eventi nei tuoi calendari."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioのデバッグビルドは、テスト用のサンプル睡眠データをヘルスケアに書き込みます。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioはカレンダーの予定を表示、作成、編集します。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 디버그 빌드는 테스트를 위해 샘플 수면 데이터를 건강 앱에 기록합니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio가 캘린더의 일정을 표시하고 생성 및 편집합니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Debugversies van Folio schrijven voorbeeldslaapgegevens naar de Gezondheid-app om te testen."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio toont, maakt en wijzigt de afspraken in je agenda's."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bản gỡ lỗi của Folio ghi dữ liệu giấc ngủ mẫu vào ứng dụng Sức khỏe để thử nghiệm."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio hiển thị, tạo và sửa các sự kiện trong lịch của bạn."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 的调试版本会将示例睡眠数据写入“健康”以供测试。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会显示、创建和编辑你日历中的日程。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 的除錯版本會將範例睡眠資料寫入「健康」以供測試。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會顯示、建立和編輯你行事曆中的活動。"
           }
         }
       }
     },
-    "NSLocationAlwaysAndWhenInUseUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio verwendet deinen Standort im Hintergrund nur für Ankunfts- und Aufbruchshinweise und das Widget „Aufbruchszeit“, die du aktivierst, um dich zu benachrichtigen, wenn du an einem Termin ankommst oder es Zeit ist aufzubrechen. Dein Standort wird nur mit Apple Karten geteilt, um Reisezeiten zu berechnen."
+    "NSContactsUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio zeigt die Namen und Fotos der Teilnehmer deiner Termine."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio uses your location in the background only for the arrival alerts, time to leave alerts and Leave By widget you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio shows the names and photos of the people attending your events."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée, les alertes de départ et le widget Heure de départ que vous activez, afin de vous prévenir quand vous arrivez à un événement ou quand il est temps de partir. Votre position n'est partagée qu'avec Plans d'Apple pour calculer les temps de trajet."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio affiche les noms et les photos des participants à vos événements."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio usa la tua posizione in background solo per gli avvisi di arrivo e di partenza e per il widget Ora di partenza che attivi, per avvisarti quando arrivi a un evento o quando è ora di partire. La tua posizione viene condivisa solo con Mappe di Apple per calcolare i tempi di percorrenza."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio mostra i nomi e le foto dei partecipanti ai tuoi eventi."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioは、オンにした到着通知、出発時刻の通知、「出発時間」ウィジェットのためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときや出発する時刻になったときにお知らせします。位置情報は所要時間の計算のためにAppleのマップとのみ共有されます。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioはイベントの参加者の名前と写真を表示します。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 사용자가 켠 도착 알림, 출발 시간 알림, 출발 시간 위젯을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 줍니다. 위치 정보는 이동 시간 계산을 위해 Apple 지도와만 공유됩니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 이벤트 참석자의 이름과 사진을 표시합니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio gebruikt je locatie op de achtergrond alleen voor de aankomst- en vertrekmeldingen en de widget Vertrektijd die je inschakelt, om je te laten weten wanneer je bij een afspraak aankomt of wanneer het tijd is om te vertrekken. Je locatie wordt alleen gedeeld met Apple Kaarten om reistijden te berekenen."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio toont de namen en foto’s van de deelnemers aan je afspraken."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio chỉ dùng vị trí của bạn trong nền cho cảnh báo đến nơi, cảnh báo khởi hành và tiện ích Giờ khởi hành mà bạn bật, để báo khi bạn đến sự kiện hoặc khi đến lúc khởi hành. Vị trí của bạn chỉ được chia sẻ với Apple Maps để tính thời gian di chuyển."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio hiển thị tên và ảnh của những người tham dự sự kiện."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 只会为你打开的到达提醒、出发时间提醒和“出发时间”小组件在后台使用你的位置，以便在你到达日程地点或该出发时告知你。你的位置只会与 Apple 地图共享，用于计算行程时间。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会显示日程参加者的姓名和照片。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 只會為你開啟的抵達提醒、出發時間提醒和「出發時間」小工具在背景使用你的位置，以便在你抵達行程地點或該出發時告知你。你的位置只會與 Apple 地圖共享，用於計算行程時間。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會顯示行程參加者的姓名和照片。"
           }
         }
       }
     },
-    "NSLocationUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen."
+    "NSHealthShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio liest deinen Schlaf und deine Medikamente aus der Health-App, um sie in deinem Kalender anzuzeigen und dich an Einnahmen zu erinnern. Diese Daten bleiben auf diesem iPhone und werden nie hochgeladen oder synchronisiert."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio uses your location to show the weather where you are."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio utilise votre position pour afficher la météo là où vous êtes."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio lit votre sommeil et vos médicaments dans l’app Santé pour les afficher dans votre calendrier et vous rappeler vos prises. Ces données restent sur cet iPhone et ne sont jamais envoyées ni synchronisées."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio legge il tuo sonno e i tuoi farmaci dall’app Salute per mostrarli nel calendario e ricordarti le dosi. Questi dati restano su questo iPhone e non vengono mai caricati né sincronizzati."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioは現在地の天気を表示するために位置情報を使用します。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioはヘルスケアから睡眠と服薬を読み取り、カレンダーへの表示と服用のリマインダーに使用します。これらのデータはこのiPhoneにのみ保存され、アップロードや同期はされません。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 현재 위치의 날씨를 보여 주기 위해 위치 정보를 사용합니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 건강 앱에서 수면 및 복약 데이터를 읽어 캘린더에 표시하고 복용을 알려 줍니다. 이 데이터는 이 iPhone에만 남아 있으며 업로드되거나 동기화되지 않습니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio leest je slaap en medicijnen uit de Gezondheid-app om ze in je agenda te tonen en je aan doses te herinneren. Deze gegevens blijven op deze iPhone en worden nooit geüpload of gesynchroniseerd."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio đọc dữ liệu giấc ngủ và thuốc từ ứng dụng Sức khỏe để hiển thị trên lịch và nhắc bạn uống thuốc. Dữ liệu này chỉ nằm trên iPhone này và không bao giờ được tải lên hay đồng bộ."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 使用你的位置来显示你所在地的天气。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会从“健康”中读取你的睡眠和用药数据，显示在日历上并提醒你服药。这些数据只保留在这台 iPhone 上，绝不会上传或同步。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 使用你的位置來顯示你所在地的天氣。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會從「健康」讀取你的睡眠和用藥資料，顯示在行事曆上並提醒你用藥。這些資料只保留在這部 iPhone 上，絕不會上傳或同步。"
           }
         }
       }
     },
-    "NSLocationWhenInUseUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen und, wenn du Ankunfts- oder Aufbruchshinweise aktivierst, um dich bei Ankunft an einem Termin oder zum Aufbrechen zu benachrichtigen."
+    "NSHealthUpdateUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug-Builds von Folio schreiben Beispiel-Schlafdaten zum Testen in die Health-App."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio uses your location to show the weather where you are and, if you turn on arrival or time to leave alerts, to tell you when you arrive at an event or when it's time to leave."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug builds of Folio write sample sleep to the Health app for testing."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio utilise votre position pour afficher la météo là où vous êtes et, si vous activez les alertes d'arrivée ou de départ, pour vous prévenir quand vous arrivez à un événement ou quand il est temps de partir."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les versions de débogage de Folio écrivent des exemples de sommeil dans l’app Santé pour les tests."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio usa la tua posizione per mostrare il meteo dove ti trovi e, se attivi gli avvisi di arrivo o di partenza, per avvisarti quando arrivi a un evento o quando è ora di partire."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le build di debug di Folio scrivono dati di sonno di esempio nell’app Salute per i test."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioは現在地の天気を表示するため、また到着通知や出発時刻の通知をオンにした場合はイベントの場所に到着したときや出発する時刻になったときにお知らせするために位置情報を使用します。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioのデバッグビルドは、テスト用のサンプル睡眠データをヘルスケアに書き込みます。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 현재 위치의 날씨를 보여 주고, 도착 알림이나 출발 시간 알림을 켠 경우 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 주기 위해 위치 정보를 사용합니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 디버그 빌드는 테스트를 위해 샘플 수면 데이터를 건강 앱에 기록합니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio gebruikt je locatie om het weer te tonen waar je bent en, als je aankomst- of vertrekmeldingen aanzet, om je te laten weten wanneer je bij een activiteit aankomt of wanneer het tijd is om te vertrekken."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debugversies van Folio schrijven voorbeeldslaapgegevens naar de Gezondheid-app om te testen."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở và, nếu bạn bật cảnh báo khi đến nơi hoặc cảnh báo giờ khởi hành, để báo cho bạn khi bạn đến một sự kiện hoặc khi đến lúc khởi hành."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bản gỡ lỗi của Folio ghi dữ liệu giấc ngủ mẫu vào ứng dụng Sức khỏe để thử nghiệm."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 使用你的位置来显示你所在地的天气；如果你打开了到达提醒或出发时间提醒，还会在你到达活动地点或该出发时通知你。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 的调试版本会将示例睡眠数据写入“健康”以供测试。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 使用你的位置來顯示你所在地的天氣；如果你開啟了抵達提醒或出發時間提醒，也會在你抵達活動地點或該出發時通知你。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 的除錯版本會將範例睡眠資料寫入「健康」以供測試。"
           }
         }
       }
     },
-    "NSRemindersFullAccessUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio zeigt, erstellt und erledigt die Erinnerungen in deinen Listen."
+    "NSLocationAlwaysAndWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio verwendet deinen Standort im Hintergrund nur für Ankunfts- und Aufbruchshinweise und das Widget „Aufbruchszeit“, die du aktivierst, um dich zu benachrichtigen, wenn du an einem Termin ankommst oder es Zeit ist aufzubrechen. Dein Standort wird nur mit Apple Karten geteilt, um Reisezeiten zu berechnen."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio shows, creates and completes the reminders in your lists."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio uses your location in the background only for the arrival alerts, time to leave alerts and Leave By widget you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times."
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio affiche, crée et termine les rappels de vos listes."
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée, les alertes de départ et le widget Heure de départ que vous activez, afin de vous prévenir quand vous arrivez à un événement ou quand il est temps de partir. Votre position n'est partagée qu'avec Plans d'Apple pour calculer les temps de trajet."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio mostra, crea e completa i promemoria nei tuoi elenchi."
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio usa la tua posizione in background solo per gli avvisi di arrivo e di partenza e per il widget Ora di partenza che attivi, per avvisarti quando arrivi a un evento o quando è ora di partire. La tua posizione viene condivisa solo con Mappe di Apple per calcolare i tempi di percorrenza."
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioはリストのリマインダーを表示、作成、完了します。"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioは、オンにした到着通知、出発時刻の通知、「出発時間」ウィジェットのためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときや出発する時刻になったときにお知らせします。位置情報は所要時間の計算のためにAppleのマップとのみ共有されます。"
           }
         },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio가 목록의 미리 알림을 표시하고 생성 및 완료합니다."
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 사용자가 켠 도착 알림, 출발 시간 알림, 출발 시간 위젯을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 줍니다. 위치 정보는 이동 시간 계산을 위해 Apple 지도와만 공유됩니다."
           }
         },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio toont, maakt en voltooit de herinneringen in je lijsten."
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio gebruikt je locatie op de achtergrond alleen voor de aankomst- en vertrekmeldingen en de widget Vertrektijd die je inschakelt, om je te laten weten wanneer je bij een afspraak aankomt of wanneer het tijd is om te vertrekken. Je locatie wordt alleen gedeeld met Apple Kaarten om reistijden te berekenen."
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio hiển thị, tạo và hoàn thành các lời nhắc trong danh sách của bạn."
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio chỉ dùng vị trí của bạn trong nền cho cảnh báo đến nơi, cảnh báo khởi hành và tiện ích Giờ khởi hành mà bạn bật, để báo khi bạn đến sự kiện hoặc khi đến lúc khởi hành. Vị trí của bạn chỉ được chia sẻ với Apple Maps để tính thời gian di chuyển."
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 会显示、创建和完成你列表中的提醒事项。"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 只会为你打开的到达提醒、出发时间提醒和“出发时间”小组件在后台使用你的位置，以便在你到达日程地点或该出发时告知你。你的位置只会与 Apple 地图共享，用于计算行程时间。"
           }
         },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 會顯示、建立和完成你列表中的提醒事項。"
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 只會為你開啟的抵達提醒、出發時間提醒和「出發時間」小工具在背景使用你的位置，以便在你抵達行程地點或該出發時告知你。你的位置只會與 Apple 地圖共享，用於計算行程時間。"
+          }
+        }
+      }
+    },
+    "NSLocationUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio uses your location to show the weather where you are."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio utilise votre position pour afficher la météo là où vous êtes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio usa la tua posizione per mostrare il meteo dove ti trovi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioは現在地の天気を表示するために位置情報を使用します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 현재 위치의 날씨를 보여 주기 위해 위치 정보를 사용합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio gebruikt je locatie om het weer te tonen waar je bent."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 使用你的位置来显示你所在地的天气。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 使用你的位置來顯示你所在地的天氣。"
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio verwendet deinen Standort, um das Wetter an deinem Ort anzuzeigen und, wenn du Ankunfts- oder Aufbruchshinweise aktivierst, um dich bei Ankunft an einem Termin oder zum Aufbrechen zu benachrichtigen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio uses your location to show the weather where you are and, if you turn on arrival or time to leave alerts, to tell you when you arrive at an event or when it's time to leave."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio utilise votre position pour afficher la météo là où vous êtes et, si vous activez les alertes d'arrivée ou de départ, pour vous prévenir quand vous arrivez à un événement ou quand il est temps de partir."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio usa la tua posizione per mostrare il meteo dove ti trovi e, se attivi gli avvisi di arrivo o di partenza, per avvisarti quando arrivi a un evento o quando è ora di partire."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioは現在地の天気を表示するため、また到着通知や出発時刻の通知をオンにした場合はイベントの場所に到着したときや出発する時刻になったときにお知らせするために位置情報を使用します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 현재 위치의 날씨를 보여 주고, 도착 알림이나 출발 시간 알림을 켠 경우 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 주기 위해 위치 정보를 사용합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio gebruikt je locatie om het weer te tonen waar je bent en, als je aankomst- of vertrekmeldingen aanzet, om je te laten weten wanneer je bij een activiteit aankomt of wanneer het tijd is om te vertrekken."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio dùng vị trí của bạn để hiển thị thời tiết nơi bạn đang ở và, nếu bạn bật cảnh báo khi đến nơi hoặc cảnh báo giờ khởi hành, để báo cho bạn khi bạn đến một sự kiện hoặc khi đến lúc khởi hành."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 使用你的位置来显示你所在地的天气；如果你打开了到达提醒或出发时间提醒，还会在你到达活动地点或该出发时通知你。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 使用你的位置來顯示你所在地的天氣；如果你開啟了抵達提醒或出發時間提醒，也會在你抵達活動地點或該出發時通知你。"
+          }
+        }
+      }
+    },
+    "NSRemindersFullAccessUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio zeigt, erstellt und erledigt die Erinnerungen in deinen Listen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio shows, creates and completes the reminders in your lists."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio affiche, crée et termine les rappels de vos listes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio mostra, crea e completa i promemoria nei tuoi elenchi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioはリストのリマインダーを表示、作成、完了します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio가 목록의 미리 알림을 표시하고 생성 및 완료합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio toont, maakt en voltooit de herinneringen in je lijsten."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio hiển thị, tạo và hoàn thành các lời nhắc trong danh sách của bạn."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会显示、创建和完成你列表中的提醒事项。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會顯示、建立和完成你列表中的提醒事項。"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

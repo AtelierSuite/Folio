@@ -13,7 +13,7 @@ struct EventCalendarPicker: View {
                         Label {
                             Text(calendar.title)
                         } icon: {
-                            Image(coloredSymbol: "circle.fill", color: calendar.color)
+                            Image(calendarDot: calendar.color)
                         }
                         .tag(calendar.id)
                     }

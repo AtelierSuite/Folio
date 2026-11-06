@@ -31,14 +31,25 @@ struct RemindersChecklist: View {
     let reminders: [ReminderItem]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            if reminders.isEmpty {
-                WidgetEmptyText(text: String(localized: "Reminders.AllDone", table: "Widgets"))
-            } else {
-                ForEach(reminders) { reminder in
-                    WidgetReminderRow(reminder: reminder)
+        if reminders.isEmpty {
+            WidgetEmptyText(text: String(localized: "Reminders.AllDone", table: "Widgets"))
+        } else {
+            ViewThatFits(in: .vertical) {
+                ForEach((1...reminders.count).reversed(), id: \.self) { rowCount in
+                    RemindersChecklistRows(reminders: reminders.prefix(rowCount))
                 }
-                Spacer(minLength: 0)
+            }
+        }
+    }
+}
+
+struct RemindersChecklistRows: View {
+    let reminders: ArraySlice<ReminderItem>
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ForEach(reminders) { reminder in
+                WidgetReminderRow(reminder: reminder)
             }
         }
     }
