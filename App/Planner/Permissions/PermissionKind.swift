@@ -5,6 +5,7 @@ public enum PermissionKind: String, Sendable, CaseIterable, Identifiable {
     case reminders
     case notifications
     case location
+    case contacts
     case health
     case alarms
 
@@ -12,7 +13,7 @@ public enum PermissionKind: String, Sendable, CaseIterable, Identifiable {
 
     public var requiredFeature: PlatformFeature? {
         switch self {
-        case .calendar, .reminders, .notifications: nil
+        case .calendar, .reminders, .notifications, .contacts: nil
         case .location: .weather
         case .health: .sleep
         case .alarms: .alarms

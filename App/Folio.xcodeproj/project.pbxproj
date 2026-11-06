@@ -688,6 +688,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Folio shows the names and photos of the people attending your events.";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
@@ -758,6 +759,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Folio shows the names and photos of the people attending your events.";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -918,6 +920,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Folio shows the names and photos of the people attending your events.";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
@@ -967,6 +970,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Folio;
+				INFOPLIST_KEY_NSContactsUsageDescription = "Folio shows the names and photos of the people attending your events.";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
 				LD_RUNPATH_SEARCH_PATHS = (

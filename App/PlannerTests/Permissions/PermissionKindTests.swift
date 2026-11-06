@@ -10,12 +10,12 @@ struct PermissionKindTests {
     @Test func iPadHasNoHealth() {
         let capabilities = PlatformCapabilities(platform: .iPad, areLiveActivitiesSupported: false)
         let supported = PermissionKind.allCases.filter { capabilities.supports(permission: $0) }
-        #expect(supported == [.calendar, .reminders, .notifications, .location, .alarms])
+        #expect(supported == [.calendar, .reminders, .notifications, .location, .contacts, .alarms])
     }
 
     @Test func macHasCalendarRemindersNotificationsAndLocationForWeather() {
         let capabilities = PlatformCapabilities(platform: .mac, areLiveActivitiesSupported: false)
         let supported = PermissionKind.allCases.filter { capabilities.supports(permission: $0) }
-        #expect(supported == [.calendar, .reminders, .notifications, .location])
+        #expect(supported == [.calendar, .reminders, .notifications, .location, .contacts])
     }
 }

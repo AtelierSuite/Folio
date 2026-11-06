@@ -10,7 +10,8 @@ extension PermissionCenter {
             .calendar: CalendarPermissionProvider(store: calendarStore, kind: .event),
             .reminders: CalendarPermissionProvider(store: calendarStore, kind: .reminder),
             .notifications: NotificationPermissionProvider(),
-            .location: LocationPermissionProvider()
+            .location: LocationPermissionProvider(),
+            .contacts: ContactsPermissionProvider()
         ]
         if let sleepSource = SleepStore.systemSource() {
             providers[.health] = HealthPermissionProvider(source: sleepSource)

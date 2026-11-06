@@ -22,6 +22,7 @@ extension PermissionKind {
         case .calendar: "\(privacy)?Privacy_Calendars"
         case .reminders: "\(privacy)?Privacy_Reminders"
         case .location: "\(privacy)?Privacy_LocationServices"
+        case .contacts: "\(privacy)?Privacy_Contacts"
         case .notifications: "x-apple.systempreferences:com.apple.Notifications-Settings.extension"
         case .health, .alarms: privacy
         }
