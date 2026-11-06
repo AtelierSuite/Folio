@@ -1,6 +1,7 @@
 import Foundation
 
-/// Today's busy and open time between `firstHour` and `lastHour`. Travel counts as busy.
+/// Today's busy and open time between `firstHour` and `lastHour`, stretched to take in any event outside
+/// those hours. Travel counts as busy.
 public struct WidgetDayLoad: Sendable, Equatable {
     public enum Status: Sendable, Equatable {
         case free(until: Date)
@@ -18,12 +19,11 @@ public struct WidgetDayLoad: Sendable, Equatable {
     public let status: Status
 
     public init(events: [CalendarEvent], travel: [DateInterval] = [], at now: Date, calendar: Calendar) {
-        let window = Self.window(on: now, calendar: calendar)
-        let busy = Self.merged(
-            events.filter { !$0.isAllDay && !$0.isDeclined }.map { DateInterval(start: $0.startDate, end: $0.endDate) }
-                + travel,
-            in: window
-        )
+        let intervals = events
+            .filter { !$0.isAllDay && !$0.isDeclined }
+            .map { DateInterval(start: $0.startDate, end: $0.endDate) } + travel
+        let window = Self.window(on: now, covering: intervals, calendar: calendar)
+        let busy = Self.merged(intervals, in: window)
         self.window = window
         busyIntervals = busy
         gaps = Self.gaps(between: busy, in: window, after: now)
@@ -34,10 +34,16 @@ public struct WidgetDayLoad: Sendable, Equatable {
         gaps.max { $0.duration < $1.duration }
     }
 
-    static func window(on day: Date, calendar: Calendar) -> DateInterval {
+    static func window(on day: Date, covering intervals: [DateInterval], calendar: Calendar) -> DateInterval {
         let start = calendar.date(bySettingHour: firstHour, minute: 0, second: 0, of: day) ?? day
         let end = calendar.date(bySettingHour: lastHour, minute: 0, second: 0, of: day) ?? day
-        return DateInterval(start: start, end: max(start, end))
+        let usual = DateInterval(start: start, end: max(start, end))
+        guard let wholeDay = calendar.dateInterval(of: .day, for: day) else { return usual }
+        let todays = intervals.compactMap { $0.intersection(with: wholeDay) }
+        return DateInterval(
+            start: min(usual.start, todays.map(\.start).min() ?? usual.start),
+            end: max(usual.end, todays.map(\.end).max() ?? usual.end)
+        )
     }
 
     private static func merged(_ intervals: [DateInterval], in window: DateInterval) -> [DateInterval] {

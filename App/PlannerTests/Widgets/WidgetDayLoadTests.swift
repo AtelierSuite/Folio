@@ -62,6 +62,20 @@ struct WidgetDayLoadTests {
         #expect(load([allDay, declined], at: date(hour: 10)).status == .free(until: date(hour: 22)))
     }
 
+    @Test func stretchesToTakeInEarlyAndLateEvents() {
+        let early = Fixtures.event(local: "early", start: date(hour: 1))
+        let late = Fixtures.event(local: "late", start: date(hour: 22))
+        let dayLoad = load([early, late], at: date(hour: 0))
+        #expect(dayLoad.status == .free(until: date(hour: 1)))
+        #expect(dayLoad.window == DateInterval(start: date(hour: 1), end: date(hour: 23)))
+    }
+
+    @Test func eventsOnOtherDaysLeaveTheWindowAlone() {
+        let tomorrow = Fixtures.event(local: "tomorrow", start: Fixtures.date(2026, 11, 7, hour: 6))
+        let dayLoad = load([tomorrow], at: date(hour: 10))
+        #expect(dayLoad.window == DateInterval(start: date(hour: 8), end: date(hour: 22)))
+    }
+
     @Test func dayIsOverAfterTheWindow() {
         let dayLoad = load([], at: date(hour: 23))
         #expect(dayLoad.status == .dayOver)
