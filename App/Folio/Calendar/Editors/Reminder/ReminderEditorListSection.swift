@@ -21,7 +21,7 @@ struct ReminderEditorListSection: View {
                             Label {
                                 Text(list.title)
                             } icon: {
-                                Image(coloredSymbol: "circle.fill", color: list.color)
+                                Image(calendarDot: list.color)
                             }
                             .tag(list.id)
                         }
