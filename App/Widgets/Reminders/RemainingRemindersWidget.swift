@@ -13,7 +13,7 @@ struct RemainingRemindersWidget: Widget {
             provider: FolioTimelineProvider<ReminderListSelectionIntent>()
         ) { entry in
             RemainingRemindersView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
                 .widgetURL(CalendarDeepLink.url(forDay: entry.date))
         }
         .configurationDisplayName(String(localized: "RemainingReminders.Name", table: "Widgets"))
