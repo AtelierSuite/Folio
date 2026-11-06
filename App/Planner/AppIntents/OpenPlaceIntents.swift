@@ -16,3 +16,18 @@ public struct OpenTodayIntent: AppIntent {
         return .result()
     }
 }
+
+public struct OpenDailyNoteIntent: AppIntent {
+    public static let title = LocalizedStringResource("OpenDailyNoteIntent.Title", table: "Intents", bundle: #bundle)
+    public static let supportedModes: IntentModes = .foreground
+
+    @Dependency private var requests: AppDestinationRequests
+
+    public init() {}
+
+    @MainActor
+    public func perform() async throws -> some IntentResult {
+        requests.open(.dailyNote(.now))
+        return .result()
+    }
+}

@@ -17,7 +17,7 @@ extension AppDestination {
     var tab: AppTab {
         switch self {
         case .calendarDay, .newEvent, .newEventInInterval, .newReminder: .calendar
-        case .note, .newNote: .notes
+        case .note, .dailyNote, .newNote: .notes
         }
     }
 }

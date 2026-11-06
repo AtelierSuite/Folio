@@ -38,6 +38,9 @@ struct NotesView: View {
             case .note(let url):
                 selection = url
                 return true
+            case .dailyNote(let date):
+                openDailyNote(on: date)
+                return true
             case .newNote:
                 createNote()
                 return true

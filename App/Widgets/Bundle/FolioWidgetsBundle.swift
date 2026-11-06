@@ -19,6 +19,7 @@ struct FolioWidgetsBundle: WidgetBundle {
         NewNoteControl()
         JoinNextMeetingControl()
         OpenTodayControl()
+        DailyNoteControl()
     }
 
     @WidgetBundleBuilder
