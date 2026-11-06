@@ -11,6 +11,7 @@ struct NotificationDetailView: View {
                 TimelineView(.everyMinute) { _ in
                     NotificationDetailHeaderView(
                         origin: detail.origin,
+                        showsOriginColor: detail.medication == nil,
                         status: detail.status(at: .now),
                         accentColor: accentColor,
                         statusColor: detail.isOverdue(at: .now) ? .red : accentColor
