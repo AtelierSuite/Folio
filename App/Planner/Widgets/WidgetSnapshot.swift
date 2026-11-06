@@ -8,19 +8,22 @@ public struct WidgetSnapshot: Sendable, Hashable {
     public var reminders: [ReminderItem]
     /// Cached daily weather keyed by the start of each day.
     public var weather: [Date: DailyWeather]
+    public var alarmDates: [Date]
 
     public init(
         eventAuthorization: CalendarAuthorizationStatus = .fullAccess,
         reminderAuthorization: CalendarAuthorizationStatus = .fullAccess,
         events: [CalendarEvent] = [],
         reminders: [ReminderItem] = [],
-        weather: [Date: DailyWeather] = [:]
+        weather: [Date: DailyWeather] = [:],
+        alarmDates: [Date] = []
     ) {
         self.eventAuthorization = eventAuthorization
         self.reminderAuthorization = reminderAuthorization
         self.events = events.sorted { ($0.startDate, $0.title) < ($1.startDate, $1.title) }
         self.reminders = reminders.filter { !$0.isCompleted }
         self.weather = weather
+        self.alarmDates = alarmDates.sorted()
     }
 
     public func weather(on date: Date, calendar: Calendar) -> DailyWeather? {

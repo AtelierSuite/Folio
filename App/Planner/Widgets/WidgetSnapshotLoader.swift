@@ -4,15 +4,21 @@ public struct WidgetSnapshotLoader: Sendable {
     private let source: any CalendarDataSource
     private let visibilityStorage: CalendarVisibilityStorage
     private let weatherReader: WidgetWeatherReader
+    private let alarmStorage: StandaloneAlarmStorage
+    private let wakeUpSettings: WakeUpAlarmSettings
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
-        weatherReader: WidgetWeatherReader = WidgetWeatherReader()
+        weatherReader: WidgetWeatherReader = WidgetWeatherReader(),
+        alarmStorage: StandaloneAlarmStorage = StandaloneAlarmStorage(),
+        wakeUpSettings: WakeUpAlarmSettings = WakeUpAlarmSettings()
     ) {
         self.source = source
         self.visibilityStorage = visibilityStorage
         self.weatherReader = weatherReader
+        self.alarmStorage = alarmStorage
+        self.wakeUpSettings = wakeUpSettings
     }
 
     public func load(
@@ -40,8 +46,13 @@ public struct WidgetSnapshotLoader: Sendable {
                 })
                 .map(\.primary),
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
-            weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:]
+            weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
+            alarmDates: request.includesAlarms ? alarmDates(after: now) : []
         )
+    }
+
+    private func alarmDates(after now: Date) -> [Date] {
+        (alarmStorage.alarms.map(\.fireDate) + wakeUpSettings.upcomingFireDates).filter { $0 > now }
     }
 
     private func weather(around now: Date, calendar: Calendar) -> [Date: DailyWeather] {

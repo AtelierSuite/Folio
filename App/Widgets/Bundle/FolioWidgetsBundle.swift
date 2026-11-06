@@ -10,6 +10,7 @@ struct FolioWidgetsBundle: WidgetBundle {
         MiniMonthWidget()
         RemindersWidget()
         DayLoadWidget()
+        DayShiftWidget()
         lockScreenWidgets
         NewEventControl()
         NewReminderControl()
