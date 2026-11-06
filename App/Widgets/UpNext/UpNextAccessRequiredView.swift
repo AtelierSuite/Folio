@@ -9,8 +9,9 @@ struct UpNextAccessRequiredView: View {
         if family.isSystem {
             WidgetAccessRequiredView(kind: .event)
         } else {
-            Label(String(localized: "Access.Short", table: "Widgets"), systemImage: "calendar")
-                .font(.caption)
+            #if os(iOS)
+            WidgetAccessoryAccessRequiredView(systemImage: "calendar")
+            #endif
         }
     }
 }
