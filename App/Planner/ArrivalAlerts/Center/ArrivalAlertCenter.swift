@@ -11,6 +11,7 @@ public final class ArrivalAlertCenter {
 
     public let isSupported: Bool
     public internal(set) var isEnabled: Bool
+    public internal(set) var isLeaveByEnabled: Bool
     public internal(set) var authorization: ArrivalAuthorization = .notDetermined
     public internal(set) var monitoredRegions: [ArrivalRegion] = []
 
@@ -24,6 +25,11 @@ public final class ArrivalAlertCenter {
     @ObservationIgnored let planner: ArrivalRegionPlanner
     @ObservationIgnored let notifier: any ArrivalNotifying
     @ObservationIgnored let log: ArrivalNotificationLog
+    @ObservationIgnored let leaveBySettings: LeaveBySettings
+    @ObservationIgnored let leaveByPlanner: LeaveByPlanner
+    @ObservationIgnored let leaveAlertSettings: LeaveAlertSettings
+    @ObservationIgnored let estimator: any TravelTimeEstimating
+    @ObservationIgnored public var onLeaveByChange: (@MainActor () -> Void)?
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
@@ -41,6 +47,10 @@ public final class ArrivalAlertCenter {
         planner: ArrivalRegionPlanner = ArrivalRegionPlanner(),
         notifier: any ArrivalNotifying = UserNotificationArrivalNotifier(),
         log: ArrivalNotificationLog = ArrivalNotificationLog(),
+        leaveBySettings: LeaveBySettings = LeaveBySettings(),
+        leaveByPlanner: LeaveByPlanner = LeaveByPlanner(),
+        leaveAlertSettings: LeaveAlertSettings = LeaveAlertSettings(),
+        estimator: any TravelTimeEstimating = MapKitTravelTimeEstimator(),
         clock: @escaping @Sendable () -> Date = { .now }
     ) {
         isSupported = capabilities.supports(.geofencedNotifications)
@@ -54,8 +64,13 @@ public final class ArrivalAlertCenter {
         self.planner = planner
         self.notifier = notifier
         self.log = log
+        self.leaveBySettings = leaveBySettings
+        self.leaveByPlanner = leaveByPlanner
+        self.leaveAlertSettings = leaveAlertSettings
+        self.estimator = estimator
         self.clock = clock
         isEnabled = isSupported && settings.isEnabled
+        isLeaveByEnabled = isSupported && leaveBySettings.isEnabled
         authorization = regionMonitor?.authorization ?? .notDetermined
         regionMonitor?.onAuthorizationChange = { [weak self] in
             guard let self else { return }
@@ -66,6 +81,11 @@ public final class ArrivalAlertCenter {
 
     var isActive: Bool {
         isEnabled && notificationSettings.isEnabled && authorization.allowsMonitoring
+    }
+
+    /// Leave By only works out a route when iOS can wake Folio on arrival, which takes Always.
+    var isLeaveByActive: Bool {
+        isLeaveByEnabled && authorization == .always
     }
 
     public func replan() async {
@@ -89,7 +109,8 @@ public final class ArrivalAlertCenter {
         guard let regionMonitor else { return }
         authorization = regionMonitor.authorization
         let now = clock()
-        let regions = isActive
+        leaveBySettings.isTracking = isLeaveByActive
+        let regions = isActive || isLeaveByActive
             ? planner.regions(
                 for: await candidates(after: now),
                 now: now,
@@ -116,7 +137,7 @@ public final class ArrivalAlertCenter {
         let events = await source.events(in: interval).filter {
             !hiddenCalendars.contains($0.calendarIdentifier)
                 && !$0.isHiddenInvitation(among: hiddenInvitations)
-                && preferences.isEnabled(for: $0.reference)
+                && (isLeaveByActive || preferences.isEnabled(for: $0.reference))
         }
         for event in EventDuplicateDetector().groups(in: events).map(\.primary) {
             guard planner.window.interval(for: event).map({ $0.end > now }) == true,
