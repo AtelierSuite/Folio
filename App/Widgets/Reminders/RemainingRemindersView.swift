@@ -25,10 +25,11 @@ struct RemainingRemindersView: View {
                         .font(.headline)
                         .widgetAccentable()
                     Text(String(localized: "RemainingReminders.Count \(reminders.count)", table: "Widgets"))
-                    if let first = reminders.first {
+                    if entry.showsDetails, let first = reminders.first {
                         Text(first.title)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
+                            .privacySensitive()
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

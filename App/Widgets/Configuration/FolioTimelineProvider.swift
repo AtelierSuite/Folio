@@ -15,7 +15,8 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
         return FolioWidgetEntry(
             date: now,
             snapshot: isEmptyPreview ? .placeholder(at: now) : snapshot,
-            scheduleHourCount: configuration.scheduleHourCount
+            scheduleHourCount: configuration.scheduleHourCount,
+            showsDetails: configuration.showsDetails
         )
     }
 
@@ -35,7 +36,12 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
             additionalBoundaries: configuration.timelineBoundaries(in: snapshot, at: now, calendar: calendar)
         )
         let entries = plan.entryDates.map {
-            FolioWidgetEntry(date: $0, snapshot: snapshot, scheduleHourCount: configuration.scheduleHourCount)
+            FolioWidgetEntry(
+                date: $0,
+                snapshot: snapshot,
+                scheduleHourCount: configuration.scheduleHourCount,
+                showsDetails: configuration.showsDetails
+            )
         }
         return Timeline(entries: entries, policy: .after(plan.reloadDate))
     }
