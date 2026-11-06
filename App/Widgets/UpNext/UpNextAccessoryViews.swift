@@ -47,10 +47,14 @@ struct UpNextInlineView: View {
     var body: some View {
         if let upNext {
             let timing = upNext.timing(on: date, calendar: .current)
-            Label {
-                Text(verbatim: "\(timing.summary) \(upNext.event.title)")
-            } icon: {
-                Image(systemName: "calendar")
+            let line = "\(timing.summary) \(upNext.event.title)"
+            ViewThatFits {
+                Label {
+                    Text(verbatim: line)
+                } icon: {
+                    Image(systemName: "calendar")
+                }
+                Text(verbatim: line)
             }
         } else {
             Label(String(localized: "UpNext.Empty", table: "Widgets"), systemImage: "calendar")
