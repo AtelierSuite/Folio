@@ -28,6 +28,9 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
             events: snapshot.events,
             from: now,
             calendar: calendar,
+            refreshInterval: context.family.isSystem
+                ? WidgetTimelinePlan.defaultRefreshInterval
+                : WidgetTimelinePlan.lockScreenRefreshInterval,
             tickInterval: configuration.timelineTickInterval
         )
         let entries = plan.entryDates.map {
