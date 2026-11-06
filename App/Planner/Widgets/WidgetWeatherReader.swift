@@ -23,7 +23,8 @@ public struct WidgetWeatherReader: Sendable {
     public func hourlyWeather(at date: Date, calendar: Calendar) -> HourlyWeather? {
         guard settings.isEnabled, let home = homeCoordinate else { return nil }
         let dayStart = calendar.startOfDay(for: date)
-        return cache.entry(for: WeatherLocationKey(home), dayStart: dayStart, calendar: calendar)?.day.hour(containing: date)
+        let entry = cache.entry(for: WeatherLocationKey(home), dayStart: dayStart, calendar: calendar)
+        return entry?.day.hour(containing: date)
     }
 
     private var homeCoordinate: PlannerCoordinate? {

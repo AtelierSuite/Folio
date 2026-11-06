@@ -31,9 +31,9 @@ extension ArrivalAlertCenter {
                 leaving: arrival,
                 among: events,
                 at: now,
-                resolver: resolver,
-                estimator: estimator,
-                transport: leaveAlertSettings.transport
+                routing: LeaveByRouting(
+                    resolver: resolver, estimator: estimator, transport: leaveAlertSettings.transport
+                )
             )
             leaveBySettings.recordArrival(at: arrival.event, on: now)
             onLeaveByChange?()

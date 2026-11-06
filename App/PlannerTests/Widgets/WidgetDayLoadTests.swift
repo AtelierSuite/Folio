@@ -18,7 +18,8 @@ struct WidgetDayLoadTests {
 
     @Test func travelCountsAsBusy() {
         let travel = DateInterval(start: date(hour: 13, minute: 30), end: date(hour: 14))
-        let dayLoad = load([Fixtures.event(local: "dentist", start: date(hour: 14))], travel: [travel], at: date(hour: 13))
+        let dentist = Fixtures.event(local: "dentist", start: date(hour: 14))
+        let dayLoad = load([dentist], travel: [travel], at: date(hour: 13))
         #expect(dayLoad.status == .free(until: date(hour: 13, minute: 30)))
     }
 

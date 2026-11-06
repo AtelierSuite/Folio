@@ -1,5 +1,21 @@
 import Foundation
 
+public struct LeaveByRouting: Sendable {
+    public let resolver: EventCoordinateResolver
+    public let estimator: any TravelTimeEstimating
+    public let transport: TravelTransport
+
+    public init(
+        resolver: EventCoordinateResolver,
+        estimator: any TravelTimeEstimating,
+        transport: TravelTransport
+    ) {
+        self.resolver = resolver
+        self.estimator = estimator
+        self.transport = transport
+    }
+}
+
 /// Works out the route from the event the user reached to the next event that's somewhere else.
 public struct LeaveByPlanner: Sendable {
     public var lookAhead: TimeInterval
@@ -25,9 +41,7 @@ public struct LeaveByPlanner: Sendable {
         leaving arrival: ArrivalCandidate,
         among events: [CalendarEvent],
         at now: Date,
-        resolver: EventCoordinateResolver,
-        estimator: any TravelTimeEstimating,
-        transport: TravelTransport
+        routing: LeaveByRouting
     ) async throws -> LeaveByPlan? {
         let earliestStart = max(now, arrival.event.startDate)
         let following = events
@@ -37,13 +51,15 @@ public struct LeaveByPlanner: Sendable {
             }
             .sorted { $0.startDate < $1.startDate }
         for event in following {
-            guard let destination = await resolver.coordinate(for: event),
+            guard let destination = await routing.resolver.coordinate(for: event),
                   arrival.coordinate.distance(to: destination) > nearbyDistance else { continue }
-            let travelTime = try await estimator.travelTime(
-                from: arrival.coordinate, to: destination, by: transport, arrivingAt: event.startDate
+            let travelTime = try await routing.estimator.travelTime(
+                from: arrival.coordinate, to: destination, by: routing.transport, arrivingAt: event.startDate
             )
             guard let travelTime, travelTime > 0, travelTime <= longestTravelTime else { return nil }
-            return LeaveByPlan(eventKey: event.reference.storageKey, travelTime: travelTime, transport: transport)
+            return LeaveByPlan(
+                eventKey: event.reference.storageKey, travelTime: travelTime, transport: routing.transport
+            )
         }
         return nil
     }

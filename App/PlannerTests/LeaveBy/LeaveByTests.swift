@@ -34,6 +34,10 @@ struct LeaveByTests {
     private let here = ArrivalFixtures.coordinate(0)
     private let elsewhere = ArrivalFixtures.coordinate(1)
 
+    private var lunchThenDentist: [CalendarEvent] {
+        [event("Lunch", hours: 0.5, at: here), event("Dentist", hours: 3, at: elsewhere)]
+    }
+
     private func event(_ title: String, hours: Double, at coordinate: PlannerCoordinate?) -> CalendarEvent {
         ArrivalFixtures.event(title, start: ArrivalFixtures.hours(hours), coordinate: coordinate)
     }
@@ -90,14 +94,14 @@ struct LeaveByTests {
     }
 
     @Test func calculatesOncePerEventReached() async throws {
-        let harness = try makeHarness(events: [event("Lunch", hours: 0.5, at: here), event("Dentist", hours: 3, at: elsewhere)])
+        let harness = try makeHarness(events: lunchThenDentist)
         await arrive(harness, at: here)
         await arrive(harness, at: here)
         #expect(harness.estimator.requestCount == 1)
     }
 
     @Test func triesAgainAfterARouteFails() async throws {
-        let harness = try makeHarness(events: [event("Lunch", hours: 0.5, at: here), event("Dentist", hours: 3, at: elsewhere)])
+        let harness = try makeHarness(events: lunchThenDentist)
         harness.estimator.error = CancellationError()
         await arrive(harness, at: here)
         #expect(harness.settings.plan == nil)
@@ -107,7 +111,8 @@ struct LeaveByTests {
     }
 
     @Test func needsNoPlanWhenTheNextEventIsInTheSamePlace() async throws {
-        let harness = try makeHarness(events: [event("Lunch", hours: 0.5, at: here), event("Coffee", hours: 2, at: here)])
+        let events = [event("Lunch", hours: 0.5, at: here), event("Coffee", hours: 2, at: here)]
+        let harness = try makeHarness(events: events)
         await arrive(harness, at: here)
         #expect(harness.settings.plan == nil)
         #expect(harness.estimator.requestCount == 0)
@@ -133,13 +138,13 @@ struct LeaveByTests {
     }
 
     @Test func monitorsEveryLocatedEventWithoutItsOwnArrivalAlert() async throws {
-        let harness = try makeHarness(events: [event("Lunch", hours: 0.5, at: here), event("Dentist", hours: 3, at: elsewhere)])
+        let harness = try makeHarness(events: lunchThenDentist)
         await harness.center.replan()
         #expect(harness.monitor.monitored.count == 2)
     }
 
     @Test func doesNotAlertForEventsMonitoredOnlyForLeaveBy() async throws {
-        let harness = try makeHarness(events: [event("Lunch", hours: 0.5, at: here), event("Dentist", hours: 3, at: elsewhere)])
+        let harness = try makeHarness(events: lunchThenDentist)
         await arrive(harness, at: here)
         #expect(harness.notifier.notifiedTitles.isEmpty)
     }

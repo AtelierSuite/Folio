@@ -20,7 +20,8 @@ struct EventNoteDigestTests {
 
     @Test func readsChecklistItemsAndTheirState() {
         let checklist = digest(text).checklist
-        #expect(checklist.map(\.text) == ["Share the contact sheet", "Bring lock screen options", "Agree on the budget"])
+        let expected = ["Share the contact sheet", "Bring lock screen options", "Agree on the budget"]
+        #expect(checklist.map(\.text) == expected)
         #expect(checklist.map(\.isDone) == [true, false, true])
     }
 

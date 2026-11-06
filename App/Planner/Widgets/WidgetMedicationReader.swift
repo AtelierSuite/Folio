@@ -25,9 +25,11 @@ public struct WidgetMedicationReader: Sendable {
         let forecast = MedicationDoseForecast(calendar: calendar)
         do {
             let medications = Set(try await source.scheduledMedications())
-            let logged = MedicationDose.latest(from: try await source.doseRecords(in: Self.fetchInterval(around: day)))
+            let records = try await source.doseRecords(in: Self.fetchInterval(around: day))
+            let logged = MedicationDose.latest(from: records)
                 .filter { day.contains($0.date) && medications.contains($0.medication) }
-            let history = MedicationDose.latest(from: try await source.doseRecords(in: forecast.historyInterval(endingAt: now)))
+            let pastRecords = try await source.doseRecords(in: forecast.historyInterval(endingAt: now))
+            let history = MedicationDose.latest(from: pastRecords)
                 .filter { medications.contains($0.medication) }
             let loggedIdentifiers = Set(logged.map(\.id))
             let expected = forecast.doses(from: history, in: day, after: day.start)

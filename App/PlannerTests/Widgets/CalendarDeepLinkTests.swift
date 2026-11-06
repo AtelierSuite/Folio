@@ -38,7 +38,8 @@ struct CalendarDeepLinkTests {
     @Test func composerLinks() {
         #expect(CalendarDeepLink.destination(from: CalendarDeepLink.url(forNew: .event)) == .newEvent)
         let gap = DateInterval(start: Fixtures.date(2026, 11, 6, hour: 15), end: Fixtures.date(2026, 11, 6, hour: 16))
-        #expect(CalendarDeepLink.destination(from: CalendarDeepLink.url(forNewEventIn: gap)) == .newEventInInterval(gap))
+        let gapLink = CalendarDeepLink.url(forNewEventIn: gap)
+        #expect(CalendarDeepLink.destination(from: gapLink) == .newEventInInterval(gap))
         #expect(CalendarDeepLink.destination(from: CalendarDeepLink.url(forNew: .reminder)) == .newReminder)
         #expect(CalendarDeepLink.destination(from: CalendarDeepLink.url(forNew: .note)) == .newNote)
     }
