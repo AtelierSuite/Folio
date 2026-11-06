@@ -4,13 +4,14 @@ import SwiftUI
 /// The event's time, prefixed with its weekday when it isn't today.
 struct WidgetEventTimeText: View {
     let event: CalendarEvent
+    var today = Date.now
 
     var body: some View {
         Text(verbatim: [dayPrefix, timeRange].compactMap(\.self).joined(separator: " "))
     }
 
     private var dayPrefix: String? {
-        Calendar.current.isDateInToday(event.startDate)
+        Calendar.current.isDate(event.startDate, inSameDayAs: today)
             ? nil
             : event.startDate.formatted(.dateTime.weekday(.abbreviated))
     }

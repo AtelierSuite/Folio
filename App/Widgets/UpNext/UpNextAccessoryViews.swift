@@ -5,16 +5,24 @@ import WidgetKit
 #if os(iOS)
 struct UpNextRectangularView: View {
     let upNext: WidgetUpNext?
+    let date: Date
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let event = upNext?.event {
+            if let upNext {
+                let event = upNext.event
                 Text(event.title)
                     .font(.headline)
                     .widgetAccentable()
                     .lineLimit(1)
-                WidgetEventTimeText(event: event)
-                    .lineLimit(1)
+                Group {
+                    if upNext.isOngoing {
+                        Text(verbatim: upNext.timing(on: date, calendar: .current).summary)
+                    } else {
+                        WidgetEventTimeText(event: event, today: date)
+                    }
+                }
+                .lineLimit(1)
                 if let location = event.location, !location.isEmpty {
                     Text(location)
                         .foregroundStyle(.secondary)
@@ -34,11 +42,13 @@ struct UpNextRectangularView: View {
 
 struct UpNextInlineView: View {
     let upNext: WidgetUpNext?
+    let date: Date
 
     var body: some View {
-        if let event = upNext?.event {
+        if let upNext {
+            let timing = upNext.timing(on: date, calendar: .current)
             Label {
-                Text(verbatim: "\(WidgetEventTimeText.time(event.startDate)) \(event.title)")
+                Text(verbatim: "\(timing.summary) \(upNext.event.title)")
             } icon: {
                 Image(systemName: "calendar")
             }
@@ -50,16 +60,15 @@ struct UpNextInlineView: View {
 
 struct UpNextCircularView: View {
     let upNext: WidgetUpNext?
+    let date: Date
 
     var body: some View {
         ZStack {
             AccessoryWidgetBackground()
             VStack(spacing: 0) {
-                Image(systemName: "calendar")
-                    .font(.caption)
-                    .widgetAccentable()
-                if let event = upNext?.event {
-                    Text(event.startDate, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
+                UpNextCircularHeader(timing: timing)
+                if let timing {
+                    Text(verbatim: timing.isOngoing ? timing.dayAndClock : timing.clock)
                         .font(.caption2.weight(.semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)
@@ -70,6 +79,28 @@ struct UpNextCircularView: View {
             }
             .padding(4)
         }
+    }
+
+    private var timing: WidgetUpNextTiming? {
+        upNext?.timing(on: date, calendar: .current)
+    }
+}
+
+private struct UpNextCircularHeader: View {
+    let timing: WidgetUpNextTiming?
+
+    var body: some View {
+        Group {
+            if timing?.isOngoing == true {
+                Image(systemName: "hourglass")
+            } else if let weekday = timing?.weekday {
+                Text(verbatim: weekday)
+            } else {
+                Image(systemName: "calendar")
+            }
+        }
+        .font(.caption)
+        .widgetAccentable()
     }
 }
 #endif

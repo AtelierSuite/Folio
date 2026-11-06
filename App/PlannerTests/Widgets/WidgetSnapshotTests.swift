@@ -30,6 +30,44 @@ struct WidgetSnapshotTests {
         #expect(WidgetSnapshot(events: []).upNext(at: now) == nil)
     }
 
+    @Test func timingShowsTheStartOfAnEventLaterToday() throws {
+        let upNext = try #require(WidgetSnapshot(events: events).upNext(at: Fixtures.date(2026, 10, 29, hour: 11)))
+        let timing = upNext.timing(on: Fixtures.date(2026, 10, 29, hour: 11), calendar: Fixtures.calendar)
+        #expect(timing.moment == Fixtures.date(2026, 10, 29, hour: 12))
+        #expect(!timing.isOngoing)
+        #expect(!timing.isOnAnotherDay)
+    }
+
+    @Test func timingFlagsAnEventTomorrow() throws {
+        let evening = Fixtures.date(2026, 10, 29, hour: 20)
+        let upNext = try #require(WidgetSnapshot(events: events).upNext(at: evening))
+        let timing = upNext.timing(on: evening, calendar: Fixtures.calendar)
+        #expect(timing.moment == Fixtures.date(2026, 10, 30, hour: 9))
+        #expect(timing.isOnAnotherDay)
+    }
+
+    @Test func timingShowsTheEndOfAnOngoingEvent() throws {
+        let upNext = try #require(WidgetSnapshot(events: events).upNext(at: now))
+        let timing = upNext.timing(on: now, calendar: Fixtures.calendar)
+        #expect(timing.moment == Fixtures.date(2026, 10, 29, hour: 10).addingTimeInterval(1_800))
+        #expect(timing.isOngoing)
+        #expect(!timing.isOnAnotherDay)
+    }
+
+    @Test func timingKeepsAnEventEndingAtMidnightOnToday() throws {
+        let lateEvening = Fixtures.date(2026, 10, 29, hour: 23)
+        let party = Fixtures.event(local: "party", start: Fixtures.date(2026, 10, 29, hour: 22), hours: 2)
+        let upNext = try #require(WidgetSnapshot(events: [party]).upNext(at: lateEvening))
+        #expect(!upNext.timing(on: lateEvening, calendar: Fixtures.calendar).isOnAnotherDay)
+    }
+
+    @Test func timingFlagsAnOngoingEventEndingTomorrow() throws {
+        let lateEvening = Fixtures.date(2026, 10, 29, hour: 23)
+        let flight = Fixtures.event(local: "flight", start: Fixtures.date(2026, 10, 29, hour: 22), hours: 5)
+        let upNext = try #require(WidgetSnapshot(events: [flight]).upNext(at: lateEvening))
+        #expect(upNext.timing(on: lateEvening, calendar: Fixtures.calendar).isOnAnotherDay)
+    }
+
     @Test func upNextFindsTheJoinLink() throws {
         let meeting = CalendarEvent(
             reference: Fixtures.reference(),
