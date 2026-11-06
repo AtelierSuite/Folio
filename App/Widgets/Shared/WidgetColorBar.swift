@@ -6,7 +6,7 @@ struct WidgetColorBar: View {
     let color: PlannerColor
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 1.5)
+        Rectangle()
             .fill(color.color)
             .frame(width: 3)
             .widgetAccentable()
