@@ -15,7 +15,7 @@ struct UpNextAccessRequiredView: View {
     }
 }
 
-extension WidgetFamily {
+nonisolated extension WidgetFamily {
     var isSystem: Bool {
         switch self {
         case .systemSmall, .systemMedium, .systemLarge, .systemExtraLarge: true

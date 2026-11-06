@@ -46,6 +46,17 @@ struct WidgetTimelinePlanTests {
         ])
     }
 
+    @Test func lockScreenWidgetsReloadWithinTheHour() {
+        let plan = WidgetTimelinePlan(
+            events: [],
+            from: now,
+            calendar: Fixtures.calendar,
+            refreshInterval: WidgetTimelinePlan.lockScreenRefreshInterval
+        )
+        #expect(plan.entryDates == [now, Fixtures.date(2026, 10, 29, hour: 9)])
+        #expect(plan.reloadDate == Fixtures.date(2026, 10, 29, hour: 9))
+    }
+
     @Test func endsAtMidnightWhenItComesFirst() {
         let lateNow = Fixtures.date(2026, 10, 29, hour: 22)
         let events = [Fixtures.event(local: "late", start: Fixtures.date(2026, 10, 29, hour: 23), hours: 2)]

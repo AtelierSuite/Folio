@@ -4,6 +4,8 @@ import Foundation
 /// widget stays current without spending refresh budget.
 public struct WidgetTimelinePlan: Sendable, Equatable {
     public static let defaultRefreshInterval: TimeInterval = 6 * 60 * 60
+    /// Changes made outside Folio can't reach a widget, so Lock Screen counts are re-read this often.
+    public static let lockScreenRefreshInterval: TimeInterval = 60 * 60
     public static let defaultEntryLimit = 40
 
     public let entryDates: [Date]
