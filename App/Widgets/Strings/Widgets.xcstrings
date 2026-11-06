@@ -1437,61 +1437,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stündlich"
+            "value": "Zeitleiste"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hourly"
+            "value": "Timeline"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Par heure"
+            "value": "Chronologie"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oraria"
+            "value": "Cronologia"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "時間別"
+            "value": "タイムライン"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "시간별"
+            "value": "타임라인"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Per uur"
+            "value": "Tijdlijn"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Theo giờ"
+            "value": "Dòng thời gian"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "按小时"
+            "value": "时间线"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "按小時"
+            "value": "時間軸"
           }
         }
       }
