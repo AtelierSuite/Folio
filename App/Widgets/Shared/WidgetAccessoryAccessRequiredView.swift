@@ -15,10 +15,9 @@ struct WidgetAccessoryAccessRequiredView: View {
                     Image(systemName: systemImage)
                         .font(.caption)
                         .widgetAccentable()
-                    Text(String(localized: "Access.Short", table: "Widgets"))
+                    Text(verbatim: "Folio")
                         .font(.caption2.weight(.semibold))
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
+                        .lineLimit(1)
                         .minimumScaleFactor(0.6)
                 }
                 .padding(4)
@@ -30,7 +29,11 @@ struct WidgetAccessoryAccessRequiredView: View {
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
         default:
-            Label(String(localized: "Access.Short", table: "Widgets"), systemImage: systemImage)
+            Label {
+                Text(verbatim: "Folio")
+            } icon: {
+                Image(systemName: systemImage)
+            }
         }
     }
 }
