@@ -20,7 +20,7 @@ extension CalendarView {
         case .newReminder:
             composer = .newReminder
             return true
-        case .note, .newNote:
+        case .note, .dailyNote, .newNote:
             return false
         }
     }
