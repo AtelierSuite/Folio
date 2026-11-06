@@ -10,8 +10,7 @@ struct RemainingRemindersView: View {
     var body: some View {
         let reminders = entry.snapshot.todayReminders(at: entry.date, calendar: .current)
         if !entry.snapshot.canReadReminders {
-            Label(String(localized: "Access.Short", table: "Widgets"), systemImage: "checklist")
-                .font(.caption)
+            WidgetAccessoryAccessRequiredView(systemImage: "checklist")
         } else {
             switch family {
             case .accessoryInline:
