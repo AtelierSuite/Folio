@@ -1,7 +1,8 @@
 import Foundation
 
 /// `folio://` links for calendar destinations, used by widgets and controls:
-/// `folio://day/2026-10-29`, `folio://event/<id>?calendar=…&start=…` and `folio://new/event|reminder|note`.
+/// `folio://day/2026-10-29`, `folio://event/<id>?calendar=…&start=…`, `folio://new/event|reminder|note`
+/// and `folio://new/event?start=…&end=…`.
 public enum CalendarDeepLink {
     static let scheme = "folio"
 
@@ -36,6 +37,13 @@ public enum CalendarDeepLink {
         makeURL(host: "new", path: "/\(kind.rawValue)")
     }
 
+    public static func url(forNewEventIn interval: DateInterval) -> URL {
+        makeURL(host: "new", path: "/\(NewItemKind.event.rawValue)", queryItems: [
+            URLQueryItem(name: "start", value: timestamp(interval.start)),
+            URLQueryItem(name: "end", value: timestamp(interval.end))
+        ])
+    }
+
     public static func destination(from url: URL, calendar: Calendar = .current) -> AppDestination? {
         guard url.scheme?.lowercased() == scheme,
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
@@ -46,10 +54,20 @@ public enum CalendarDeepLink {
         case "event":
             return eventDestination(localIdentifier: pathValue, queryItems: components.queryItems ?? [])
         case "new":
-            return NewItemKind(rawValue: pathValue.lowercased())?.destination
+            return newItemDestination(kind: pathValue.lowercased(), queryItems: components.queryItems ?? [])
         default:
             return nil
         }
+    }
+
+    private static func newItemDestination(kind: String, queryItems: [URLQueryItem]) -> AppDestination? {
+        let dates = ["start", "end"].map { name in
+            queryItems.first { $0.name == name }?.value.flatMap(date(fromTimestamp:))
+        }
+        if let start = dates[0], let end = dates[1], kind == NewItemKind.event.rawValue, start <= end {
+            return .newEventInInterval(DateInterval(start: start, end: end))
+        }
+        return NewItemKind(rawValue: kind)?.destination
     }
 
     private static func eventDestination(localIdentifier: String, queryItems: [URLQueryItem]) -> AppDestination? {

@@ -15,7 +15,8 @@ public struct WidgetTimelinePlan: Sendable, Equatable {
         calendar: Calendar,
         refreshInterval: TimeInterval = Self.defaultRefreshInterval,
         entryLimit: Int = Self.defaultEntryLimit,
-        tickInterval: TimeInterval? = nil
+        tickInterval: TimeInterval? = nil,
+        additionalBoundaries: [Date] = []
     ) {
         let startOfToday = calendar.startOfDay(for: now)
         let nextMidnight = calendar.date(byAdding: .day, value: 1, to: startOfToday) ?? now.addingTimeInterval(86_400)
@@ -23,9 +24,9 @@ public struct WidgetTimelinePlan: Sendable, Equatable {
         let boundaries = events
             .filter { !$0.isAllDay }
             .flatMap { [$0.startDate, $0.endDate] }
-            .filter { now < $0 && $0 < horizon }
+        let changes = (boundaries + additionalBoundaries).filter { now < $0 && $0 < horizon }
         let ticks = tickInterval.map { Self.ticks(every: $0, after: now, before: horizon, calendar: calendar) } ?? []
-        let dates = Array(Set(boundaries + ticks + [horizon])).sorted()
+        let dates = Array(Set(changes + ticks + [horizon])).sorted()
         let limitedDates = Array(dates.prefix(max(entryLimit - 1, 1)))
         entryDates = [now] + limitedDates
         reloadDate = limitedDates.last ?? horizon

@@ -262,6 +262,71 @@
         }
       }
     },
+    "NSContactsUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio zeigt die Namen und Fotos der Teilnehmer deiner Termine."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio shows the names and photos of the people attending your events."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio affiche les noms et les photos des participants à vos événements."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio mostra i nomi e le foto dei partecipanti ai tuoi eventi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folioはイベントの参加者の名前と写真を表示します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio는 이벤트 참석자의 이름과 사진을 표시합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio toont de namen en foto’s van de deelnemers aan je afspraken."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio hiển thị tên và ảnh của những người tham dự sự kiện."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 会显示日程参加者的姓名和照片。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folio 會顯示行程參加者的姓名和照片。"
+          }
+        }
+      }
+    },
     "NSHealthShareUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -398,61 +463,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio verwendet deinen Standort im Hintergrund nur für Ankunfts- und Aufbruchshinweise, die du aktivierst, um dich zu benachrichtigen, wenn du an einem Termin ankommst oder es Zeit ist aufzubrechen. Dein Standort wird nur mit Apple Karten geteilt, um Reisezeiten zu berechnen."
+            "value" : "Folio verwendet deinen Standort im Hintergrund nur für Ankunfts- und Aufbruchshinweise und das Widget „Aufbruchszeit“, die du aktivierst, um dich zu benachrichtigen, wenn du an einem Termin ankommst oder es Zeit ist aufzubrechen. Dein Standort wird nur mit Apple Karten geteilt, um Reisezeiten zu berechnen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio uses your location in the background only for arrival and time to leave alerts you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times."
+            "value" : "Folio uses your location in the background only for the arrival alerts, time to leave alerts and Leave By widget you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée et de départ que vous activez, afin de vous prévenir quand vous arrivez à un événement ou quand il est temps de partir. Votre position n'est partagée qu'avec Plans d'Apple pour calculer les temps de trajet."
+            "value" : "Folio utilise votre position en arrière-plan uniquement pour les alertes d'arrivée, les alertes de départ et le widget Heure de départ que vous activez, afin de vous prévenir quand vous arrivez à un événement ou quand il est temps de partir. Votre position n'est partagée qu'avec Plans d'Apple pour calculer les temps de trajet."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio usa la tua posizione in background solo per gli avvisi di arrivo e di partenza che attivi, per avvisarti quando arrivi a un evento o quando è ora di partire. La tua posizione viene condivisa solo con Mappe di Apple per calcolare i tempi di percorrenza."
+            "value" : "Folio usa la tua posizione in background solo per gli avvisi di arrivo e di partenza e per il widget Ora di partenza che attivi, per avvisarti quando arrivi a un evento o quando è ora di partire. La tua posizione viene condivisa solo con Mappe di Apple per calcolare i tempi di percorrenza."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folioは、オンにした到着通知と出発時刻の通知のためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときや出発する時刻になったときにお知らせします。位置情報は所要時間の計算のためにAppleのマップとのみ共有されます。"
+            "value" : "Folioは、オンにした到着通知、出発時刻の通知、「出発時間」ウィジェットのためだけにバックグラウンドで位置情報を使用し、イベントの場所に到着したときや出発する時刻になったときにお知らせします。位置情報は所要時間の計算のためにAppleのマップとのみ共有されます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio는 사용자가 켠 도착 알림과 출발 시간 알림을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 줍니다. 위치 정보는 이동 시간 계산을 위해 Apple 지도와만 공유됩니다."
+            "value" : "Folio는 사용자가 켠 도착 알림, 출발 시간 알림, 출발 시간 위젯을 위해서만 백그라운드에서 위치를 사용하여 이벤트 장소에 도착했을 때나 출발할 시간이 되었을 때 알려 줍니다. 위치 정보는 이동 시간 계산을 위해 Apple 지도와만 공유됩니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio gebruikt je locatie op de achtergrond alleen voor aankomst- en vertrekmeldingen die je aanzet, om je te laten weten wanneer je bij een activiteit aankomt of wanneer het tijd is om te vertrekken. Je locatie wordt alleen met Apple Kaarten gedeeld om reistijden te berekenen."
+            "value" : "Folio gebruikt je locatie op de achtergrond alleen voor de aankomst- en vertrekmeldingen en de widget Vertrektijd die je inschakelt, om je te laten weten wanneer je bij een afspraak aankomt of wanneer het tijd is om te vertrekken. Je locatie wordt alleen gedeeld met Apple Kaarten om reistijden te berekenen."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio chỉ dùng vị trí của bạn ở chế độ nền cho các cảnh báo khi đến nơi và cảnh báo giờ khởi hành mà bạn bật, để báo cho bạn khi bạn đến một sự kiện hoặc khi đến lúc khởi hành. Vị trí của bạn chỉ được chia sẻ với Apple Bản đồ để tính thời gian di chuyển."
+            "value" : "Folio chỉ dùng vị trí của bạn trong nền cho cảnh báo đến nơi, cảnh báo khởi hành và tiện ích Giờ khởi hành mà bạn bật, để báo khi bạn đến sự kiện hoặc khi đến lúc khởi hành. Vị trí của bạn chỉ được chia sẻ với Apple Maps để tính thời gian di chuyển."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio 仅为你打开的到达提醒和出发时间提醒在后台使用你的位置，以便在你到达活动地点或该出发时通知你。你的位置仅会与 Apple 地图共享，用于计算路程时间。"
+            "value" : "Folio 只会为你打开的到达提醒、出发时间提醒和“出发时间”小组件在后台使用你的位置，以便在你到达日程地点或该出发时告知你。你的位置只会与 Apple 地图共享，用于计算行程时间。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio 僅為你開啟的抵達提醒和出發時間提醒在背景使用你的位置，以便在你抵達活動地點或該出發時通知你。你的位置僅會與 Apple 地圖共享，用於計算交通時間。"
+            "value" : "Folio 只會為你開啟的抵達提醒、出發時間提醒和「出發時間」小工具在背景使用你的位置，以便在你抵達行程地點或該出發時告知你。你的位置只會與 Apple 地圖共享，用於計算行程時間。"
           }
         }
       }

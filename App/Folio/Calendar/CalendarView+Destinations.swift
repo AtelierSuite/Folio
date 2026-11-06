@@ -14,6 +14,9 @@ extension CalendarView {
         case .newEvent:
             composer = .newEvent
             return true
+        case .newEventInInterval(let interval):
+            intervalComposer = .event(.newEvent(in: interval))
+            return true
         case .newReminder:
             composer = .newReminder
             return true

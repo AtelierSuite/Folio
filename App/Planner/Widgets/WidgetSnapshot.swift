@@ -8,19 +8,44 @@ public struct WidgetSnapshot: Sendable, Hashable {
     public var reminders: [ReminderItem]
     /// Cached daily weather keyed by the start of each day.
     public var weather: [Date: DailyWeather]
+    public var alarmDates: [Date]
+    /// Today's doses still waiting on the user, read from Health for this snapshot and never stored.
+    public var medicationDoses: [MedicationDose]
+    public var leaveByPlan: LeaveByPlan?
+    public var isLeaveByTracking: Bool
+    /// The chance of rain in the hour of the planned departure.
+    public var leaveByRainChance: Double?
+    /// Note digests keyed by the storage key of the event they're linked to.
+    public var eventNotes: [String: EventNoteDigest]
+    /// Attendee badges keyed by participant identifier.
+    public var contactBadges: [String: ContactBadge]
 
     public init(
         eventAuthorization: CalendarAuthorizationStatus = .fullAccess,
         reminderAuthorization: CalendarAuthorizationStatus = .fullAccess,
         events: [CalendarEvent] = [],
         reminders: [ReminderItem] = [],
-        weather: [Date: DailyWeather] = [:]
+        weather: [Date: DailyWeather] = [:],
+        alarmDates: [Date] = [],
+        medicationDoses: [MedicationDose] = [],
+        leaveByPlan: LeaveByPlan? = nil,
+        isLeaveByTracking: Bool = false,
+        leaveByRainChance: Double? = nil,
+        eventNotes: [String: EventNoteDigest] = [:],
+        contactBadges: [String: ContactBadge] = [:]
     ) {
         self.eventAuthorization = eventAuthorization
         self.reminderAuthorization = reminderAuthorization
         self.events = events.sorted { ($0.startDate, $0.title) < ($1.startDate, $1.title) }
         self.reminders = reminders.filter { !$0.isCompleted }
         self.weather = weather
+        self.alarmDates = alarmDates.sorted()
+        self.medicationDoses = medicationDoses
+        self.leaveByPlan = leaveByPlan
+        self.isLeaveByTracking = isLeaveByTracking
+        self.leaveByRainChance = leaveByRainChance
+        self.eventNotes = eventNotes
+        self.contactBadges = contactBadges
     }
 
     public func weather(on date: Date, calendar: Calendar) -> DailyWeather? {

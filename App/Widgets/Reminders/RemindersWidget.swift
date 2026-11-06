@@ -12,7 +12,7 @@ struct RemindersWidget: Widget {
             provider: FolioTimelineProvider<ReminderListSelectionIntent>()
         ) { entry in
             RemindersWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
         }
         .configurationDisplayName(String(localized: "Reminders.Name", table: "Widgets"))
         .description(String(localized: "Reminders.Description", table: "Widgets"))

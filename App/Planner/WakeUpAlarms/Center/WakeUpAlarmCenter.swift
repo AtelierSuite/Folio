@@ -105,5 +105,6 @@ public final class WakeUpAlarmCenter {
         let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger).synchronize(requests)
         let failed = Set(outcome.failed.map(\.id))
         upcomingAlarms = zip(alarms, requests).filter { !failed.contains($0.1.id) }.map(\.0)
+        settings.upcomingFireDates = upcomingAlarms.map(\.fireDate)
     }
 }

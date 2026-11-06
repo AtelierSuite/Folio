@@ -22,11 +22,18 @@ extension ArrivalAlertCenter {
         if !monitoredRegions.contains(where: { $0.id == arrival.identifier }) {
             await replan()
         }
-        guard isActive, let region = monitoredRegions.first(where: { $0.id == arrival.identifier }) else { return }
+        guard let region = monitoredRegions.first(where: { $0.id == arrival.identifier }) else { return }
         let now = clock()
-        for candidate in region.candidates(arrivingAt: now) where !log.hasNotified(candidate) {
-            log.record(candidate, at: now)
-            await notifier.notify(candidate, at: now)
+        let arrivals = region.candidates(arrivingAt: now)
+        if isActive {
+            for candidate in arrivals where preferences.isEnabled(for: candidate.event.reference)
+                && !log.hasNotified(candidate) {
+                log.record(candidate, at: now)
+                await notifier.notify(candidate, at: now)
+            }
+        }
+        if isLeaveByActive {
+            await updateLeaveBy(arrivingAt: arrivals, at: now)
         }
     }
 }

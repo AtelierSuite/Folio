@@ -12,6 +12,7 @@ extension PermissionKind {
         case .reminders: "checklist"
         case .notifications: "bell.badge"
         case .location: "location"
+        case .contacts: "person.crop.circle"
         case .health: "heart"
         case .alarms: "alarm"
         }

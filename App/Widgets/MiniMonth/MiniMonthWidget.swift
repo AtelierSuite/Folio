@@ -12,7 +12,7 @@ struct MiniMonthWidget: Widget {
             provider: FolioTimelineProvider<MonthConfigurationIntent>()
         ) { entry in
             MiniMonthWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
         }
         .configurationDisplayName(String(localized: "MiniMonth.Name", table: "Widgets"))
         .description(String(localized: "MiniMonth.Description", table: "Widgets"))

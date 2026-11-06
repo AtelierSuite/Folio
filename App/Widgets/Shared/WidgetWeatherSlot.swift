@@ -21,7 +21,7 @@ struct WidgetWeatherSlot: View {
         }
     }
 
-    private static func temperature(_ celsius: Double) -> String {
+    static func temperature(_ celsius: Double) -> String {
         let unit = UnitTemperature(forLocale: .current, usage: .weather)
         let value = Measurement(value: celsius, unit: UnitTemperature.celsius).converted(to: unit).value
         return "\(value.formatted(.number.precision(.fractionLength(0))))°"

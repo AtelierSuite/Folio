@@ -12,7 +12,7 @@ struct TodayWidget: Widget {
             provider: FolioTimelineProvider<AgendaConfigurationIntent>()
         ) { entry in
             TodayWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
         }
         .configurationDisplayName(String(localized: "Today.Name", table: "Widgets"))
         .description(String(localized: "Today.Description", table: "Widgets"))

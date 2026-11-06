@@ -12,12 +12,12 @@ struct WidgetTitleBar<Content: View>: View {
         .font(.caption.weight(.semibold))
         .foregroundStyle(.white)
         .lineLimit(1)
-        .padding(.horizontal, WidgetTitleBarMetrics.horizontalInset)
+        .padding(.horizontal, WidgetTitleBarMetrics.barInset)
         .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
         .padding(.top, WidgetTitleBarMetrics.cornerClearance)
         .background {
             Rectangle()
-                .fill(Color("AccentColor"))
+                .fill(Color("AccentColor").gradient)
                 .widgetAccentable()
         }
     }

@@ -12,7 +12,7 @@ struct UpNextWidget: Widget {
             provider: FolioTimelineProvider<UpNextConfigurationIntent>()
         ) { entry in
             UpNextWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
         }
         .configurationDisplayName(String(localized: "UpNext.Name", table: "Widgets"))
         .description(String(localized: "UpNext.Description", table: "Widgets"))

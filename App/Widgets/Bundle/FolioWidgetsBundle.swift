@@ -9,6 +9,10 @@ struct FolioWidgetsBundle: WidgetBundle {
         HourlyWidget()
         MiniMonthWidget()
         RemindersWidget()
+        DayLoadWidget()
+        DayShiftWidget()
+        EventNotesWidget()
+        InboxWidget()
         lockScreenWidgets
         NewEventControl()
         NewReminderControl()
@@ -20,6 +24,7 @@ struct FolioWidgetsBundle: WidgetBundle {
     private var lockScreenWidgets: some Widget {
         #if os(iOS)
         RemainingRemindersWidget()
+        LeaveByWidget()
         EventCountdownLiveActivity()
         #endif
         #if canImport(AlarmKit) && os(iOS)

@@ -12,7 +12,7 @@ struct HourlyWidget: Widget {
             provider: FolioTimelineProvider<HourlyConfigurationIntent>()
         ) { entry in
             HourlyWidgetView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .folioWidgetContainer()
         }
         .configurationDisplayName(String(localized: "Hourly.Name", table: "Widgets"))
         .description(String(localized: "Hourly.Description", table: "Widgets"))

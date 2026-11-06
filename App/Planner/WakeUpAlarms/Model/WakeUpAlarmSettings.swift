@@ -6,6 +6,7 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public static let earliestMinutesKey = "WakeUpAlarm.EarliestMinutes"
     public static let latestEventMinutesKey = "WakeUpAlarm.LatestEventMinutes"
     public static let skipsHolidaysKey = "WakeUpAlarm.SkipsHolidays"
+    public static let upcomingFireDatesKey = "WakeUpAlarm.UpcomingFireDates"
 
     public static let defaultLeadMinutes = 90
     public static let defaultEarliestMinutes = 6 * 60
@@ -43,6 +44,12 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public var skipsHolidays: Bool {
         get { defaults.bool(forKey: Self.skipsHolidaysKey) }
         nonmutating set { defaults.set(newValue, forKey: Self.skipsHolidaysKey) }
+    }
+
+    /// When the scheduled alarms ring, kept here because widgets can't reach the app's planner.
+    public var upcomingFireDates: [Date] {
+        get { defaults.array(forKey: Self.upcomingFireDatesKey) as? [Date] ?? [] }
+        nonmutating set { defaults.set(newValue, forKey: Self.upcomingFireDatesKey) }
     }
 
     public var highlightedHolidaySource: HolidaySource? {
