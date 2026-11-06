@@ -17,6 +17,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.weather))
         #expect(capabilities.supports(.invitationResponses))
         #expect(capabilities.supports(.notificationThumbnails))
+        #expect(capabilities.supports(.keptEventAlerts))
         #expect(capabilities.supports(.calendarPagingButtons))
         #expect(!capabilities.supports(.calendarViewMenuCommands))
         #expect(!capabilities.supports(.sleep))
