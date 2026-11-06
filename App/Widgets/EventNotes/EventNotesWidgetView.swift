@@ -51,6 +51,7 @@ struct EventNotesTitleBar: View {
             } else {
                 Text("UpNext.StartsIn \(Text(eventNote.event.startDate, style: .relative))", tableName: "Widgets")
                     .fontWeight(.regular)
+                    .multilineTextAlignment(.trailing)
             }
         }
     }
