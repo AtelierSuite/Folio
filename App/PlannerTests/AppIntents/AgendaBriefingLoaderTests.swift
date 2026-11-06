@@ -78,6 +78,28 @@ struct AgendaBriefingLoaderTests {
         #expect(EventEntity(soon).meetingLink?.host() == "meet.google.com")
     }
 
+    @Test func nextEventWithPlaceSkipsEventsMapsCannotRouteTo() async throws {
+        let finished = IntentTestSupport.event(
+            "Breakfast", start: Fixtures.date(2026, 10, 29, hour: 8), location: "Cafe"
+        )
+        let noPlace = IntentTestSupport.event("Coffee", start: now.addingTimeInterval(300))
+        let webAddress = IntentTestSupport.event(
+            "Standup", start: now.addingTimeInterval(600), location: "https://meet.google.com/abc-defg-hij"
+        )
+        let lunch = IntentTestSupport.event("Lunch", start: now.addingTimeInterval(3_600), location: "1 Infinite Loop")
+        let loader = try loader(events: [finished, noPlace, webAddress, lunch])
+
+        #expect(await loader.nextEventWithPlace(at: now) == lunch)
+    }
+
+    @Test func nextEventWithPlaceIsNilWithoutAnyPlaces() async throws {
+        let noPlace = IntentTestSupport.event("Coffee", start: now.addingTimeInterval(300))
+
+        let loader = try loader(events: [noPlace])
+
+        #expect(await loader.nextEventWithPlace(at: now) == nil)
+    }
+
     @Test func noNextMeetingWithoutLinks() async throws {
         let coffee = IntentTestSupport.event("Coffee", start: now.addingTimeInterval(300))
 

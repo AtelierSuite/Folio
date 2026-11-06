@@ -48,8 +48,17 @@ public struct AgendaBriefingLoader: Sendable {
 
     /// The meeting with a link that starts or started closest to now, among those not yet over.
     public func nextMeeting(at now: Date = .now) async -> CalendarEvent? {
+        await closestEvent(at: now) { $0.meetingLink != nil }
+    }
+
+    /// The event Maps can route to that starts or started closest to now, among those not yet over.
+    public func nextEventWithPlace(at now: Date = .now) async -> CalendarEvent? {
+        await closestEvent(at: now) { EventDirections.url(for: $0) != nil }
+    }
+
+    private func closestEvent(at now: Date, matching isMatch: (CalendarEvent) -> Bool) async -> CalendarEvent? {
         await events.visibleEvents(in: DateInterval(start: now, duration: Self.upNextHorizon))
-            .filter { !$0.isAllDay && $0.endDate > now && $0.meetingLink != nil }
+            .filter { !$0.isAllDay && $0.endDate > now && isMatch($0) }
             .min { abs($0.startDate.timeIntervalSince(now)) < abs($1.startDate.timeIntervalSince(now)) }
     }
 }
