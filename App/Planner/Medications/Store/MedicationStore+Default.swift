@@ -1,7 +1,7 @@
 import Foundation
 
 extension MedicationStore {
-    public static func systemSource() -> (any MedicationDataSource)? {
+    public nonisolated static func systemSource() -> (any MedicationDataSource)? {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains(SampleMedicationDataSource.launchArgument) {
             return SampleMedicationDataSource()

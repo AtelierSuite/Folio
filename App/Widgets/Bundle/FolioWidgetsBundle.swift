@@ -12,6 +12,7 @@ struct FolioWidgetsBundle: WidgetBundle {
         DayLoadWidget()
         DayShiftWidget()
         EventNotesWidget()
+        InboxWidget()
         lockScreenWidgets
         NewEventControl()
         NewReminderControl()

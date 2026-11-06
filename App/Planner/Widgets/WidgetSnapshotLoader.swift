@@ -10,6 +10,7 @@ public struct WidgetSnapshotLoader: Sendable {
     private let wakeUpSettings: WakeUpAlarmSettings
     private let eventNoteStore: EventNoteDigestStore
     private let badgeReader: any ContactBadgeReading
+    private let medicationReader: WidgetMedicationReader
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
@@ -18,7 +19,8 @@ public struct WidgetSnapshotLoader: Sendable {
         alarmStorage: StandaloneAlarmStorage = StandaloneAlarmStorage(),
         wakeUpSettings: WakeUpAlarmSettings = WakeUpAlarmSettings(),
         eventNoteStore: EventNoteDigestStore = EventNoteDigestStore(),
-        badgeReader: any ContactBadgeReading = SystemContactBadgeReader()
+        badgeReader: any ContactBadgeReading = SystemContactBadgeReader(),
+        medicationReader: WidgetMedicationReader = WidgetMedicationReader()
     ) {
         self.source = source
         self.visibilityStorage = visibilityStorage
@@ -27,6 +29,7 @@ public struct WidgetSnapshotLoader: Sendable {
         self.wakeUpSettings = wakeUpSettings
         self.eventNoteStore = eventNoteStore
         self.badgeReader = badgeReader
+        self.medicationReader = medicationReader
     }
 
     public func load(
@@ -51,6 +54,7 @@ public struct WidgetSnapshotLoader: Sendable {
             })
             .map(\.primary)
         let eventNotes = request.includesEventNotes ? eventNoteStore.digests : [:]
+        let doses = request.includesMedications ? await medicationReader.dosesAwaitingAction(at: now) : []
         return WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
             reminderAuthorization: source.authorizationStatus(for: .reminder),
@@ -58,6 +62,7 @@ public struct WidgetSnapshotLoader: Sendable {
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
             alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
+            medicationDoses: doses,
             eventNotes: eventNotes,
             contactBadges: badges(for: visibleEvents, withNotes: eventNotes, after: now)
         )
