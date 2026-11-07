@@ -17,13 +17,10 @@ final class NotificationSchedulingTests: XCTestCase {
             allowNotificationsIfAsked()
         }
 
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.openSettingsCategory("advanced")
         let scheduledCount = app.descendants(matching: .any)["NotificationsScheduledCount"]
-        var swipes = 0
-        while !scheduledCount.waitForExistence(timeout: 2), swipes < 4 {
-            app.swipeUp()
-            swipes += 1
-        }
-        XCTAssertTrue(scheduledCount.exists)
+        XCTAssertTrue(scheduledCount.waitForExistence(timeout: 5))
         let hasScheduled = NSPredicate { _, _ in !scheduledCount.label.hasSuffix(" 0") && scheduledCount.label != "0" }
         expectation(for: hasScheduled, evaluatedWith: nil)
         waitForExpectations(timeout: 10)

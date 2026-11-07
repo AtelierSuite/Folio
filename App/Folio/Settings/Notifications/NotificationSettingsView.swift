@@ -36,9 +36,6 @@ struct NotificationSettingsView: View {
             SnoozeDurationsSection()
             LeaveAlertsSection()
             ArrivalAlertsSection()
-            if scheduler.isEnabled {
-                NotificationStatusSection()
-            }
         }
         .settingsCategoryStyle(.notifications)
         .task {

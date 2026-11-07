@@ -29,7 +29,8 @@ final class NotificationStyleTests: XCTestCase {
         attachScreenshot(named: "AlertStylesAlarm")
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.buttons["NotificationSettingsLink"].tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.openSettingsCategory("advanced")
         let alarmCount = app.descendants(matching: .any)
             .matching(NSPredicate(format: "label BEGINSWITH %@", "Alarms Scheduled")).firstMatch
         XCTAssertTrue(alarmCount.waitForExistence(timeout: 10))
