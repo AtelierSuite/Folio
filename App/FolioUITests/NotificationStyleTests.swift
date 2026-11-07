@@ -24,11 +24,11 @@ final class NotificationStyleTests: XCTestCase {
         let app = launchIntoAlertStyles()
         chooseStyle("Alarm", in: app)
         allowSystemPromptIfAsked()
-        let isDenied = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Folio isn’t allowed"))
-            .firstMatch.waitForExistence(timeout: 5)
         attachScreenshot(named: "AlertStylesAlarm")
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
+        let isDenied = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Folio isn’t allowed"))
+            .firstMatch.waitForExistence(timeout: 5)
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.openSettingsCategory("advanced")
         let alarmCount = app.descendants(matching: .any)
