@@ -6,11 +6,17 @@ struct CalendarWeekDayRow: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let workdays: Set<Int>?
     @State private var strip: TimelineStrip
-    @State private var visibleWeek: Date?
+    @State private var position: ScrollPosition
+    @State private var anchoredWeek: Date
     @State private var scrollPhase = ScrollPhase.idle
+    @State private var isScrolledByUser = false
     @State private var viewportWidth: CGFloat = 0
 
     private static let window = SlidingPageWindow(radius: 8)
+
+    private var visibleWeek: Date? {
+        position.viewID(type: Date.self)
+    }
 
     init(workdays: Set<Int>?, initialDate: Date, calendar: Calendar) {
         self.workdays = workdays
@@ -18,7 +24,9 @@ struct CalendarWeekDayRow: View {
             unit: .week(workdays: workdays), around: initialDate, window: Self.window, calendar: calendar
         )
         _strip = State(initialValue: strip)
-        _visibleWeek = State(initialValue: strip.pageStart(containing: initialDate))
+        let week = strip.pageStart(containing: initialDate)
+        _position = State(initialValue: ScrollPosition(id: week, anchor: .leading))
+        _anchoredWeek = State(initialValue: week)
     }
 
     var body: some View {
@@ -38,14 +46,20 @@ struct CalendarWeekDayRow: View {
             .id(viewportWidth)
         }
         .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
-        .scrollPosition(id: $visibleWeek)
+        .scrollPosition($position, anchor: .leading)
         .scrollIndicators(.hidden)
         .fixedSize(horizontal: false, vertical: true)
-        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { viewportWidth = $0 }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width in
+            viewportWidth = width
+            keepAnchoredWeek()
+        }
         .onScrollPhaseChange { _, phase in
             scrollPhase = phase
+            if phase == .interacting || phase == .decelerating { isScrolledByUser = true }
             guard phase == .idle else { return }
-            selectVisibleWeek()
+            if isScrolledByUser { selectVisibleWeek() }
+            isScrolledByUser = false
+            if let visibleWeek { anchoredWeek = visibleWeek }
             recenterIfNeeded()
         }
         .onChange(of: navigation.selectedDate) { showSelectedWeek() }
@@ -65,13 +79,14 @@ struct CalendarWeekDayRow: View {
     private func showSelectedWeek() {
         let selectedWeek = strip.pageStart(containing: navigation.selectedDate)
         guard selectedWeek != visibleWeek, scrollPhase != .interacting else { return }
+        anchoredWeek = selectedWeek
         guard strip.index(ofPage: selectedWeek) != nil else {
             strip = strip.recentered(on: selectedWeek)
-            visibleWeek = selectedWeek
+            keepAnchoredWeek()
             return
         }
         withAnimation(reduceMotion ? nil : .snappy) {
-            visibleWeek = selectedWeek
+            keepAnchoredWeek()
         }
     }
 
@@ -79,7 +94,12 @@ struct CalendarWeekDayRow: View {
     private func recenterIfNeeded() {
         guard let visibleWeek, strip.needsRecentering(on: visibleWeek) else { return }
         strip = strip.recentered(on: visibleWeek)
-        self.visibleWeek = visibleWeek
+        keepAnchoredWeek()
+    }
+
+    /// The scroll view keeps its offset in points when it's resized, which would leave it between weeks.
+    private func keepAnchoredWeek() {
+        position.scrollTo(id: anchoredWeek, anchor: .leading)
     }
 
     private func rebuildStrip() {
@@ -89,6 +109,7 @@ struct CalendarWeekDayRow: View {
             window: Self.window,
             calendar: navigation.calendar
         )
-        visibleWeek = strip.pageStart(containing: navigation.selectedDate)
+        anchoredWeek = strip.pageStart(containing: navigation.selectedDate)
+        keepAnchoredWeek()
     }
 }
