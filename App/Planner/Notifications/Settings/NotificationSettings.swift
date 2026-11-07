@@ -4,6 +4,7 @@ public struct NotificationSettings: @unchecked Sendable {
     public static let isEnabledKey = "Notifications.Enabled"
     public static let includesEventsKey = "Notifications.IncludesEvents"
     public static let includesRemindersKey = "Notifications.IncludesReminders"
+    public static let keepsEventAlertsKey = "Notifications.KeepsEventAlerts"
 
     private let defaults: UserDefaults
 
@@ -24,5 +25,10 @@ public struct NotificationSettings: @unchecked Sendable {
     public var includesReminders: Bool {
         get { defaults.object(forKey: Self.includesRemindersKey) as? Bool ?? true }
         nonmutating set { defaults.set(newValue, forKey: Self.includesRemindersKey) }
+    }
+
+    public var keepsEventAlerts: Bool {
+        get { defaults.bool(forKey: Self.keepsEventAlertsKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.keepsEventAlertsKey) }
     }
 }
