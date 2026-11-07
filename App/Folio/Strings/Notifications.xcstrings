@@ -716,6 +716,136 @@
         }
       }
     },
+    "KeepAlerts.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn du auf einen Terminhinweis tippst oder etwas daraus öffnest, legt Folio ihn lautlos wieder in die Mitteilungszentrale, bis der Termin endet. Schlummern oder Löschen entfernt den Hinweis weiterhin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After you tap an event alert or open something from it, Folio silently puts it back in Notification Center until the event ends. Snoozing or clearing an alert still removes it."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lorsque vous touchez une alerte d’événement ou ouvrez un élément depuis celle-ci, Folio la remet silencieusement dans le centre de notifications jusqu’à la fin de l’événement. Différer ou effacer une alerte la supprime toujours."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopo che tocchi un avviso di evento o apri qualcosa da esso, Folio lo rimette silenziosamente nel Centro Notifiche fino al termine dell’evento. Posticipare o cancellare un avviso lo rimuove comunque."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イベントの通知をタップしたり通知から項目を開いたりした後も、イベントが終わるまでFolioが通知センターに音を鳴らさずに戻します。スヌーズまたは消去した通知は削除されます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이벤트 알림을 탭하거나 알림에서 항목을 열면 이벤트가 끝날 때까지 Folio가 소리 없이 알림 센터에 다시 넣습니다. 알림을 다시 알림으로 미루거나 지우면 삭제됩니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nadat je op een agendamelding tikt of er iets vanuit opent, zet Folio de melding geluidloos terug in het berichtencentrum tot het evenement afloopt. Sluimeren of wissen verwijdert de melding nog steeds."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sau khi bạn chạm vào thông báo sự kiện hoặc mở nội dung từ thông báo đó, Folio sẽ âm thầm đưa thông báo trở lại Trung tâm thông báo cho đến khi sự kiện kết thúc. Báo lại hoặc xóa thông báo vẫn sẽ gỡ thông báo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轻点日程提醒或从中打开内容后，Folio 会将其静默放回通知中心，直到日程结束。延后或清除提醒仍会将其移除。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點一下行程提醒或從中打開內容後，Folio 會將其靜音放回通知中心，直到行程結束。延後或清除提醒仍會將其移除。"
+          }
+        }
+      }
+    },
+    "KeepAlerts.Toggle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der Mitteilungszentrale behalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep in Notification Center"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserver dans le centre de notifications"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantieni nel Centro Notifiche"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知センターに残す"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림 센터에 유지"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewaar in berichtencentrum"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giữ trong Trung tâm thông báo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留在通知中心"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留在通知中心"
+          }
+        }
+      }
+    },
     "Snooze.First": {
       "extractionState": "manual",
       "localizations": {

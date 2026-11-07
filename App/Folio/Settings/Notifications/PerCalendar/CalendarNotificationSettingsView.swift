@@ -5,6 +5,7 @@ struct CalendarNotificationSettingsView: View {
     @Environment(CalendarStore.self) private var store
     @Environment(NotificationScheduler.self) private var scheduler
     @Environment(PermissionCenter.self) private var permissionCenter
+    @Environment(\.platformCapabilities) private var capabilities
     @State private var player = NotificationSoundPreviewPlayer()
     let kind: CalendarItemKind
 
@@ -19,6 +20,10 @@ struct CalendarNotificationSettingsView: View {
                 Text(String(localized: "Section.Footer", table: "NotificationSounds"))
             }
             .disabled(!isIncluded)
+            if kind == .event && capabilities.supports(.keptEventAlerts) {
+                KeepEventAlertsSection()
+                    .disabled(!isIncluded)
+            }
             if calendars.isEmpty {
                 Text(emptyText)
                     .foregroundStyle(.secondary)
