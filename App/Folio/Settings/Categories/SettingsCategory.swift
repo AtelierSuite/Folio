@@ -17,6 +17,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case weather
     case search
     case privacy
+    case advanced
     #if DEBUG
     case debug
     #endif
@@ -40,6 +41,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .weather: String(localized: "Category.Weather", table: "Settings")
         case .search: String(localized: "Category.Search", table: "Settings")
         case .privacy: String(localized: "Category.Privacy", table: "Settings")
+        case .advanced: String(localized: "Category.Advanced", table: "Settings")
         #if DEBUG
         case .debug: String(localized: "Category.Debug", table: "Settings")
         #endif
@@ -63,6 +65,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .weather: "cloud.sun.fill"
         case .search: "magnifyingglass"
         case .privacy: "hand.raised.fill"
+        case .advanced: "ellipsis"
         #if DEBUG
         case .debug: "ladybug.fill"
         #endif
@@ -86,6 +89,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .weather: .cyan
         case .search: .gray
         case .privacy: .blue
+        case .advanced: .gray
         #if DEBUG
         case .debug: .green
         #endif

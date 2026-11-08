@@ -10,11 +10,11 @@ struct SettingsCategoryGroup: Hashable {
     }
 
     static var groups: [SettingsCategoryGroup] {
-        groups(including: [.search])
+        groups(including: [.search, .advanced])
     }
 
     static var windowGroups: [SettingsCategoryGroup] {
-        groups(including: [.search, .privacy])
+        groups(including: [.search, .privacy, .advanced])
     }
 
     private static func groups(including systemCategories: [SettingsCategory]) -> [SettingsCategoryGroup] {

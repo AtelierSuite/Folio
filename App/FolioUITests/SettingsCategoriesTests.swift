@@ -12,7 +12,8 @@ final class SettingsCategoriesTests: XCTestCase {
         ("search", "Search.Settings.MonthsBack"),
         ("weather", "WeatherToggle"),
         ("alarms", "WakeUpAlarmToggle"),
-        ("medications", "MedicationTimelineToggle")
+        ("medications", "MedicationTimelineToggle"),
+        ("advanced", "NotificationsScheduledCount")
     ]
 
     @MainActor

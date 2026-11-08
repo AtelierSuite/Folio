@@ -21,6 +21,7 @@ struct SettingsCategoryView: View {
         case .weather: WeatherSettingsView()
         case .search: SearchSettingsView()
         case .privacy: PrivacySettingsView()
+        case .advanced: AdvancedSettingsView()
         #if DEBUG
         case .debug: DebugSettingsView()
         #endif

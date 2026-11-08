@@ -6,7 +6,7 @@ struct NotificationStatusSection: View {
     @Environment(\.platformCapabilities) private var capabilities
 
     var body: some View {
-        Section(String(localized: "Status.Section", table: "Notifications")) {
+        Section(String(localized: "Category.Notifications", table: "Settings")) {
             LabeledContent(
                 String(localized: "Status.Scheduled", table: "Notifications"),
                 value: (scheduler.lastReport?.scheduledCount ?? 0).formatted()
