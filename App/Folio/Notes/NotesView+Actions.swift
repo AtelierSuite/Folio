@@ -54,6 +54,17 @@ extension NotesView {
         }
     }
 
+    func openDailyNote(on date: Date) {
+        Task {
+            await library.start()
+            do {
+                selection = try await library.createDailyNote(on: date)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     func rename(_ url: URL, to title: String) {
         Task {
             do {
