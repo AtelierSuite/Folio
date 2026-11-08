@@ -8,8 +8,7 @@ struct WidgetWeatherSlot: View {
     var body: some View {
         if let daily {
             VStack(alignment: .trailing, spacing: 2) {
-                Image(systemName: daily.symbolName)
-                    .symbolRenderingMode(.multicolor)
+                WeatherSymbolImage(daily.symbolName)
                     .font(.title3)
                 Text(verbatim: "\(Self.temperature(daily.highCelsius))/\(Self.temperature(daily.lowCelsius))")
                     .font(.caption2)

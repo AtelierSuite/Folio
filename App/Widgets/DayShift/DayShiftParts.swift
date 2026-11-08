@@ -33,7 +33,6 @@ struct DayShiftHeader: View {
     }
 }
 
-/// Palette colors, because multicolor clouds are white and vanish on a light widget.
 struct DayShiftWeatherLine: View {
     private static let rainThreshold = 0.3
 
@@ -42,12 +41,7 @@ struct DayShiftWeatherLine: View {
     var body: some View {
         if let weather {
             HStack(spacing: 4) {
-                Image(systemName: weather.symbolName)
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(
-                        weather.symbolName.hasPrefix("cloud") ? .gray : .orange,
-                        weather.symbolName.contains("rain") ? .blue : .orange
-                    )
+                WeatherSymbolImage(weather.symbolName)
                 Text(verbatim: temperatures(weather))
                     .monospacedDigit()
                 if weather.precipitationChance >= Self.rainThreshold {
