@@ -7,6 +7,7 @@ import Observation
 @Observable
 public final class PlaceSearch: NSObject {
     public private(set) var results: [PlaceSearchResult] = []
+    public private(set) var isSearching = false
 
     @ObservationIgnored private let completer = MKLocalSearchCompleter()
     @ObservationIgnored private var completions: [MKLocalSearchCompletion] = []
@@ -21,8 +22,10 @@ public final class PlaceSearch: NSObject {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
             completer.cancel()
+            completer.queryFragment = ""
             show([])
-        } else {
+        } else if trimmed != completer.queryFragment {
+            isSearching = true
             completer.queryFragment = trimmed
         }
     }
@@ -43,6 +46,7 @@ public final class PlaceSearch: NSObject {
         results = completions.enumerated().map { index, completion in
             PlaceSearchResult(id: index, title: completion.title, subtitle: completion.subtitle)
         }
+        isSearching = false
     }
 }
 
