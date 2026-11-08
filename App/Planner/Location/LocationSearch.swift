@@ -18,6 +18,7 @@ public final class LocationSearch {
     @ObservationIgnored private let completer = MKLocalSearchCompleter()
     @ObservationIgnored private let delegate = LocationSearchCompleterDelegate()
     @ObservationIgnored private var completions: [String: MKLocalSearchCompletion] = [:]
+    @ObservationIgnored private var mapItems: [String: MKMapItem] = [:]
 
     public init() {
         completer.resultTypes = [.address, .pointOfInterest]
@@ -28,14 +29,26 @@ public final class LocationSearch {
     }
 
     public func location(for suggestion: LocationSearchSuggestion) async throws -> EventLocation {
-        guard let completion = completions[suggestion.id] else {
-            return EventLocation(title: suggestion.title, address: suggestion.subtitle)
-        }
-        let response = try await MKLocalSearch(request: MKLocalSearch.Request(completion: completion)).start()
-        guard let mapItem = response.mapItems.first else {
+        guard let mapItem = try await mapItem(for: suggestion) else {
             return EventLocation(title: suggestion.title, address: suggestion.subtitle)
         }
         return EventLocation(mapItem, suggestion: suggestion)
+    }
+
+    public func kind(for suggestion: LocationSearchSuggestion) async -> LocationKind? {
+        guard let mapItem = try? await mapItem(for: suggestion) else { return nil }
+        return LocationKind(category: mapItem.pointOfInterestCategory)
+    }
+
+    private func mapItem(for suggestion: LocationSearchSuggestion) async throws -> MKMapItem? {
+        if let cached = mapItems[suggestion.id] {
+            return cached
+        }
+        guard let completion = completions[suggestion.id] else { return nil }
+        let response = try await MKLocalSearch(request: MKLocalSearch.Request(completion: completion)).start()
+        guard let mapItem = response.mapItems.first else { return nil }
+        mapItems[suggestion.id] = mapItem
+        return mapItem
     }
 
     private func update(with results: [MKLocalSearchCompletion]) {

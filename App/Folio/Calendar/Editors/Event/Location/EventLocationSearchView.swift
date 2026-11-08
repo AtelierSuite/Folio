@@ -36,7 +36,7 @@ struct EventLocationSearchView: View {
                             EventLocationChoiceRow(
                                 title: saved.name,
                                 subtitle: saved.summary,
-                                systemImage: "star.circle.fill",
+                                systemImage: "star.fill",
                                 color: .orange
                             ) {
                                 choose(saved.location)
@@ -50,12 +50,7 @@ struct EventLocationSearchView: View {
                     }
                 }
                 ForEach(search.suggestions) { suggestion in
-                    EventLocationChoiceRow(
-                        title: suggestion.title,
-                        subtitle: suggestion.subtitle,
-                        systemImage: "mappin.circle.fill",
-                        color: .red
-                    ) {
+                    EventLocationSuggestionRow(suggestion: suggestion, search: search) {
                         Task { await resolve(suggestion) }
                     }
                 }
@@ -115,35 +110,5 @@ struct EventLocationSearchView: View {
     private func choose(_ newLocation: EventLocation?) {
         location = newLocation
         dismiss()
-    }
-}
-
-private struct EventLocationChoiceRow: View {
-    let title: String
-    let subtitle: String
-    let systemImage: String
-    let color: Color
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 12) {
-                Image(systemName: systemImage)
-                    .font(.title2)
-                    .foregroundStyle(color)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .foregroundStyle(.primary)
-                    if !subtitle.isEmpty {
-                        Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
     }
 }
