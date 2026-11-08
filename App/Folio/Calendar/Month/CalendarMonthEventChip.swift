@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-struct CalendarMonthSpanningChip: View {
+struct CalendarMonthEventChip: View {
     let item: MonthDayItem
 
     private let shape = Rectangle()
