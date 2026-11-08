@@ -6,9 +6,14 @@ import Observation
 @Observable
 public final class LocationSearch {
     public var query = "" {
-        didSet { completer.queryFragment = query }
+        didSet {
+            guard query != oldValue else { return }
+            isSearching = !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            completer.queryFragment = query
+        }
     }
     public private(set) var suggestions: [LocationSearchSuggestion] = []
+    public private(set) var isSearching = false
 
     @ObservationIgnored private let completer = MKLocalSearchCompleter()
     @ObservationIgnored private let delegate = LocationSearchCompleterDelegate()
@@ -39,6 +44,7 @@ public final class LocationSearch {
             uniquingKeysWith: { first, _ in first }
         )
         suggestions = results.map(LocationSearchSuggestion.init)
+        isSearching = false
     }
 }
 
