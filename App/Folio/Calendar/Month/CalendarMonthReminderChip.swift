@@ -8,6 +8,7 @@ struct CalendarMonthReminderChip: View {
         HStack(spacing: 1) {
             TimelineReminderCheckbox(entry: entry)
             TimelineReminderTitleView(entry: entry)
+                .calendarMonthTextFit()
         }
         .font(.caption2)
         .lineLimit(1)

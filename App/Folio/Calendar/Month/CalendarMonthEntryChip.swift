@@ -8,10 +8,8 @@ struct CalendarMonthEntryChip: View {
         Group {
             if item.entry.kind == .reminder {
                 CalendarMonthReminderChip(entry: item.entry)
-            } else if item.isSpanning {
-                CalendarMonthSpanningChip(item: item)
             } else {
-                CalendarMonthTimedChip(entry: item.entry)
+                CalendarMonthEventChip(item: item)
             }
         }
         .accessibilityElement(children: .combine)

@@ -202,61 +202,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Text kurzer Termine wird verkleinert, statt abgeschnitten zu werden. Termine, die für Text zu klein sind, werden als farbiger Balken angezeigt."
+            "value" : "Der Text von Terminen wird verkleinert, statt abgeschnitten zu werden, auch in der Monatsansicht. In der Tages- und Wochenansicht werden Termine, die für Text zu klein sind, als farbiger Balken angezeigt."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Event text shrinks to fit short events instead of being cut off. Events too small for text show as a colored bar."
+            "value" : "Event text shrinks to fit instead of being cut off, including in the month view. In the day and week views, events too small for text show as a colored bar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le texte des évènements courts est réduit pour tenir au lieu d’être tronqué. Les évènements trop petits pour du texte s’affichent sous forme de barre colorée."
+            "value" : "Le texte des évènements est réduit pour tenir au lieu d’être tronqué, y compris dans la vue Mois. Dans les vues Jour et Semaine, les évènements trop petits pour du texte s’affichent sous forme de barre colorée."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il testo degli eventi brevi viene ridotto per adattarsi invece di essere troncato. Gli eventi troppo piccoli per il testo appaiono come una barra colorata."
+            "value" : "Il testo degli eventi viene ridotto per adattarsi invece di essere troncato, anche nella vista Mese. Nelle viste Giorno e Settimana, gli eventi troppo piccoli per il testo appaiono come una barra colorata."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "短い予定のテキストを省略せずに縮小して収めます。テキストが入らないほど小さい予定はカラーバーで表示されます。"
+            "value" : "予定のテキストを省略せずに縮小して収めます（月表示を含む）。日表示と週表示では、テキストが入らないほど小さい予定はカラーバーで表示されます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "짧은 이벤트의 텍스트가 잘리지 않고 크기가 줄어들어 맞춰집니다. 텍스트를 표시하기에 너무 작은 이벤트는 색상 막대로 표시됩니다."
+            "value" : "이벤트 텍스트가 잘리지 않고 크기가 줄어들어 맞춰지며, 월 보기에서도 마찬가지입니다. 일 및 주 보기에서 텍스트를 표시하기에 너무 작은 이벤트는 색상 막대로 표시됩니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tekst van korte activiteiten wordt verkleind zodat die past, in plaats van afgekapt. Activiteiten die te klein zijn voor tekst worden als gekleurde balk getoond."
+            "value" : "Tekst van activiteiten wordt verkleind zodat die past, in plaats van afgekapt, ook in de maandweergave. In de dag- en weekweergave worden activiteiten die te klein zijn voor tekst als gekleurde balk getoond."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chữ của sự kiện ngắn được thu nhỏ cho vừa thay vì bị cắt. Sự kiện quá nhỏ để hiển thị chữ sẽ hiện dưới dạng thanh màu."
+            "value" : "Chữ của sự kiện được thu nhỏ cho vừa thay vì bị cắt, kể cả trong chế độ xem tháng. Trong chế độ xem ngày và tuần, sự kiện quá nhỏ để hiển thị chữ sẽ hiện dưới dạng thanh màu."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "简短日程的文字会缩小以适应，而不会被截断。太小而无法显示文字的日程会显示为彩色条。"
+            "value" : "日程文字会缩小以适应，而不会被截断，月视图中也是如此。在日视图和周视图中，太小而无法显示文字的日程会显示为彩色条。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "簡短行程的文字會縮小以符合，而不會被截斷。太小而無法顯示文字的行程會顯示為彩色條。"
+            "value" : "行程文字會縮小以符合，而不會被截斷，月視圖中也是如此。在日視圖和週視圖中，太小而無法顯示文字的行程會顯示為彩色條。"
           }
         }
       }

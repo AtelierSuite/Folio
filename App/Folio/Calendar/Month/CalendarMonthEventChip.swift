@@ -1,13 +1,14 @@
 import Planner
 import SwiftUI
 
-struct CalendarMonthSpanningChip: View {
+struct CalendarMonthEventChip: View {
     let item: MonthDayItem
 
     private let shape = Rectangle()
 
     var body: some View {
         TimelineEntryTitleView(entry: item.entry)
+            .calendarMonthTextFit()
             .font(.caption2.weight(.semibold))
             .lineLimit(1)
             .padding(.horizontal, 3)
