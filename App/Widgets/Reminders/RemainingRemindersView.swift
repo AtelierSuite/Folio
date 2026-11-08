@@ -10,8 +10,7 @@ struct RemainingRemindersView: View {
     var body: some View {
         let reminders = entry.snapshot.todayReminders(at: entry.date, calendar: .current)
         if !entry.snapshot.canReadReminders {
-            Label(String(localized: "Access.Short", table: "Widgets"), systemImage: "checklist")
-                .font(.caption)
+            WidgetAccessoryAccessRequiredView(systemImage: "checklist")
         } else {
             switch family {
             case .accessoryInline:
@@ -25,10 +24,11 @@ struct RemainingRemindersView: View {
                         .font(.headline)
                         .widgetAccentable()
                     Text(String(localized: "RemainingReminders.Count \(reminders.count)", table: "Widgets"))
-                    if let first = reminders.first {
+                    if entry.showsDetails, let first = reminders.first {
                         Text(first.title)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
+                            .privacySensitive()
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

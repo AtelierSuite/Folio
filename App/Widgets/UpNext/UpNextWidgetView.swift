@@ -23,11 +23,11 @@ struct UpNextWidgetView: View {
             switch family {
             #if os(iOS)
             case .accessoryInline:
-                UpNextInlineView(upNext: upNext)
+                UpNextInlineView(upNext: upNext, date: entry.date, showsDetails: entry.showsDetails)
             case .accessoryCircular:
-                UpNextCircularView(upNext: upNext)
+                UpNextCircularView(upNext: upNext, date: entry.date)
             case .accessoryRectangular:
-                UpNextRectangularView(upNext: upNext)
+                UpNextRectangularView(upNext: upNext, date: entry.date, showsDetails: entry.showsDetails)
             #endif
             case .systemMedium:
                 UpNextMediumView(upNext: upNext)

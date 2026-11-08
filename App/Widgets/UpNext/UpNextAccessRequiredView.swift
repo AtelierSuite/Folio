@@ -9,13 +9,14 @@ struct UpNextAccessRequiredView: View {
         if family.isSystem {
             WidgetAccessRequiredView(kind: .event)
         } else {
-            Label(String(localized: "Access.Short", table: "Widgets"), systemImage: "calendar")
-                .font(.caption)
+            #if os(iOS)
+            WidgetAccessoryAccessRequiredView(systemImage: "calendar")
+            #endif
         }
     }
 }
 
-extension WidgetFamily {
+nonisolated extension WidgetFamily {
     var isSystem: Bool {
         switch self {
         case .systemSmall, .systemMedium, .systemLarge, .systemExtraLarge: true
