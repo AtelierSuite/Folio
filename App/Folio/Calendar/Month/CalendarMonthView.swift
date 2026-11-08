@@ -6,7 +6,7 @@ struct CalendarMonthView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("Calendar.ViewMode") private var mode: CalendarViewMode = .day
     @State private var months: [Date] = []
-    @State private var visibleMonth: Date?
+    @State private var position = ScrollPosition(idType: Date.self)
     @State private var scrollPhase = ScrollPhase.idle
     @State private var pageSize = CGSize.zero
     @State private var displayedWeekCount = 5
@@ -15,6 +15,10 @@ struct CalendarMonthView: View {
 
     private var paging: MonthPaging {
         MonthPaging(calendar: navigation.calendar)
+    }
+
+    private var visibleMonth: Date? {
+        position.viewID(type: Date.self)
     }
 
     var body: some View {
@@ -32,10 +36,13 @@ struct CalendarMonthView: View {
             }
         }
         .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
-        .scrollPosition(id: $visibleMonth)
+        .scrollPosition($position)
         .scrollIndicators(.hidden)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
-        .onGeometryChange(for: CGSize.self) { $0.size } action: { pageSize = $0 }
+        .onGeometryChange(for: CGSize.self) { $0.size } action: { size in
+            pageSize = size
+            scrollToSelectedMonthAfterRebuild()
+        }
         .onScrollPhaseChange { _, phase in
             scrollPhase = phase
             guard phase == .idle else { return }
@@ -61,8 +68,14 @@ struct CalendarMonthView: View {
 
     private func recenter() {
         months = paging.months(around: navigation.selectedDate, radius: Self.window.radius)
-        visibleMonth = paging.monthStart(containing: navigation.selectedDate)
+        position.scrollTo(id: paging.monthStart(containing: navigation.selectedDate))
         fitRowsToVisibleMonth(animated: false)
+    }
+
+    /// The page stack is rebuilt for every new size, and the rebuilt lazy stack does not reliably
+    /// restore the old position: the first scroll can then land on a month years away.
+    private func scrollToSelectedMonthAfterRebuild() {
+        position.scrollTo(id: paging.monthStart(containing: navigation.selectedDate))
     }
 
     private func fitRowsToVisibleMonth(animated: Bool) {
@@ -80,7 +93,7 @@ struct CalendarMonthView: View {
         let index = months.firstIndex(of: visibleMonth)
         guard index.map(Self.window.needsRecentering(atIndex:)) ?? true else { return }
         months = paging.months(around: visibleMonth, radius: Self.window.radius)
-        self.visibleMonth = visibleMonth
+        position.scrollTo(id: visibleMonth)
     }
 
     private func showSelectedMonth() {
@@ -91,7 +104,7 @@ struct CalendarMonthView: View {
             return
         }
         withAnimation(reduceMotion ? nil : .default) {
-            visibleMonth = selectedMonth
+            position.scrollTo(id: selectedMonth)
         }
     }
 
