@@ -8,9 +8,9 @@ struct CalendarMonthEventChip: View {
 
     var body: some View {
         TimelineEntryTitleView(entry: item.entry)
+            .calendarMonthTextFit()
             .font(.caption2.weight(.semibold))
             .lineLimit(1)
-            .calendarMonthTextFit()
             .padding(.horizontal, 3)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .foregroundStyle(Color(item.entry.color))
