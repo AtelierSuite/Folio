@@ -26,6 +26,45 @@ final class FakeSnoozeClient: NotificationSnoozeClient {
     }
 }
 
+final class FakeKeepClient: NotificationKeepClient {
+    struct KeptAlert: @unchecked Sendable {
+        let identifier: String
+        let content: UNNotificationContent
+    }
+
+    let storage = Mutex<[KeptAlert]>([])
+
+    var kept: [KeptAlert] {
+        storage.withLock { $0 }
+    }
+
+    func keep(_ content: UNNotificationContent, identifier: String) async throws {
+        storage.withLock { $0.append(KeptAlert(identifier: identifier, content: content)) }
+    }
+}
+
+final class CapturingSnoozeClient: NotificationSnoozeClient {
+    let storage = Mutex<[UNNotificationContentBox]>([])
+
+    var scheduledContents: [UNNotificationContent] {
+        storage.withLock { $0.map(\.content) }
+    }
+
+    func pendingSnoozes() async -> [NotificationSnooze] {
+        []
+    }
+
+    func schedule(_ snooze: NotificationSnooze, content: UNNotificationContent, now: Date) async throws {
+        storage.withLock { $0.append(UNNotificationContentBox(content: content)) }
+    }
+
+    func removeSnoozes(withIdentifiers identifiers: [String]) async {}
+}
+
+struct UNNotificationContentBox: @unchecked Sendable {
+    let content: UNNotificationContent
+}
+
 @MainActor
 final class FakeNotificationResponseTarget: NotificationRouting, ReminderCompleting {
     var routes: [NotificationRoute] = []

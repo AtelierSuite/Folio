@@ -10,7 +10,8 @@ public enum NotificationUserInfo {
     static func make(for notification: PlannedNotification) -> [String: Any] {
         var userInfo: [String: Any] = [
             kindKey: notification.kind.rawValue,
-            fireDateKey: notification.fireDate.timeIntervalSince1970
+            fireDateKey: notification.fireDate.timeIntervalSince1970,
+            soundKey: notification.sound.rawValue
         ]
         if let endDate = notification.endDate {
             userInfo[endDateKey] = endDate.timeIntervalSince1970

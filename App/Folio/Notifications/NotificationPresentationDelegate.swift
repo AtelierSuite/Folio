@@ -16,7 +16,7 @@ final class NotificationPresentationDelegate: NSObject, UNUserNotificationCenter
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        [.banner, .list, .sound]
+        NotificationUserInfo.isKept(notification.request.content.userInfo) ? [.list] : [.banner, .list, .sound]
     }
 
     func userNotificationCenter(

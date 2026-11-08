@@ -27,7 +27,7 @@ extension UNNotificationContent {
         }
     }
 
-    private static func sound(for sound: NotificationSound) -> UNNotificationSound {
+    static func sound(for sound: NotificationSound) -> UNNotificationSound {
         guard let fileName = sound.fileName else { return .default }
         return UNNotificationSound(named: UNNotificationSoundName(fileName))
     }
