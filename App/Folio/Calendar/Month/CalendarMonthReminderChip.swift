@@ -11,6 +11,7 @@ struct CalendarMonthReminderChip: View {
         }
         .font(.caption2)
         .lineLimit(1)
+        .calendarMonthTextFit()
         .padding(.trailing, 2)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
