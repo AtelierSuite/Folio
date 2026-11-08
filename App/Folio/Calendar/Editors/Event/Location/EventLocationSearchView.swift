@@ -19,6 +19,14 @@ struct EventLocationSearchView: View {
         return isUntouched ? savedLocations : savedLocations.filter { $0.matches(trimmedQuery) }
     }
 
+    private var isAwaitingQuery: Bool {
+        trimmedQuery.isEmpty && matchingSavedLocations.isEmpty
+    }
+
+    private var hasNoResults: Bool {
+        !trimmedQuery.isEmpty && search.suggestions.isEmpty && !search.isSearching
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -61,6 +69,14 @@ struct EventLocationSearchView: View {
             .overlay {
                 if isResolving {
                     ProgressView()
+                } else if isAwaitingQuery {
+                    ContentUnavailableView(
+                        String(localized: "Location.Empty.Title", table: "EventEditor"),
+                        systemImage: "map",
+                        description: Text(String(localized: "Location.Empty.Description", table: "EventEditor"))
+                    )
+                } else if hasNoResults {
+                    ContentUnavailableView.search(text: trimmedQuery)
                 }
             }
             .searchable(
