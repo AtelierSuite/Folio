@@ -11,8 +11,7 @@ struct DailyWeatherBadge: View {
             ? AnyLayout(HStackLayout(spacing: 2))
             : AnyLayout(VStackLayout(alignment: .trailing, spacing: 0))
         layout {
-            Image(systemName: daily.symbolName)
-                .symbolRenderingMode(.multicolor)
+            WeatherSymbolImage(daily.symbolName)
             Text(WeatherFormatting.highLow(daily))
                 .monospacedDigit()
                 .foregroundStyle(.secondary)
