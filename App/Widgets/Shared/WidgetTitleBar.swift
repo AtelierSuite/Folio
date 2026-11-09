@@ -13,8 +13,7 @@ struct WidgetTitleBar<Content: View>: View {
         .foregroundStyle(.white)
         .lineLimit(1)
         .padding(.horizontal, WidgetTitleBarMetrics.barInset)
-        .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
-        .padding(.top, WidgetTitleBarMetrics.cornerClearance)
+        .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
         .background {
             Rectangle()
                 .fill(Color("AccentColor").gradient)
