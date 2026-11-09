@@ -11,7 +11,7 @@ struct TrashedNoteRowView: View {
         Button {
             isShowingActions = true
         } label: {
-            NoteRowView(file: file)
+            NoteRowView(file: file, date: file.modifiedDate)
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)

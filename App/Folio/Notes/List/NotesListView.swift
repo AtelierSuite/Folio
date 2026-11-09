@@ -4,6 +4,7 @@ import SwiftUI
 struct NotesListView: View {
     @Environment(NotesLibrary.self) private var library
     @Binding var selection: NotesSidebarItem?
+    let sortOrder: NoteSortOrder
     let onRename: (URL) -> Void
     let onTrash: (URL) -> Void
 
@@ -14,8 +15,8 @@ struct NotesListView: View {
                     .tag(NotesSidebarItem.recentlyDeleted)
             }
             Section {
-                ForEach(library.notes) { file in
-                    NoteRowView(file: file)
+                ForEach(sortOrder.sorted(library.notes)) { file in
+                    NoteRowView(file: file, date: sortOrder.date(of: file))
                         .tag(NotesSidebarItem.note(file.url))
                         .contextMenu {
                             Button(String(localized: "Action.Rename", table: "Notes"), systemImage: "pencil") {

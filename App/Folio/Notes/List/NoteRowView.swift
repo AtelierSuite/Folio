@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NoteRowView: View {
     let file: NoteFile
+    let date: Date
 
     var body: some View {
         HStack {
@@ -10,7 +11,7 @@ struct NoteRowView: View {
                 Text(file.title)
                     .lineLimit(1)
                 HStack(spacing: 6) {
-                    Text(file.modifiedDate, format: .relative(presentation: .named))
+                    Text(date, format: .relative(presentation: .named))
                     if !file.folderPath.isEmpty {
                         Label(file.folderPath, systemImage: "folder")
                             .labelStyle(.titleAndIcon)
