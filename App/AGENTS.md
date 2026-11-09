@@ -1,10 +1,13 @@
 # Layout
 
-- `Folio.xcodeproj`: one SwiftUI multiplatform project (iOS, iPadOS and native macOS, not Mac Catalyst). Minimum OS 26.1.
+- `Folio.xcodeproj`: one SwiftUI multiplatform project (iOS, iPadOS and native macOS, not Mac Catalyst), plus a watchOS app embedded in the iOS app. Minimum OS 26.1.
 - `Folio`: the app target. Views and app-only glue, grouped in one folder per feature (`Calendar`, `Notes`, `Search`, `Settings`, ...). Default actor isolation is `MainActor`.
-- `Planner`: the framework holding the core calendar, reminders and notes logic (EventKit data layer, timeline layout, notes storage, Markdown, scheduling, search index, capability layer). Anything the widgets, App Intents or tests need lives here, not in the app. Default actor isolation is `nonisolated`. It is linked by the app and the widget extension, so it must stay extension-safe (`APPLICATION_EXTENSION_API_ONLY`).
+- `Planner`: the framework holding the core calendar, reminders and notes logic (EventKit data layer, timeline layout, notes storage, Markdown, scheduling, search index, capability layer). Anything the widgets, App Intents or tests need lives here, not in the app. Default actor isolation is `nonisolated`. It is linked by the app, the widget extension and the watch targets, so it must stay extension-safe (`APPLICATION_EXTENSION_API_ONLY`) and build for watchOS too. EventKit is read-only on watchOS, so calendar writes go through `EKEventStore+Writing`.
 - `Widgets`: the widget extension (widgets, Live Activity, Control Center controls).
 - `NotificationContent`: the notification content extension (iOS and iPadOS only) that draws the expanded view of Folio's alerts. Its `Info.plist` lists every alert category; `NotificationContentExtensionTests` checks the list matches `NotificationCategoryRegistry`.
+- `Watch`: the Apple Watch app (`FolioMini` target, scheme `FolioMini`): timeline, day and 2 days views. It only reads calendars. Launch it with `-WatchSampleEvents` in Debug to fill it with sample events, as EventKit can't add any on watchOS.
+- `WatchComplications`: the watch widget extension (Up Next, Timeline and Today complications).
+- `WatchShared`: views and strings used by both `Watch` and `WatchComplications`.
 - `PlannerTests`: Swift Testing unit tests for `Planner`.
 - `FolioUITests`: XCTest UI tests for the app.
 - `Scripts`: developer scripts, such as `mac-vm.sh` for testing in the Mac VM.
@@ -12,7 +15,7 @@
 Every target folder is a synchronized folder: add, move and delete files on disk and Xcode picks them up. Only touch `project.pbxproj` for build settings, capabilities or new targets, and keep those edits small.
 
 Shared identifiers:
-- Bundle ID `com.tsubuzaki.Folio`, widgets `com.tsubuzaki.Folio.Widgets`, notification content `com.tsubuzaki.Folio.NotificationContent`, framework `com.tsubuzaki.Folio.Planner`.
+- Bundle ID `com.tsubuzaki.Folio`, widgets `com.tsubuzaki.Folio.Widgets`, notification content `com.tsubuzaki.Folio.NotificationContent`, watch app `com.tsubuzaki.Folio.Mini`, complications `com.tsubuzaki.Folio.Mini.Complications`, framework `com.tsubuzaki.Folio.Planner`.
 - App Group `group.com.tsubuzaki.Folio` (`AppGroup` in `Planner`).
 - URL scheme `folio://`.
 - Entitlements: `Folio/Folio.entitlements` is used on macOS and `Folio/Folio-iOS.entitlements` on iOS and iPadOS (it adds HealthKit). Add shared entitlements to both files.
