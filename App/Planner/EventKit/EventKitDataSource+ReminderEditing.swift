@@ -9,14 +9,14 @@ extension EventKitDataSource {
     public func createReminder(_ draft: ReminderDraft) async throws -> String {
         let reminder = EKReminder(eventStore: eventStore)
         try apply(draft.normalized(), to: reminder, isNew: true)
-        try eventStore.save(reminder, commit: true)
+        try eventStore.persist(reminder)
         return reminder.calendarItemIdentifier
     }
 
     public func updateReminder(identifier: String, with draft: ReminderDraft) async throws {
         let reminder = try existingReminder(withIdentifier: identifier)
         try apply(draft.normalized(), to: reminder, isNew: false)
-        try eventStore.save(reminder, commit: true)
+        try eventStore.persist(reminder)
     }
 
     public func deleteReminder(identifier: String) async throws {
@@ -24,7 +24,7 @@ extension EventKitDataSource {
         guard reminder.calendar?.allowsContentModifications ?? false else {
             throw ReminderEditingError.readOnly
         }
-        try eventStore.remove(reminder, commit: true)
+        try eventStore.discard(reminder)
     }
 
     private func existingReminder(withIdentifier identifier: String) throws -> EKReminder {

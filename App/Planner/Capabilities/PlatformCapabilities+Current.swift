@@ -27,6 +27,8 @@ extension DevicePlatform {
     public static var current: DevicePlatform {
         #if os(macOS)
         .mac
+        #elseif os(watchOS)
+        .watch
         #else
         UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
         #endif

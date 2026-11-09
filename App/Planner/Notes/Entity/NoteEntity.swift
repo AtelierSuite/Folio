@@ -1,7 +1,7 @@
 import AppIntents
 import Foundation
 
-public struct NoteEntity: IndexedEntity, Identifiable, Sendable {
+public struct NoteEntity: AppEntity, Identifiable, Sendable {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(
         name: LocalizedStringResource("NoteEntity.TypeName", table: "Spotlight", bundle: #bundle)
     )
