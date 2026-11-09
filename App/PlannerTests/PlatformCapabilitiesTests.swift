@@ -39,4 +39,9 @@ struct PlatformCapabilitiesTests {
                 == [.timeSensitiveNotifications, .weather, .calendarPagingButtons, .calendarViewMenuCommands]
         )
     }
+
+    @Test func watchOnlySupportsNotificationsAndWeather() {
+        let capabilities = PlatformCapabilities(platform: .watch, areLiveActivitiesSupported: true)
+        #expect(capabilities.supportedFeatures == [.timeSensitiveNotifications, .weather])
+    }
 }
