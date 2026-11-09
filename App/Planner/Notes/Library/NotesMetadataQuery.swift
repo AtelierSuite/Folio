@@ -53,6 +53,7 @@ final class NotesMetadataQuery {
             url: url,
             relativePath: relativePath,
             modifiedDate: item.value(forAttribute: NSMetadataItemFSContentChangeDateKey) as? Date ?? .distantPast,
+            createdDate: item.value(forAttribute: NSMetadataItemFSCreationDateKey) as? Date,
             isDownloaded: status == NSMetadataUbiquitousItemDownloadingStatusCurrent,
             hasUnresolvedConflicts: item.value(forAttribute: NSMetadataUbiquitousItemHasUnresolvedConflictsKey) as? Bool
                 ?? false

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NotesSidebarView: View {
     @Environment(NotesLibrary.self) private var library
+    @AppStorage(NoteSortOrder.storageKey) private var sortOrder: NoteSortOrder = .dateModified
     @Binding var selection: NotesSidebarItem?
     let onCreate: () -> Void
     let onRename: (URL) -> Void
@@ -12,6 +13,11 @@ struct NotesSidebarView: View {
         content
             .navigationTitle(String(localized: "Title", table: "Notes"))
             .toolbar {
+                if library.status == .ready {
+                    ToolbarItem {
+                        NoteSortMenu(sortOrder: $sortOrder)
+                    }
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button(
                         String(localized: "List.NewNote", table: "Notes"),
@@ -32,7 +38,7 @@ struct NotesSidebarView: View {
         case .iCloudUnavailable, .folderUnavailable:
             NotesUnavailableView(status: library.status)
         case .ready:
-            NotesListView(selection: $selection, onRename: onRename, onTrash: onTrash)
+            NotesListView(selection: $selection, sortOrder: sortOrder, onRename: onRename, onTrash: onTrash)
         }
     }
 }
