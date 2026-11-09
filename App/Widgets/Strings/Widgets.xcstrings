@@ -3706,6 +3706,71 @@
         }
       }
     },
+    "LeaveBy.AllowAlways": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Aufbruchszeit“ braucht den Standortzugriff „Immer“. Ändere ihn für Folio in der App „Einstellungen“."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave By needs location access set to Always. Change it for Folio in the Settings app."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heure de départ nécessite l’accès à la position Toujours. Modifiez-le pour Folio dans l’app Réglages."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora di partenza richiede l’accesso alla posizione Sempre. Modificalo per Folio nell’app Impostazioni."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「出発時間」には位置情報へのアクセスを「常に」にする必要があります。「設定」アプリでFolioの設定を変更してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "출발 시간을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다. 설정 앱에서 Folio의 설정을 변경하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertrektijd heeft locatietoegang Altijd nodig. Wijzig dit voor Folio in de app Instellingen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giờ khởi hành cần quyền truy cập vị trí Luôn luôn. Hãy thay đổi cho Folio trong ứng dụng Cài đặt."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“出发时间”需要将位置访问设为“始终”。请在“设置”App 中更改 Folio 的设置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「出發時間」需要將位置取用權設為「永遠」。請在「設定」App 中更改 Folio 的設定。"
+          }
+        }
+      }
+    },
     "LeaveBy.ArriveAt %@": {
       "extractionState": "manual",
       "localizations": {
@@ -3842,61 +3907,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kein Weg als Nächstes"
+            "value": "Sobald du bei einem Termin ankommst, siehst du hier, wann du zum nächsten aufbrechen musst."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nowhere to be next"
+            "value": "When you reach an event, this shows when to leave for your next one."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucun trajet à venir"
+            "value": "Une fois arrivé à un événement, l’heure de départ pour le suivant s’affiche ici."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nessuno spostamento in vista"
+            "value": "Quando arrivi a un evento, qui vedrai quando partire per il successivo."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "次の移動はありません"
+            "value": "予定の場所に着くと、次の予定に向けて出発する時間がここに表示されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "다음 이동 없음"
+            "value": "일정 장소에 도착하면 다음 일정을 위해 출발할 시간이 여기에 표시됩니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geen reis gepland"
+            "value": "Zodra je bij een afspraak aankomt, zie je hier wanneer je naar de volgende moet vertrekken."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Không có chuyến đi tiếp theo"
+            "value": "Khi bạn đến nơi diễn ra sự kiện, thời điểm cần khởi hành cho sự kiện tiếp theo sẽ hiện ở đây."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "接下来无需出行"
+            "value": "到达日程地点后，这里会显示前往下一个日程的出发时间。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "接下來無需出行"
+            "value": "抵達行程地點後，這裡會顯示前往下一個行程的出發時間。"
           }
         }
       }
@@ -4291,67 +4356,67 @@
         }
       }
     },
-    "LeaveBy.Setup": {
+    "LeaveBy.TurnOn": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktiviere „Aufbruchszeit“ in den Datenschutzeinstellungen von Folio und erlaube den Standort „Immer“."
+            "value": "Aktiviere „Aufbruchszeit“ in Folio unter Einstellungen › Alle Mitteilungen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on Leave By in Folio's Privacy settings and allow location access Always."
+            "value": "Turn on Leave By in Folio under Settings › All Notifications."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activez Heure de départ dans les réglages Confidentialité de Folio et autorisez la position Toujours."
+            "value": "Activez Heure de départ dans Folio, sous Réglages › Toutes les notifications."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Attiva Ora di partenza nelle impostazioni Privacy di Folio e consenti la posizione Sempre."
+            "value": "Attiva Ora di partenza in Folio, in Impostazioni › Tutte le notifiche."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioの「プライバシー」設定で「出発時間」をオンにして、位置情報へのアクセスを「常に」にしてください。"
+            "value": "Folioの「設定」›「すべての通知」で「出発時間」をオンにしてください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio의 개인정보 보호 설정에서 출발 시간을 켜고 위치 접근을 '항상'으로 허용하세요."
+            "value": "Folio의 설정 › 모든 알림에서 출발 시간을 켜세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zet Vertrektijd aan bij Privacy in Folio en sta locatietoegang Altijd toe."
+            "value": "Zet Vertrektijd aan in Folio via Instellingen › Alle meldingen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bật Giờ khởi hành trong cài đặt Quyền riêng tư của Folio và cho phép vị trí Luôn luôn."
+            "value": "Bật Giờ khởi hành trong Folio tại Cài đặt › Tất cả thông báo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请在 Folio 的“隐私”设置中打开“出发时间”，并将位置访问设为“始终”。"
+            "value": "请在 Folio 的“设置”›“所有通知”中打开“出发时间”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請在 Folio 的「隱私權」設定中開啟「出發時間」，並將位置取用權設為「永遠」。"
+            "value": "請在 Folio 的「設定」›「所有通知」中開啟「出發時間」。"
           }
         }
       }

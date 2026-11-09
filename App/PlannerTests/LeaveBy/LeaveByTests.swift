@@ -163,7 +163,7 @@ struct LeaveByTests {
         )
         await arrive(harness, at: here)
         #expect(harness.settings.plan == nil)
-        #expect(harness.settings.isTracking == false)
+        #expect(harness.settings.status == .needsAlwaysLocation)
         #expect(harness.monitor.monitored.isEmpty)
     }
 
@@ -171,11 +171,26 @@ struct LeaveByTests {
         let harness = try makeHarness(events: [], isEnabled: false)
         await harness.center.setLeaveByEnabled(true)
         #expect(harness.monitor.authorizationRequestCount == 1)
-        #expect(harness.settings.isTracking)
+        #expect(harness.settings.status == .tracking)
         harness.settings.plan = LeaveByPlan(eventKey: "old", travelTime: 60, transport: .driving)
         await harness.center.setLeaveByEnabled(false)
         #expect(harness.settings.plan == nil)
-        #expect(harness.settings.isTracking == false)
+        #expect(harness.settings.status == .off)
+    }
+
+    @Test func reloadsTheWidgetWhenAlwaysIsAllowedLater() async throws {
+        let harness = try makeHarness(events: [], authorization: .whenInUse, isEnabled: false)
+        var reloadCount = 0
+        harness.center.onLeaveByChange = { reloadCount += 1 }
+        await harness.center.setLeaveByEnabled(true)
+        #expect(harness.settings.status == .needsAlwaysLocation)
+        reloadCount = 0
+        harness.monitor.authorization = .always
+        await harness.center.replan()
+        #expect(harness.settings.status == .tracking)
+        #expect(reloadCount == 1)
+        await harness.center.replan()
+        #expect(reloadCount == 1)
     }
 }
 

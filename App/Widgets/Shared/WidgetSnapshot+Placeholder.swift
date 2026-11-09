@@ -20,7 +20,7 @@ nonisolated extension WidgetSnapshot {
             events: events,
             reminders: reminders,
             leaveByPlan: LeaveByPlan(eventKey: review.reference.storageKey, travelTime: 1_500, transport: .driving),
-            isLeaveByTracking: true,
+            leaveByStatus: .tracking,
             eventNotes: [review.reference.storageKey: sampleNote(title: review.title)]
         )
     }

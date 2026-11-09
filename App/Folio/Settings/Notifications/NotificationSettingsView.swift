@@ -36,6 +36,7 @@ struct NotificationSettingsView: View {
             SnoozeDurationsSection()
             LeaveAlertsSection()
             ArrivalAlertsSection()
+            LeaveBySettingsSection()
         }
         .settingsCategoryStyle(.notifications)
         .task {

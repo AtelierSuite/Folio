@@ -33,19 +33,21 @@ struct LeaveByWidgetView: View {
                 LeaveBySmallView(countdown: countdown)
             }
         } else {
-            LeaveByEmptyView(isTracking: entry.snapshot.isLeaveByTracking, family: family)
+            LeaveByEmptyView(status: entry.snapshot.leaveByStatus, family: family)
         }
     }
 }
 
 struct LeaveByEmptyView: View {
-    let isTracking: Bool
+    let status: LeaveByStatus
     let family: WidgetFamily
 
     private var text: String {
-        isTracking
-            ? String(localized: "LeaveBy.Empty", table: "Widgets")
-            : String(localized: "LeaveBy.Setup", table: "Widgets")
+        switch status {
+        case .off: String(localized: "LeaveBy.TurnOn", table: "Widgets")
+        case .needsAlwaysLocation: String(localized: "LeaveBy.AllowAlways", table: "Widgets")
+        case .tracking: String(localized: "LeaveBy.Empty", table: "Widgets")
+        }
     }
 
     var body: some View {
