@@ -1,24 +1,23 @@
 import Foundation
 
-/// macOS doesn't play custom notification sounds from the app bundle, so they are
-/// copied into the App Group's `Library/Sounds`, one of the folders it searches.
 public struct NotificationSoundLibrary: Sendable {
     public let sourceBundleURL: URL
     public let destinationURL: URL
 
-    public init(
-        sourceBundleURL: URL = Bundle.main.resourceURL ?? Bundle.main.bundleURL,
-        destinationURL: URL = AppGroup.containerURL.appending(path: "Library/Sounds", directoryHint: .isDirectory)
-    ) {
+    public init(sourceBundleURL: URL = Bundle.main.resourceURL ?? Bundle.main.bundleURL, destinationURL: URL) {
         self.sourceBundleURL = sourceBundleURL
         self.destinationURL = destinationURL
+    }
+
+    public static var bundledSounds: [NotificationSound] {
+        NotificationSound.allCases.filter { $0.fileName != nil }
     }
 
     @discardableResult
     public func install() -> [NotificationSound] {
         let fileManager = FileManager.default
         try? fileManager.createDirectory(at: destinationURL, withIntermediateDirectories: true)
-        return NotificationSound.allCases.filter { sound in
+        return Self.bundledSounds.filter { sound in
             guard let fileName = sound.fileName else { return false }
             let source = sourceBundleURL.appending(path: fileName)
             let destination = destinationURL.appending(path: fileName)

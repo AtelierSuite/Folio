@@ -30,6 +30,10 @@ extension UNNotificationContent {
     static func sound(for sound: NotificationSound) -> UNNotificationSound {
         #if os(watchOS)
         return .default
+        #elseif os(macOS)
+        // macOS looks the name up like a system tone, which only matches without the extension.
+        guard sound.fileName != nil else { return .default }
+        return UNNotificationSound(named: UNNotificationSoundName(sound.rawValue))
         #else
         guard let fileName = sound.fileName else { return .default }
         return UNNotificationSound(named: UNNotificationSoundName(fileName))

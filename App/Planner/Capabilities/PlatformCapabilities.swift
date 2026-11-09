@@ -24,7 +24,7 @@ public struct PlatformCapabilities: Sendable, Equatable {
             platform == .iPhone
         case .calendarPagingButtons:
             platform != .iPhone
-        case .calendarViewMenuCommands:
+        case .calendarViewMenuCommands, .notificationSoundInstallation:
             platform == .mac
         }
     }
