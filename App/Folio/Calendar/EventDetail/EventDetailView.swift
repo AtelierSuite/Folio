@@ -76,6 +76,7 @@ struct EventDetailView: View {
         .undoToastHost()
         .onScreenEntity(event)
         #if os(macOS)
+        .onExitCommand { dismiss() }
         .frame(minWidth: 440, idealWidth: 480, minHeight: 520, idealHeight: 640)
         #endif
         .task(id: LoadKey(
@@ -95,24 +96,45 @@ struct EventDetailView: View {
 
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .cancellationAction) {
-            Button(role: .confirm) {
-                dismiss()
-            }
-        }
+        #if os(macOS)
         if !event.isReadOnly {
-            #if os(macOS)
             ToolbarItem(placement: .destructiveAction) {
                 deleteButton
             }
-            #endif
-            ToolbarItem(placement: .primaryAction) {
-                Button(String(localized: "Detail.Edit", table: "EventEditor")) {
-                    isEditing = true
-                }
-                .disabled(draft == nil)
+        }
+        // A sheet on macOS puts the cancellation item before the confirmation item, so Edit takes that slot.
+        if !event.isReadOnly {
+            ToolbarItem(placement: .cancellationAction) {
+                editButton
+                    .keyboardShortcut("e", modifiers: .command)
             }
         }
+        ToolbarItem(placement: .confirmationAction) {
+            doneButton
+        }
+        #else
+        ToolbarItem(placement: .cancellationAction) {
+            doneButton
+        }
+        if !event.isReadOnly {
+            ToolbarItem(placement: .primaryAction) {
+                editButton
+            }
+        }
+        #endif
+    }
+
+    private var doneButton: some View {
+        Button(role: .confirm) {
+            dismiss()
+        }
+    }
+
+    private var editButton: some View {
+        Button(String(localized: "Detail.Edit", table: "EventEditor")) {
+            isEditing = true
+        }
+        .disabled(draft == nil)
     }
 
     /// Saving can give the event a new identifier (detaching or splitting a series), so a pending
