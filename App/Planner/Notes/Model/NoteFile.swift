@@ -4,6 +4,7 @@ public struct NoteFile: Identifiable, Hashable, Sendable {
     public let url: URL
     public let relativePath: String
     public let modifiedDate: Date
+    public let createdDate: Date
     public let isDownloaded: Bool
     public let hasUnresolvedConflicts: Bool
 
@@ -11,12 +12,14 @@ public struct NoteFile: Identifiable, Hashable, Sendable {
         url: URL,
         relativePath: String,
         modifiedDate: Date,
+        createdDate: Date? = nil,
         isDownloaded: Bool = true,
         hasUnresolvedConflicts: Bool = false
     ) {
         self.url = url
         self.relativePath = relativePath
         self.modifiedDate = modifiedDate
+        self.createdDate = createdDate ?? modifiedDate
         self.isDownloaded = isDownloaded
         self.hasUnresolvedConflicts = hasUnresolvedConflicts
     }

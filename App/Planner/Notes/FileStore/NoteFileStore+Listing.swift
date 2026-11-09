@@ -10,7 +10,7 @@ extension NoteFileStore {
             return []
         }
         let keys: [URLResourceKey] = [
-            .isDirectoryKey, .contentModificationDateKey, .ubiquitousItemDownloadingStatusKey,
+            .isDirectoryKey, .contentModificationDateKey, .creationDateKey, .ubiquitousItemDownloadingStatusKey,
             .ubiquitousItemHasUnresolvedConflictsKey
         ]
         guard let enumerator = FileManager.default.enumerator(
@@ -60,6 +60,7 @@ extension NoteFileStore {
             url: fileURL,
             relativePath: relativePath,
             modifiedDate: values?.contentModificationDate ?? .distantPast,
+            createdDate: values?.creationDate,
             isDownloaded: isDownloaded,
             hasUnresolvedConflicts: values?.ubiquitousItemHasUnresolvedConflicts ?? false
         )
