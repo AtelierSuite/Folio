@@ -21,4 +21,18 @@ struct TimelineDragSnapTests {
         #expect(abs(snap.snapped(9.2) - (9 + 10.0 / 60)) < 0.0001)
         #expect(snap.snapped(0.01) == 0)
     }
+
+    @Test func snapsToTheNearestThirtyMinutes() {
+        let snap = TimelineDragSnap.thirtyMinutes
+        #expect(snap.snapped(9.24) == 9.0)
+        #expect(snap.snapped(9.26) == 9.5)
+        #expect(snap.snapped(9.8) == 10)
+    }
+
+    @Test func snapsToTheNearestHour() {
+        let snap = TimelineDragSnap.oneHour
+        #expect(snap.snapped(9.49) == 9)
+        #expect(snap.snapped(9.51) == 10)
+        #expect(snap.snapped(23.6) == 24)
+    }
 }

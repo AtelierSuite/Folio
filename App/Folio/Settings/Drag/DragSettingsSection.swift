@@ -25,6 +25,8 @@ extension TimelineDragSnap {
         switch self {
         case .fiveMinutes: String(localized: "Settings.SnapTo.FiveMinutes", table: "Drag")
         case .fifteenMinutes: String(localized: "Settings.SnapTo.FifteenMinutes", table: "Drag")
+        case .thirtyMinutes: String(localized: "Settings.SnapTo.ThirtyMinutes", table: "Drag")
+        case .oneHour: String(localized: "Settings.SnapTo.OneHour", table: "Drag")
         }
     }
 }
