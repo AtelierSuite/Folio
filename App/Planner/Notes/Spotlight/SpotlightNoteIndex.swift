@@ -1,3 +1,4 @@
+#if canImport(CoreSpotlight)
 import AppIntents
 import CoreSpotlight
 
@@ -16,3 +17,17 @@ public struct SpotlightNoteIndex: NoteSearchIndexing {
         try await CSSearchableIndex.default().deleteAppEntities(ofType: NoteEntity.self)
     }
 }
+#else
+import Foundation
+
+/// Spotlight isn't on watchOS, so there's nothing to index there.
+public struct SpotlightNoteIndex: NoteSearchIndexing {
+    public init() {}
+
+    public func index(_ entities: [NoteEntity]) async throws {}
+
+    public func deleteNotes(identifiedBy identifiers: [NoteEntity.ID]) async throws {}
+
+    public func deleteAllNotes() async throws {}
+}
+#endif

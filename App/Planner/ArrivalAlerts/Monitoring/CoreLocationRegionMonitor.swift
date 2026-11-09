@@ -10,7 +10,9 @@ public final class CoreLocationRegionMonitor: NSObject, RegionMonitoring {
     public var onAuthorizationChange: (@MainActor () -> Void)?
 
     private let manager = CLLocationManager()
+    #if !os(watchOS)
     private var monitorTask: Task<CLMonitor, Never>?
+    #endif
 
     override public init() {
         super.init()
@@ -22,7 +24,11 @@ public final class CoreLocationRegionMonitor: NSObject, RegionMonitoring {
     }
 
     public var isMonitoringAvailable: Bool {
+        #if os(watchOS)
+        false
+        #else
         CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self)
+        #endif
     }
 
     public var lastKnownCoordinate: PlannerCoordinate? {
@@ -40,6 +46,17 @@ public final class CoreLocationRegionMonitor: NSObject, RegionMonitoring {
         }
     }
 
+    #if os(watchOS)
+    public func monitoredIdentifiers() async -> [String] { [] }
+
+    public func startMonitoring(_ region: ArrivalRegion) async {}
+
+    public func stopMonitoring(_ identifier: String) async {}
+
+    public func arrivals() -> AsyncStream<RegionArrival> {
+        AsyncStream { $0.finish() }
+    }
+    #else
     // A condition the system couldn't start stays listed as unmonitored, so it is dropped here and added again.
     public func monitoredIdentifiers() async -> [String] {
         let monitor = await monitor()
@@ -95,6 +112,7 @@ public final class CoreLocationRegionMonitor: NSObject, RegionMonitoring {
         monitorTask = task
         return await task.value
     }
+    #endif
 }
 
 extension CoreLocationRegionMonitor: CLLocationManagerDelegate {

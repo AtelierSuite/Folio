@@ -1,8 +1,9 @@
+#if canImport(CoreSpotlight)
 import AppIntents
 import CoreSpotlight
 import UniformTypeIdentifiers
 
-extension NoteEntity {
+extension NoteEntity: IndexedEntity {
     public var attributeSet: CSSearchableItemAttributeSet {
         let attributes = defaultAttributeSet
         attributes.contentType = UTType.text.identifier
@@ -16,3 +17,4 @@ extension NoteEntity {
         return attributes
     }
 }
+#endif

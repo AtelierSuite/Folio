@@ -10,7 +10,7 @@ extension EventKitDataSource {
         list.title = draft.trimmedTitle
         list.source = source
         list.cgColor = draft.color.cgColor
-        try eventStore.saveCalendar(list, commit: true)
+        try eventStore.persist(list)
         return list.calendarIdentifier
     }
 }

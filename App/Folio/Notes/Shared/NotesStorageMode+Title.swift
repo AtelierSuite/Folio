@@ -8,7 +8,7 @@ extension NotesStorageMode {
             String(localized: "Storage.Mode.iCloudDrive", table: "Notes")
         case .onMyDevice:
             switch platform {
-            case .iPhone: String(localized: "Storage.Mode.OnMyIPhone", table: "Notes")
+            case .iPhone, .watch: String(localized: "Storage.Mode.OnMyIPhone", table: "Notes")
             case .iPad: String(localized: "Storage.Mode.OnMyIPad", table: "Notes")
             case .mac: String(localized: "Storage.Mode.OnMyMac", table: "Notes")
             }

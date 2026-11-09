@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    The elastic band, running past the cover's top and bottom edges like a
+    strap wrapped around the planner.
+  -->
+  <path fill="#FFFFFF" d="M644 172A14 14 0 0 1 658 186V838A14 14 0 0 1 644 852A14 14 0 0 1 630 838V186A14 14 0 0 1 644 172Z" opacity="0.8"/>
+</svg>

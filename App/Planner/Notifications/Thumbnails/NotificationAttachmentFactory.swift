@@ -37,7 +37,7 @@ struct NotificationAttachmentFactory: Sendable {
     }
 
     private func artwork(for kind: CalendarItemKind, color: PlannerColor?) -> Data? {
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         NotificationThumbnailArtwork.pngData(for: kind, color: color)
         #else
         nil

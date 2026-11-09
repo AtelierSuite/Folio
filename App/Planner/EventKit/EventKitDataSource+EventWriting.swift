@@ -22,7 +22,7 @@ extension EventKitDataSource {
         }
         let event = EKEvent(eventStore: eventStore)
         draft.apply(to: event, in: eventStore, original: nil)
-        try eventStore.save(event, span: .futureEvents, commit: true)
+        try eventStore.persist(event, span: .futureEvents)
         return CalendarItemReference(event)
     }
 
@@ -33,12 +33,12 @@ extension EventKitDataSource {
     ) async throws -> CalendarItemReference {
         let event = try event(for: reference)
         draft.apply(to: event, in: eventStore, original: EventDraft(event))
-        try eventStore.save(event, span: span.eventKitSpan, commit: true)
+        try eventStore.persist(event, span: span.eventKitSpan)
         return CalendarItemReference(event)
     }
 
     public func deleteEvent(_ reference: CalendarItemReference, span: EventEditSpan) async throws {
-        try eventStore.remove(try event(for: reference), span: span.eventKitSpan, commit: true)
+        try eventStore.discard(try event(for: reference), span: span.eventKitSpan)
     }
 
     func event(for reference: CalendarItemReference) throws -> EKEvent {

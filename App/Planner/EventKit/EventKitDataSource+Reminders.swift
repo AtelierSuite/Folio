@@ -24,7 +24,7 @@ extension EventKitDataSource {
             throw CalendarDataSourceError.itemNotFound
         }
         reminder.isCompleted = isCompleted
-        try eventStore.save(reminder, commit: true)
+        try eventStore.persist(reminder)
     }
 
     private func fetchReminders(matching predicate: NSPredicate) async -> [ReminderItem] {

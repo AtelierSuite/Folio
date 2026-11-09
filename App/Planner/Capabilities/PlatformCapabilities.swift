@@ -10,7 +10,10 @@ public struct PlatformCapabilities: Sendable, Equatable {
     }
 
     public func supports(_ feature: PlatformFeature) -> Bool {
-        switch feature {
+        if platform == .watch {
+            return feature == .timeSensitiveNotifications || feature == .weather
+        }
+        return switch feature {
         case .liveActivityCountdown:
             platform != .mac && areLiveActivitiesSupported
         case .timeSensitiveNotifications, .weather:

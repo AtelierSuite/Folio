@@ -4,4 +4,5 @@ public enum DevicePlatform: String, Sendable, CaseIterable {
     case iPhone
     case iPad
     case mac
+    case watch
 }

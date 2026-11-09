@@ -28,7 +28,11 @@ extension UNNotificationContent {
     }
 
     static func sound(for sound: NotificationSound) -> UNNotificationSound {
+        #if os(watchOS)
+        return .default
+        #else
         guard let fileName = sound.fileName else { return .default }
         return UNNotificationSound(named: UNNotificationSoundName(fileName))
+        #endif
     }
 }
