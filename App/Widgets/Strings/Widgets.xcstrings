@@ -4362,61 +4362,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktiviere „Aufbruchszeit“ in Folio unter Einstellungen › Datenschutz."
+            "value": "Aktiviere „Aufbruchszeit“ in Folio unter Einstellungen › Alle Mitteilungen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on Leave By in Folio under Settings › Privacy."
+            "value": "Turn on Leave By in Folio under Settings › All Notifications."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activez Heure de départ dans Folio, sous Réglages › Confidentialité."
+            "value": "Activez Heure de départ dans Folio, sous Réglages › Toutes les notifications."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Attiva Ora di partenza in Folio, in Impostazioni › Privacy."
+            "value": "Attiva Ora di partenza in Folio, in Impostazioni › Tutte le notifiche."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioの「設定」›「プライバシー」で「出発時間」をオンにしてください。"
+            "value": "Folioの「設定」›「すべての通知」で「出発時間」をオンにしてください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio의 설정 › 개인정보 보호에서 출발 시간을 켜세요."
+            "value": "Folio의 설정 › 모든 알림에서 출발 시간을 켜세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zet Vertrektijd aan in Folio via Instellingen › Privacy."
+            "value": "Zet Vertrektijd aan in Folio via Instellingen › Alle meldingen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bật Giờ khởi hành trong Folio tại Cài đặt › Quyền riêng tư."
+            "value": "Bật Giờ khởi hành trong Folio tại Cài đặt › Tất cả thông báo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请在 Folio 的“设置”›“隐私”中打开“出发时间”。"
+            "value": "请在 Folio 的“设置”›“所有通知”中打开“出发时间”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請在 Folio 的「設定」›「隱私權」中開啟「出發時間」。"
+            "value": "請在 Folio 的「設定」›「所有通知」中開啟「出發時間」。"
           }
         }
       }
