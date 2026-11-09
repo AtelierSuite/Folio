@@ -12,7 +12,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
     /// Today's doses still waiting on the user, read from Health for this snapshot and never stored.
     public var medicationDoses: [MedicationDose]
     public var leaveByPlan: LeaveByPlan?
-    public var isLeaveByTracking: Bool
+    public var leaveByStatus: LeaveByStatus
     /// The chance of rain in the hour of the planned departure.
     public var leaveByRainChance: Double?
     /// Note digests keyed by the storage key of the event they're linked to.
@@ -29,7 +29,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
         alarmDates: [Date] = [],
         medicationDoses: [MedicationDose] = [],
         leaveByPlan: LeaveByPlan? = nil,
-        isLeaveByTracking: Bool = false,
+        leaveByStatus: LeaveByStatus = .off,
         leaveByRainChance: Double? = nil,
         eventNotes: [String: EventNoteDigest] = [:],
         contactBadges: [String: ContactBadge] = [:]
@@ -42,7 +42,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
         self.alarmDates = alarmDates.sorted()
         self.medicationDoses = medicationDoses
         self.leaveByPlan = leaveByPlan
-        self.isLeaveByTracking = isLeaveByTracking
+        self.leaveByStatus = leaveByStatus
         self.leaveByRainChance = leaveByRainChance
         self.eventNotes = eventNotes
         self.contactBadges = contactBadges

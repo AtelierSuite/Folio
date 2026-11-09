@@ -2,7 +2,7 @@ import Foundation
 
 public struct LeaveBySettings: @unchecked Sendable {
     public static let isEnabledKey = "LeaveBy.Enabled"
-    public static let isTrackingKey = "LeaveBy.Tracking"
+    public static let statusKey = "LeaveBy.Status"
     public static let planKey = "LeaveBy.Plan"
     public static let handledArrivalsKey = "LeaveBy.HandledArrivals"
     static let retention: TimeInterval = 2 * 86_400
@@ -18,10 +18,9 @@ public struct LeaveBySettings: @unchecked Sendable {
         nonmutating set { defaults.set(newValue, forKey: Self.isEnabledKey) }
     }
 
-    /// Whether arrivals can reach Folio, so the widget knows to ask for setup.
-    public var isTracking: Bool {
-        get { defaults.bool(forKey: Self.isTrackingKey) }
-        nonmutating set { defaults.set(newValue, forKey: Self.isTrackingKey) }
+    public var status: LeaveByStatus {
+        get { defaults.string(forKey: Self.statusKey).flatMap(LeaveByStatus.init(rawValue:)) ?? .off }
+        nonmutating set { defaults.set(newValue.rawValue, forKey: Self.statusKey) }
     }
 
     public var plan: LeaveByPlan? {

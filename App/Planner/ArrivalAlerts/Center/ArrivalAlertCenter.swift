@@ -85,7 +85,12 @@ public final class ArrivalAlertCenter {
 
     /// Leave By only works out a route when iOS can wake Folio on arrival, which takes Always.
     var isLeaveByActive: Bool {
-        isLeaveByEnabled && authorization == .always
+        leaveByStatus == .tracking
+    }
+
+    var leaveByStatus: LeaveByStatus {
+        guard isLeaveByEnabled else { return .off }
+        return authorization == .always ? .tracking : .needsAlwaysLocation
     }
 
     public func replan() async {
@@ -109,7 +114,7 @@ public final class ArrivalAlertCenter {
         guard let regionMonitor else { return }
         authorization = regionMonitor.authorization
         let now = clock()
-        leaveBySettings.isTracking = isLeaveByActive
+        updateLeaveByStatus()
         let regions = isActive || isLeaveByActive
             ? planner.regions(
                 for: await candidates(after: now),
@@ -127,6 +132,15 @@ public final class ArrivalAlertCenter {
         }
         monitoredRegions = regions
         arrivalLog.info("Monitoring \(regions.count) arrival regions")
+    }
+
+    /// Location access often changes in the Settings app after Leave By is turned on, so the widget is
+    /// reloaded here rather than only when the toggle changes.
+    private func updateLeaveByStatus() {
+        let status = leaveByStatus
+        guard leaveBySettings.status != status else { return }
+        leaveBySettings.status = status
+        onLeaveByChange?()
     }
 
     private func candidates(after now: Date) async -> [ArrivalCandidate] {

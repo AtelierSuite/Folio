@@ -68,7 +68,7 @@ public struct WidgetSnapshotLoader: Sendable {
             alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
             medicationDoses: doses,
             leaveByPlan: leaveByPlan,
-            isLeaveByTracking: request.includesLeaveBy && leaveBySettings.isTracking,
+            leaveByStatus: request.includesLeaveBy ? leaveBySettings.status : .off,
             leaveByRainChance: leaveByPlan.flatMap { rainChance(for: $0, in: visibleEvents, calendar: calendar) },
             eventNotes: eventNotes,
             contactBadges: badges(for: visibleEvents, withNotes: eventNotes, after: now)
