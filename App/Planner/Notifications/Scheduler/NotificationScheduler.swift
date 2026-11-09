@@ -30,6 +30,7 @@ public final class NotificationScheduler {
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
+    @ObservationIgnored private var hasInstalledSounds = false
     @ObservationIgnored var changeObservation: Task<Void, Never>?
     @ObservationIgnored var debouncedReplan: Task<Void, Never>?
     @ObservationIgnored var periodicReplanning: Task<Void, Never>?
@@ -98,6 +99,7 @@ public final class NotificationScheduler {
     }
 
     private func performReplan() async {
+        await installSoundsIfNeeded()
         authorization = await center.authorization()
         alarmAuthorization = await alarmClient.authorization()
         let pendingIdentifiers = await center.pendingIdentifiers()
@@ -129,6 +131,12 @@ public final class NotificationScheduler {
             nextFireDate: plan.nextFireDate
         )
         await didReplan?()
+    }
+
+    private func installSoundsIfNeeded() async {
+        guard capabilities.platform == .mac, !hasInstalledSounds else { return }
+        hasInstalledSounds = true
+        await Task.detached(priority: .utility) { _ = NotificationSoundLibrary().install() }.value
     }
 
     private func plan(after now: Date, budget: Int) async -> NotificationPlan {
