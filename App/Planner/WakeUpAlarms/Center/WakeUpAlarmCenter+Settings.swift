@@ -48,4 +48,16 @@ extension WakeUpAlarmCenter {
         settings.excludedCalendarIdentifiers = excludedCalendarIdentifiers
         await replan()
     }
+
+    public func setAddsTravelTime(_ addsTravelTime: Bool) async {
+        self.addsTravelTime = addsTravelTime
+        settings.addsTravelTime = addsTravelTime
+        await replan()
+    }
+
+    public func setTransport(_ transport: TravelTransport) async {
+        self.transport = transport
+        settings.transport = transport
+        await replan()
+    }
 }

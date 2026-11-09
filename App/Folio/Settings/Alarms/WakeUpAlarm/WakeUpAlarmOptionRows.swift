@@ -16,6 +16,7 @@ struct WakeUpAlarmOptionRows: View {
             }
         }
         .accessibilityIdentifier("WakeUpLeadTimePicker")
+        WakeUpTravelTimeRows()
         MinutesOfDayPicker(
             title: String(localized: "Earliest", table: "WakeUpAlarms"),
             minutes: wakeUpAlarms.earliestMinutes,

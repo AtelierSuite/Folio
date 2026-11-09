@@ -1041,6 +1041,71 @@
         }
       }
     },
+    "Next.TravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inkl. %@ Fahrzeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Includes %@ travel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trajet de %@ inclus"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Include %@ di viaggio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動 %@ を含む"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 %@ 포함"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclusief %@ reistijd"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gồm %@ di chuyển"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "含行程 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "含交通 %@"
+          }
+        }
+      }
+    },
     "Section": {
       "extractionState": "manual",
       "localizations": {
@@ -1232,6 +1297,201 @@
           "stringUnit": {
             "state": "translated",
             "value": "在第一個行程前叫醒我"
+          }
+        }
+      }
+    },
+    "TravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrzeit hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Travel Time"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter le temps de trajet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi tempo di viaggio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動時間を加える"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 시간 추가"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reistijd toevoegen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cộng thời gian di chuyển"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加上行程时间"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加上交通時間"
+          }
+        }
+      }
+    },
+    "TravelTime.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit „Fahrzeit hinzufügen“ berücksichtigt der Wecker auch die Zeit, die du von deinem Standort bis zum Ereignis brauchst. Ist dein Standort nicht verfügbar, wird der zuletzt bekannte verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "With Add Travel Time on, the alarm also allows for the time it takes to reach the event from where you are. When your location can’t be read, the last known one is used."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec « Ajouter le temps de trajet », l’alarme tient aussi compte du temps nécessaire pour rejoindre l’événement depuis l’endroit où vous êtes. Si votre position est indisponible, la dernière position connue est utilisée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con «Aggiungi tempo di viaggio» attivo, la sveglia tiene conto anche del tempo necessario per raggiungere l’evento da dove ti trovi. Se la posizione non è disponibile, viene usata l’ultima nota."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「移動時間を加える」をオンにすると、現在地から予定の場所までの移動時間も考慮して鳴ります。現在地を取得できないときは、最後に確認できた場所を使います。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 시간 추가를 켜면 현재 위치에서 이벤트 장소까지 가는 데 걸리는 시간도 고려하여 알람이 울립니다. 위치를 확인할 수 없으면 마지막으로 확인된 위치를 사용합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Met ‘Reistijd toevoegen’ houdt het alarm ook rekening met de tijd die je nodig hebt om vanaf je locatie bij de activiteit te komen. Als je locatie niet beschikbaar is, wordt de laatst bekende gebruikt."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi bật Cộng thời gian di chuyển, báo thức cũng tính thời gian đi từ vị trí của bạn đến sự kiện. Khi không xác định được vị trí, vị trí gần nhất đã biết sẽ được dùng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启“加上行程时间”后，闹钟还会计入从你所在位置前往日程地点所需的时间。无法读取你的位置时，将使用最后已知的位置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟「加上交通時間」後，鬧鐘也會計入從你所在位置前往活動地點所需的時間。無法讀取你的位置時，會使用最後已知的位置。"
+          }
+        }
+      }
+    },
+    "TravelTime.LocationDenied": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann deinen Standort nicht sehen, daher wird die Fahrzeit nur vom zuletzt bekannten Ort aus hinzugefügt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can’t see your location, so travel time is only added from the last place it knew."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio ne peut pas voir votre position : le temps de trajet n’est ajouté qu’à partir du dernier lieu connu."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio non può vedere la tua posizione, quindi il tempo di viaggio viene aggiunto solo dall’ultimo luogo noto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio が現在地を確認できないため、最後に確認できた場所からの移動時間だけが加えられます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 위치를 확인할 수 없으므로 마지막으로 확인된 장소를 기준으로만 이동 시간이 추가됩니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan je locatie niet zien, dus reistijd wordt alleen toegevoegd vanaf de laatst bekende plek."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio không thể xem vị trí của bạn, nên thời gian di chuyển chỉ được tính từ nơi gần nhất đã biết."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 无法获取你的位置，因此只能根据最后已知的位置加上行程时间。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 無法取得你的位置，因此只能根據最後已知的位置加上交通時間。"
           }
         }
       }

@@ -7,6 +7,9 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public static let latestEventMinutesKey = "WakeUpAlarm.LatestEventMinutes"
     public static let skipsHolidaysKey = "WakeUpAlarm.SkipsHolidays"
     public static let excludedCalendarIdentifiersKey = "WakeUpAlarm.ExcludedCalendars"
+    public static let addsTravelTimeKey = "WakeUpAlarm.AddsTravelTime"
+    public static let transportKey = "WakeUpAlarm.Transport"
+    public static let lastOriginKey = "WakeUpAlarm.LastOrigin"
     public static let upcomingFireDatesKey = "WakeUpAlarm.UpcomingFireDates"
 
     public static let defaultLeadMinutes = 90
@@ -50,6 +53,29 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public var excludedCalendarIdentifiers: Set<String> {
         get { Set(defaults.stringArray(forKey: Self.excludedCalendarIdentifiersKey) ?? []) }
         nonmutating set { defaults.set(newValue.sorted(), forKey: Self.excludedCalendarIdentifiersKey) }
+    }
+
+    public var addsTravelTime: Bool {
+        get { defaults.bool(forKey: Self.addsTravelTimeKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.addsTravelTimeKey) }
+    }
+
+    public var transport: TravelTransport {
+        get { defaults.string(forKey: Self.transportKey).flatMap(TravelTransport.init(rawValue:)) ?? .driving }
+        nonmutating set { defaults.set(newValue.rawValue, forKey: Self.transportKey) }
+    }
+
+    /// Where travel was last measured from, for replans that run while the current location can't be read.
+    public var lastOrigin: PlannerCoordinate? {
+        get {
+            guard let values = defaults.array(forKey: Self.lastOriginKey) as? [Double], values.count == 2 else {
+                return nil
+            }
+            return PlannerCoordinate(latitude: values[0], longitude: values[1])
+        }
+        nonmutating set {
+            defaults.set(newValue.map { [$0.latitude, $0.longitude] }, forKey: Self.lastOriginKey)
+        }
     }
 
     /// When the scheduled alarms ring, kept here because widgets can't reach the app's planner.

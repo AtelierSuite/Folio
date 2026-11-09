@@ -11,7 +11,9 @@ struct WakeUpAlarmCenterTests {
         events: [CalendarEvent],
         alarms: FakeAlarmClient = FakeAlarmClient(),
         platform: DevicePlatform = .iPhone,
-        highlightsHolidays: Bool = false
+        highlightsHolidays: Bool = false,
+        locator: FakeLocator = FakeLocator(status: .granted, coordinate: LeaveFixtures.home),
+        estimator: FakeTravelTimeEstimator = FakeTravelTimeEstimator(travelTime: 1800)
     ) throws -> WakeUpAlarmCenter {
         let defaults = try #require(UserDefaults(suiteName: "WakeUpAlarmCenterTests.\(UUID().uuidString)"))
         defaults.set(highlightsHolidays, forKey: DayHighlightSettings.highlightsHolidaysKey)
@@ -26,7 +28,10 @@ struct WakeUpAlarmCenterTests {
             ledger: AlarmLedger(key: "Wake", defaults: defaults),
             formatter: NotificationFixtures.formatter,
             loadHolidays: { _ in [Holiday(day: HolidayDay(year: 2026, month: 10, day: 29), name: "Holiday")] },
-            clock: { now }
+            clock: { now },
+            locator: locator,
+            resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
+            estimator: estimator
         )
     }
 
@@ -101,6 +106,37 @@ struct WakeUpAlarmCenterTests {
         #expect(!center.includesCalendar("notes"))
         #expect(center.upcomingAlarms.map(\.event.title) == ["standup"])
         #expect(alarms.scheduledCount == 1)
+    }
+
+    @Test func addsTravelTimeFromTheCurrentLocation() async throws {
+        let alarms = FakeAlarmClient()
+        let office = ArrivalFixtures.event("office", start: Fixtures.date(2026, 10, 29, hour: 9))
+        let center = try makeCenter(events: [office], alarms: alarms)
+        await center.setEnabled(true)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29).addingTimeInterval(7.5 * 3600)])
+        await center.setAddsTravelTime(true)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 7)])
+        #expect(center.upcomingAlarms.first?.travelTime == 1800)
+    }
+
+    @Test func fallsBackToTheLastKnownOrigin() async throws {
+        let alarms = FakeAlarmClient()
+        let locator = FakeLocator(status: .denied)
+        let office = ArrivalFixtures.event("office", start: Fixtures.date(2026, 10, 29, hour: 9))
+        let center = try makeCenter(events: [office], alarms: alarms, locator: locator)
+        center.settings.lastOrigin = LeaveFixtures.home
+        await center.setEnabled(true)
+        await center.setAddsTravelTime(true)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 7)])
+    }
+
+    @Test func ignoresTravelTimeWithoutAnyKnownOrigin() async throws {
+        let alarms = FakeAlarmClient()
+        let office = ArrivalFixtures.event("office", start: Fixtures.date(2026, 10, 29, hour: 9))
+        let center = try makeCenter(events: [office], alarms: alarms, locator: FakeLocator(status: .denied))
+        await center.setEnabled(true)
+        await center.setAddsTravelTime(true)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29).addingTimeInterval(7.5 * 3600)])
     }
 
     @Test func macDoesNotSupportWakeUpAlarms() async throws {
