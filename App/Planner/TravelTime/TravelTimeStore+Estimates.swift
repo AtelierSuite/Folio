@@ -3,6 +3,8 @@ import Foundation
 extension TravelTimeStore {
     struct CachedEstimateKey: Hashable {
         let eventID: String
+        let location: String?
+        let coordinate: PlannerCoordinate?
         let transport: TravelTransport
     }
 
@@ -38,7 +40,9 @@ extension TravelTimeStore {
         by transport: TravelTransport,
         now date: Date
     ) async -> TimeInterval? {
-        let key = CachedEstimateKey(eventID: event.id, transport: transport)
+        let key = CachedEstimateKey(
+            eventID: event.id, location: event.location, coordinate: event.coordinate, transport: transport
+        )
         if let cached = cachedEstimates[key],
            date.timeIntervalSince(cached.date) < estimateLifetime,
            cached.origin.distance(to: origin) < originTolerance {
