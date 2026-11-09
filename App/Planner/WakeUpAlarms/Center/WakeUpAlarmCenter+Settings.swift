@@ -5,6 +5,7 @@ extension WakeUpAlarmCenter {
         guard isSupported else { return }
         self.isEnabled = isEnabled
         settings.isEnabled = isEnabled
+        updateLocationMonitoring()
         if isEnabled, await alarmClient.authorization() == .notDetermined {
             _ = try? await alarmClient.requestAuthorization()
         }
@@ -52,6 +53,10 @@ extension WakeUpAlarmCenter {
     public func setAddsTravelTime(_ addsTravelTime: Bool) async {
         self.addsTravelTime = addsTravelTime
         settings.addsTravelTime = addsTravelTime
+        if addsTravelTime {
+            locationMonitor?.requestAuthorization()
+        }
+        updateLocationMonitoring()
         await replan()
     }
 

@@ -5,6 +5,8 @@ import Testing
 @MainActor
 struct WakeUpAlarmCenterTests {
     private let now = Fixtures.date(2026, 10, 29, hour: 3)
+    private let office = ArrivalFixtures.event("office", start: Fixtures.date(2026, 10, 29, hour: 9))
+    private let farFromHome = PlannerCoordinate(latitude: 35.7, longitude: 139.7)
     private let standup = NotificationFixtures.event("standup", start: Fixtures.date(2026, 10, 29, hour: 9))
 
     private func makeCenter(
@@ -13,12 +15,13 @@ struct WakeUpAlarmCenterTests {
         platform: DevicePlatform = .iPhone,
         highlightsHolidays: Bool = false,
         locator: FakeLocator = FakeLocator(status: .granted, coordinate: LeaveFixtures.home),
-        estimator: FakeTravelTimeEstimator = FakeTravelTimeEstimator(travelTime: 1800)
+        estimator: FakeTravelTimeEstimator = FakeTravelTimeEstimator(travelTime: 1800),
+        monitor: FakeSignificantLocationMonitor = FakeSignificantLocationMonitor(),
+        clock: @escaping @Sendable () -> Date = { Fixtures.date(2026, 10, 29, hour: 3) }
     ) throws -> WakeUpAlarmCenter {
         let defaults = try #require(UserDefaults(suiteName: "WakeUpAlarmCenterTests.\(UUID().uuidString)"))
         defaults.set(highlightsHolidays, forKey: DayHighlightSettings.highlightsHolidaysKey)
         defaults.set("JP", forKey: DayHighlightSettings.holidayRegionKey)
-        let now = now
         return WakeUpAlarmCenter(
             capabilities: PlatformCapabilities(platform: platform, areLiveActivitiesSupported: false),
             source: FakeCalendarDataSource(events: events),
@@ -28,10 +31,11 @@ struct WakeUpAlarmCenterTests {
             ledger: AlarmLedger(key: "Wake", defaults: defaults),
             formatter: NotificationFixtures.formatter,
             loadHolidays: { _ in [Holiday(day: HolidayDay(year: 2026, month: 10, day: 29), name: "Holiday")] },
-            clock: { now },
+            clock: clock,
             locator: locator,
             resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
-            estimator: estimator
+            estimator: estimator,
+            makeLocationMonitor: { monitor }
         )
     }
 
@@ -137,6 +141,57 @@ struct WakeUpAlarmCenterTests {
         await center.setEnabled(true)
         await center.setAddsTravelTime(true)
         #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29).addingTimeInterval(7.5 * 3600)])
+    }
+
+    @Test func monitorsMovesOnlyWhileTravelTimeIsOnWithAlwaysAccess() async throws {
+        let monitor = FakeSignificantLocationMonitor()
+        let center = try makeCenter(events: [office], monitor: monitor)
+        await center.setEnabled(true)
+        #expect(!monitor.isMonitoring)
+        await center.setAddsTravelTime(true)
+        #expect(monitor.isMonitoring)
+        #expect(monitor.authorizationRequestCount == 1)
+        monitor.authorization = .whenInUse
+        monitor.onAuthorizationChange?()
+        #expect(!monitor.isMonitoring)
+        monitor.authorization = .always
+        monitor.onAuthorizationChange?()
+        await center.setEnabled(false)
+        #expect(!monitor.isMonitoring)
+    }
+
+    @Test func replansAfterMovingFarAtMostOnceAnHour() async throws {
+        let alarms = FakeAlarmClient()
+        let estimator = FakeTravelTimeEstimator(travelTime: 1800)
+        let clock = WakeUpTestClock(now)
+        let center = try makeCenter(events: [office], alarms: alarms, estimator: estimator, clock: { clock.now })
+        await center.setEnabled(true)
+        await center.setAddsTravelTime(true)
+        estimator.setTravelTime(3600)
+        clock.advance(by: 20 * 60)
+        await center.locationDidChange(to: farFromHome)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29).addingTimeInterval(6.5 * 3600)])
+        estimator.setTravelTime(600)
+        clock.advance(by: 20 * 60)
+        await center.locationDidChange(to: LeaveFixtures.home)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29).addingTimeInterval(6.5 * 3600)])
+        clock.advance(by: 60 * 60)
+        await center.locationDidChange(to: LeaveFixtures.home)
+        let afterShorterTrip = Fixtures.date(2026, 10, 29).addingTimeInterval(7 * 3600 + 20 * 60)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [afterShorterTrip])
+    }
+
+    @Test func ignoresSmallMovesButRemembersThem() async throws {
+        let alarms = FakeAlarmClient()
+        let estimator = FakeTravelTimeEstimator(travelTime: 1800)
+        let center = try makeCenter(events: [office], alarms: alarms, estimator: estimator)
+        await center.setEnabled(true)
+        await center.setAddsTravelTime(true)
+        estimator.setTravelTime(3600)
+        let nearby = PlannerCoordinate(latitude: 35.603, longitude: 139.7)
+        await center.locationDidChange(to: nearby)
+        #expect(alarms.scheduledAlarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 7)])
+        #expect(center.settings.lastOrigin == nearby)
     }
 
     @Test func macDoesNotSupportWakeUpAlarms() async throws {

@@ -7,6 +7,11 @@ extension WakeUpAlarmCenter {
         let transport: TravelTransport
     }
 
+    struct RecentOrigin {
+        let coordinate: PlannerCoordinate
+        let date: Date
+    }
+
     struct CachedTravelTime {
         let origin: PlannerCoordinate
         let travelTime: TimeInterval?
@@ -18,7 +23,8 @@ extension WakeUpAlarmCenter {
 
     /// Travel times from the current location, or the last known one when it can't be read, keyed by event ID.
     func travelTimes(to events: [CalendarEvent], now: Date) async -> [String: TimeInterval] {
-        guard !events.isEmpty, let origin = await travelOrigin() else { return [:] }
+        guard !events.isEmpty, let origin = await travelOrigin(now: now) else { return [:] }
+        plannedOrigin = origin
         var travelTimes: [String: TimeInterval] = [:]
         for event in events {
             if let travelTime = await travelTime(to: event, from: origin, now: now) {
@@ -28,9 +34,13 @@ extension WakeUpAlarmCenter {
         return travelTimes
     }
 
-    private func travelOrigin() async -> PlannerCoordinate? {
+    private func travelOrigin(now: Date) async -> PlannerCoordinate? {
+        if let recentOrigin, now.timeIntervalSince(recentOrigin.date) < Self.recentOriginLifetime {
+            return recentOrigin.coordinate
+        }
         if let locator, locator.authorizationStatus == .granted, let origin = await locator.currentCoordinate() {
             settings.lastOrigin = origin
+            recentOrigin = RecentOrigin(coordinate: origin, date: now)
             return origin
         }
         return settings.lastOrigin

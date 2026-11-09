@@ -39,7 +39,7 @@ struct FolioApp: App {
         _notificationNavigator = State(initialValue: notificationNavigator)
         let arrivalAlerts = ArrivalAlertCenter.makeForApp()
         let leaveAlerts = LeaveAlertCenter(capabilities: .current)
-        let wakeUpAlarms = WakeUpAlarmCenter(capabilities: .current)
+        let wakeUpAlarms = WakeUpAlarmCenter.makeForApp()
         let standaloneAlarms = StandaloneAlarmCenter(capabilities: .current)
         let medicationStore = MedicationStore.makeForApp(notificationScheduler: notificationScheduler)
         _medicationStore = State(initialValue: medicationStore)

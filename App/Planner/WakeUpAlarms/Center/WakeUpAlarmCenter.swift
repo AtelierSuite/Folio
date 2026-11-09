@@ -13,6 +13,10 @@ public final class WakeUpAlarmCenter {
     public internal(set) var excludedCalendarIdentifiers: Set<String>
     public internal(set) var addsTravelTime: Bool
     public internal(set) var transport: TravelTransport
+    public internal(set) var locationAuthorization: ArrivalAuthorization = .notDetermined
+    /// Runs work started by a location change, which may have woken the app in the background.
+    @ObservationIgnored public var performBackgroundWork: @MainActor (@escaping @MainActor () async -> Void) -> Void
+        = { work in Task { await work() } }
     public internal(set) var authorization: NotificationAuthorization = .notDetermined
     public internal(set) var upcomingAlarms: [WakeUpAlarm] = []
 
@@ -29,6 +33,10 @@ public final class WakeUpAlarmCenter {
     @ObservationIgnored let estimator: any TravelTimeEstimating
     @ObservationIgnored let travelPlanner = TravelTimePlanner()
     @ObservationIgnored var cachedTravelTimes: [TravelTimeKey: CachedTravelTime] = [:]
+    @ObservationIgnored let locationMonitor: (any SignificantLocationMonitoring)?
+    @ObservationIgnored var recentOrigin: RecentOrigin?
+    @ObservationIgnored var plannedOrigin: PlannerCoordinate?
+    @ObservationIgnored var lastMovementReplan: Date?
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
 
@@ -48,7 +56,10 @@ public final class WakeUpAlarmCenter {
         clock: @escaping @Sendable () -> Date = { .now },
         locator: (any CurrentLocating)? = CurrentLocationProvider.shared,
         resolver: EventCoordinateResolver = EventCoordinateResolver(),
-        estimator: any TravelTimeEstimating = MapKitTravelTimeEstimator()
+        estimator: any TravelTimeEstimating = MapKitTravelTimeEstimator(),
+        makeLocationMonitor: @MainActor () -> any SignificantLocationMonitoring = {
+            CoreLocationSignificantChangeMonitor()
+        }
     ) {
         isSupported = capabilities.supports(.alarms)
         self.source = source
@@ -62,6 +73,7 @@ public final class WakeUpAlarmCenter {
         self.locator = locator
         self.resolver = resolver
         self.estimator = estimator
+        locationMonitor = isSupported ? makeLocationMonitor() : nil
         isEnabled = isSupported && settings.isEnabled
         leadMinutes = settings.leadMinutes
         earliestMinutes = settings.earliestMinutes
@@ -70,6 +82,7 @@ public final class WakeUpAlarmCenter {
         excludedCalendarIdentifiers = settings.excludedCalendarIdentifiers
         addsTravelTime = settings.addsTravelTime
         transport = settings.transport
+        attachLocationMonitor()
     }
 
     func planner(skipping skippedDays: Set<HolidayDay> = []) -> WakeUpAlarmPlanner {
