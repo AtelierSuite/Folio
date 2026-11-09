@@ -6,6 +6,7 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public static let earliestMinutesKey = "WakeUpAlarm.EarliestMinutes"
     public static let latestEventMinutesKey = "WakeUpAlarm.LatestEventMinutes"
     public static let skipsHolidaysKey = "WakeUpAlarm.SkipsHolidays"
+    public static let excludedCalendarIdentifiersKey = "WakeUpAlarm.ExcludedCalendars"
     public static let upcomingFireDatesKey = "WakeUpAlarm.UpcomingFireDates"
 
     public static let defaultLeadMinutes = 90
@@ -44,6 +45,11 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public var skipsHolidays: Bool {
         get { defaults.bool(forKey: Self.skipsHolidaysKey) }
         nonmutating set { defaults.set(newValue, forKey: Self.skipsHolidaysKey) }
+    }
+
+    public var excludedCalendarIdentifiers: Set<String> {
+        get { Set(defaults.stringArray(forKey: Self.excludedCalendarIdentifiersKey) ?? []) }
+        nonmutating set { defaults.set(newValue.sorted(), forKey: Self.excludedCalendarIdentifiersKey) }
     }
 
     /// When the scheduled alarms ring, kept here because widgets can't reach the app's planner.

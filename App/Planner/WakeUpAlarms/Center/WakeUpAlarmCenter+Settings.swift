@@ -34,4 +34,18 @@ extension WakeUpAlarmCenter {
         settings.skipsHolidays = skipsHolidays
         await replan()
     }
+
+    public func includesCalendar(_ calendarIdentifier: String) -> Bool {
+        !excludedCalendarIdentifiers.contains(calendarIdentifier)
+    }
+
+    public func setIncludesCalendar(_ isIncluded: Bool, calendarIdentifier: String) async {
+        if isIncluded {
+            excludedCalendarIdentifiers.remove(calendarIdentifier)
+        } else {
+            excludedCalendarIdentifiers.insert(calendarIdentifier)
+        }
+        settings.excludedCalendarIdentifiers = excludedCalendarIdentifiers
+        await replan()
+    }
 }

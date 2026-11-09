@@ -10,6 +10,7 @@ public final class WakeUpAlarmCenter {
     public internal(set) var earliestMinutes: Int
     public internal(set) var latestEventMinutes: Int
     public internal(set) var skipsHolidays: Bool
+    public internal(set) var excludedCalendarIdentifiers: Set<String>
     public internal(set) var authorization: NotificationAuthorization = .notDetermined
     public internal(set) var upcomingAlarms: [WakeUpAlarm] = []
 
@@ -53,6 +54,7 @@ public final class WakeUpAlarmCenter {
         earliestMinutes = settings.earliestMinutes
         latestEventMinutes = settings.latestEventMinutes
         skipsHolidays = settings.skipsHolidays
+        excludedCalendarIdentifiers = settings.excludedCalendarIdentifiers
     }
 
     func planner(skipping skippedDays: Set<HolidayDay> = []) -> WakeUpAlarmPlanner {
@@ -92,7 +94,7 @@ public final class WakeUpAlarmCenter {
         var alarms: [WakeUpAlarm] = []
         if isEnabled && authorization.allowsScheduling {
             let now = clock()
-            let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+            let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers.union(excludedCalendarIdentifiers)
             let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
             let alarmPlanner = planner(skipping: await skippedHolidayDays())
             let events = await source.events(in: alarmPlanner.interval(after: now))

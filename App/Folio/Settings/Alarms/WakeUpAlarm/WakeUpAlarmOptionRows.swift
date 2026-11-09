@@ -29,6 +29,7 @@ struct WakeUpAlarmOptionRows: View {
         )
         .accessibilityIdentifier("WakeUpLatestEventPicker")
         WakeUpHolidayToggle()
+        WakeUpCalendarsLink()
         WakeUpNextAlarmRow(alarm: wakeUpAlarms.upcomingAlarms.first)
     }
 

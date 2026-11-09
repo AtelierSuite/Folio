@@ -89,6 +89,20 @@ struct WakeUpAlarmCenterTests {
         #expect(alarms.scheduledCount == 1)
     }
 
+    @Test func ignoresEventsFromExcludedCalendars() async throws {
+        let alarms = FakeAlarmClient()
+        let note = NotificationFixtures.event(
+            "note", start: Fixtures.date(2026, 10, 29, hour: 7), calendarIdentifier: "notes"
+        )
+        let center = try makeCenter(events: [note, standup], alarms: alarms)
+        await center.setEnabled(true)
+        #expect(center.upcomingAlarms.map(\.event.title) == ["note"])
+        await center.setIncludesCalendar(false, calendarIdentifier: "notes")
+        #expect(!center.includesCalendar("notes"))
+        #expect(center.upcomingAlarms.map(\.event.title) == ["standup"])
+        #expect(alarms.scheduledCount == 1)
+    }
+
     @Test func macDoesNotSupportWakeUpAlarms() async throws {
         let center = try makeCenter(events: [standup], platform: .mac)
         await center.setEnabled(true)
