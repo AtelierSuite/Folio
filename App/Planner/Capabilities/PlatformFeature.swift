@@ -14,4 +14,5 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case keptEventAlerts
     case calendarPagingButtons
     case calendarViewMenuCommands
+    case notificationSoundInstallation
 }

@@ -13,6 +13,7 @@ public final class NotificationScheduler {
     public internal(set) var calendarSounds: [String: NotificationSound]
     public internal(set) var alarmAuthorization: NotificationAuthorization = .notDetermined
     public private(set) var lastReport: NotificationReplanReport?
+    public internal(set) var needsSoundInstallation = false
 
     @ObservationIgnored let source: any CalendarDataSource
     @ObservationIgnored let center: any NotificationCenterClient
@@ -20,6 +21,7 @@ public final class NotificationScheduler {
     @ObservationIgnored let alarmLedger: AlarmLedger
     @ObservationIgnored let settings: NotificationSettings
     @ObservationIgnored let soundSettings: NotificationSoundSettings
+    @ObservationIgnored let soundFolder: NotificationSoundFolder?
     @ObservationIgnored public let styleSettings: NotificationStyleSettings
     @ObservationIgnored let allDayAlertTimeSettings: AllDayAlertTimeSettings
     @ObservationIgnored let earlyAlertSettings: ReminderEarlyAlertSettings
@@ -43,6 +45,7 @@ public final class NotificationScheduler {
         alarmLedger: AlarmLedger = AlarmLedger(),
         settings: NotificationSettings = NotificationSettings(),
         soundSettings: NotificationSoundSettings = NotificationSoundSettings(),
+        soundFolder: NotificationSoundFolder? = nil,
         styleSettings: NotificationStyleSettings = .shared,
         allDayAlertTimeSettings: AllDayAlertTimeSettings = .shared,
         earlyAlertSettings: ReminderEarlyAlertSettings = .shared,
@@ -58,6 +61,9 @@ public final class NotificationScheduler {
         self.alarmLedger = alarmLedger
         self.settings = settings
         self.soundSettings = soundSettings
+        self.soundFolder = capabilities.supports(.notificationSoundInstallation)
+            ? soundFolder ?? NotificationSoundFolder()
+            : nil
         self.styleSettings = styleSettings
         self.allDayAlertTimeSettings = allDayAlertTimeSettings
         self.earlyAlertSettings = earlyAlertSettings
@@ -98,6 +104,7 @@ public final class NotificationScheduler {
     }
 
     private func performReplan() async {
+        await refreshSoundFolder()
         authorization = await center.authorization()
         alarmAuthorization = await alarmClient.authorization()
         let pendingIdentifiers = await center.pendingIdentifiers()
@@ -142,6 +149,10 @@ public final class NotificationScheduler {
             !hiddenCalendars.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
         }
         let images = await eventImages?(visibleEvents.filter { !$0.alarms.isEmpty }) ?? [:]
+        var planner = planner
+        if needsSoundInstallation {
+            planner.soundResolver = { _ in .system }
+        }
         return planner.plan(
             events: visibleEvents,
             reminders: reminders.filter { !hiddenCalendars.contains($0.listIdentifier) },
