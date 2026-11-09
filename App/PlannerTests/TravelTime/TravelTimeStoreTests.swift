@@ -85,4 +85,18 @@ struct TravelTimeStoreTests {
         #expect(estimate.travelTime == 600)
         #expect(estimate.transport == .transit)
     }
+
+    @Test func estimatesAgainWhenTheLocationChanges() async throws {
+        let harness = try makeStore()
+        let store = harness.store
+        let event = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3), location: "Office")
+        _ = await store.estimates(for: [event])
+        harness.estimator.setTravelTime(600)
+        let moved = ArrivalFixtures.event(
+            "Lunch", start: ArrivalFixtures.hours(3),
+            coordinate: PlannerCoordinate(latitude: 35.7, longitude: 139.8), location: "Cafe"
+        )
+        #expect(moved.id == event.id)
+        #expect(await store.estimates(for: [moved])[moved.id]?.travelTime == 600)
+    }
 }
