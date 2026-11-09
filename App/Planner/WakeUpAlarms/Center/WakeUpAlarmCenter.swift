@@ -10,6 +10,13 @@ public final class WakeUpAlarmCenter {
     public internal(set) var earliestMinutes: Int
     public internal(set) var latestEventMinutes: Int
     public internal(set) var skipsHolidays: Bool
+    public internal(set) var excludedCalendarIdentifiers: Set<String>
+    public internal(set) var addsTravelTime: Bool
+    public internal(set) var transport: TravelTransport
+    public internal(set) var locationAuthorization: ArrivalAuthorization = .notDetermined
+    /// Runs work started by a location change, which may have woken the app in the background.
+    @ObservationIgnored public var performBackgroundWork: @MainActor (@escaping @MainActor () async -> Void) -> Void
+        = { work in Task { await work() } }
     public internal(set) var authorization: NotificationAuthorization = .notDetermined
     public internal(set) var upcomingAlarms: [WakeUpAlarm] = []
 
@@ -21,6 +28,15 @@ public final class WakeUpAlarmCenter {
     @ObservationIgnored let formatter: NotificationContentFormatter
     @ObservationIgnored let loadHolidays: @Sendable (HolidaySource) async -> [Holiday]
     @ObservationIgnored let clock: @Sendable () -> Date
+    @ObservationIgnored let locator: (any CurrentLocating)?
+    @ObservationIgnored let resolver: EventCoordinateResolver
+    @ObservationIgnored let estimator: any TravelTimeEstimating
+    @ObservationIgnored let travelPlanner = TravelTimePlanner()
+    @ObservationIgnored var cachedTravelTimes: [TravelTimeKey: CachedTravelTime] = [:]
+    @ObservationIgnored let locationMonitor: (any SignificantLocationMonitoring)?
+    @ObservationIgnored var recentOrigin: RecentOrigin?
+    @ObservationIgnored var plannedOrigin: PlannerCoordinate?
+    @ObservationIgnored var lastMovementReplan: Date?
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
 
@@ -37,7 +53,13 @@ public final class WakeUpAlarmCenter {
         loadHolidays: @escaping @Sendable (HolidaySource) async -> [Holiday] = {
             await HolidayRepository().holidays(for: $0)
         },
-        clock: @escaping @Sendable () -> Date = { .now }
+        clock: @escaping @Sendable () -> Date = { .now },
+        locator: (any CurrentLocating)? = CurrentLocationProvider.shared,
+        resolver: EventCoordinateResolver = EventCoordinateResolver(),
+        estimator: any TravelTimeEstimating = MapKitTravelTimeEstimator(),
+        makeLocationMonitor: @MainActor () -> any SignificantLocationMonitoring = {
+            CoreLocationSignificantChangeMonitor()
+        }
     ) {
         isSupported = capabilities.supports(.alarms)
         self.source = source
@@ -48,11 +70,19 @@ public final class WakeUpAlarmCenter {
         self.formatter = formatter
         self.loadHolidays = loadHolidays
         self.clock = clock
+        self.locator = locator
+        self.resolver = resolver
+        self.estimator = estimator
+        locationMonitor = isSupported ? makeLocationMonitor() : nil
         isEnabled = isSupported && settings.isEnabled
         leadMinutes = settings.leadMinutes
         earliestMinutes = settings.earliestMinutes
         latestEventMinutes = settings.latestEventMinutes
         skipsHolidays = settings.skipsHolidays
+        excludedCalendarIdentifiers = settings.excludedCalendarIdentifiers
+        addsTravelTime = settings.addsTravelTime
+        transport = settings.transport
+        attachLocationMonitor()
     }
 
     func planner(skipping skippedDays: Set<HolidayDay> = []) -> WakeUpAlarmPlanner {
@@ -92,14 +122,17 @@ public final class WakeUpAlarmCenter {
         var alarms: [WakeUpAlarm] = []
         if isEnabled && authorization.allowsScheduling {
             let now = clock()
-            let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
+            let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers.union(excludedCalendarIdentifiers)
             let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
             let alarmPlanner = planner(skipping: await skippedHolidayDays())
             let events = await source.events(in: alarmPlanner.interval(after: now))
                 .filter {
                     !hiddenCalendars.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
                 }
-            alarms = alarmPlanner.alarms(for: events, after: now)
+            let travelTimes = addsTravelTime
+                ? await travelTimes(to: alarmPlanner.morningEvents(in: events, after: now), now: now)
+                : [:]
+            alarms = alarmPlanner.alarms(for: events, after: now, travelTimes: travelTimes)
         }
         let requests = alarms.map { $0.request(formatter: formatter) }
         let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger).synchronize(requests)

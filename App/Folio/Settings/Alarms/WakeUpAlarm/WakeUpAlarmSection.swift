@@ -22,12 +22,17 @@ struct WakeUpAlarmSection: View {
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))
         } footer: {
-            Text(wakeUpAlarms.isSupported
-                 ? String(localized: "Footer", table: "WakeUpAlarms")
-                 : String(localized: "Unsupported", table: "WakeUpAlarms"))
+            Text(footer)
         }
         .task {
             await wakeUpAlarms.replan()
         }
+    }
+
+    private var footer: String {
+        guard wakeUpAlarms.isSupported else { return String(localized: "Unsupported", table: "WakeUpAlarms") }
+        let footer = String(localized: "Footer", table: "WakeUpAlarms")
+        guard wakeUpAlarms.isEnabled && wakeUpAlarms.addsTravelTime else { return footer }
+        return footer + " " + String(localized: "TravelTime.Footer", table: "WakeUpAlarms")
     }
 }

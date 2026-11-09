@@ -57,6 +57,30 @@ struct WakeUpAlarmPlannerTests {
         #expect(alarms.map(\.event.title) == ["counted"])
     }
 
+    @Test func addsTravelTimeAndWakesForTheEventThatNeedsTheEarliestStart() {
+        let nearby = event("nearby", day: 29, hour: 9)
+        let faraway = event("faraway", day: 29, hour: 9.5)
+        let alarms = planner.alarms(for: [nearby, faraway], after: now, travelTimes: [faraway.id: 3600])
+        #expect(alarms.map(\.event.title) == ["faraway"])
+        #expect(alarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 7)])
+        #expect(alarms.first?.travelTime == 3600)
+    }
+
+    @Test func travelTimeStillNeverRingsBeforeTheEarliestTime() {
+        let standup = event("standup", day: 29, hour: 8)
+        let alarms = planner.alarms(for: [standup], after: now, travelTimes: [standup.id: 3600])
+        #expect(alarms.map(\.fireDate) == [Fixtures.date(2026, 10, 29, hour: 6)])
+    }
+
+    @Test func morningEventsAreTheUpcomingEventsThatCount() {
+        let later = Fixtures.date(2026, 10, 29).addingTimeInterval(9.5 * 3600)
+        let events = [
+            event("past", day: 29, hour: 9), event("upcoming", day: 29, hour: 10),
+            event("afternoon", day: 29, hour: 13), event("tomorrow", day: 30, hour: 8)
+        ]
+        #expect(planner.morningEvents(in: events, after: later).map(\.title) == ["upcoming", "tomorrow"])
+    }
+
     @Test func dropsAlarmsThatAlreadyRang() {
         let later = Fixtures.date(2026, 10, 29, hour: 8)
         #expect(planner.alarms(for: [event("standup", day: 29, hour: 9)], after: later).isEmpty)

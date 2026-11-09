@@ -12,11 +12,22 @@ struct WakeUpNextAlarmRow: View {
                     Text(alarm.event.title)
                         .font(.caption)
                         .lineLimit(1)
+                    if let travelTime = alarm.travelTime {
+                        Text(travelText(travelTime))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             } else {
                 Text(String(localized: "Next.None", table: "WakeUpAlarms"))
             }
         }
         .accessibilityIdentifier("WakeUpNextAlarm")
+    }
+
+    private func travelText(_ travelTime: TimeInterval) -> String {
+        let duration = Duration.seconds(travelTime)
+            .formatted(.units(allowed: [.hours, .minutes], width: .abbreviated))
+        return String(format: String(localized: "Next.TravelTime", table: "WakeUpAlarms"), duration)
     }
 }

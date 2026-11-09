@@ -5,10 +5,12 @@ public struct WakeUpAlarm: Sendable, Hashable, Identifiable {
 
     public let event: CalendarEvent
     public let fireDate: Date
+    public let travelTime: TimeInterval?
 
-    public init(event: CalendarEvent, fireDate: Date) {
+    public init(event: CalendarEvent, fireDate: Date, travelTime: TimeInterval? = nil) {
         self.event = event
         self.fireDate = fireDate
+        self.travelTime = travelTime
     }
 
     public var id: String {

@@ -1,6 +1,331 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Calendars": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalender"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendars"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendriers"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendari"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カレンダー"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "캘린더"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agenda's"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lịch"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日历"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "行事曆"
+          }
+        }
+      }
+    },
+    "Calendars.All": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모두"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tất cả"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        }
+      }
+    },
+    "Calendars.Count": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
+    },
+    "Calendars.Empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Kalender zur Auswahl."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No calendars to choose from."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun calendrier à choisir."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun calendario da scegliere."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択できるカレンダーがありません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선택할 수 있는 캘린더가 없습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen agenda's om uit te kiezen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có lịch nào để chọn."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有可选择的日历。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有可選擇的行事曆。"
+          }
+        }
+      }
+    },
+    "Calendars.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Ereignisse in aktivierten Kalendern können den Weckalarm auslösen. Deaktiviere Kalender, die du für Notizen oder Erinnerungen an dich selbst nutzt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only events in the calendars that are turned on can set off the wake-up alarm. Turn off calendars you use for notes or reminders to yourself."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seuls les événements des calendriers activés peuvent déclencher l’alarme de réveil. Désactivez les calendriers qui vous servent de notes ou de pense-bêtes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo gli eventi dei calendari attivati possono far suonare la sveglia. Disattiva i calendari che usi per note o promemoria personali."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オンにしたカレンダーの予定だけが目覚ましの対象になります。メモや自分用の覚え書きに使っているカレンダーはオフにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "켜져 있는 캘린더의 이벤트만 기상 알람을 울립니다. 메모나 자신을 위한 알림으로 사용하는 캘린더는 끄십시오."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alleen activiteiten in ingeschakelde agenda's kunnen het wekalarm laten afgaan. Schakel agenda's uit die je gebruikt voor notities of herinneringen aan jezelf."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ sự kiện trong các lịch đang bật mới có thể kích hoạt báo thức. Hãy tắt các lịch bạn dùng để ghi chú hoặc tự nhắc nhở."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只有已开启日历中的日程才会触发起床闹钟。请关闭用于记事或自我提醒的日历。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只有已開啟行事曆中的活動才會觸發起床鬧鐘。請關閉用於記事或提醒自己的行事曆。"
+          }
+        }
+      }
+    },
     "Debug.RingSoon": {
       "extractionState": "manual",
       "localizations": {
@@ -716,6 +1041,71 @@
         }
       }
     },
+    "Next.TravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inkl. %@ Fahrzeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Includes %@ travel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trajet de %@ inclus"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Include %@ di viaggio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動 %@ を含む"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 %@ 포함"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclusief %@ reistijd"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gồm %@ di chuyển"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "含行程 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "含交通 %@"
+          }
+        }
+      }
+    },
     "Section": {
       "extractionState": "manual",
       "localizations": {
@@ -777,6 +1167,136 @@
           "stringUnit": {
             "state": "translated",
             "value": "起床鬧鐘"
+          }
+        }
+      }
+    },
+    "Settings.Denied": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann deinen Standort nicht verwenden, daher wird die Fahrzeit nur vom zuletzt bekannten Ort aus hinzugefügt. Erlaube den Standortzugriff in den Einstellungen, damit sie aktuell bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can’t use your location, so travel time is only added from the last place it knew. Allow location access in Settings to keep it up to date."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio ne peut pas utiliser votre position : le temps de trajet n’est ajouté qu’à partir du dernier lieu connu. Autorisez l'accès à la position dans Réglages pour le garder à jour."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio non può usare la tua posizione, quindi il tempo di viaggio viene aggiunto solo dall’ultimo luogo noto. Consenti l'accesso alla posizione in Impostazioni per mantenerlo aggiornato."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは位置情報を使用できないため、最後に確認できた場所からの移動時間だけが加えられます。最新に保つには、設定で位置情報へのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio에서 위치를 사용할 수 없으므로 마지막으로 확인된 장소를 기준으로만 이동 시간이 추가됩니다. 최신 상태로 유지하려면 설정에서 위치 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan je locatie niet gebruiken, dus reistijd wordt alleen toegevoegd vanaf de laatst bekende plek. Sta locatietoegang toe in Instellingen om dit actueel te houden."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio không thể sử dụng vị trí của bạn, nên thời gian di chuyển chỉ được tính từ nơi gần nhất đã biết. Cho phép truy cập vị trí trong Cài đặt để luôn cập nhật."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 无法使用你的位置，因此只能根据最后已知的位置加上行程时间。请在“设置”中允许访问位置以保持最新。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 無法使用你的位置，因此只能根據最後已知的位置加上交通時間。請在「設定」中允許取用位置以保持最新。"
+          }
+        }
+      }
+    },
+    "Settings.WhenInUse": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle den Standortzugriff auf „Immer“, damit der Wecker die Fahrzeit anpassen kann, wenn du dich bei geschlossenem Folio bewegst."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set location access to Always so the alarm can update its travel time when you move while Folio is closed."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglez l'accès à la position sur Toujours pour que l’alarme mette à jour le temps de trajet quand vous vous déplacez alors que Folio est fermé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imposta l'accesso alla posizione su Sempre affinché la sveglia aggiorni il tempo di viaggio quando ti sposti mentre Folio è chiuso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioを閉じている間に移動したときもアラームの移動時間を更新できるように、位置情報へのアクセスを「常に」に設定してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio가 닫혀 있을 때 이동해도 알람의 이동 시간이 갱신되도록 위치 접근을 '항상'으로 설정하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet locatietoegang op Altijd zodat het alarm de reistijd kan bijwerken als je je verplaatst terwijl Folio gesloten is."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt quyền truy cập vị trí thành Luôn luôn để báo thức có thể cập nhật thời gian di chuyển khi bạn di chuyển lúc Folio đóng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将位置访问设为“始终”，以便在 Folio 关闭时你移动后闹钟也能更新行程时间。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將位置取用設為「永遠」，讓 Folio 關閉時你移動後鬧鐘也能更新交通時間。"
           }
         }
       }
@@ -907,6 +1427,136 @@
           "stringUnit": {
             "state": "translated",
             "value": "在第一個行程前叫醒我"
+          }
+        }
+      }
+    },
+    "TravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrzeit hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Travel Time"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter le temps de trajet"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi tempo di viaggio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動時間を加える"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 시간 추가"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reistijd toevoegen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cộng thời gian di chuyển"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加上行程时间"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加上交通時間"
+          }
+        }
+      }
+    },
+    "TravelTime.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit „Fahrzeit hinzufügen“ berücksichtigt der Wecker auch die Zeit, die du von deinem Standort bis zum Ereignis brauchst, und passt sich an, wenn du unterwegs bist. Ist dein Standort nicht verfügbar, wird der zuletzt bekannte verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "With Add Travel Time on, the alarm also allows for the time it takes to reach the event from where you are, and moves when you do. When your location can’t be read, the last known one is used."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avec « Ajouter le temps de trajet », l’alarme tient aussi compte du temps nécessaire pour rejoindre l’événement depuis l’endroit où vous êtes, et s’ajuste quand vous vous déplacez. Si votre position est indisponible, la dernière position connue est utilisée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con «Aggiungi tempo di viaggio» attivo, la sveglia tiene conto anche del tempo necessario per raggiungere l’evento da dove ti trovi e si aggiorna quando ti sposti. Se la posizione non è disponibile, viene usata l’ultima nota."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「移動時間を加える」をオンにすると、現在地から予定の場所までの移動時間も考慮して鳴り、移動するとアラームの時刻も更新されます。現在地を取得できないときは、最後に確認できた場所を使います。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 시간 추가를 켜면 현재 위치에서 이벤트 장소까지 가는 데 걸리는 시간도 고려하여 알람이 울리며, 사용자가 이동하면 알람 시간도 바뀝니다. 위치를 확인할 수 없으면 마지막으로 확인된 위치를 사용합니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Met ‘Reistijd toevoegen’ houdt het alarm ook rekening met de tijd die je nodig hebt om vanaf je locatie bij de activiteit te komen, en schuift het mee als je je verplaatst. Als je locatie niet beschikbaar is, wordt de laatst bekende gebruikt."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi bật Cộng thời gian di chuyển, báo thức cũng tính thời gian đi từ vị trí của bạn đến sự kiện và cập nhật khi bạn di chuyển. Khi không xác định được vị trí, vị trí gần nhất đã biết sẽ được dùng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启“加上行程时间”后，闹钟还会计入从你所在位置前往日程地点所需的时间，并会在你移动时随之更新。无法读取你的位置时，将使用最后已知的位置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟「加上交通時間」後，鬧鐘也會計入從你所在位置前往活動地點所需的時間，並會在你移動時隨之更新。無法讀取你的位置時，會使用最後已知的位置。"
           }
         }
       }

@@ -5,6 +5,7 @@ extension WakeUpAlarmCenter {
         guard isSupported else { return }
         self.isEnabled = isEnabled
         settings.isEnabled = isEnabled
+        updateLocationMonitoring()
         if isEnabled, await alarmClient.authorization() == .notDetermined {
             _ = try? await alarmClient.requestAuthorization()
         }
@@ -32,6 +33,36 @@ extension WakeUpAlarmCenter {
     public func setSkipsHolidays(_ skipsHolidays: Bool) async {
         self.skipsHolidays = skipsHolidays
         settings.skipsHolidays = skipsHolidays
+        await replan()
+    }
+
+    public func includesCalendar(_ calendarIdentifier: String) -> Bool {
+        !excludedCalendarIdentifiers.contains(calendarIdentifier)
+    }
+
+    public func setIncludesCalendar(_ isIncluded: Bool, calendarIdentifier: String) async {
+        if isIncluded {
+            excludedCalendarIdentifiers.remove(calendarIdentifier)
+        } else {
+            excludedCalendarIdentifiers.insert(calendarIdentifier)
+        }
+        settings.excludedCalendarIdentifiers = excludedCalendarIdentifiers
+        await replan()
+    }
+
+    public func setAddsTravelTime(_ addsTravelTime: Bool) async {
+        self.addsTravelTime = addsTravelTime
+        settings.addsTravelTime = addsTravelTime
+        if addsTravelTime {
+            locationMonitor?.requestAuthorization()
+        }
+        updateLocationMonitoring()
+        await replan()
+    }
+
+    public func setTransport(_ transport: TravelTransport) async {
+        self.transport = transport
+        settings.transport = transport
         await replan()
     }
 }

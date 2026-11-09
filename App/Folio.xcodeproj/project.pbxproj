@@ -692,7 +692,7 @@
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for the arrival alerts, time to leave alerts and Leave By widget you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for the arrival alerts, time to leave alerts, Leave By widget and wake-up alarm travel time you turn on, to tell you when you arrive at an event, when it's time to leave or when to wake up. Your location is only shared with Apple Maps to work out travel times.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival or time to leave alerts, to tell you when you arrive at an event or when it's time to leave.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
@@ -925,7 +925,7 @@
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Folio shows, creates and edits the events in your calendars.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Folio reads your sleep and medications from the Health app to show them on your calendar and remind you about doses. This data stays on this iPhone and is never uploaded or synced.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Debug builds of Folio write sample sleep to the Health app for testing.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for the arrival alerts, time to leave alerts and Leave By widget you turn on, to tell you when you arrive at an event or when it's time to leave. Your location is only shared with Apple Maps to work out travel times.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Folio uses your location in the background only for the arrival alerts, time to leave alerts, Leave By widget and wake-up alarm travel time you turn on, to tell you when you arrive at an event, when it's time to leave or when to wake up. Your location is only shared with Apple Maps to work out travel times.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Folio uses your location to show the weather where you are.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Folio uses your location to show the weather where you are and, if you turn on arrival or time to leave alerts, to tell you when you arrive at an event or when it's time to leave.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "Folio shows, creates and completes the reminders in your lists.";
