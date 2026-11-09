@@ -14,6 +14,11 @@ struct CalendarNotificationSettingsView: View {
             if permissionCenter.status(of: .alarms) == .denied {
                 NotificationAlarmDeniedSection()
             }
+            #if os(macOS)
+            if capabilities.supports(.notificationSoundInstallation) && scheduler.needsSoundInstallation {
+                NotificationSoundInstallSection()
+            }
+            #endif
             Section {
                 NotificationSoundPicker(kind: kind, calendar: nil, player: player)
             } footer: {
