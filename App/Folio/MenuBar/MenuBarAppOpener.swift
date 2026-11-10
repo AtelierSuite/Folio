@@ -9,6 +9,7 @@ struct MenuBarAppOpener {
     let requests: AppDestinationRequests
 
     func open(_ destination: AppDestination? = nil) {
+        closeMenuBarPanel()
         if let destination {
             requests.open(destination)
         }
@@ -20,6 +21,14 @@ struct MenuBarAppOpener {
             window.makeKeyAndOrderFront(nil)
         } else {
             openWindow(id: FolioApp.mainWindowIdentifier)
+        }
+    }
+
+    /// The window-style MenuBarExtra stays open when its content opens another window, and SwiftUI offers no way to
+    /// dismiss it, so close the panel that was clicked.
+    private func closeMenuBarPanel() {
+        if let panel = NSApp.keyWindow as? NSPanel, !Self.isMainWindow(panel) {
+            panel.close()
         }
     }
 
