@@ -7,6 +7,9 @@ extension CalendarStore {
 
     public var defaultEventCalendarIdentifier: String? {
         let writableIdentifiers = Set(writableEventCalendars.map(\.id))
+        if let identifier = chosenEventCalendarIdentifier, writableIdentifiers.contains(identifier) {
+            return identifier
+        }
         if let identifier = source.defaultEventCalendarIdentifier(), writableIdentifiers.contains(identifier) {
             return identifier
         }

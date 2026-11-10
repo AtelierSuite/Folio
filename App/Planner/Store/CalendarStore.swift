@@ -11,6 +11,8 @@ public final class CalendarStore {
     public internal(set) var hiddenCalendarIdentifiers: Set<String>
     public internal(set) var hiddenInvitationIdentifiers: Set<String>
     public internal(set) var hidesDeclinedEvents: Bool
+    public internal(set) var chosenEventCalendarIdentifier: String?
+    public internal(set) var chosenReminderListIdentifier: String?
     public internal(set) var contentRevision = 0
     public internal(set) var duplicateExcludedCalendarIdentifiers =
         DuplicateDetectionSettings.shared.excludedCalendarIdentifiers
@@ -44,6 +46,8 @@ public final class CalendarStore {
         hiddenCalendarIdentifiers = visibilityStorage.hiddenCalendarIdentifiers
         hiddenInvitationIdentifiers = visibilityStorage.hiddenInvitationIdentifiers
         hidesDeclinedEvents = visibilityStorage.hidesDeclinedEvents
+        chosenEventCalendarIdentifier = visibilityStorage.defaultEventCalendarIdentifier
+        chosenReminderListIdentifier = visibilityStorage.defaultReminderListIdentifier
         reloadCalendars()
     }
 
