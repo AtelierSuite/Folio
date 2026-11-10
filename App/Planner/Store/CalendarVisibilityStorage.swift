@@ -6,6 +6,9 @@ public struct CalendarVisibilityStorage: @unchecked Sendable {
 
     public static let hiddenInvitationIdentifiersKey = "Calendar.HiddenInvitationIdentifiers"
 
+    public static let defaultEventCalendarIdentifierKey = "Calendar.DefaultEventCalendarIdentifier"
+    public static let defaultReminderListIdentifierKey = "Calendar.DefaultReminderListIdentifier"
+
     private let defaults: UserDefaults
 
     public init(defaults: UserDefaults = AppGroup.userDefaults) {
@@ -25,5 +28,15 @@ public struct CalendarVisibilityStorage: @unchecked Sendable {
     public var hidesDeclinedEvents: Bool {
         get { defaults.bool(forKey: Self.hidesDeclinedEventsKey) }
         nonmutating set { defaults.set(newValue, forKey: Self.hidesDeclinedEventsKey) }
+    }
+
+    public var defaultEventCalendarIdentifier: String? {
+        get { defaults.string(forKey: Self.defaultEventCalendarIdentifierKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.defaultEventCalendarIdentifierKey) }
+    }
+
+    public var defaultReminderListIdentifier: String? {
+        get { defaults.string(forKey: Self.defaultReminderListIdentifierKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.defaultReminderListIdentifierKey) }
     }
 }

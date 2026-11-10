@@ -8,7 +8,7 @@ extension PlannerCalendar {
             kind: kind,
             color: PlannerColor(calendar.cgColor),
             sourceIdentifier: calendar.source?.sourceIdentifier ?? "",
-            sourceTitle: calendar.source?.title ?? "",
+            sourceTitle: calendar.source?.displayTitle ?? "",
             sourceType: CalendarSourceType(calendar.type),
             isReadOnly: !calendar.allowsContentModifications
         )

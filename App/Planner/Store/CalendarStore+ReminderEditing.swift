@@ -7,6 +7,9 @@ extension CalendarStore {
 
     public var defaultReminderListIdentifier: String? {
         let writableIdentifiers = writableReminderLists.map(\.id)
+        if let identifier = chosenReminderListIdentifier, writableIdentifiers.contains(identifier) {
+            return identifier
+        }
         if let identifier = source.defaultReminderListIdentifier(), writableIdentifiers.contains(identifier) {
             return identifier
         }
