@@ -23,7 +23,23 @@ struct PlatformMenu {
 }
 
 struct PlatformMenuRequest {
-    let id: UUID
+    let opening: PlatformMenuOpening
     let point: CGPoint
     let menu: @MainActor () -> PlatformMenu
+}
+
+/// Remembers that a menu request has opened. It lives with the request, not the anchor, because
+/// SwiftUI rebuilds the anchor when the calendar switches views, and a new anchor opened it again.
+final class PlatformMenuOpening: Equatable {
+    private var hasOpened = false
+
+    func markOpened() -> Bool {
+        guard !hasOpened else { return false }
+        hasOpened = true
+        return true
+    }
+
+    nonisolated static func == (lhs: PlatformMenuOpening, rhs: PlatformMenuOpening) -> Bool {
+        lhs === rhs
+    }
 }

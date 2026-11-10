@@ -37,7 +37,7 @@ private struct CalendarCreationMenuModifier: ViewModifier {
     private var menuRequest: PlatformMenuRequest? {
         request.map { request in
             let entries = menuEntries(for: request.slot)
-            return PlatformMenuRequest(id: request.id, point: request.point) {
+            return PlatformMenuRequest(opening: request.opening, point: request.point) {
                 PlatformMenu(sections: [entries])
             }
         }
@@ -69,7 +69,7 @@ private struct CalendarCreationMenuModifier: ViewModifier {
 }
 
 private struct CalendarCreationRequest {
-    let id = UUID()
+    let opening = PlatformMenuOpening()
     let slot: CalendarCreationSlot
     let point: CGPoint
 }

@@ -38,7 +38,7 @@ struct EventMoveRequest {
 }
 
 struct EventMenuRequest: Equatable {
-    let id = UUID()
+    let opening = PlatformMenuOpening()
     let event: CalendarEvent
     let point: CGPoint
 }

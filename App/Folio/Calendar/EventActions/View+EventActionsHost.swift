@@ -106,7 +106,7 @@ private struct EventActionsHostModifier: ViewModifier {
 
     private func menuRequest(_ actions: EventActions) -> PlatformMenuRequest? {
         controller.menuRequest.map { request in
-            PlatformMenuRequest(id: request.id, point: request.point) {
+            PlatformMenuRequest(opening: request.opening, point: request.point) {
                 EventPlatformMenu(event: request.event, actions: actions).menu
             }
         }

@@ -8,7 +8,7 @@ extension PlatformMenuAnchor: UIViewRepresentable {
     }
 
     func updateUIView(_ view: PlatformMenuAnchorView, context: Context) {
-        guard let request = shouldPresent(context.coordinator) else { return }
+        guard let request = requestToPresent() else { return }
         let menu = request.menu().menu()
         Task { @MainActor in
             view.present(menu)
