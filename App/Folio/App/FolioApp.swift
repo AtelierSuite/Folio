@@ -26,6 +26,11 @@ struct FolioApp: App {
     @State private var undoCoordinator: UndoCoordinator
     @State private var undoToastHosts = UndoToastHosts()
     @State private var countdowns: EventCountdownManager
+    #if os(macOS)
+    @State private var menuBarAgenda = MenuBarAgenda()
+    #endif
+
+    static let mainWindowIdentifier = "main"
 
     init() {
         #if DEBUG
@@ -69,19 +74,31 @@ struct FolioApp: App {
         ))
         let countdowns = EventCountdownManager(source: calendarStore)
         _countdowns = State(initialValue: countdowns)
-        AppDependencyManager.shared.add(dependency: countdowns)
-        AppDependencyManager.shared.add(dependency: notesLibrary)
-        AppDependencyManager.shared.add(dependency: noteNavigator)
         let sleepStore = SleepStore(capabilities: .current)
         sleepStore.startObservingChanges()
         _sleepStore = State(initialValue: sleepStore)
         let destinationRequests = AppDestinationRequests()
         _destinationRequests = State(initialValue: destinationRequests)
+        Self.registerIntentDependencies(countdowns, notesLibrary, noteNavigator, destinationRequests)
+        #if os(macOS)
+        _menuBarAgenda = State(initialValue: .started(with: calendarStore))
+        #endif
+    }
+
+    private static func registerIntentDependencies(
+        _ countdowns: EventCountdownManager,
+        _ notesLibrary: NotesLibrary,
+        _ noteNavigator: NoteNavigator,
+        _ destinationRequests: AppDestinationRequests
+    ) {
+        AppDependencyManager.shared.add(dependency: countdowns)
+        AppDependencyManager.shared.add(dependency: notesLibrary)
+        AppDependencyManager.shared.add(dependency: noteNavigator)
         AppDependencyManager.shared.add(dependency: destinationRequests)
     }
 
     var body: some Scene {
-        WindowGroup {
+        WindowGroup(id: Self.mainWindowIdentifier) {
             RootView()
                 .updatesSearchIndex()
                 .environment(\.platformCapabilities, .current)
@@ -161,6 +178,13 @@ struct FolioApp: App {
             .environment(medicationStore)
             .followsSystemTime(systemTime)
         }
+        FolioMenuBarExtra(
+            agenda: menuBarAgenda,
+            calendarStore: calendarStore,
+            destinationRequests: destinationRequests,
+            undoCoordinator: undoCoordinator,
+            systemTime: systemTime
+        )
         #endif
     }
 
