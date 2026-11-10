@@ -7,7 +7,7 @@ struct PlatformCapabilitiesTests {
         #expect(
             capabilities.supportedFeatures
                 == Set(PlatformFeature.allCases).subtracting([
-                    .calendarPagingButtons, .calendarViewMenuCommands, .notificationSoundInstallation
+                    .calendarPagingButtons, .calendarViewMenuCommands, .notificationSoundInstallation, .menuBarExtra
                 ])
         )
     }
@@ -23,6 +23,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.calendarPagingButtons))
         #expect(!capabilities.supports(.calendarViewMenuCommands))
         #expect(!capabilities.supports(.notificationSoundInstallation))
+        #expect(!capabilities.supports(.menuBarExtra))
         #expect(!capabilities.supports(.sleep))
         #expect(!capabilities.supports(.medications))
         #expect(!capabilities.supports(.geofencedNotifications))
@@ -41,7 +42,7 @@ struct PlatformCapabilitiesTests {
             capabilities.supportedFeatures
                 == [
                     .timeSensitiveNotifications, .weather, .calendarPagingButtons, .calendarViewMenuCommands,
-                    .notificationSoundInstallation
+                    .notificationSoundInstallation, .menuBarExtra
                 ]
         )
     }
