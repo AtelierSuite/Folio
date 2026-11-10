@@ -11,7 +11,7 @@ struct FolioMenuBarExtra: Scene {
     @AppStorage(MenuBarSettings.showsItemKey) private var showsItem = true
 
     var body: some Scene {
-        MenuBarExtra(isInserted: $showsItem) {
+        MenuBarExtra(isInserted: isInserted) {
             MenuBarTodayView(agenda: agenda)
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
@@ -22,6 +22,18 @@ struct FolioMenuBarExtra: Scene {
             MenuBarUpNextLabel(agenda: agenda)
         }
         .menuBarExtraStyle(.window)
+    }
+
+    // MenuBarExtra writes isInserted back on every scene update; writing UserDefaults each time
+    // re-renders every @AppStorage view and the scene again, looping forever.
+    private var isInserted: Binding<Bool> {
+        Binding {
+            showsItem
+        } set: { newValue in
+            if newValue != showsItem {
+                showsItem = newValue
+            }
+        }
     }
 }
 #endif
