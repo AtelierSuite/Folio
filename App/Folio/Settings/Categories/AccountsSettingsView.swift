@@ -10,6 +10,7 @@ struct AccountsSettingsView: View {
                 Text(String(localized: "Empty", table: "CalendarVisibility"))
                     .foregroundStyle(.secondary)
             }
+            DefaultCalendarsSection()
             CalendarAccountSections(
                 calendars: store.eventCalendars,
                 lists: store.reminderLists
