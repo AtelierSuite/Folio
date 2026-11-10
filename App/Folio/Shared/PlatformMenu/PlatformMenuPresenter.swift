@@ -18,17 +18,8 @@ struct PlatformMenuPresenter: View {
 struct PlatformMenuAnchor {
     let request: PlatformMenuRequest?
 
-    final class Coordinator {
-        var presentedRequestID: UUID?
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-
-    func shouldPresent(_ coordinator: Coordinator) -> PlatformMenuRequest? {
-        guard let request, request.id != coordinator.presentedRequestID else { return nil }
-        coordinator.presentedRequestID = request.id
+    func requestToPresent() -> PlatformMenuRequest? {
+        guard let request, request.opening.markOpened() else { return nil }
         return request
     }
 }
