@@ -64,28 +64,28 @@ let gradientTop = accent
 let gradientBottom = accent.blended(withFraction: 0.3, of: .black)!
 
 let weekCopy = [
-    "en": Copy(header: "Your whole week at a glance"),
-    "ja": Copy(header: "1週間をひと目で"),
+    "en": Copy(header: "See your whole week at once"),
+    "ja": Copy(header: "今週の予定、ぜんぶ見える"),
 ]
 let listsCopy = [
-    "en": Copy(header: "A list for everything"),
-    "ja": Copy(header: "やることをリストに"),
+    "en": Copy(header: "Tick things off as you go"),
+    "ja": Copy(header: "終わったらチェックするだけ"),
 ]
 let notesCopy = [
-    "en": Copy(header: "Notes in plain Markdown"),
-    "ja": Copy(header: "メモはMarkdownで"),
+    "en": Copy(header: "Jot it down in Markdown"),
+    "ja": Copy(header: "メモはMarkdownでさっと"),
 ]
 let alarmsCopy = [
-    "en": Copy(header: "Alarms right on your calendar"),
-    "ja": Copy(header: "カレンダーにアラームを"),
+    "en": Copy(header: "Double tap a day to set an alarm"),
+    "ja": Copy(header: "ダブルタップでアラームをセット"),
 ]
 let notificationsCopy = [
-    "en": Copy(header: "Alerts your way"),
-    "ja": Copy(header: "通知は思いのままに"),
+    "en": Copy(header: "Pick how each calendar alerts you"),
+    "ja": Copy(header: "通知の鳴らし方は自分で決める"),
 ]
 let countdownCopy = [
-    "en": Copy(header: "Count down to what's next"),
-    "ja": Copy(header: "次の予定までカウントダウン"),
+    "en": Copy(header: "See how long until your next event"),
+    "ja": Copy(header: "次の予定まで、あと何分?"),
 ]
 
 let iPhoneScreenshots = [
@@ -105,8 +105,8 @@ let macScreenshots = [
         name: "01-week",
         icon: .calendar,
         copy: [
-            "en": Copy(header: "A planner for your Mac"),
-            "ja": Copy(header: "Macのためのプランナー"),
+            "en": Copy(header: "Your whole week, on your Mac"),
+            "ja": Copy(header: "1週間まるごと、Macで"),
         ]
     ),
     Screenshot(name: "02-lists", icon: .reminders, copy: listsCopy),
