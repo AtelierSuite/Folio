@@ -5,7 +5,7 @@
 #
 # Each device and language gets a freshly erased simulator of the harness's own, with calendar and reminder access granted.
 # The AppStoreScreenshots UI test then launches Folio once with -FolioScreenshotSamples, which seeds Sensei's week
-# at Schale (calendars, reminders, notes, alarms and alert styles), and once more per shot with
+# (calendars, reminders, notes, alarms and alert styles), and once more per shot with
 # -FolioScreenshotStage <name>, made-up weather and made-up sleep. Run compose.swift afterwards to frame them.
 set -e
 

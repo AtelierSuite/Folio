@@ -4,9 +4,9 @@ import Foundation
 extension ScreenshotSamples {
     static let japaneseNotes = [
         SampleNote(
-            title: "補習授業部の勉強計画",
+            title: "追試の勉強計画",
             text: """
-            # 補習授業部の勉強計画
+            # 追試の勉強計画
 
             追試は**金曜日**。今度こそ全員合格！
 
@@ -17,7 +17,7 @@ extension ScreenshotSamples {
             - [ ] アズサとマニュアルの復習
 
             ## 勉強会
-            1. 月曜の放課後、別館3番教室
+            1. 月曜の放課後、3番教室
             2. 水曜のお昼、図書館
             3. 木曜の夜、*静かに*
 
@@ -32,14 +32,14 @@ extension ScreenshotSamples {
             minutesAgo: 12
         ),
         SampleNote(
-            title: "アリウススクワッドの買い出し",
+            title: "サオリと買い出し",
             text: """
-            # アリウススクワッドの買い出し
+            # サオリと買い出し
 
-            **木曜 9:30**、旧門でサオリと待ち合わせ。
+            **木曜 9:30**、7番教室でサオリと待ち合わせ。
 
             - [x] 1週間分の食料
-            - [x] 分校用の毛布
+            - [x] みんなの毛布
             - [ ] アツコの救急キット
             - [ ] ミサキの予備マガジン
             - [ ] ヒヨリに甘いもの
@@ -47,15 +47,15 @@ extension ScreenshotSamples {
             minutesAgo: 95
         ),
         SampleNote(
-            title: "ティーパーティー議事録",
+            title: "お茶会の議事録",
             text: """
-            # ティーパーティー議事録
+            # お茶会の議事録
 
             出席：ナギサ、ミカ、セイア、先生
 
             ## 議題
-            1. 合同祭の予算
-            2. 正義実現委員会とのパトロール日程
+            1. お祭りの予算
+            2. ツルギとのパトロール日程
             3. またロールケーキの件
             """,
             minutesAgo: 60 * 26
@@ -74,13 +74,13 @@ extension ScreenshotSamples {
             minutesAgo: 60 * 50
         ),
         SampleNote(
-            title: "合同祭のアイデア",
+            title: "お祭りのアイデア",
             text: """
-            # 合同祭のアイデア
+            # お祭りのアイデア
 
-            - ティーパーティーのお茶の屋台
+            - ナギサとミカのお茶の屋台
             - 射的、的はアズサに相談
-            - アリウススクワッドと映画上映会
+            - サオリ、ヒヨリと映画上映会
             """,
             minutesAgo: 60 * 75
         )

@@ -1,8 +1,8 @@
 #if DEBUG
 import Foundation
 
-/// The calendars, reminders, notes and alarms the App Store screenshots show: Sensei's week at Schale,
-/// spent mostly with Trinity and the Arius Squad. Seeded by `Assets/App Store/capture.sh` and `capture-mac.sh`.
+/// The calendars, reminders, notes and alarms the App Store screenshots show: Sensei's week with Arona,
+/// Nagisa, Hifumi and Saori. Seeded by `Assets/App Store/capture.sh` and `capture-mac.sh`.
 public struct ScreenshotSamples: Sendable {
     public static let launchArgument = "-FolioScreenshotSamples"
 

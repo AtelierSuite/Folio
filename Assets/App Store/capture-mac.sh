@@ -3,7 +3,7 @@
 # Usage: ./capture-mac.sh [languages...]   (defaults to en ja)
 #
 # Holds the VM lock from App/Scripts/mac-vm.sh for the whole run, deploys a debug build, then launches Folio once with
-# -FolioScreenshotSamples to seed Sensei's week at Schale and once more per shot with -FolioScreenshotStage <name>.
+# -FolioScreenshotSamples to seed Sensei's week and once more per shot with -FolioScreenshotStage <name>.
 # The VM can't capture its own screen, so the host captures it and crop.swift cuts out the window, which is set to
 # 1280 × 800 points: 2560 × 1600 pixels on the VM's Retina display. Run compose.swift afterwards to frame them.
 set -e
