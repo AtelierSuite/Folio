@@ -17,9 +17,6 @@ struct FlexTimeProposalView: View {
                 FlexTimeSheetHeader(proposal: proposal)
                 FlexTimeStartPicker(proposal: proposal, firstEventStart: $firstEventStart)
                 FlexTimeEventPreviewList(events: proposal.events, delay: delay)
-                Text(String(localized: "Prompt.Footer", table: "FlexTime"))
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
             .padding(24)
             .frame(maxWidth: .infinity, alignment: .leading)
