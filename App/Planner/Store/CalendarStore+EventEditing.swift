@@ -33,7 +33,7 @@ extension CalendarStore {
             start: calendar.date(byAdding: .day, value: -1, to: day) ?? day,
             end: calendar.date(byAdding: .day, value: 2, to: day) ?? day
         )
-        let candidates = applyingPendingChanges(to: await repository.events(in: interval))
+        let candidates = await delayedEvents(in: interval)
         guard let match = reference.bestMatch(in: candidates.map(\.reference)) else { return nil }
         return candidates.first { $0.reference == match }
     }
@@ -59,7 +59,7 @@ extension CalendarStore {
         if event.isRecurring && span == .allEvents {
             let firstOccurrence = try await source.firstOccurrence(of: event.reference)
             let seriesDraft = draft.appliedToSeries(
-                editedOccurrenceStart: event.startDate,
+                editedOccurrenceStart: event.scheduledStartDate,
                 firstOccurrenceStart: firstOccurrence.startDate,
                 calendar: calendar
             )

@@ -72,7 +72,7 @@ extension UndoCoordinator {
     ) async throws -> CalendarItemReference {
         let originalDraft = try await store.source.eventDraft(for: firstOccurrence.reference)
         let seriesDraft = draft.appliedToSeries(
-            editedOccurrenceStart: event.startDate,
+            editedOccurrenceStart: event.scheduledStartDate,
             firstOccurrenceStart: firstOccurrence.startDate
         )
         let reference = try await store.saveEvent(at: firstOccurrence.reference, with: seriesDraft, span: .futureEvents)

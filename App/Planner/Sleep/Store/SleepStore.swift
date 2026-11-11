@@ -5,6 +5,7 @@ import Observation
 @Observable
 public final class SleepStore {
     public private(set) var isShownOnTimeline: Bool
+    public private(set) var informsFlexTime: Bool
     public private(set) var preferredSourceIdentifier: String?
     public private(set) var revision = 0
 
@@ -25,6 +26,7 @@ public final class SleepStore {
         self.preferences = preferences
         self.now = now
         isShownOnTimeline = preferences.showsOnTimeline
+        informsFlexTime = preferences.informsFlexTime
         preferredSourceIdentifier = preferences.preferredSourceIdentifier
     }
 
@@ -41,6 +43,20 @@ public final class SleepStore {
         preferences.showsOnTimeline = isShown
         isShownOnTimeline = isShown
         if isShown {
+            startObservingChanges()
+        }
+        invalidate()
+    }
+
+    public var isRead: Bool {
+        isAvailable && (isShownOnTimeline || informsFlexTime)
+    }
+
+    public func setInformsFlexTime(_ informsFlexTime: Bool) {
+        guard isAvailable else { return }
+        preferences.informsFlexTime = informsFlexTime
+        self.informsFlexTime = informsFlexTime
+        if informsFlexTime {
             startObservingChanges()
         }
         invalidate()
@@ -69,7 +85,7 @@ public final class SleepStore {
     }
 
     public func startObservingChanges() {
-        guard isActive, !isObserving, let source else { return }
+        guard isRead, !isObserving, let source else { return }
         isObserving = true
         source.startObservingChanges { [weak self] in
             await self?.refreshLastNight()
@@ -87,7 +103,7 @@ public final class SleepStore {
     }
 
     private func samples(in interval: DateInterval) async -> [SleepSample] {
-        guard isActive, let source else { return [] }
+        guard isRead, let source else { return [] }
         if let cached = cachedSamples[interval] {
             return cached
         }

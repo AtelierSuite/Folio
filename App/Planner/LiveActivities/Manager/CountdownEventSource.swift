@@ -14,7 +14,7 @@ extension CalendarStore: CountdownEventSource {
 
     /// Unlike `events(in:)`, keeps hidden calendars and leaves the visible interval alone.
     public func countdownEvents(in interval: DateInterval) async -> [CalendarEvent] {
-        applyingPendingChanges(to: await repository.events(in: interval))
+        await delayedEvents(in: interval)
     }
 
     public func isPendingRemoval(_ reference: CalendarItemReference) -> Bool {

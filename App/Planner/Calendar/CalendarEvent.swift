@@ -8,20 +8,22 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let coordinate: PlannerCoordinate?
     public let notes: String?
     public let url: URL?
-    public let startDate: Date
-    public let endDate: Date
+    public internal(set) var startDate: Date
+    public internal(set) var endDate: Date
     public let isAllDay: Bool
     public let timeZone: TimeZone?
     public let color: PlannerColor
     public let isRecurring: Bool
     public let hasAttendees: Bool
     public let isReadOnly: Bool
-    public let alarms: [CalendarAlarm]
+    public internal(set) var alarms: [CalendarAlarm]
     public let organizer: EventParticipant?
     public let attendees: [EventParticipant]
     /// The current user's response, or `nil` when they aren't an invitee (their own event or no attendees).
     public let userStatus: ParticipantStatus?
     public let origin: CalendarOrigin?
+    /// How much later than its calendar time the event is shown and alerted today. The dates above include it.
+    public internal(set) var flexTimeDelay: TimeInterval = 0
 
     public init(
         reference: CalendarItemReference,

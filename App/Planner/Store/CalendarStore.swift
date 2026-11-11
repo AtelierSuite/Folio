@@ -24,6 +24,7 @@ public final class CalendarStore {
     @ObservationIgnored let repository: CalendarRepository
     @ObservationIgnored let visibilityStorage: CalendarVisibilityStorage
     @ObservationIgnored let reminderSettings: ReminderSettings
+    @ObservationIgnored let flexTimeStorage: FlexTimeStorage
     @ObservationIgnored let now: @Sendable () -> Date
     @ObservationIgnored var visibleInterval: DateInterval?
     @ObservationIgnored private var changeObservation: Task<Void, Never>?
@@ -33,12 +34,14 @@ public final class CalendarStore {
         policy: CacheWindowPolicy = CacheWindowPolicy(),
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
         reminderSettings: ReminderSettings = ReminderSettings(),
+        flexTimeStorage: FlexTimeStorage = FlexTimeStorage(),
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.source = source
         self.repository = CalendarRepository(source: source, policy: policy)
         self.visibilityStorage = visibilityStorage
         self.reminderSettings = reminderSettings
+        self.flexTimeStorage = flexTimeStorage
         self.now = now
         overdueReminderPolicy = reminderSettings.overduePolicy
         eventAuthorization = source.authorizationStatus(for: .event)
@@ -68,8 +71,7 @@ public final class CalendarStore {
 
     public func events(in interval: DateInterval) async -> [CalendarEvent] {
         visibleInterval = interval
-        let events = await repository.events(in: interval)
-        return applyingPendingChanges(to: events).filter(isShown)
+        return await delayedEvents(in: interval).filter(isShown)
     }
 
     func handleExternalChange() async {

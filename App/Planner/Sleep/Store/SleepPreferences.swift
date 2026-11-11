@@ -4,6 +4,7 @@ import Foundation
 public struct SleepPreferences: Sendable {
     public static let showsOnTimelineKey = "Sleep.ShowsOnTimeline"
     public static let preferredSourceKey = "Sleep.PreferredSource"
+    public static let informsFlexTimeKey = "Sleep.InformsFlexTime"
 
     private let suiteName: String?
 
@@ -18,6 +19,11 @@ public struct SleepPreferences: Sendable {
     public var showsOnTimeline: Bool {
         get { defaults.bool(forKey: Self.showsOnTimelineKey) }
         nonmutating set { defaults.set(newValue, forKey: Self.showsOnTimelineKey) }
+    }
+
+    public var informsFlexTime: Bool {
+        get { defaults.bool(forKey: Self.informsFlexTimeKey) }
+        nonmutating set { defaults.set(newValue, forKey: Self.informsFlexTimeKey) }
     }
 
     public var preferredSourceIdentifier: String? {
