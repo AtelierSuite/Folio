@@ -125,7 +125,7 @@ final class EventQuickActionsTests: XCTestCase {
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
         picker.tap()
         app.buttons["Shows Quick Actions"].firstMatch.tap()
-        app.tabBars.buttons["Calendar"].firstMatch.tap()
+        app.tabBars.buttons["Schedule"].firstMatch.tap()
         eventCard("Lunch with Aiko", in: app).tap()
         XCTAssertTrue(menuItem("EventMenu.ShowDetails", in: app).waitForExistence(timeout: 5))
         menuItem("EventMenu.Copy", in: app).tap()
@@ -134,7 +134,7 @@ final class EventQuickActionsTests: XCTestCase {
         XCTAssertTrue(picker.waitForExistence(timeout: 10))
         picker.tap()
         app.buttons["Opens Details"].firstMatch.tap()
-        app.tabBars.buttons["Calendar"].firstMatch.tap()
+        app.tabBars.buttons["Schedule"].firstMatch.tap()
         eventCard("Lunch with Aiko", in: app).tap()
         XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 10))
     }

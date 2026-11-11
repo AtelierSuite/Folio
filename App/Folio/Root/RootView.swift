@@ -8,7 +8,7 @@ struct RootView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab(String(localized: "Tab.Calendar", table: "Root"), systemImage: "calendar", value: AppTab.calendar) {
+            Tab(String(localized: "Tab.Schedule", table: "Root"), systemImage: "calendar", value: AppTab.calendar) {
                 CalendarView()
             }
             Tab(String(localized: "Tab.Lists", table: "Root"), systemImage: "checklist", value: AppTab.lists) {
