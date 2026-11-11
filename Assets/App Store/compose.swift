@@ -117,7 +117,7 @@ let macScreenshots = [
 
 // MARK: - Icons
 
-/// A classic app-icon tile above each header: a white tile with a slight gradient and a two-color glyph.
+/// A classic app-icon tile above each header: a colored tile with a slight gradient and a white glyph.
 enum Icon {
     case calendar
     case reminders
@@ -132,36 +132,20 @@ enum Icon {
         case .reminders: "checklist"
         case .notes: "note.text"
         case .alarm: "alarm.fill"
-        case .bell: "bell.badge.fill"
+        case .bell: "bell.fill"
         case .timer: "timer"
         }
     }
 
-    var paletteColors: [NSColor] {
+    var tileColor: NSColor {
         switch self {
-        case .calendar: [color(0xFF3B30), color(0x3A3A3C)]
-        case .reminders: [color(0x34C759), color(0x007AFF)]
-        case .notes: [color(0x8E8E93), color(0xFFB800)]
-        case .alarm: [color(0xFF9500), .white]
-        case .bell: [color(0xFF3B30), color(0xFFB800)]
-        case .timer: [color(0x007AFF), color(0xFF9500)]
+        case .calendar: color(0xFF3B30)
+        case .reminders: color(0x007AFF)
+        case .notes: color(0xFFB800)
+        case .alarm: color(0xFF9500)
+        case .bell: color(0xFF2D55)
+        case .timer: color(0x34C759)
         }
-    }
-
-    /// The glyph, lit from above: lighter at the top and a touch darker at the bottom.
-    func glyph(pointSize: CGFloat) -> NSImage {
-        let configuration = NSImage.SymbolConfiguration(pointSize: pointSize, weight: .medium)
-            .applying(NSImage.SymbolConfiguration(paletteColors: paletteColors))
-        let symbol = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)!
-            .withSymbolConfiguration(configuration)!
-        let image = NSImage(size: symbol.size)
-        image.lockFocus()
-        symbol.draw(at: .zero, from: .zero, operation: .sourceOver, fraction: 1)
-        NSGraphicsContext.current?.compositingOperation = .sourceAtop
-        NSGradient(colors: [NSColor.white.withAlphaComponent(0.28), .clear, NSColor.black.withAlphaComponent(0.14)])?
-            .draw(in: NSRect(origin: .zero, size: symbol.size), angle: -90)
-        image.unlockFocus()
-        return image
     }
 
     func draw(in rect: NSRect) {
@@ -172,16 +156,30 @@ enum Icon {
         shadow.shadowBlurRadius = rect.width * 0.11
         shadow.shadowOffset = NSSize(width: 0, height: -rect.width * 0.045)
         shadow.set()
-        NSColor.white.setFill()
+        tileColor.setFill()
         tile.fill()
         NSGraphicsContext.current?.restoreGraphicsState()
-        NSGradient(starting: .white, ending: color(0xE4E4EA))?.draw(in: tile, angle: -90)
+        // Lit from above: a little lighter at the top and darker at the bottom.
+        NSGradient(
+            starting: tileColor.blended(withFraction: 0.18, of: .white)!,
+            ending: tileColor.blended(withFraction: 0.12, of: .black)!
+        )?.draw(in: tile, angle: -90)
 
-        let glyph = glyph(pointSize: rect.width * 0.5)
+        let configuration = NSImage.SymbolConfiguration(pointSize: rect.width * 0.5, weight: .medium)
+            .applying(NSImage.SymbolConfiguration(paletteColors: [.white]))
+        let glyph = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)!
+            .withSymbolConfiguration(configuration)!
+        NSGraphicsContext.current?.saveGraphicsState()
+        let glyphShadow = NSShadow()
+        glyphShadow.shadowColor = NSColor.black.withAlphaComponent(0.18)
+        glyphShadow.shadowBlurRadius = rect.width * 0.02
+        glyphShadow.shadowOffset = NSSize(width: 0, height: -rect.width * 0.012)
+        glyphShadow.set()
         glyph.draw(in: NSRect(
             x: rect.midX - glyph.size.width / 2, y: rect.midY - glyph.size.height / 2,
             width: glyph.size.width, height: glyph.size.height
         ))
+        NSGraphicsContext.current?.restoreGraphicsState()
     }
 
     /// Draws the tile centered across `canvasWidth`, with its top at `top`.
