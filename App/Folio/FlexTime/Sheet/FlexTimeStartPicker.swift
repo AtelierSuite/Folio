@@ -19,7 +19,9 @@ struct FlexTimeStartPicker: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
-        .padding(16)
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 16)
         .background(.fill.tertiary, in: .rect(cornerRadius: 16))
     }
 
