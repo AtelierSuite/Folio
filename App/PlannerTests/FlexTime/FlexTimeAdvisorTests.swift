@@ -16,7 +16,7 @@ struct FlexTimeAdvisorTests {
         #expect(proposal.suggestedStart == Fixture.time(11))
         #expect(proposal.delay(startingFirstEventAt: proposal.suggestedStart) == 3 * 3600)
         #expect(proposal.events.map(\.title) == ["breakfast", "market", "lunch"])
-        #expect(proposal.startRange.lowerBound == Fixture.time(8))
+        #expect(proposal.startRange().lowerBound == Fixture.time(8))
     }
 
     @Test func wakingInTimeNeedsNoFlexTime() {

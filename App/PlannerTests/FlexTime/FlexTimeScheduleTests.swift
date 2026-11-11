@@ -15,6 +15,40 @@ struct FlexTimeScheduleTests {
         #expect(delayed.map(\.withoutFlexTime) == Fixture.morningEvents)
     }
 
+    @Test func eventsOfExcludedCalendarsKeepTheirTimes() {
+        let schedule = FlexTimeSchedule(
+            delays: [Fixture.day: 3 * 3600], excludedCalendars: [Fixture.day: ["family"]]
+        )
+        let events = [
+            Fixture.event("school run", start: Fixture.time(8), calendarIdentifier: "family"),
+            Fixture.event("gym", start: Fixture.time(9), calendarIdentifier: "personal")
+        ]
+        let delayed = schedule.applying(to: events, calendar: Fixtures.calendar)
+        #expect(delayed.map(\.startDate) == [Fixture.time(8), Fixture.time(12)])
+        let dropped = DateInterval(start: Fixture.time(14), duration: 3600)
+        let saved = ["family", "personal"].map {
+            schedule.scheduledInterval(displayedAs: dropped, calendarIdentifier: $0, calendar: Fixtures.calendar)
+        }
+        #expect(saved == [dropped, DateInterval(start: Fixture.time(11), duration: 3600)])
+    }
+
+    @Test func delayCountsFromTheFirstIncludedEvent() {
+        let proposal = FlexTimeProposal(
+            day: Fixture.time(0),
+            events: [
+                Fixture.event("school run", start: Fixture.time(8), calendarIdentifier: "family"),
+                Fixture.event("gym", start: Fixture.time(9), calendarIdentifier: "personal")
+            ],
+            wake: nil,
+            suggestedStart: Fixture.time(11),
+            latestStart: Fixture.time(23, 45)
+        )
+        #expect(proposal.delay(startingFirstEventAt: Fixture.time(11)) == 3 * 3600)
+        #expect(proposal.delay(startingFirstEventAt: Fixture.time(11), excluding: ["family"]) == 2 * 3600)
+        #expect(proposal.startRange(excluding: ["family"]).lowerBound == Fixture.time(9))
+        #expect(proposal.delay(startingFirstEventAt: Fixture.time(11), excluding: ["family", "personal"]) == 0)
+    }
+
     @Test func otherDaysAndAllDayEventsStayPut() {
         let tomorrow = Fixtures.event(local: "brunch", start: Fixture.time(9, day: 30))
         let allDay = CalendarEvent(

@@ -22,6 +22,17 @@ struct FlexTimeStorageTests {
         #expect(storage.schedule().isEmpty)
     }
 
+    @Test func excludedCalendarsAreKeptWithTheDelay() {
+        let storage = FlexTimeStorage(defaults: Fixture.makeDefaults())
+        storage.setDelay(7200, excluding: ["family"], on: Fixture.day)
+        #expect(storage.excludedCalendars(on: Fixture.day) == ["family"])
+        #expect(storage.schedule() == FlexTimeSchedule(
+            delays: [Fixture.day: 7200], excludedCalendars: [Fixture.day: ["family"]]
+        ))
+        storage.setDelay(0, on: Fixture.day)
+        #expect(storage.excludedCalendars(on: Fixture.day).isEmpty)
+    }
+
     @Test func firstOpenOfTheDayIsKept() {
         let storage = FlexTimeStorage(defaults: Fixture.makeDefaults())
         storage.recordOpen(at: Fixture.time(10, 30), on: Fixture.day)

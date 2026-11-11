@@ -43,8 +43,10 @@ extension CalendarTimelineContainer {
 
     /// Events on a Flex Time day are drawn later than they are saved.
     private func savedInterval(for source: CalendarDragSource, droppedOn interval: DateInterval) -> DateInterval {
-        guard case .event = source else { return interval }
-        return store.flexTimeSchedule.scheduledInterval(displayedAs: interval)
+        guard case .event(let event) = source else { return interval }
+        return store.flexTimeSchedule.scheduledInterval(
+            displayedAs: interval, calendarIdentifier: event.calendarIdentifier
+        )
     }
 }
 

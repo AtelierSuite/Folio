@@ -3,6 +3,7 @@ import Foundation
 public struct FlexTimeStorage: @unchecked Sendable {
     public static let dayKindKeyPrefix = "FlexTime.DayKind."
     public static let delaysKey = "FlexTime.Delays"
+    public static let excludedCalendarsKey = "FlexTime.ExcludedCalendars"
     public static let promptedDayKey = "FlexTime.PromptedDay"
     public static let firstOpenDayKey = "FlexTime.FirstOpenDay"
     public static let firstOpenTimeKey = "FlexTime.FirstOpenTime"
@@ -34,7 +35,11 @@ public struct FlexTimeStorage: @unchecked Sendable {
             guard let day = HolidayDay(storageKey: key) else { continue }
             delays[day] = delay
         }
-        return FlexTimeSchedule(delays: delays)
+        return FlexTimeSchedule(delays: delays, excludedCalendars: storedExcludedCalendars())
+    }
+
+    public func excludedCalendars(on day: HolidayDay) -> Set<String> {
+        schedule().excludedCalendars[day] ?? []
     }
 
     public func delay(on day: HolidayDay) -> TimeInterval {
@@ -42,13 +47,34 @@ public struct FlexTimeStorage: @unchecked Sendable {
     }
 
     /// Days before `day` are dropped, as Flex Time only ever lasts for the day it was chosen on.
-    public func setDelay(_ delay: TimeInterval, on day: HolidayDay) {
-        var delays = schedule().delays.filter { $0.key > day }
+    public func setDelay(_ delay: TimeInterval, excluding excludedCalendars: Set<String> = [], on day: HolidayDay) {
+        let schedule = schedule()
+        var delays = schedule.delays.filter { $0.key > day }
+        var excluded = schedule.excludedCalendars.filter { $0.key > day }
         if delay > 0 {
             delays[day] = delay
+            excluded[day] = excludedCalendars
         }
-        let stored = Dictionary(uniqueKeysWithValues: delays.map { ($0.key.storageKey, $0.value) })
-        defaults.set(stored, forKey: Self.delaysKey)
+        defaults.set(
+            Dictionary(uniqueKeysWithValues: delays.map { ($0.key.storageKey, $0.value) }),
+            forKey: Self.delaysKey
+        )
+        defaults.set(
+            Dictionary(uniqueKeysWithValues: excluded.map { ($0.key.storageKey, $0.value.sorted()) }),
+            forKey: Self.excludedCalendarsKey
+        )
+    }
+
+    private func storedExcludedCalendars() -> [HolidayDay: Set<String>] {
+        guard let stored = defaults.dictionary(forKey: Self.excludedCalendarsKey) as? [String: [String]] else {
+            return [:]
+        }
+        var excluded: [HolidayDay: Set<String>] = [:]
+        for (key, identifiers) in stored {
+            guard let day = HolidayDay(storageKey: key) else { continue }
+            excluded[day] = Set(identifiers)
+        }
+        return excluded
     }
 
     public var promptedDay: HolidayDay? {

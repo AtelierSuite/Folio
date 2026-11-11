@@ -81,19 +81,32 @@ public final class FlexTimeCenter {
         prompt = nil
     }
 
-    public func delay(_ proposal: FlexTimeProposal, startingFirstEventAt start: Date) async {
-        await setDelay(proposal.delay(startingFirstEventAt: start), onDayOf: proposal.day)
+    public func delay(
+        _ proposal: FlexTimeProposal,
+        startingFirstEventAt start: Date,
+        excluding excludedCalendars: Set<String> = []
+    ) async {
+        await setDelay(
+            proposal.delay(startingFirstEventAt: start, excluding: excludedCalendars),
+            excluding: excludedCalendars,
+            onDayOf: proposal.day
+        )
     }
 
     public func turnOff(onDayOf date: Date? = nil) async {
-        await setDelay(0, onDayOf: date ?? clock())
+        await setDelay(0, excluding: [], onDayOf: date ?? clock())
     }
 
-    private func setDelay(_ delay: TimeInterval, onDayOf date: Date) async {
+    private func setDelay(
+        _ delay: TimeInterval,
+        excluding excludedCalendars: Set<String>,
+        onDayOf date: Date
+    ) async {
         prompt = nil
         let day = HolidayDay(date: date, timeZone: calendar().timeZone)
-        guard storage.delay(on: day) != delay else { return }
-        storage.setDelay(delay, on: day)
+        let excluded = delay > 0 ? excludedCalendars : []
+        guard storage.delay(on: day) != delay || storage.excludedCalendars(on: day) != excluded else { return }
+        storage.setDelay(delay, excluding: excluded, on: day)
         revision += 1
         store.flexTimeDidChange()
         await didChange?()

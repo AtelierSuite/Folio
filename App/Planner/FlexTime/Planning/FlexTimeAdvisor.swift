@@ -61,6 +61,7 @@ public struct FlexTimeAdvisor: Sendable {
         wake: FlexTimeWake?,
         now: Date,
         activeDelay: TimeInterval = 0,
+        activeExcludedCalendars: Set<String> = [],
         requiresNeed: Bool
     ) -> FlexTimeProposal? {
         let day = dayInterval(containing: now)
@@ -72,8 +73,9 @@ public struct FlexTimeAdvisor: Sendable {
                 return nil
             }
         }
+        let firstDelayedEvent = timedEvents.first { !activeExcludedCalendars.contains($0.calendarIdentifier) }
         let suggestedStart = activeDelay > 0
-            ? min(firstEvent.startDate.addingTimeInterval(activeDelay), latestStart(on: day))
+            ? min((firstDelayedEvent ?? firstEvent).startDate.addingTimeInterval(activeDelay), latestStart(on: day))
             : suggestedStart(firstEventStart: firstEvent.startDate, wakeTime: todaysWake?.time, now: now)
         if requiresNeed && suggestedStart <= firstEvent.startDate {
             return nil
@@ -84,7 +86,8 @@ public struct FlexTimeAdvisor: Sendable {
             wake: todaysWake,
             suggestedStart: suggestedStart,
             latestStart: latestStart(on: day),
-            activeDelay: activeDelay
+            activeDelay: activeDelay,
+            activeExcludedCalendars: activeDelay > 0 ? activeExcludedCalendars : []
         )
     }
 

@@ -8,6 +8,7 @@ public struct FlexTimeProposal: Sendable, Hashable, Identifiable {
     public let suggestedStart: Date
     public let latestStart: Date
     public let activeDelay: TimeInterval
+    public let activeExcludedCalendars: Set<String>
 
     public init(
         day: Date,
@@ -15,7 +16,8 @@ public struct FlexTimeProposal: Sendable, Hashable, Identifiable {
         wake: FlexTimeWake?,
         suggestedStart: Date,
         latestStart: Date,
-        activeDelay: TimeInterval = 0
+        activeDelay: TimeInterval = 0,
+        activeExcludedCalendars: Set<String> = []
     ) {
         self.day = day
         self.events = events
@@ -23,6 +25,7 @@ public struct FlexTimeProposal: Sendable, Hashable, Identifiable {
         self.suggestedStart = suggestedStart
         self.latestStart = latestStart
         self.activeDelay = activeDelay
+        self.activeExcludedCalendars = activeExcludedCalendars
     }
 
     public var id: Date { day }
@@ -35,13 +38,21 @@ public struct FlexTimeProposal: Sendable, Hashable, Identifiable {
         activeDelay > 0
     }
 
-    public var startRange: ClosedRange<Date> {
-        let earliest = firstEvent?.startDate ?? day
+    /// The first event that is delayed when the events of `excludedCalendars` keep their times.
+    public func firstEvent(excluding excludedCalendars: Set<String>) -> CalendarEvent? {
+        events.first { !excludedCalendars.contains($0.calendarIdentifier) }
+    }
+
+    public func startRange(excluding excludedCalendars: Set<String> = []) -> ClosedRange<Date> {
+        let earliest = (firstEvent(excluding: excludedCalendars) ?? firstEvent)?.startDate ?? day
         return earliest...max(earliest, latestStart)
     }
 
-    public func delay(startingFirstEventAt start: Date) -> TimeInterval {
-        guard let firstEvent else { return 0 }
+    public func delay(
+        startingFirstEventAt start: Date,
+        excluding excludedCalendars: Set<String> = []
+    ) -> TimeInterval {
+        guard let firstEvent = firstEvent(excluding: excludedCalendars) else { return 0 }
         let minutes = (start.timeIntervalSince(firstEvent.startDate) / 60).rounded()
         return max(0, minutes * 60)
     }

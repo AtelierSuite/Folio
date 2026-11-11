@@ -19,6 +19,16 @@ enum FlexTimeFixtures {
         ]
     }
 
+    static func event(_ local: String, start: Date, calendarIdentifier: String) -> CalendarEvent {
+        CalendarEvent(
+            reference: Fixtures.reference(local: local),
+            calendarIdentifier: calendarIdentifier,
+            title: local,
+            startDate: start,
+            endDate: start.addingTimeInterval(3600)
+        )
+    }
+
     static func makeDefaults() -> UserDefaults {
         UserDefaults(suiteName: "FlexTimeTests.\(UUID().uuidString)") ?? .standard
     }

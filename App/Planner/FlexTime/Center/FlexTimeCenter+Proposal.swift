@@ -11,6 +11,7 @@ extension FlexTimeCenter {
             wake: await wake(at: now, advisor: advisor),
             now: now,
             activeDelay: storage.delay(on: today),
+            activeExcludedCalendars: storage.excludedCalendars(on: today),
             requiresNeed: requiresNeed
         )
     }
