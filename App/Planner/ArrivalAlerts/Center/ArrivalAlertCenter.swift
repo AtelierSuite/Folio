@@ -148,7 +148,7 @@ public final class ArrivalAlertCenter {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var candidates: [ArrivalCandidate] = []
-        let events = await source.events(in: interval).filter {
+        let events = await source.flexTimeEvents(in: interval).filter {
             !hiddenCalendars.contains($0.calendarIdentifier)
                 && !$0.isHiddenInvitation(among: hiddenInvitations)
                 && (isLeaveByActive || preferences.isEnabled(for: $0.reference))

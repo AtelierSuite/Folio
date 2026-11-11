@@ -214,3 +214,35 @@ struct NotificationSchedulerTests {
         #expect(center.maximumPendingCount <= 64)
     }
 }
+
+extension NotificationSchedulerTests {
+    @Test func flexTimeDelaysAlertsOfTheDaysEvents() async throws {
+        let defaults = try makeDefaults()
+        let storage = FlexTimeStorage(defaults: defaults)
+        storage.setDelay(3 * 3600, on: HolidayDay(date: NotificationFixtures.now, timeZone: Fixtures.calendar.timeZone))
+        let settings = NotificationSettings(defaults: defaults)
+        settings.isEnabled = true
+        let center = FakeNotificationCenter(authorization: .authorized)
+        let scheduler = NotificationScheduler(
+            source: FakeCalendarDataSource(events: [
+                NotificationFixtures.event("missed", start: NotificationFixtures.hours(-1)),
+                NotificationFixtures.event("tomorrow", start: NotificationFixtures.hours(24))
+            ]),
+            center: center,
+            alarmClient: FakeAlarmClient(),
+            alarmLedger: AlarmLedger(defaults: defaults),
+            settings: settings,
+            styleSettings: NotificationStyleSettings(defaults: defaults),
+            capabilities: PlatformCapabilities(platform: .iPhone, areLiveActivitiesSupported: true),
+            visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
+            flexTimeStorage: storage,
+            planner: NotificationFixtures.planner(),
+            clock: { NotificationFixtures.now }
+        )
+        await scheduler.replan()
+        #expect(center.pendingNotifications.map(\.fireDate).sorted() == [
+            NotificationFixtures.hours(2).addingTimeInterval(-600),
+            NotificationFixtures.hours(24).addingTimeInterval(-600)
+        ])
+    }
+}

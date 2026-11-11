@@ -129,7 +129,7 @@ public final class LeaveAlertCenter {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
         var alerts: [LeaveAlert] = []
-        let events = await source.events(in: planner.interval(after: now)).filter {
+        let events = await source.flexTimeEvents(in: planner.interval(after: now)).filter {
             !hiddenCalendars.contains($0.calendarIdentifier)
                 && !$0.isHiddenInvitation(among: hiddenInvitations)
                 && preferences.isEnabled(for: $0.reference)
