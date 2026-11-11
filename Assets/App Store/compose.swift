@@ -40,7 +40,6 @@ enum Device: String {
 
 struct Copy {
     let header: String
-    let caption: String
 }
 
 struct Screenshot {
@@ -65,28 +64,28 @@ let gradientTop = accent
 let gradientBottom = accent.blended(withFraction: 0.3, of: .black)!
 
 let weekCopy = [
-    "en": Copy(header: "Your whole week at a glance", caption: "Events, reminders, weather and sleep, side by side"),
-    "ja": Copy(header: "1週間をひと目で", caption: "予定もリマインダーも、天気も睡眠もいっしょに"),
+    "en": Copy(header: "Your whole week at a glance"),
+    "ja": Copy(header: "1週間をひと目で"),
 ]
 let listsCopy = [
-    "en": Copy(header: "A list for everything", caption: "Your reminders, sorted and ready to check off"),
-    "ja": Copy(header: "やることをリストに", caption: "リマインダーを整理して、あとはチェックするだけ"),
+    "en": Copy(header: "A list for everything"),
+    "ja": Copy(header: "やることをリストに"),
 ]
 let notesCopy = [
-    "en": Copy(header: "Notes in plain Markdown", caption: "Headings and checklists, saved as files you own"),
-    "ja": Copy(header: "メモはMarkdownで", caption: "見出しもチェックリストも、自分のファイルに保存"),
+    "en": Copy(header: "Notes in plain Markdown"),
+    "ja": Copy(header: "メモはMarkdownで"),
 ]
 let alarmsCopy = [
-    "en": Copy(header: "Alarms right on your calendar", caption: "Set one on the day with a double tap"),
-    "ja": Copy(header: "カレンダーにアラームを", caption: "その日をダブルタップするだけで設定"),
+    "en": Copy(header: "Alarms right on your calendar"),
+    "ja": Copy(header: "カレンダーにアラームを"),
 ]
 let notificationsCopy = [
-    "en": Copy(header: "Alerts your way", caption: "Choose how each calendar and list lets you know"),
-    "ja": Copy(header: "通知は思いのままに", caption: "カレンダーやリストごとに通知の仕方を選べる"),
+    "en": Copy(header: "Alerts your way"),
+    "ja": Copy(header: "通知は思いのままに"),
 ]
 let countdownCopy = [
-    "en": Copy(header: "Count down to what's next", caption: "A Live Activity on your Lock Screen"),
-    "ja": Copy(header: "次の予定までカウントダウン", caption: "ロック画面のライブアクティビティで"),
+    "en": Copy(header: "Count down to what's next"),
+    "ja": Copy(header: "次の予定までカウントダウン"),
 ]
 
 let iPhoneScreenshots = [
@@ -106,8 +105,8 @@ let macScreenshots = [
         name: "01-week",
         icon: .calendar,
         copy: [
-            "en": Copy(header: "A planner for your Mac", caption: "Events, reminders and the weather in one window"),
-            "ja": Copy(header: "Macのためのプランナー", caption: "予定もリマインダーも天気も、ひとつのウインドウに"),
+            "en": Copy(header: "A planner for your Mac"),
+            "ja": Copy(header: "Macのためのプランナー"),
         ]
     ),
     Screenshot(name: "02-lists", icon: .reminders, copy: listsCopy),
@@ -368,18 +367,14 @@ func drawWindow(_ raw: NSImage, in rect: NSRect) {
     NSGraphicsContext.current?.restoreGraphicsState()
 }
 
-/// The header and caption across the top, and the window below them,
+/// The icon and header across the top, and the window below them,
 /// with a second window, such as Settings, overlapping its corner.
 func drawMac(copy: Copy, icon: Icon, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
     let textWidth = canvasSize.width - 240
     let header = Line(copy.header, size: 120, weight: .bold, color: .white, maxWidth: textWidth)
-    let caption = Line(
-        copy.caption, size: 60, weight: .medium, color: NSColor.white.withAlphaComponent(0.92), maxWidth: textWidth
-    )
-    let captionGap: CGFloat = 8
     let iconSize: CGFloat = 170
     let iconGap: CGFloat = 50
-    let inkHeight = iconSize + iconGap + header.size.height + captionGap + caption.inkBottom - header.inkTop
+    let inkHeight = iconSize + iconGap + header.inkBottom - header.inkTop
     let textBand = inkHeight + 2 * 80
     let bottomMargin: CGFloat = 100
 
@@ -401,7 +396,6 @@ func drawMac(copy: Copy, icon: Icon, raw: NSImage, extra: NSImage?, canvasSize: 
     icon.draw(size: iconSize, top: inkTop.rounded(), canvasWidth: canvasSize.width)
     let headerTop = (inkTop - iconSize - iconGap + header.inkTop).rounded()
     header.draw(top: headerTop, canvasWidth: canvasSize.width)
-    caption.draw(top: headerTop - header.size.height - captionGap, canvasWidth: canvasSize.width)
 
     drawWindow(raw, in: windowRect)
     if let extra, let extraSize {
@@ -438,18 +432,13 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
         return write(image, canvasSize: canvasSize, shot: shot, language: language, device: device)
     }
 
-    // One-line header and caption. AppKit's origin is bottom-left.
+    // A one-line header. AppKit's origin is bottom-left.
     let textWidth = canvasSize.width - 96 * s
     let header = Line(copy.header, size: 84 * s, weight: .bold, color: .white, maxWidth: textWidth)
-    let caption = Line(
-        copy.caption, size: 44 * s, weight: .medium,
-        color: NSColor.white.withAlphaComponent(0.92), maxWidth: textWidth
-    )
-    let captionGap = 4 * s
     let iconSize = 150 * s
     let iconGap = 44 * s
-    // From the top of the icon to the bottom of the caption's ink.
-    let inkHeight = iconSize + iconGap + header.size.height + captionGap + caption.inkBottom - header.inkTop
+    // From the top of the icon to the bottom of the header's ink.
+    let inkHeight = iconSize + iconGap + header.inkBottom - header.inkTop
 
     let aspect = deviceAspect(device)
     var deviceSize: NSSize
@@ -481,7 +470,6 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
     shot.icon.draw(size: iconSize, top: inkTop.rounded(), canvasWidth: canvasSize.width)
     let headerTop = (inkTop - iconSize - iconGap + header.inkTop).rounded()
     header.draw(top: headerTop, canvasWidth: canvasSize.width)
-    caption.draw(top: headerTop - header.size.height - captionGap, canvasWidth: canvasSize.width)
 
     let deviceRect = NSRect(
         x: ((canvasSize.width - deviceSize.width) / 2).rounded(),
