@@ -12,7 +12,20 @@ struct FlexTimeEventPreviewRow: View {
                 .frame(width: 10, height: 10)
             Text(event.title)
                 .lineLimit(1)
+                .truncationMode(.tail)
             Spacer(minLength: 8)
+            times
+                .fixedSize()
+        }
+        .monospacedDigit()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "\(event.title), \(FlexTimeFormatting.time(event.startDate.addingTimeInterval(delay)))"
+        )
+    }
+
+    private var times: some View {
+        HStack(spacing: 8) {
             if delay > 0 {
                 Text(FlexTimeFormatting.time(event.startDate))
                     .strikethrough()
@@ -24,10 +37,5 @@ struct FlexTimeEventPreviewRow: View {
             Text(FlexTimeFormatting.time(event.startDate.addingTimeInterval(delay)))
                 .fontWeight(.medium)
         }
-        .monospacedDigit()
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            "\(event.title), \(FlexTimeFormatting.time(event.startDate.addingTimeInterval(delay)))"
-        )
     }
 }
