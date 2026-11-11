@@ -65,7 +65,7 @@ let gradientBottom = accent.blended(withFraction: 0.3, of: .black)!
 
 let weekCopy = [
     "en": Copy(header: "See your whole week at once"),
-    "ja": Copy(header: "今週の予定、ぜんぶ見える"),
+    "ja": Copy(header: "今週の予定、全部見える"),
 ]
 let listsCopy = [
     "en": Copy(header: "Tick things off as you go"),
@@ -76,8 +76,8 @@ let notesCopy = [
     "ja": Copy(header: "メモはMarkdownでさっと"),
 ]
 let alarmsCopy = [
-    "en": Copy(header: "Double tap a day to set an alarm"),
-    "ja": Copy(header: "ダブルタップでアラームをセット"),
+    "en": Copy(header: "Set alarms right from your calendar"),
+    "ja": Copy(header: "カレンダーからアラームをセット"),
 ]
 let notificationsCopy = [
     "en": Copy(header: "Pick how each calendar alerts you"),
