@@ -3,6 +3,7 @@ import SwiftUI
 
 struct FlexTimeStartPicker: View {
     let proposal: FlexTimeProposal
+    let excludedCalendars: Set<String>
     @Binding var firstEventStart: Date
 
     var body: some View {
@@ -10,7 +11,7 @@ struct FlexTimeStartPicker: View {
             DatePicker(
                 String(localized: "Prompt.FirstEventStart", table: "FlexTime"),
                 selection: $firstEventStart,
-                in: proposal.startRange,
+                in: proposal.startRange(excluding: excludedCalendars),
                 displayedComponents: .hourAndMinute
             )
             .fontWeight(.medium)
@@ -26,7 +27,7 @@ struct FlexTimeStartPicker: View {
     }
 
     private var summary: String {
-        let delay = proposal.delay(startingFirstEventAt: firstEventStart)
+        let delay = proposal.delay(startingFirstEventAt: firstEventStart, excluding: excludedCalendars)
         guard delay > 0 else {
             return String(localized: "Prompt.NoDelay", table: "FlexTime")
         }
