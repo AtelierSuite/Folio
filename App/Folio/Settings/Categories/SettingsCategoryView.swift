@@ -10,6 +10,7 @@ struct SettingsCategoryView: View {
         case .accounts: AccountsSettingsView()
         case .calendars: CalendarsSettingsView()
         case .workWeek: WorkWeekSettingsView()
+        case .flexTime: FlexTimeSettingsView()
         case .notes: NotesSettingsView()
         case .notifications: NotificationSettingsView()
         case .eventNotifications: CalendarNotificationSettingsView(kind: .event)

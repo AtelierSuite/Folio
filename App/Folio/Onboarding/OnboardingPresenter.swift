@@ -20,7 +20,7 @@ struct OnboardingPresenter: ViewModifier {
         isPresented = false
     }
 
-    private static var shouldPresent: Bool {
+    static var shouldPresent: Bool {
         !OnboardingStorage().hasCompletedOnboarding
             && !ProcessInfo.processInfo.arguments.contains(skipLaunchArgument)
     }

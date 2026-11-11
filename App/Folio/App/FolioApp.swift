@@ -21,6 +21,7 @@ struct FolioApp: App {
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var travelTimeStore = TravelTimeStore()
     @State private var sleepStore: SleepStore
+    @State private var flexTime: FlexTimeCenter
     @State private var medicationStore: MedicationStore
     @State private var systemTime = SystemTimeObserver()
     @State private var undoCoordinator: UndoCoordinator
@@ -74,9 +75,9 @@ struct FolioApp: App {
         ))
         let countdowns = EventCountdownManager(source: calendarStore)
         _countdowns = State(initialValue: countdowns)
-        let sleepStore = SleepStore(capabilities: .current)
-        sleepStore.startObservingChanges()
+        let sleepStore = SleepStore.makeForApp()
         _sleepStore = State(initialValue: sleepStore)
+        _flexTime = State(initialValue: .makeForApp(calendarStore, sleepStore, notificationScheduler))
         let destinationRequests = AppDestinationRequests()
         _destinationRequests = State(initialValue: destinationRequests)
         Self.registerIntentDependencies(countdowns, notesLibrary, noteNavigator, destinationRequests)
@@ -121,6 +122,7 @@ struct FolioApp: App {
                 .environment(travelTimeStore)
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
+                .environment(flexTime)
                 .environment(medicationStore)
                 .refreshesMedications(medicationStore)
                 .notificationReplanTriggers(notificationScheduler)
@@ -175,6 +177,7 @@ struct FolioApp: App {
             .environment(weatherStore)
             .environment(travelTimeStore)
             .environment(sleepStore)
+            .environment(flexTime)
             .environment(medicationStore)
             .followsSystemTime(systemTime)
         }
