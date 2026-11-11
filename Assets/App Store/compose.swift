@@ -7,7 +7,8 @@ let languages = ["en", "ja"]
 /// The devices named on the command line (`./compose.swift Mac`), or all of them.
 let requestedDevices = Set(CommandLine.arguments.dropFirst())
 
-/// Captures live in `Raw/<device>/<lang>/` and are written to `<device>/<lang>/`.
+/// Captures live in `Raw/<device>/<lang>/` and are written to `<device>/<lang>/`. Watch shots need no framing, so
+/// `capture-watch.sh` writes them straight to `Watch/<lang>/`.
 enum Device: String {
     case iPhone
     case iPad
@@ -96,8 +97,8 @@ let iPhoneScreenshots = [
     Screenshot(name: "06-countdown", copy: countdownCopy),
 ]
 
-// capture.sh only captures the iPhone so far; iPad shots go here once it captures them too.
-let iPadScreenshots: [Screenshot] = []
+// The iPad has no countdown, as Live Activities are off there unless turned on.
+let iPadScreenshots = Array(iPhoneScreenshots.dropLast())
 
 let macScreenshots = [
     Screenshot(

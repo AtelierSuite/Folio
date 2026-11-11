@@ -1,8 +1,9 @@
 #!/bin/zsh
-# Captures raw App Store screenshots into Raw/iPhone/<language>/.
+# Captures raw App Store screenshots into Raw/<device>/<language>/, for the iPhone and the iPad.
 # Usage: ./capture.sh [languages...]   (defaults to en ja)
+#        DEVICES=iPad ./capture.sh ja  (defaults to iPhone iPad)
 #
-# Each language gets a freshly erased simulator of the harness's own, with calendar and reminder access granted.
+# Each device and language gets a freshly erased simulator of the harness's own, with calendar and reminder access granted.
 # The AppStoreScreenshots UI test then launches Folio once with -FolioScreenshotSamples, which seeds Sensei's week
 # at Schale (calendars, reminders, notes, alarms and alert styles), and once more per shot with
 # -FolioScreenshotStage <name>, made-up weather and made-up sleep. Run compose.swift afterwards to frame them.
@@ -14,17 +15,22 @@ BUNDLE_ID=com.tsubuzaki.Folio
 DERIVED_DATA=/tmp/folio-screenshots-dd
 LANGUAGES=($@)
 (( $# )) || LANGUAGES=(en ja)
-DEVICE_TYPE=com.apple.CoreSimulator.SimDeviceType.iPhone-18-Pro-Max
+DEVICES=(${=DEVICES:-iPhone iPad})
+typeset -A DEVICE_TYPES=(
+  iPhone com.apple.CoreSimulator.SimDeviceType.iPhone-18-Pro-Max
+  iPad com.apple.CoreSimulator.SimDeviceType.iPad-Pro-13-inch-M5-12GB
+)
 RUNTIME=com.apple.CoreSimulator.SimRuntime.iOS-27-2
 
 # MARK: - Simulator
 
-# A simulator of the harness's own, made on first use, so a capture never disturbs the ones used for development.
+# One simulator of the harness's own per device, made on first use, so a capture never disturbs the ones used for
+# development.
 simulator() {
-  local name="Folio Screenshots iPhone" udid
+  local name="Folio Screenshots $1" udid
   udid=$(xcrun simctl list devices available | grep "$name (" | head -1 | grep -oE '[0-9A-F-]{36}' || true)
   if [[ -z $udid ]]; then
-    udid=$(xcrun simctl create "$name" $DEVICE_TYPE $RUNTIME)
+    udid=$(xcrun simctl create "$name" $DEVICE_TYPES[$1] $RUNTIME)
   fi
   echo $udid
 }
@@ -44,7 +50,12 @@ boot() {
   plutil -replace AppleLocale -string $locale "$preferences"
   xcrun simctl boot $1
   xcrun simctl bootstatus $1 -b >/dev/null
-  status_bar $1 $(date -j -f "%Y-%m-%d %H:%M:%S" "$(date +%Y-%m-%d) 09:41:00" +%s)
+  # The iPad's status bar shows the date as well, and simctl gets the weekday of an overridden time wrong.
+  if [[ $3 == iPad ]]; then
+    status_bar $1
+  else
+    status_bar $1 $(date -j -f "%Y-%m-%d %H:%M:%S" "$(date +%Y-%m-%d) 09:41:00" +%s)
+  fi
 }
 
 # Fixed at a moment given in seconds since 1970, if any, which also sets the Lock Screen's date. simctl only
@@ -66,7 +77,7 @@ XCTESTRUN=$(ls $DERIVED_DATA/Build/Products/*.xctestrun | head -1)
 
 # Prints only the assertion that failed, if any; -quiet would hide it. The whole log is kept in /tmp.
 run_test_once() {
-  local log=/tmp/folio-screenshots-$2-$4.log test_status=0
+  local log=/tmp/folio-screenshots-${3:h:t}-$2-$4.log test_status=0
   TEST_RUNNER_SCREENSHOT_DIR=$3 TEST_RUNNER_SCREENSHOT_LANGUAGE=$2 \
     xcodebuild test-without-building -xctestrun $XCTESTRUN -destination "id=$1" \
     -only-testing:FolioUITests/AppStoreScreenshots/$4 \
@@ -77,28 +88,32 @@ run_test_once() {
 
 # MARK: - Capture
 
-udid=$(simulator)
-for language in $LANGUAGES; do
-  raw_dir="$SCRIPT_DIR/Raw/iPhone/$language"
-  mkdir -p "$raw_dir"
-  boot $udid $language
-  xcrun simctl install $udid $APP
-  xcrun simctl privacy $udid grant calendar $BUNDLE_ID
-  xcrun simctl privacy $udid grant reminders $BUNDLE_ID
-  # UI tests on a freshly booted simulator now and then miss a tap, so a failed run is given one more go.
-  if run_test_once $udid $language "$raw_dir" testScreens || run_test_once $udid $language "$raw_dir" testScreens; then
-    echo "captured iPhone/$language"
-  else
-    echo "failed to capture iPhone/$language"
-  fi
-  # The Live Activity shows the event's real start time, so the Lock Screen shows the real time and date too.
-  # An overridden time would also set the date, and simctl gets its weekday wrong.
-  xcrun simctl status_bar $udid clear
-  status_bar $udid
-  if run_test_once $udid $language "$raw_dir" testCountdown; then
-    echo "captured iPhone/$language countdown"
-  else
-    echo "failed to capture iPhone/$language countdown"
-  fi
+for device in $DEVICES; do
+  udid=$(simulator $device)
+  for language in $LANGUAGES; do
+    raw_dir="$SCRIPT_DIR/Raw/$device/$language"
+    mkdir -p "$raw_dir"
+    boot $udid $language $device
+    xcrun simctl install $udid $APP
+    xcrun simctl privacy $udid grant calendar $BUNDLE_ID
+    xcrun simctl privacy $udid grant reminders $BUNDLE_ID
+    # UI tests on a freshly booted simulator now and then miss a tap, so a failed run is given one more go.
+    if run_test_once $udid $language "$raw_dir" testScreens || run_test_once $udid $language "$raw_dir" testScreens; then
+      echo "captured $device/$language"
+    else
+      echo "failed to capture $device/$language"
+    fi
+    # The App Store shows the countdown only on the iPhone, where Live Activities are always on.
+    [[ $device == iPhone ]] || continue
+    # The Live Activity shows the event's real start time, so the Lock Screen shows the real time and date too.
+    # An overridden time would also set the date, and simctl gets its weekday wrong.
+    xcrun simctl status_bar $udid clear
+    status_bar $udid
+    if run_test_once $udid $language "$raw_dir" testCountdown; then
+      echo "captured $device/$language countdown"
+    else
+      echo "failed to capture $device/$language countdown"
+    fi
+  done
+  xcrun simctl shutdown $udid
 done
-xcrun simctl shutdown $udid
