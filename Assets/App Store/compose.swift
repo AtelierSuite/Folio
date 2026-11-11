@@ -115,15 +115,9 @@ let macScreenshots = [
 
 // MARK: - Text
 
-/// SF Pro Rounded. It has no Japanese, so that falls back to Tsukushi A Round
-/// Gothic, which unlike Hiragino Maru Gothic comes in a bold to match the header.
-func roundedFont(ofSize size: CGFloat, weight: NSFont.Weight) -> NSFont {
-    let system = NSFont.systemFont(ofSize: size, weight: weight).fontDescriptor
-    let japanese = weight >= .semibold ? "TsukuARdGothic-Bold" : "TsukuARdGothic-Regular"
-    let rounded = (system.withDesign(.rounded) ?? system).addingAttributes([
-        .cascadeList: [NSFontDescriptor(name: japanese, size: size)],
-    ])
-    return NSFont(descriptor: rounded, size: size) ?? NSFont.systemFont(ofSize: size, weight: weight)
+/// SF Pro Display at these sizes. Japanese falls back to Hiragino Sans.
+func displayFont(ofSize size: CGFloat, weight: NSFont.Weight) -> NSFont {
+    NSFont.systemFont(ofSize: size, weight: weight)
 }
 
 /// One line of text at the largest size up to `size` that fits `maxWidth`.
@@ -135,11 +129,11 @@ struct Line {
 
     init(_ text: String, size: CGFloat, weight: NSFont.Weight, color: NSColor, maxWidth: CGFloat) {
         var fontSize = size
-        var font = roundedFont(ofSize: fontSize, weight: weight)
+        var font = displayFont(ofSize: fontSize, weight: weight)
         var attributes: [NSAttributedString.Key: Any] = [:]
         var lineSize = NSSize.zero
         while fontSize > 10 {
-            font = roundedFont(ofSize: fontSize, weight: weight)
+            font = displayFont(ofSize: fontSize, weight: weight)
             attributes = [.font: font, .foregroundColor: color]
             lineSize = (text as NSString).size(withAttributes: attributes)
             if lineSize.width <= maxWidth { break }
