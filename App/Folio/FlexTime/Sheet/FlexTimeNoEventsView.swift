@@ -10,7 +10,7 @@ struct FlexTimeNoEventsView: View {
             systemImage: "clock.arrow.circlepath",
             description: Text(String(localized: "Prompt.NoEvents.Description", table: "FlexTime"))
         )
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaBar(edge: .bottom) {
             OnboardingContinueButton(title: String(localized: "Prompt.Done", table: "FlexTime")) {
                 flexTime.dismissPrompt()
             }

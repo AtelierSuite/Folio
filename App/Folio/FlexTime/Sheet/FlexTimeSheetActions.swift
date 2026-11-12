@@ -12,15 +12,18 @@ struct FlexTimeSheetActions: View {
                 .disabled(!canDelay)
                 .accessibilityIdentifier("FlexTimeUseButton")
             Button(declineTitle, role: isActive ? .destructive : nil, action: onDecline)
-                #if !os(macOS)
-                .padding(.vertical, 6)
+                #if os(macOS)
+                .buttonStyle(.bordered)
+                #else
+                .buttonStyle(.glass)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                .buttonSizing(.flexible)
                 #endif
                 .accessibilityIdentifier("FlexTimeDeclineButton")
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
-        .frame(maxWidth: .infinity)
-        .background(.bar)
     }
 
     private var declineTitle: String {

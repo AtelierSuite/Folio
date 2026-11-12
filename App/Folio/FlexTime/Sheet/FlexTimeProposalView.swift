@@ -30,7 +30,7 @@ struct FlexTimeProposalView: View {
         .onChange(of: excludedCalendars) { previous, current in
             keepDelay(from: previous, to: current)
         }
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaBar(edge: .bottom) {
             FlexTimeSheetActions(
                 isActive: proposal.isActive,
                 canDelay: delay > 0 || proposal.isActive,
