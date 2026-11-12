@@ -31,7 +31,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "デイリーノートを作成"
+            "value": "本日メモを作成"
           }
         },
         "ko": {
@@ -226,7 +226,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "デイリーノートを開く"
+            "value": "本日メモを開く"
           }
         },
         "ko": {
@@ -291,7 +291,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "デイリーノート"
+            "value": "本日メモ"
           }
         },
         "ko": {

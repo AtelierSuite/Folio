@@ -161,7 +161,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName}でデイリーノートに追加"
+            "value" : "${applicationName}で本日メモに追加"
           }
         },
         "ko" : {
