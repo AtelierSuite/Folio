@@ -3,12 +3,14 @@ import SwiftUI
 
 struct WeatherSettingsSection: View {
     @Environment(WeatherStore.self) private var weather
-    @Environment(PermissionCenter.self) private var permissions
     @AppStorage(WeatherNightSettings.shadesNightKey) private var shadesNight = true
 
     var body: some View {
         Section {
-            Toggle(String(localized: "Settings.ShowWeather", table: "Weather"), isOn: isEnabled)
+            Toggle(String(localized: "Settings.ShowWeather", table: "Weather"), isOn: Binding(
+                get: { weather.isEnabled },
+                set: { weather.setEnabled($0) }
+            ))
                 .accessibilityIdentifier("WeatherToggle")
             if weather.isEnabled {
                 SettingsSheetRow(
@@ -26,19 +28,6 @@ struct WeatherSettingsSection: View {
             Text(String(localized: "Settings.Header", table: "Weather"))
         } footer: {
             WeatherSettingsFooter()
-        }
-    }
-
-    private var isEnabled: Binding<Bool> {
-        Binding {
-            weather.isEnabled
-        } set: { isEnabled in
-            weather.setEnabled(isEnabled)
-            guard isEnabled, weather.locationMode == .current else { return }
-            Task {
-                await permissions.request(.location)
-                weather.locationAuthorizationDidChange()
-            }
         }
     }
 }

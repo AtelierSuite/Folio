@@ -6,7 +6,6 @@ struct WeatherCurrentLocationSection: View {
     @Environment(PermissionCenter.self) private var permissions
 
     var body: some View {
-        let status = permissions.status(of: .location) ?? .notDetermined
         Section {
             WeatherLocationOptionRow(
                 title: String(localized: "Location.Current", table: "Weather"),
@@ -20,13 +19,6 @@ struct WeatherCurrentLocationSection: View {
                 }
             }
             .accessibilityIdentifier("WeatherCurrentLocation")
-            if status.canBeFixedInSettings {
-                PermissionActionButton(kind: .location, status: status)
-            }
-        } footer: {
-            if status.canBeFixedInSettings || status == .restricted {
-                Text(String(localized: "Settings.LocationDenied", table: "Weather"))
-            }
         }
     }
 }
