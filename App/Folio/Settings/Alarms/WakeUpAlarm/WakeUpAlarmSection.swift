@@ -3,6 +3,7 @@ import SwiftUI
 
 struct WakeUpAlarmSection: View {
     @Environment(WakeUpAlarmCenter.self) private var wakeUpAlarms
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         Section {
@@ -13,20 +14,14 @@ struct WakeUpAlarmSection: View {
             .disabled(!wakeUpAlarms.isSupported)
             .accessibilityIdentifier("WakeUpAlarmToggle")
             if wakeUpAlarms.isEnabled {
-                if wakeUpAlarms.authorization == .denied {
-                    WakeUpAlarmDeniedRows()
-                } else {
-                    WakeUpAlarmOptionRows()
-                }
+                WakeUpAlarmOptionRows()
             }
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))
         } footer: {
             Text(footer)
         }
-        .task {
-            await wakeUpAlarms.replan()
-        }
+        .disabled(permissionCenter.isMissingAccess(to: .alarms))
     }
 
     private var footer: String {

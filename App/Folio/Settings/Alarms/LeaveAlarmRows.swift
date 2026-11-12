@@ -3,7 +3,6 @@ import SwiftUI
 
 struct LeaveAlarmRows: View {
     @Environment(LeaveAlertCenter.self) private var leaveAlerts
-    @Environment(\.openURL) private var openURL
 
     var body: some View {
         Toggle(String(localized: "Settings.RingsAsAlarm", table: "LeaveAlerts"), isOn: Binding(
@@ -11,14 +10,5 @@ struct LeaveAlarmRows: View {
             set: { newValue in Task { await leaveAlerts.setRingsAsAlarm(newValue) } }
         ))
         .accessibilityIdentifier("LeaveAlarmToggle")
-        if leaveAlerts.ringsAsAlarm && leaveAlerts.alarmAuthorization == .denied {
-            Text(String(localized: "Settings.AlarmDenied", table: "LeaveAlerts"))
-                .foregroundStyle(.secondary)
-            if let settingsURL = PermissionKind.alarms.settingsURL {
-                Button(String(localized: "Settings.AlarmDenied.OpenSettings", table: "LeaveAlerts")) {
-                    openURL(settingsURL)
-                }
-            }
-        }
     }
 }

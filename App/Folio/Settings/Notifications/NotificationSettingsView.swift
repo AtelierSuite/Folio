@@ -7,6 +7,11 @@ struct NotificationSettingsView: View {
 
     var body: some View {
         Form {
+            NotificationPermissionPromptSection()
+            PermissionPromptSection(
+                kind: .location,
+                message: String(localized: "Prompt.LocationAlerts", table: "Permissions")
+            )
             Section {
                 Toggle(String(localized: "Enabled", table: "Notifications"), isOn: binding(
                     get: { scheduler.isEnabled },
@@ -15,12 +20,10 @@ struct NotificationSettingsView: View {
                         await permissionCenter.refresh(.notifications)
                     }
                 ))
+                .disabled(permissionCenter.isMissingAccess(to: .notifications))
                 .accessibilityIdentifier("NotificationsEnabledToggle")
             } footer: {
                 Text(String(localized: "Enabled.Footer", table: "Notifications"))
-            }
-            if scheduler.authorization == .denied {
-                NotificationDeniedSection()
             }
             Section(String(localized: "Items.Section", table: "Notifications")) {
                 Toggle(String(localized: "Items.Events", table: "Notifications"), isOn: binding(
@@ -39,7 +42,7 @@ struct NotificationSettingsView: View {
             LeaveBySettingsSection()
         }
         .settingsCategoryStyle(.notifications)
-        .task {
+        .task(id: permissionCenter.status(of: .notifications)) {
             await scheduler.replan()
         }
     }

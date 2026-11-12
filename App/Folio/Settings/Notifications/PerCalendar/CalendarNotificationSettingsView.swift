@@ -11,9 +11,11 @@ struct CalendarNotificationSettingsView: View {
 
     var body: some View {
         Form {
-            if permissionCenter.status(of: .alarms) == .denied {
-                NotificationAlarmDeniedSection()
-            }
+            NotificationPermissionPromptSection()
+            PermissionPromptSection(
+                kind: .alarms,
+                message: String(localized: "Prompt.AlarmStyle", table: "Permissions")
+            )
             #if os(macOS)
             if capabilities.supports(.notificationSoundInstallation) && scheduler.needsSoundInstallation {
                 NotificationSoundInstallSection()
@@ -46,6 +48,9 @@ struct CalendarNotificationSettingsView: View {
         .settingsCategoryStyle(kind == .event ? .eventNotifications : .reminderNotifications)
         .task {
             await permissionCenter.refresh(.alarms)
+        }
+        .onChange(of: permissionCenter.status(of: .alarms)) {
+            Task { await scheduler.replan() }
         }
         .onDisappear {
             player.stop()

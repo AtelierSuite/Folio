@@ -4,9 +4,11 @@ import SwiftUI
 struct LeaveAlarmSection: View {
     @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(NotificationScheduler.self) private var scheduler
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     private var isAvailable: Bool {
         leaveAlerts.isSupported && leaveAlerts.isEnabled && scheduler.isEnabled
+            && !permissionCenter.isMissingAccess(to: .alarms)
     }
 
     var body: some View {

@@ -7,8 +7,8 @@ struct LocationAlertAccessRows: View {
     let table: String
 
     var body: some View {
-        if let message {
-            Text(message)
+        if authorization == .whenInUse {
+            Text(String(localized: "Settings.WhenInUse", table: table))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             PermissionSettingsButton(kind: .location)
@@ -16,14 +16,6 @@ struct LocationAlertAccessRows: View {
             Text(String(localized: "Settings.Unavailable", table: table))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-        }
-    }
-
-    private var message: String? {
-        switch authorization {
-        case .denied: String(localized: "Settings.Denied", table: table)
-        case .whenInUse: String(localized: "Settings.WhenInUse", table: table)
-        case .notDetermined, .always: nil
         }
     }
 }

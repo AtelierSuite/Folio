@@ -4,6 +4,7 @@ import SwiftUI
 struct LeaveAlertsSection: View {
     @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(NotificationScheduler.self) private var scheduler
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         Section {
@@ -11,13 +12,14 @@ struct LeaveAlertsSection: View {
                 get: { leaveAlerts.isEnabled },
                 set: { newValue in Task { await leaveAlerts.setEnabled(newValue) } }
             ))
-            .disabled(!leaveAlerts.isSupported || !scheduler.isEnabled)
+            .disabled(!leaveAlerts.isSupported || !scheduler.isEnabled || isMissingLocationAccess)
             .accessibilityIdentifier("LeaveAlertsToggle")
             if leaveAlerts.isSupported && leaveAlerts.isEnabled {
                 TravelTransportPicker(selection: Binding(
                     get: { leaveAlerts.transport },
                     set: { newValue in Task { await leaveAlerts.setTransport(newValue) } }
                 ), accessibilityIdentifier: "TravelTransportPicker")
+                .disabled(isMissingLocationAccess)
                 LocationAlertAccessRows(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
             }
         } header: {
@@ -27,8 +29,12 @@ struct LeaveAlertsSection: View {
                  ? String(localized: "Settings.Footer", table: "LeaveAlerts")
                  : String(localized: "Unsupported", table: "LeaveAlerts"))
         }
-        .onAppear {
+        .onChange(of: permissionCenter.status(of: .location), initial: true) {
             leaveAlerts.refreshAuthorization()
         }
+    }
+
+    private var isMissingLocationAccess: Bool {
+        permissionCenter.isMissingAccess(to: .location)
     }
 }
