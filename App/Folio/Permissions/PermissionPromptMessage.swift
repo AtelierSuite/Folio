@@ -5,10 +5,7 @@ struct PermissionPromptMessage: View {
     let isRestricted: Bool
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Image(systemName: "info.circle")
-                .foregroundStyle(.tint)
-                .accessibilityHidden(true)
+        Label {
             VStack(alignment: .leading, spacing: 4) {
                 Text(message)
                 if isRestricted {
@@ -17,6 +14,9 @@ struct PermissionPromptMessage: View {
                         .foregroundStyle(.secondary)
                 }
             }
+        } icon: {
+            SettingsIconTile(image: Image(systemName: "info"), color: .blue)
+                .accessibilityHidden(true)
         }
         .accessibilityElement(children: .combine)
     }

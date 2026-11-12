@@ -8,14 +8,7 @@ struct SettingsIconLabel: View {
         Label {
             Text(category.title)
         } icon: {
-            category.image
-                .resizable()
-                .scaledToFit()
-                .fontWeight(.medium)
-                .foregroundStyle(.white)
-                .frame(width: iconSize * 0.6, height: iconSize * 0.6)
-                .frame(width: iconSize, height: iconSize)
-                .background(category.color.gradient, in: .rect(cornerRadius: iconSize * 0.27))
+            SettingsIconTile(image: category.image, color: category.color, size: iconSize)
         }
     }
 }
