@@ -397,61 +397,126 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein erster Termin heute ist um %@."
+            "value": "Dein erster Termin heute ist um %@. Möchtest du die heutigen Termine nach hinten verschieben?"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your first event today is at %@."
+            "value": "Your first event today is at %@. Would you like to move today’s events later?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Votre premier événement aujourd’hui est à %@."
+            "value": "Votre premier événement aujourd’hui est à %@. Voulez-vous décaler les événements d’aujourd’hui ?"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Il tuo primo evento di oggi è alle %@."
+            "value": "Il tuo primo evento di oggi è alle %@. Vuoi spostare più avanti gli eventi di oggi?"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今日の最初の予定は%@です。"
+            "value": "今日の最初の予定は%@です。今日の予定を遅らせますか？"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "오늘 첫 일정은 %@입니다."
+            "value": "오늘 첫 일정은 %@입니다. 오늘 일정을 뒤로 미룰까요?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je eerste afspraak vandaag is om %@."
+            "value": "Je eerste afspraak vandaag is om %@. Wil je de afspraken van vandaag later zetten?"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sự kiện đầu tiên hôm nay của bạn bắt đầu lúc %@."
+            "value": "Sự kiện đầu tiên hôm nay của bạn bắt đầu lúc %@. Bạn có muốn dời các sự kiện hôm nay muộn hơn không?"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "今天的第一个日程在 %@。"
+            "value": "今天的第一个日程在 %@。要把今天的日程往后移吗？"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "今天的第一個行程在 %@。"
+            "value": "今天的第一個行程在 %@。要把今天的行程往後移嗎？"
+          }
+        }
+      }
+    },
+    "Prompt.Message.Active": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die heutigen Termine sind nach hinten verschoben. Möchtest du ändern, wann sie beginnen?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today’s events are moved later. Would you like to change when they start?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les événements d’aujourd’hui sont décalés. Voulez-vous modifier leur heure de début ?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli eventi di oggi sono spostati più avanti. Vuoi cambiare l’ora di inizio?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今日の予定を遅らせています。開始時刻を変更しますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오늘 일정이 뒤로 미뤄져 있습니다. 시작 시간을 변경할까요?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De afspraken van vandaag zijn later gezet. Wil je wijzigen wanneer ze beginnen?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các sự kiện hôm nay đã được dời muộn hơn. Bạn có muốn đổi giờ bắt đầu không?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的日程已往后移。要更改开始时间吗？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今天的行程已往後移。要更改開始時間嗎？"
           }
         }
       }
@@ -462,61 +527,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du hast Folio heute zuerst um %1$@ geöffnet. Dein erster Termin heute ist um %2$@."
+            "value": "Du hast Folio heute zuerst um %1$@ geöffnet, und dein erster Termin ist um %2$@. Möchtest du die heutigen Termine nach hinten verschieben?"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You first opened Folio at %1$@. Your first event today is at %2$@."
+            "value": "You first opened Folio at %1$@, and your first event today is at %2$@. Would you like to move today’s events later?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous avez ouvert Folio pour la première fois à %1$@. Votre premier événement aujourd’hui est à %2$@."
+            "value": "Vous avez ouvert Folio pour la première fois à %1$@, et votre premier événement aujourd’hui est à %2$@. Voulez-vous décaler les événements d’aujourd’hui ?"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hai aperto Folio per la prima volta alle %1$@. Il tuo primo evento di oggi è alle %2$@."
+            "value": "Hai aperto Folio per la prima volta alle %1$@ e il tuo primo evento di oggi è alle %2$@. Vuoi spostare più avanti gli eventi di oggi?"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今日は%1$@に初めてFolioを開きました。今日の最初の予定は%2$@です。"
+            "value": "今日は%1$@に初めてFolioを開きました。最初の予定は%2$@です。今日の予定を遅らせますか？"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "오늘 %1$@에 Folio를 처음 열었습니다. 오늘 첫 일정은 %2$@입니다."
+            "value": "오늘 %1$@에 Folio를 처음 열었고, 첫 일정은 %2$@입니다. 오늘 일정을 뒤로 미룰까요?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je opende Folio vandaag voor het eerst om %1$@. Je eerste afspraak vandaag is om %2$@."
+            "value": "Je opende Folio vandaag voor het eerst om %1$@ en je eerste afspraak is om %2$@. Wil je de afspraken van vandaag later zetten?"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bạn mở Folio lần đầu lúc %1$@. Sự kiện đầu tiên hôm nay của bạn bắt đầu lúc %2$@."
+            "value": "Bạn mở Folio lần đầu lúc %1$@, và sự kiện đầu tiên hôm nay bắt đầu lúc %2$@. Bạn có muốn dời các sự kiện hôm nay muộn hơn không?"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你今天在 %1$@ 首次打开 Folio。今天的第一个日程在 %2$@。"
+            "value": "你今天在 %1$@ 首次打开 Folio，而第一个日程在 %2$@。要把今天的日程往后移吗？"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你今天在 %1$@ 首次打開 Folio。今天的第一個行程在 %2$@。"
+            "value": "你今天在 %1$@ 首次打開 Folio，而第一個行程在 %2$@。要把今天的行程往後移嗎？"
           }
         }
       }
@@ -527,61 +592,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du bist um %1$@ aufgewacht. Dein erster Termin heute ist um %2$@."
+            "value": "Du bist um %1$@ aufgewacht, und dein erster Termin ist um %2$@. Möchtest du die heutigen Termine nach hinten verschieben?"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You woke up at %1$@. Your first event today is at %2$@."
+            "value": "You woke up at %1$@, and your first event today is at %2$@. Would you like to move today’s events later?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous vous êtes réveillé à %1$@. Votre premier événement aujourd’hui est à %2$@."
+            "value": "Vous vous êtes réveillé à %1$@, et votre premier événement aujourd’hui est à %2$@. Voulez-vous décaler les événements d’aujourd’hui ?"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ti sei svegliato alle %1$@. Il tuo primo evento di oggi è alle %2$@."
+            "value": "Ti sei svegliato alle %1$@ e il tuo primo evento di oggi è alle %2$@. Vuoi spostare più avanti gli eventi di oggi?"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@に起床しました。今日の最初の予定は%2$@です。"
+            "value": "%1$@に起床しました。最初の予定は%2$@です。今日の予定を遅らせますか？"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@에 일어났습니다. 오늘 첫 일정은 %2$@입니다."
+            "value": "%1$@에 일어났고, 첫 일정은 %2$@입니다. 오늘 일정을 뒤로 미룰까요?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je werd wakker om %1$@. Je eerste afspraak vandaag is om %2$@."
+            "value": "Je werd wakker om %1$@ en je eerste afspraak is om %2$@. Wil je de afspraken van vandaag later zetten?"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bạn thức dậy lúc %1$@. Sự kiện đầu tiên hôm nay của bạn bắt đầu lúc %2$@."
+            "value": "Bạn thức dậy lúc %1$@, và sự kiện đầu tiên hôm nay bắt đầu lúc %2$@. Bạn có muốn dời các sự kiện hôm nay muộn hơn không?"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你在 %1$@ 醒来。今天的第一个日程在 %2$@。"
+            "value": "你在 %1$@ 醒来，而第一个日程在 %2$@。要把今天的日程往后移吗？"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你在 %1$@ 醒來。今天的第一個行程在 %2$@。"
+            "value": "你在 %1$@ 醒來，而第一個行程在 %2$@。要把今天的行程往後移嗎？"
           }
         }
       }

@@ -26,6 +26,9 @@ struct FlexTimeSheetHeader: View {
     }
 
     private var message: String {
+        if proposal.isActive {
+            return String(localized: "Prompt.Message.Active", table: "FlexTime")
+        }
         let firstStart = FlexTimeFormatting.time(proposal.firstEvent?.startDate ?? proposal.day)
         guard let wake = proposal.wake else {
             return String(localized: "Prompt.Message \(firstStart)", table: "FlexTime")
