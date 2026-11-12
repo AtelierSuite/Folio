@@ -4,9 +4,9 @@ import Foundation
 extension ScreenshotSamples {
     static let englishNotes = [
         SampleNote(
-            title: "Make-up Work Club Study Plan",
+            title: "Retest Study Plan",
             text: """
-            # Make-up Work Club Study Plan
+            # Retest Study Plan
 
             The retest is on **Friday**. This time, everyone passes!
 
@@ -17,7 +17,7 @@ extension ScreenshotSamples {
             - [ ] Field manual review with Azusa
 
             ## Study sessions
-            1. Monday after lessons, annex room 3
+            1. Monday after lessons, Classroom 3
             2. Wednesday lunch, the library
             3. Thursday evening, *quiet hours only*
 
@@ -32,14 +32,14 @@ extension ScreenshotSamples {
             minutesAgo: 12
         ),
         SampleNote(
-            title: "Arius Squad Supply Run",
+            title: "Supply Run with Saori",
             text: """
-            # Arius Squad Supply Run
+            # Supply Run with Saori
 
-            Meeting Saori at the old gate on **Thursday, 9:30**.
+            Meeting Saori at Classroom 7 on **Thursday, 9:30**.
 
             - [x] Rations for a week
-            - [x] Blankets for the branch school
+            - [x] Blankets for everyone
             - [ ] First aid kit for Atsuko
             - [ ] Spare magazines for Misaki
             - [ ] Something sweet for Hiyori
@@ -47,15 +47,15 @@ extension ScreenshotSamples {
             minutesAgo: 95
         ),
         SampleNote(
-            title: "Tea Party Minutes",
+            title: "Tea Meeting Minutes",
             text: """
-            # Tea Party Minutes
+            # Tea Meeting Minutes
 
             Present: Nagisa, Mika, Seia and Sensei.
 
             ## Agenda
             1. Festival budget
-            2. Patrol schedule with the Justice Committee
+            2. Patrol schedule with Tsurugi
             3. Roll cakes, again
             """,
             minutesAgo: 60 * 26
@@ -78,9 +78,9 @@ extension ScreenshotSamples {
             text: """
             # Festival Ideas
 
-            - Tea stall run by the Tea Party
+            - Tea stall run by Nagisa and Mika
             - Shooting gallery, ask Azusa for targets
-            - Movie screening for the Arius Squad
+            - Movie screening with Saori and Hiyori
             """,
             minutesAgo: 60 * 75
         )

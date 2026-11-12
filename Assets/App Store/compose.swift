@@ -7,7 +7,8 @@ let languages = ["en", "ja"]
 /// The devices named on the command line (`./compose.swift Mac`), or all of them.
 let requestedDevices = Set(CommandLine.arguments.dropFirst())
 
-/// Captures live in `Raw/<device>/<lang>/` and are written to `<device>/<lang>/`.
+/// Captures live in `Raw/<device>/<lang>/` and are written to `<device>/<lang>/`. Watch shots need no framing, so
+/// `capture-watch.sh` writes them straight to `Watch/<lang>/`.
 enum Device: String {
     case iPhone
     case iPad
@@ -39,11 +40,11 @@ enum Device: String {
 
 struct Copy {
     let header: String
-    let caption: String
 }
 
 struct Screenshot {
     let name: String
+    let icon: Icon
     /// Keyed by language code. A language without copy is skipped.
     let copy: [String: Copy]
 }
@@ -63,66 +64,134 @@ let gradientTop = accent
 let gradientBottom = accent.blended(withFraction: 0.3, of: .black)!
 
 let weekCopy = [
-    "en": Copy(header: "Your whole week at a glance", caption: "Events, reminders, weather and sleep, side by side"),
-    "ja": Copy(header: "1週間をひと目で", caption: "予定もリマインダーも、天気も睡眠もいっしょに"),
+    "en": Copy(header: "See your whole week at once"),
+    "ja": Copy(header: "今週の予定、全部見える"),
 ]
 let listsCopy = [
-    "en": Copy(header: "A list for everything", caption: "Your reminders, sorted and ready to check off"),
-    "ja": Copy(header: "やることをリストに", caption: "リマインダーを整理して、あとはチェックするだけ"),
+    "en": Copy(header: "Tick things off as you go"),
+    "ja": Copy(header: "終わったらチェックするだけ"),
 ]
 let notesCopy = [
-    "en": Copy(header: "Notes in plain Markdown", caption: "Headings and checklists, saved as files you own"),
-    "ja": Copy(header: "メモはMarkdownで", caption: "見出しもチェックリストも、自分のファイルに保存"),
+    "en": Copy(header: "Jot it down in Markdown"),
+    "ja": Copy(header: "メモはMarkdownでさっと"),
 ]
 let alarmsCopy = [
-    "en": Copy(header: "Alarms right on your calendar", caption: "Set one on the day with a double tap"),
-    "ja": Copy(header: "カレンダーにアラームを", caption: "その日をダブルタップするだけで設定"),
+    "en": Copy(header: "Set alarms right from your calendar"),
+    "ja": Copy(header: "カレンダーからアラームをセット"),
 ]
 let notificationsCopy = [
-    "en": Copy(header: "Alerts your way", caption: "Choose how each calendar and list lets you know"),
-    "ja": Copy(header: "通知は思いのままに", caption: "カレンダーやリストごとに通知の仕方を選べる"),
+    "en": Copy(header: "Pick how each calendar alerts you"),
+    "ja": Copy(header: "通知の鳴らし方は自分で決める"),
 ]
 let countdownCopy = [
-    "en": Copy(header: "Count down to what's next", caption: "A Live Activity on your Lock Screen"),
-    "ja": Copy(header: "次の予定までカウントダウン", caption: "ロック画面のライブアクティビティで"),
+    "en": Copy(header: "See how long until your next event"),
+    "ja": Copy(header: "次の予定まで、あと何分?"),
 ]
 
 let iPhoneScreenshots = [
-    Screenshot(name: "01-week", copy: weekCopy),
-    Screenshot(name: "02-lists", copy: listsCopy),
-    Screenshot(name: "03-notes", copy: notesCopy),
-    Screenshot(name: "04-alarms", copy: alarmsCopy),
-    Screenshot(name: "05-notifications", copy: notificationsCopy),
-    Screenshot(name: "06-countdown", copy: countdownCopy),
+    Screenshot(name: "01-week", icon: .calendar, copy: weekCopy),
+    Screenshot(name: "02-lists", icon: .reminders, copy: listsCopy),
+    Screenshot(name: "03-notes", icon: .notes, copy: notesCopy),
+    Screenshot(name: "04-alarms", icon: .alarm, copy: alarmsCopy),
+    Screenshot(name: "05-notifications", icon: .bell, copy: notificationsCopy),
+    Screenshot(name: "06-countdown", icon: .timer, copy: countdownCopy),
 ]
 
-// capture.sh only captures the iPhone so far; iPad shots go here once it captures them too.
-let iPadScreenshots: [Screenshot] = []
+// The iPad has no countdown, as Live Activities are off there unless turned on.
+let iPadScreenshots = Array(iPhoneScreenshots.dropLast())
 
 let macScreenshots = [
     Screenshot(
         name: "01-week",
+        icon: .calendar,
         copy: [
-            "en": Copy(header: "A planner for your Mac", caption: "Events, reminders and the weather in one window"),
-            "ja": Copy(header: "Macのためのプランナー", caption: "予定もリマインダーも天気も、ひとつのウインドウに"),
+            "en": Copy(header: "Your whole week, on your Mac"),
+            "ja": Copy(header: "1週間まるごと、Macで"),
         ]
     ),
-    Screenshot(name: "02-lists", copy: listsCopy),
-    Screenshot(name: "03-notes", copy: notesCopy),
-    Screenshot(name: "04-notifications", copy: notificationsCopy),
+    Screenshot(name: "02-lists", icon: .reminders, copy: listsCopy),
+    Screenshot(name: "03-notes", icon: .notes, copy: notesCopy),
+    Screenshot(name: "04-notifications", icon: .bell, copy: notificationsCopy),
 ]
+
+// MARK: - Icons
+
+/// A classic app-icon tile above each header: a colored tile with a slight gradient and a white glyph.
+enum Icon {
+    case calendar
+    case reminders
+    case notes
+    case alarm
+    case bell
+    case timer
+
+    var symbolName: String {
+        switch self {
+        case .calendar: "calendar"
+        case .reminders: "checklist"
+        case .notes: "note.text"
+        case .alarm: "alarm.fill"
+        case .bell: "bell.fill"
+        case .timer: "timer"
+        }
+    }
+
+    var tileColor: NSColor {
+        switch self {
+        case .calendar: color(0xFF3B30)
+        case .reminders: color(0x007AFF)
+        case .notes: color(0xFFB800)
+        case .alarm: color(0xFF9500)
+        case .bell: color(0xFF2D55)
+        case .timer: color(0x34C759)
+        }
+    }
+
+    func draw(in rect: NSRect) {
+        let tile = NSBezierPath(roundedRect: rect, xRadius: rect.width * 0.225, yRadius: rect.width * 0.225)
+        NSGraphicsContext.current?.saveGraphicsState()
+        let shadow = NSShadow()
+        shadow.shadowColor = NSColor.black.withAlphaComponent(0.3)
+        shadow.shadowBlurRadius = rect.width * 0.11
+        shadow.shadowOffset = NSSize(width: 0, height: -rect.width * 0.045)
+        shadow.set()
+        tileColor.setFill()
+        tile.fill()
+        NSGraphicsContext.current?.restoreGraphicsState()
+        // Lit from above: a little lighter at the top and darker at the bottom.
+        NSGradient(
+            starting: tileColor.blended(withFraction: 0.18, of: .white)!,
+            ending: tileColor.blended(withFraction: 0.12, of: .black)!
+        )?.draw(in: tile, angle: -90)
+
+        let configuration = NSImage.SymbolConfiguration(pointSize: rect.width * 0.5, weight: .medium)
+            .applying(NSImage.SymbolConfiguration(paletteColors: [.white]))
+        let glyph = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)!
+            .withSymbolConfiguration(configuration)!
+        NSGraphicsContext.current?.saveGraphicsState()
+        let glyphShadow = NSShadow()
+        glyphShadow.shadowColor = NSColor.black.withAlphaComponent(0.18)
+        glyphShadow.shadowBlurRadius = rect.width * 0.02
+        glyphShadow.shadowOffset = NSSize(width: 0, height: -rect.width * 0.012)
+        glyphShadow.set()
+        glyph.draw(in: NSRect(
+            x: rect.midX - glyph.size.width / 2, y: rect.midY - glyph.size.height / 2,
+            width: glyph.size.width, height: glyph.size.height
+        ))
+        NSGraphicsContext.current?.restoreGraphicsState()
+    }
+
+    /// Draws the tile centered across `canvasWidth`, with its top at `top`.
+    func draw(size: CGFloat, top: CGFloat, canvasWidth: CGFloat) {
+        draw(in: NSRect(x: ((canvasWidth - size) / 2).rounded(), y: (top - size).rounded(), width: size, height: size))
+    }
+}
 
 // MARK: - Text
 
-/// SF Pro Rounded. It has no Japanese, so that falls back to Tsukushi A Round
-/// Gothic, which unlike Hiragino Maru Gothic comes in a bold to match the header.
-func roundedFont(ofSize size: CGFloat, weight: NSFont.Weight) -> NSFont {
-    let system = NSFont.systemFont(ofSize: size, weight: weight).fontDescriptor
-    let japanese = weight >= .semibold ? "TsukuARdGothic-Bold" : "TsukuARdGothic-Regular"
-    let rounded = (system.withDesign(.rounded) ?? system).addingAttributes([
-        .cascadeList: [NSFontDescriptor(name: japanese, size: size)],
-    ])
-    return NSFont(descriptor: rounded, size: size) ?? NSFont.systemFont(ofSize: size, weight: weight)
+/// SF Pro Display at these sizes. Japanese falls back to Hiragino Sans.
+func displayFont(ofSize size: CGFloat, weight: NSFont.Weight) -> NSFont {
+    NSFont.systemFont(ofSize: size, weight: weight)
 }
 
 /// One line of text at the largest size up to `size` that fits `maxWidth`.
@@ -134,11 +203,11 @@ struct Line {
 
     init(_ text: String, size: CGFloat, weight: NSFont.Weight, color: NSColor, maxWidth: CGFloat) {
         var fontSize = size
-        var font = roundedFont(ofSize: fontSize, weight: weight)
+        var font = displayFont(ofSize: fontSize, weight: weight)
         var attributes: [NSAttributedString.Key: Any] = [:]
         var lineSize = NSSize.zero
         while fontSize > 10 {
-            font = roundedFont(ofSize: fontSize, weight: weight)
+            font = displayFont(ofSize: fontSize, weight: weight)
             attributes = [.font: font, .foregroundColor: color]
             lineSize = (text as NSString).size(withAttributes: attributes)
             if lineSize.width <= maxWidth { break }
@@ -298,17 +367,15 @@ func drawWindow(_ raw: NSImage, in rect: NSRect) {
     NSGraphicsContext.current?.restoreGraphicsState()
 }
 
-/// The header and caption across the top, and the window below them,
+/// The icon and header across the top, and the window below them,
 /// with a second window, such as Settings, overlapping its corner.
-func drawMac(copy: Copy, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
+func drawMac(copy: Copy, icon: Icon, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
     let textWidth = canvasSize.width - 240
     let header = Line(copy.header, size: 120, weight: .bold, color: .white, maxWidth: textWidth)
-    let caption = Line(
-        copy.caption, size: 60, weight: .medium, color: NSColor.white.withAlphaComponent(0.92), maxWidth: textWidth
-    )
-    let captionGap: CGFloat = 8
-    let inkHeight = header.size.height + captionGap + caption.inkBottom - header.inkTop
-    let textBand = inkHeight + 2 * 90
+    let iconSize: CGFloat = 170
+    let iconGap: CGFloat = 50
+    let inkHeight = iconSize + iconGap + header.inkBottom - header.inkTop
+    let textBand = inkHeight + 2 * 80
     let bottomMargin: CGFloat = 100
 
     // Captures are 2560 × 1600, a window of 1280 × 800 points at 2x.
@@ -326,9 +393,9 @@ func drawMac(copy: Copy, raw: NSImage, extra: NSImage?, canvasSize: NSSize) {
     }
 
     let inkTop = (canvasSize.height + windowRect.maxY + inkHeight) / 2
-    let headerTop = (inkTop + header.inkTop).rounded()
+    icon.draw(size: iconSize, top: inkTop.rounded(), canvasWidth: canvasSize.width)
+    let headerTop = (inkTop - iconSize - iconGap + header.inkTop).rounded()
     header.draw(top: headerTop, canvasWidth: canvasSize.width)
-    caption.draw(top: headerTop - header.size.height - captionGap, canvasWidth: canvasSize.width)
 
     drawWindow(raw, in: windowRect)
     if let extra, let extraSize {
@@ -360,21 +427,18 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
 
     if device == .mac {
         let extra = NSImage(contentsOf: device.rawDir(language).appendingPathComponent("\(shot.name)-extra.png"))
-        drawMac(copy: copy, raw: raw, extra: extra, canvasSize: canvasSize)
+        drawMac(copy: copy, icon: shot.icon, raw: raw, extra: extra, canvasSize: canvasSize)
         image.unlockFocus()
         return write(image, canvasSize: canvasSize, shot: shot, language: language, device: device)
     }
 
-    // One-line header and caption. AppKit's origin is bottom-left.
+    // A one-line header. AppKit's origin is bottom-left.
     let textWidth = canvasSize.width - 96 * s
     let header = Line(copy.header, size: 84 * s, weight: .bold, color: .white, maxWidth: textWidth)
-    let caption = Line(
-        copy.caption, size: 44 * s, weight: .medium,
-        color: NSColor.white.withAlphaComponent(0.92), maxWidth: textWidth
-    )
-    let captionGap = 4 * s
-    // From the top of the header's ink to the bottom of the caption's.
-    let inkHeight = header.size.height + captionGap + caption.inkBottom - header.inkTop
+    let iconSize = 150 * s
+    let iconGap = 44 * s
+    // From the top of the icon to the bottom of the header's ink.
+    let inkHeight = iconSize + iconGap + header.inkBottom - header.inkTop
 
     let aspect = deviceAspect(device)
     var deviceSize: NSSize
@@ -383,8 +447,8 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
     switch device {
     case .iPhone:
         // The device fills what is left below a band that holds the text.
-        let textPadding = 88 * s
-        let deviceBottomMargin = 88 * s
+        let textPadding = 80 * s
+        let deviceBottomMargin = 80 * s
         deviceTop = canvasSize.height - inkHeight - 2 * textPadding
         let availableHeight = deviceTop - deviceBottomMargin
         deviceSize = NSSize(width: availableHeight * aspect, height: availableHeight)
@@ -397,15 +461,15 @@ func compose(_ shot: Screenshot, language: String, device: Device) -> Bool {
         // The iPad is drawn as wide as the margins allow and runs off the bottom of the
         // canvas, leaving a band above it for the text.
         deviceSize = NSSize(width: canvasSize.width - 140 * s, height: (canvasSize.width - 140 * s) / aspect)
-        deviceTop = canvasSize.height - 300 * s
+        deviceTop = canvasSize.height - 300 * s - iconSize - iconGap
         deviceBottom = deviceTop - deviceSize.height
     }
 
-    // The text's ink is centered in the band between the top of the canvas and the device.
+    // The icon and text are centered in the band between the top of the canvas and the device.
     let inkTop = (canvasSize.height + deviceTop + inkHeight) / 2
-    let headerTop = (inkTop + header.inkTop).rounded()
+    shot.icon.draw(size: iconSize, top: inkTop.rounded(), canvasWidth: canvasSize.width)
+    let headerTop = (inkTop - iconSize - iconGap + header.inkTop).rounded()
     header.draw(top: headerTop, canvasWidth: canvasSize.width)
-    caption.draw(top: headerTop - header.size.height - captionGap, canvasWidth: canvasSize.width)
 
     let deviceRect = NSRect(
         x: ((canvasSize.width - deviceSize.width) / 2).rounded(),

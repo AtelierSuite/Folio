@@ -7,10 +7,13 @@ enum WatchSampleEvents {
     static let launchArgument = "-WatchSampleEvents"
 
     static var isEnabled: Bool {
-        ProcessInfo.processInfo.arguments.contains(launchArgument)
+        ProcessInfo.processInfo.arguments.contains(launchArgument) || WatchScreenshotEvents.isEnabled
     }
 
     static func events(in interval: DateInterval, calendar: Calendar = .current) -> [CalendarEvent] {
+        if WatchScreenshotEvents.isEnabled {
+            return WatchScreenshotEvents.events(in: interval, calendar: calendar)
+        }
         let today = calendar.startOfDay(for: .now)
         let blue = PlannerColor(red: 0.0, green: 0.48, blue: 1.0)
         let purple = PlannerColor(red: 0.69, green: 0.32, blue: 0.87)
@@ -50,7 +53,7 @@ enum WatchSampleEvents {
         let color: PlannerColor
     }
 
-    private static func event(
+    static func event(
         _ title: String,
         location: String? = nil,
         start: Date,
