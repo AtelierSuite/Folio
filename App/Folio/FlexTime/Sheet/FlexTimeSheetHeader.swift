@@ -6,7 +6,7 @@ struct FlexTimeSheetHeader: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: "clock.arrow.circlepath")
+            Image(.flextime)
                 .font(.largeTitle)
                 .foregroundStyle(.tint)
                 .accessibilityHidden(true)
