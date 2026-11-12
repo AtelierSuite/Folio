@@ -1,5 +1,5 @@
 import Planner
-import SwiftUI
+import Foundation
 
 enum OnboardingSetupStep: String, CaseIterable, Identifiable {
     case calendar
@@ -17,26 +17,6 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
         case .alerts: .notifications
         case .weather: .location
         case .sleep: .health
-        }
-    }
-
-    var systemImage: String {
-        switch self {
-        case .calendar: "calendar"
-        case .reminders: "checklist"
-        case .alerts: "bell.badge.fill"
-        case .weather: "cloud.sun.fill"
-        case .sleep: "bed.double.fill"
-        }
-    }
-
-    var gradientColors: [Color] {
-        switch self {
-        case .calendar: [.pink, .red]
-        case .reminders: [.purple, .pink]
-        case .alerts: [.orange, .red]
-        case .weather: [.cyan, .blue]
-        case .sleep: [.teal, .indigo]
         }
     }
 

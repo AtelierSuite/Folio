@@ -13,14 +13,8 @@ struct OnboardingSetupPage: View {
             secondaryTitle: String(localized: "Action.SkipForNow", table: "Onboarding"),
             secondaryAction: onSkip
         ) {
-            Image(systemName: step.systemImage)
-                .font(.system(size: Metrics.symbolSize))
-                .foregroundStyle(LinearGradient(
-                    colors: step.gradientColors,
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                ))
-                .accessibilityHidden(true)
+            OnboardingGraphic(step: step)
+                .id(step)
             VStack(alignment: .leading, spacing: 8) {
                 Text(step.title)
                     .font(.largeTitle)
@@ -31,16 +25,6 @@ struct OnboardingSetupPage: View {
                     .foregroundStyle(.secondary)
             }
             .fixedSize(horizontal: false, vertical: true)
-            OnboardingTimelinePreview(step: step)
-                .id(step)
         }
-    }
-
-    private enum Metrics {
-        #if os(macOS)
-        static let symbolSize: CGFloat = 44
-        #else
-        static let symbolSize: CGFloat = 64
-        #endif
     }
 }
