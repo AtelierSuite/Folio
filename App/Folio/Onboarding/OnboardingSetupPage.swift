@@ -31,6 +31,8 @@ struct OnboardingSetupPage: View {
                     .foregroundStyle(.secondary)
             }
             .fixedSize(horizontal: false, vertical: true)
+            OnboardingTimelinePreview(step: step)
+                .id(step)
         }
     }
 
