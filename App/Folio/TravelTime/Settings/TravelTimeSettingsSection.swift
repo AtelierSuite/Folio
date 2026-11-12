@@ -6,7 +6,6 @@ struct TravelTimeSettingsSection: View {
     @Environment(PermissionCenter.self) private var permissions
 
     var body: some View {
-        let status = permissions.status(of: .location) ?? .notDetermined
         Section {
             Toggle(String(localized: "Settings.Toggle", table: "TravelTime"), isOn: isEnabled)
                 .accessibilityIdentifier("TravelTimeToggle")
@@ -15,18 +14,15 @@ struct TravelTimeSettingsSection: View {
                     get: { travelTime.transport },
                     set: { travelTime.setTransport($0) }
                 ), accessibilityIdentifier: "TravelTimeTransportPicker")
-                if status.canBeFixedInSettings {
-                    PermissionActionButton(kind: .location, status: status)
-                }
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "TravelTime"))
         } footer: {
-            if travelTime.isEnabled && (status.canBeFixedInSettings || status == .restricted) {
-                Text(String(localized: "Settings.LocationDenied", table: "TravelTime"))
-            } else {
-                Text(String(localized: "Settings.Footer", table: "TravelTime"))
-            }
+            Text(String(localized: "Settings.Footer", table: "TravelTime"))
+        }
+        .disabled(permissions.isMissingAccess(to: .location))
+        .onChange(of: permissions.status(of: .location)) {
+            travelTime.locationAuthorizationDidChange()
         }
     }
 
@@ -35,11 +31,6 @@ struct TravelTimeSettingsSection: View {
             travelTime.isEnabled
         } set: { isEnabled in
             travelTime.setEnabled(isEnabled)
-            guard isEnabled else { return }
-            Task {
-                await permissions.request(.location)
-                travelTime.locationAuthorizationDidChange()
-            }
         }
     }
 }

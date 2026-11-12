@@ -1,8 +1,13 @@
+import Planner
 import SwiftUI
 
 struct CalendarsSettingsView: View {
     var body: some View {
         Form {
+            PermissionPromptSection(
+                kind: .location,
+                message: String(localized: "Prompt.TravelTime", table: "Permissions")
+            )
             EventLocationsSettingsSection()
             ReminderSettingsSection()
             InvitationSettingsSection()
