@@ -3,30 +3,30 @@ import SwiftUI
 
 struct WakeUpAlarmSection: View {
     @Environment(WakeUpAlarmCenter.self) private var wakeUpAlarms
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         Section {
             Toggle(String(localized: "Toggle", table: "WakeUpAlarms"), isOn: Binding(
                 get: { wakeUpAlarms.isEnabled },
-                set: { newValue in Task { await wakeUpAlarms.setEnabled(newValue) } }
+                set: { newValue in
+                    Task {
+                        guard await permissionCenter.allowsTurningOn(newValue, needing: .alarms) else { return }
+                        await wakeUpAlarms.setEnabled(newValue)
+                    }
+                }
             ))
             .disabled(!wakeUpAlarms.isSupported)
             .accessibilityIdentifier("WakeUpAlarmToggle")
             if wakeUpAlarms.isEnabled {
-                if wakeUpAlarms.authorization == .denied {
-                    WakeUpAlarmDeniedRows()
-                } else {
-                    WakeUpAlarmOptionRows()
-                }
+                WakeUpAlarmOptionRows()
             }
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))
         } footer: {
             Text(footer)
         }
-        .task {
-            await wakeUpAlarms.replan()
-        }
+        .disabled(permissionCenter.isBlocked(.alarms))
     }
 
     private var footer: String {

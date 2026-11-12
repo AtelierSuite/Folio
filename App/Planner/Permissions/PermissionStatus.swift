@@ -21,6 +21,14 @@ public enum PermissionStatus: String, Sendable, Hashable {
         self == .denied
     }
 
+    public var isMissingAccess: Bool {
+        canRequest || self == .denied || self == .restricted
+    }
+
+    public var isBlocked: Bool {
+        self == .denied || self == .restricted
+    }
+
     public var mayHideMissingAccess: Bool {
         self == .unknown
     }

@@ -8,7 +8,7 @@ struct SettingsWindow: View {
     var body: some View {
         NavigationSplitView {
             List(selection: $selectedCategory) {
-                ForEach(SettingsCategoryGroup.windowGroups, id: \.self) { group in
+                ForEach(SettingsCategoryGroup.groups, id: \.self) { group in
                     let categories = group.availableCategories(with: capabilities)
                     if !categories.isEmpty {
                         Section {

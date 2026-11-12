@@ -29,6 +29,9 @@ final class SettingsCategoriesTests: XCTestCase {
         for (category, identifier) in Self.categoryContents {
             app.openSettingsCategory(category)
             let content = app.descendants(matching: .any)[identifier].firstMatch
+            for _ in 0..<3 where !content.waitForExistence(timeout: 2) {
+                app.swipeUp()
+            }
             XCTAssertTrue(content.waitForExistence(timeout: 5), "\(category) is missing \(identifier)")
             attachScreenshot(named: "Settings-\(category)")
             app.navigationBars.buttons.element(boundBy: 0).tap()

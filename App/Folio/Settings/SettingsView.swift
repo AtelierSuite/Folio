@@ -24,7 +24,6 @@ struct SettingsView: View {
                     }
                 }
             }
-            PermissionsSettingsSection()
             Section {
                 Link(destination: URL(string: "https://github.com/AtelierSuite/Folio")!) {
                     HStack {

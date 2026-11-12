@@ -66,6 +66,71 @@
         }
       }
     },
+    "Action.Continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortfahren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continua"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "続ける"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계속"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ga door"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "继续"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "繼續"
+          }
+        }
+      }
+    },
     "Action.Dismiss": {
       "extractionState": "manual",
       "localizations": {
@@ -2601,6 +2666,786 @@
         }
       }
     },
+    "Prompt.AlarmStyle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Damit Hinweise als Wecker klingeln, erlaube den Zugriff auf Wecker."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To have alerts ring as alarms, allow access to Alarms."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour que les alertes sonnent comme des alarmes, autorisez l’accès aux alarmes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per far suonare gli avvisi come sveglie, consenti l’accesso a Sveglie."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知をアラームとして鳴らすには、アラームへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림을 알람으로 울리게 하려면 알람 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Wekkers toe om meldingen als wekker te laten afgaan."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để cảnh báo đổ chuông như báo thức, hãy cho phép truy cập Báo thức."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要让提醒以闹钟方式响铃，请允许访问闹钟。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要讓提示以鬧鐘方式響鈴，請允許取用鬧鐘。"
+          }
+        }
+      }
+    },
+    "Prompt.Alarms": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um Weckalarme zu stellen und Hinweise zur Aufbruchszeit als Wecker klingeln zu lassen, erlaube den Zugriff auf Wecker."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To set wake-up alarms and ring Time to Leave alerts as alarms, allow access to Alarms."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour régler des alarmes de réveil et faire sonner les alertes d’heure de départ comme des alarmes, autorisez l’accès aux alarmes."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per impostare sveglie mattutine e far suonare gli avvisi dell’ora di partenza come sveglie, consenti l’accesso a Sveglie."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目覚ましアラームを設定し、出発時刻の通知をアラームとして鳴らすには、アラームへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기상 알람을 설정하고 출발 시간 알림을 알람으로 울리게 하려면 알람 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Wekkers toe om wekkers te zetten en vertrektijdmeldingen als wekker te laten afgaan."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để đặt báo thức dậy và cho cảnh báo giờ khởi hành đổ chuông như báo thức, hãy cho phép truy cập Báo thức."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要设定起床闹钟并让出发时间提醒以闹钟方式响铃，请允许访问闹钟。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要設定起床鬧鐘並讓出發時間提示以鬧鐘方式響鈴，請允許取用鬧鐘。"
+          }
+        }
+      }
+    },
+    "Prompt.Calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um auszuwählen, welche Kalender Folio anzeigt, erlaube den Zugriff auf Kalender."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose which calendars Folio shows, allow access to Calendars."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour choisir les calendriers affichés par Folio, autorisez l’accès à Calendriers."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per scegliere quali calendari mostra Folio, consenti l’accesso a Calendari."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioに表示するカレンダーを選ぶには、カレンダーへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio에 표시할 캘린더를 선택하려면 캘린더 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Agenda’s toe om te kiezen welke agenda’s Folio toont."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để chọn những lịch Folio hiển thị, hãy cho phép truy cập Lịch."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要选择 Folio 显示哪些日历，请允许访问日历。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要選擇 Folio 顯示哪些行事曆，請允許取用行事曆。"
+          }
+        }
+      }
+    },
+    "Prompt.FlexTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um anhand deiner Schlafdaten zu erkennen, wann dein Tag begonnen hat, erlaube den Zugriff auf Health."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To use your sleep data to tell when your day started, allow access to Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour utiliser vos données de sommeil afin de savoir quand votre journée a commencé, autorisez l’accès à Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per usare i dati sul sonno per capire quando è iniziata la tua giornata, consenti l’accesso a Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠データを使って1日の始まりを判断するには、ヘルスケアへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수면 데이터를 사용해 하루가 언제 시작됐는지 확인하려면 건강 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Gezondheid toe om met je slaapgegevens te bepalen wanneer je dag is begonnen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dùng dữ liệu giấc ngủ nhằm biết ngày của bạn bắt đầu khi nào, hãy cho phép truy cập Sức khỏe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用睡眠数据来判断你的一天何时开始，请允许访问健康。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用睡眠資料來判斷你的一天何時開始，請允許取用健康。"
+          }
+        }
+      }
+    },
+    "Prompt.LocationAlerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um dich mit deinem aktuellen Standort an den Aufbruch oder bei deiner Ankunft zu erinnern, erlaube den Zugriff auf die Ortungsdienste."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To use your current location to alert you when it’s time to leave or when you arrive, allow access to Location Services."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour utiliser votre position actuelle afin de vous alerter quand il est l’heure de partir ou à votre arrivée, autorisez l’accès au service de localisation."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per usare la tua posizione attuale per avvisarti quando è ora di partire o quando arrivi, consenti l’accesso a Localizzazione."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在地を使って出発時刻や到着をお知らせするには、位置情報サービスへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "현재 위치를 사용해 출발할 시간이나 도착 시 알려 주려면 위치 서비스 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie een melding te krijgen wanneer het tijd is om te vertrekken of wanneer je aankomt."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dùng vị trí hiện tại nhằm báo cho bạn khi đến giờ khởi hành hoặc khi bạn đến nơi, hãy cho phép truy cập Dịch vụ định vị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用当前位置在该出发时或到达时提醒你，请允许访问定位服务。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用目前位置在該出發時或抵達時提醒你，請允許取用定位服務。"
+          }
+        }
+      }
+    },
+    "Prompt.MedicationReminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um an die Einnahme deiner Medikamente erinnert zu werden, erlaube den Zugriff auf Mitteilungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To get reminders to take your medications, allow access to Notifications."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour recevoir des rappels de prise de médicaments, autorisez l’accès aux notifications."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per ricevere promemoria per l’assunzione dei farmaci, consenti l’accesso a Notifiche."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "服薬のリマインダーを受け取るには、通知へのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "복약 알림을 받으려면 알림 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Meldingen toe om herinneringen voor je medicijnen te krijgen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để nhận lời nhắc uống thuốc, hãy cho phép truy cập Thông báo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要接收服药提醒，请允许访问通知。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要接收服藥提醒，請允許取用通知。"
+          }
+        }
+      }
+    },
+    "Prompt.Notifications": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um Hinweise zu deinen Ereignissen und Erinnerungen zu erhalten, erlaube den Zugriff auf Mitteilungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To get alerts for your events and reminders, allow access to Notifications."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour recevoir des alertes pour vos événements et rappels, autorisez l’accès aux notifications."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per ricevere avvisi per eventi e promemoria, consenti l’accesso a Notifiche."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イベントやリマインダーの通知を受け取るには、通知へのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이벤트와 미리 알림에 대한 알림을 받으려면 알림 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Meldingen toe om meldingen voor je activiteiten en herinneringen te krijgen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để nhận cảnh báo cho sự kiện và lời nhắc, hãy cho phép truy cập Thông báo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要接收日程和提醒事项的提醒，请允许访问通知。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要接收行程和提醒事項的提示，請允許取用通知。"
+          }
+        }
+      }
+    },
+    "Prompt.Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um auszuwählen, welche Erinnerungslisten Folio anzeigt, erlaube den Zugriff auf Erinnerungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose which reminder lists Folio shows, allow access to Reminders."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour choisir les listes de rappels affichées par Folio, autorisez l’accès à Rappels."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per scegliere quali elenchi di promemoria mostra Folio, consenti l’accesso a Promemoria."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioに表示するリマインダーリストを選ぶには、リマインダーへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio에 표시할 미리 알림 목록을 선택하려면 미리 알림 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Herinneringen toe om te kiezen welke herinneringenlijsten Folio toont."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để chọn những danh sách lời nhắc Folio hiển thị, hãy cho phép truy cập Lời nhắc."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要选择 Folio 显示哪些提醒事项列表，请允许访问提醒事项。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要選擇 Folio 顯示哪些提醒事項列表，請允許取用提醒事項。"
+          }
+        }
+      }
+    },
+    "Prompt.Sleep": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um deinen Schlaf im Kalender anzuzeigen, erlaube den Zugriff auf Health."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your sleep on the calendar, allow access to Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour afficher votre sommeil dans le calendrier, autorisez l’accès à Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per mostrare il sonno nel calendario, consenti l’accesso a Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カレンダーに睡眠を表示するには、ヘルスケアへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "캘린더에 수면을 표시하려면 건강 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Gezondheid toe om je slaap in de agenda te tonen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để hiển thị giấc ngủ trên lịch, hãy cho phép truy cập Sức khỏe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要在日历上显示睡眠，请允许访问健康。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要在行事曆上顯示睡眠，請允許取用健康。"
+          }
+        }
+      }
+    },
+    "Prompt.TravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um mit deinem aktuellen Standort die Fahrzeit zu deinen Ereignissen zu schätzen, erlaube den Zugriff auf die Ortungsdienste."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To use your current location to estimate travel time to your events, allow access to Location Services."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour utiliser votre position actuelle afin d’estimer le temps de trajet jusqu’à vos événements, autorisez l’accès au service de localisation."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per usare la tua posizione attuale per stimare il tempo di viaggio verso i tuoi eventi, consenti l’accesso a Localizzazione."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在地を使ってイベントまでの移動時間を見積もるには、位置情報サービスへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "현재 위치를 사용해 이벤트까지의 이동 시간을 예상하려면 위치 서비스 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie de reistijd naar je activiteiten te schatten."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dùng vị trí hiện tại nhằm ước tính thời gian di chuyển đến sự kiện, hãy cho phép truy cập Dịch vụ định vị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用当前位置来估算前往日程的行程时间，请允许访问定位服务。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用目前位置來估算前往行程的交通時間，請允許取用定位服務。"
+          }
+        }
+      }
+    },
+    "Prompt.WakeUpTravelTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um mit deinem aktuellen Standort die Fahrzeit in deinen Weckalarm einzurechnen, erlaube den Zugriff auf die Ortungsdienste."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To use your current location to add travel time to your wake-up alarm, allow access to Location Services."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour utiliser votre position actuelle afin d’ajouter le temps de trajet à votre alarme de réveil, autorisez l’accès au service de localisation."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per usare la tua posizione attuale per aggiungere il tempo di viaggio alla sveglia mattutina, consenti l’accesso a Localizzazione."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在地を使って目覚ましアラームに移動時間を加えるには、位置情報サービスへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "현재 위치를 사용해 기상 알람에 이동 시간을 더하려면 위치 서비스 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie reistijd aan je wekker toe te voegen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dùng vị trí hiện tại nhằm cộng thời gian di chuyển vào báo thức dậy, hãy cho phép truy cập Dịch vụ định vị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用当前位置为起床闹钟加上行程时间，请允许访问定位服务。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用目前位置為起床鬧鐘加上交通時間，請允許取用定位服務。"
+          }
+        }
+      }
+    },
+    "Prompt.Weather": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um mit deinem aktuellen Standort Wettervorhersagen anzuzeigen, erlaube den Zugriff auf die Ortungsdienste."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To use your current location to show weather forecasts, allow access to Location Services."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour utiliser votre position actuelle afin d’afficher les prévisions météo, autorisez l’accès au service de localisation."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per usare la tua posizione attuale per mostrare le previsioni meteo, consenti l’accesso a Localizzazione."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在地を使って天気予報を表示するには、位置情報サービスへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "현재 위치를 사용해 일기 예보를 표시하려면 위치 서비스 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie de weersverwachting te tonen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dùng vị trí hiện tại nhằm hiển thị dự báo thời tiết, hãy cho phép truy cập Dịch vụ định vị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用当前位置来显示天气预报，请允许访问定位服务。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要使用目前位置來顯示天氣預報，請允許取用定位服務。"
+          }
+        }
+      }
+    },
     "Reminders.Denied.Description": {
       "extractionState": "manual",
       "localizations": {
@@ -3052,136 +3897,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "此取用權限在這部裝置上受到限制，例如因為螢幕使用時間或裝置管理描述檔。"
-          }
-        }
-      }
-    },
-    "Settings.Footer": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio fragt nach jeder Berechtigung erst, wenn du die Funktion, die sie braucht, zum ersten Mal verwendest."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio asks for each permission only when you first use the feature that needs it."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio demande chaque autorisation uniquement lorsque vous utilisez pour la première fois la fonction qui en a besoin."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio chiede ogni autorizzazione solo quando usi per la prima volta la funzione che la richiede."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioは、各アクセス許可が必要な機能を初めて使うときにだけ許可を求めます。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 권한이 필요한 기능을 처음 사용할 때만 해당 권한을 요청합니다."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio vraagt elke toestemming pas wanneer je de functie die hem nodig heeft voor het eerst gebruikt."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio chỉ xin từng quyền khi bạn dùng lần đầu tính năng cần đến quyền đó."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 仅在你首次使用需要某项权限的功能时才会请求该权限。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 僅在你首次使用需要某項權限的功能時才會要求該權限。"
-          }
-        }
-      }
-    },
-    "Settings.Header": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Berechtigungen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permissions"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Autorisations"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Autorizzazioni"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "アクセス許可"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "권한"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toestemmingen"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quyền"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "权限"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "權限"
           }
         }
       }

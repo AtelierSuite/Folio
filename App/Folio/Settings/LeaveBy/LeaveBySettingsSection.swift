@@ -3,14 +3,21 @@ import SwiftUI
 
 struct LeaveBySettingsSection: View {
     @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
+    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         if arrivalAlerts.isSupported {
             Section {
                 Toggle(String(localized: "Settings.Toggle", table: "LeaveBy"), isOn: Binding(
                     get: { arrivalAlerts.isLeaveByEnabled },
-                    set: { newValue in Task { await arrivalAlerts.setLeaveByEnabled(newValue) } }
+                    set: { newValue in
+                        Task {
+                            guard await permissionCenter.allowsTurningOn(newValue, needing: .location) else { return }
+                            await arrivalAlerts.setLeaveByEnabled(newValue)
+                        }
+                    }
                 ))
+                .disabled(permissionCenter.isBlocked(.location))
                 .accessibilityIdentifier("LeaveByToggle")
                 if arrivalAlerts.isLeaveByEnabled {
                     LocationAlertAccessRows(
@@ -24,7 +31,7 @@ struct LeaveBySettingsSection: View {
             } footer: {
                 Text(String(localized: "Settings.Footer", table: "LeaveBy"))
             }
-            .onAppear {
+            .onChange(of: permissionCenter.status(of: .location), initial: true) {
                 arrivalAlerts.refreshAuthorization()
             }
         }

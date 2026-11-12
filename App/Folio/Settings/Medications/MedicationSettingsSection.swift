@@ -4,7 +4,6 @@ import SwiftUI
 struct MedicationSettingsSection: View {
     @Environment(MedicationStore.self) private var store
     @Environment(NotificationScheduler.self) private var scheduler
-    @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
         Section {
@@ -41,9 +40,6 @@ struct MedicationSettingsSection: View {
     }
 
     private func setSends(_ sends: Bool) async {
-        if sends {
-            guard await permissionCenter.request(.notifications).allowsAccess else { return }
-        }
         await store.setSendsReminders(sends)
         if sends {
             await requestAccessIfNothingIsShared()
