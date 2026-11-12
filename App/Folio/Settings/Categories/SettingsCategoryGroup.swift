@@ -10,14 +10,6 @@ struct SettingsCategoryGroup: Hashable {
     }
 
     static var groups: [SettingsCategoryGroup] {
-        groups(including: [.search, .advanced])
-    }
-
-    static var windowGroups: [SettingsCategoryGroup] {
-        groups(including: [.search, .privacy, .advanced])
-    }
-
-    private static func groups(including systemCategories: [SettingsCategory]) -> [SettingsCategoryGroup] {
         var groups = [
             SettingsCategoryGroup(header: nil, categories: [.accounts, .general]),
             SettingsCategoryGroup(
@@ -34,7 +26,7 @@ struct SettingsCategoryGroup: Hashable {
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.System", table: "Settings"),
-                categories: systemCategories
+                categories: [.search, .advanced]
             )
         ]
         #if DEBUG
