@@ -1,71 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Action.Continue": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weiter"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continuer"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continua"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "続ける"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "계속"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ga door"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiếp tục"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "继续"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "繼續"
-          }
-        }
-      }
-    },
     "Action.GetStarted": {
       "extractionState": "manual",
       "localizations": {
@@ -127,6 +62,71 @@
           "stringUnit": {
             "state": "translated",
             "value": "開始使用"
+          }
+        }
+      }
+    },
+    "Action.NotNow": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Später"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Now"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus tard"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non ora"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今はしない"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "나중에"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet nu"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để sau"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以后再说"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍後再說"
           }
         }
       }
@@ -651,132 +651,977 @@
         }
       }
     },
-    "Permissions.Description": {
+    "Setup.Alerts.Action": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erlaube den Zugriff jetzt oder erst, wenn du eine Funktion zum ersten Mal verwendest. Du kannst dies jederzeit in den Einstellungen ändern."
+            "value": "Hinweise einschalten"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow access now, or wait until you first use a feature. You can change this anytime in Settings."
+            "value": "Turn On Alerts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Autorisez l’accès maintenant ou attendez d’utiliser une fonctionnalité pour la première fois. Vous pouvez modifier ce choix à tout moment dans Réglages."
+            "value": "Activer les alertes"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Consenti l’accesso ora oppure quando usi una funzione per la prima volta. Puoi modificarlo in qualsiasi momento in Impostazioni."
+            "value": "Attiva gli avvisi"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今すぐアクセスを許可するか、機能を初めて使うときに許可できます。設定からいつでも変更できます。"
+            "value": "通知をオンにする"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "지금 접근을 허용하거나 기능을 처음 사용할 때 허용할 수 있습니다. 언제든지 설정에서 변경할 수 있습니다."
+            "value": "알림 켜기"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geef nu toegang of wacht tot je een functie voor het eerst gebruikt. Je kunt dit altijd wijzigen in Instellingen."
+            "value": "Schakel meldingen in"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cho phép truy cập ngay bây giờ hoặc khi bạn dùng một tính năng lần đầu. Bạn có thể thay đổi bất cứ lúc nào trong Cài đặt."
+            "value": "Bật thông báo"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你可以现在允许访问，也可以等到首次使用某项功能时再允许。你可以随时在设置中更改。"
+            "value": "开启通知"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你可以現在允許取用，也可以等到首次使用某項功能時再允許。你可以隨時在設定中更改。"
+            "value": "開啟通知"
           }
         }
       }
     },
-    "Permissions.Title": {
+    "Setup.Alerts.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zugriff erlauben"
+            "value": "Folio kann dich vor deinen Terminen und bei fälligen Erinnerungen benachrichtigen. Erlaube Mitteilungen, um Hinweise auf diesem Gerät einzuschalten."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Allow Access"
+            "value": "Folio can alert you before your events and when your reminders are due. Allow notifications to turn alerts on for this device."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Autoriser l’accès"
+            "value": "Folio peut vous alerter avant vos événements et à l’échéance de vos rappels. Autorisez les notifications pour activer les alertes sur cet appareil."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Consenti l’accesso"
+            "value": "Folio può avvisarti prima degli eventi e alla scadenza dei promemoria. Consenti le notifiche per attivare gli avvisi su questo dispositivo."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "アクセスを許可"
+            "value": "Folioは、予定の前やリマインダーの期限に通知できます。このデバイスで通知をオンにするには、通知を許可してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "접근 허용"
+            "value": "Folio는 일정 전과 미리 알림 기한에 알려 드릴 수 있습니다. 이 기기에서 알림을 켜려면 알림을 허용하세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toegang geven"
+            "value": "Folio kan je waarschuwen vóór je afspraken en wanneer herinneringen verlopen. Sta meldingen toe om meldingen op dit apparaat in te schakelen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cho phép truy cập"
+            "value": "Folio có thể thông báo trước sự kiện và khi lời nhắc đến hạn. Hãy cho phép thông báo để bật thông báo trên thiết bị này."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "允许访问"
+            "value": "Folio 可以在日程开始前和提醒事项到期时通知你。若要在此设备上开启通知，请允许通知。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "允許取用"
+            "value": "Folio 可以在行程開始前和提醒事項到期時通知你。若要在此裝置上開啟通知，請允許通知。"
+          }
+        }
+      }
+    },
+    "Setup.Alerts.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhalte Hinweise"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get Alerts"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recevez des alertes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricevi avvisi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知を受け取る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림 받기"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontvang meldingen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận thông báo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接收提醒通知"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接收提示通知"
+          }
+        }
+      }
+    },
+    "Setup.Calendar.Action": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine Termine anzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show My Events"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher mes événements"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i miei eventi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 일정 표시"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon mijn afspraken"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị sự kiện của tôi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示我的日程"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示我的行程"
+          }
+        }
+      }
+    },
+    "Setup.Calendar.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann die Termine aus deinen Kalendern auf einer Zeitleiste anzeigen. Erlaube den Zugriff auf Kalender, um sie hier zu sehen und zu bearbeiten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can show the events from your calendars on one timeline. Allow access to Calendars to see and edit them here."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio peut afficher les événements de vos calendriers sur une seule chronologie. Autorisez l’accès à Calendriers pour les consulter et les modifier ici."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio può mostrare gli eventi dei tuoi calendari in un’unica timeline. Consenti l’accesso a Calendari per vederli e modificarli qui."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioでは、カレンダーの予定を1つのタイムラインに表示できます。ここで予定を表示・編集するには、カレンダーへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 캘린더의 일정을 하나의 타임라인에 표시할 수 있습니다. 여기에서 일정을 보고 편집하려면 캘린더 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan de afspraken uit je agenda’s op één tijdlijn tonen. Sta toegang tot Agenda’s toe om ze hier te bekijken en te wijzigen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio có thể hiển thị sự kiện từ các lịch của bạn trên một dòng thời gian. Hãy cho phép truy cập Lịch để xem và sửa chúng tại đây."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在同一条时间线上显示日历中的日程。若要在此查看和编辑日程，请允许访问“日历”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在同一條時間列上顯示行事曆中的行程。若要在此查看和編輯行程，請允許取用「行事曆」。"
+          }
+        }
+      }
+    },
+    "Setup.Calendar.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh deine Termine"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See Your Events"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affichez vos événements"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi i tuoi eventi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "일정 보기"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk je afspraken"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem sự kiện của bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看你的日程"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看你的行程"
+          }
+        }
+      }
+    },
+    "Setup.Reminders.Action": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine Erinnerungen anzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show My Reminders"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher mes rappels"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra i miei promemoria"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リマインダーを表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 미리 알림 표시"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon mijn herinneringen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị lời nhắc của tôi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示我的提醒事项"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示我的提醒事項"
+          }
+        }
+      }
+    },
+    "Setup.Reminders.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann deine Erinnerungen neben deinen Terminen anzeigen. Erlaube den Zugriff auf Erinnerungen, um sie hier zu sehen und zu erledigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can show your reminders next to your events. Allow access to Reminders to see and complete them here."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio peut afficher vos rappels à côté de vos événements. Autorisez l’accès à Rappels pour les consulter et les terminer ici."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio può mostrare i promemoria accanto agli eventi. Consenti l’accesso a Promemoria per vederli e completarli qui."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioでは、リマインダーを予定と並べて表示できます。ここでリマインダーを表示・完了するには、リマインダーへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 미리 알림을 일정과 나란히 표시할 수 있습니다. 여기에서 미리 알림을 보고 완료하려면 미리 알림 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan je herinneringen naast je afspraken tonen. Sta toegang tot Herinneringen toe om ze hier te bekijken en af te ronden."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio có thể hiển thị lời nhắc bên cạnh sự kiện của bạn. Hãy cho phép truy cập Lời nhắc để xem và hoàn thành chúng tại đây."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以将提醒事项与日程并排显示。若要在此查看和完成提醒事项，请允许访问“提醒事项”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以將提醒事項與行程並排顯示。若要在此查看和完成提醒事項，請允許取用「提醒事項」。"
+          }
+        }
+      }
+    },
+    "Setup.Reminders.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte Erinnerungen im Blick"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Up With Reminders"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivez vos rappels"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni d’occhio i promemoria"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リマインダーも一緒に"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "미리 알림 챙기기"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blijf bij met herinneringen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo dõi lời nhắc"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟进提醒事项"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掌握提醒事項"
+          }
+        }
+      }
+    },
+    "Setup.Sleep.Action": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meinen Schlaf anzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show My Sleep"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher mon sommeil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il mio sonno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 수면 표시"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon mijn slaap"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị giấc ngủ của tôi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示我的睡眠"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示我的睡眠"
+          }
+        }
+      }
+    },
+    "Setup.Sleep.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann deinen Schlaf aus der Health-App neben deinen Plänen anzeigen. Erlaube den Zugriff auf Health, um ihn in deinem Kalender zu sehen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can show your sleep from the Health app next to your plans. Allow access to Health to see it on your calendar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio peut afficher votre sommeil depuis l’app Santé à côté de vos projets. Autorisez l’accès à Santé pour le voir sur votre calendrier."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio può mostrare il sonno dall’app Salute accanto ai tuoi programmi. Consenti l’accesso a Salute per vederlo sul calendario."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioでは、ヘルスケアAppの睡眠データを予定と並べて表示できます。カレンダーに表示するには、ヘルスケアへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 건강 앱의 수면 데이터를 계획과 나란히 표시할 수 있습니다. 캘린더에서 보려면 건강 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan je slaap uit de Gezondheid-app naast je plannen tonen. Sta toegang tot Gezondheid toe om die in je agenda te zien."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio có thể hiển thị giấc ngủ từ ứng dụng Sức khỏe bên cạnh các kế hoạch của bạn. Hãy cho phép truy cập Sức khỏe để xem trên lịch."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以将“健康”App 中的睡眠数据与你的计划并排显示。若要在日历上查看，请允许访问“健康”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以將「健康」App 中的睡眠資料與你的計畫並排顯示。若要在行事曆上查看，請允許取用「健康」。"
+          }
+        }
+      }
+    },
+    "Setup.Sleep.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte deinen Schlaf im Blick"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See How You Slept"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voyez votre sommeil"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tieni d’occhio il sonno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠もひと目で"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수면도 한눈에"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zie hoe je hebt geslapen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem giấc ngủ của bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠情况"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看睡眠狀況"
+          }
+        }
+      }
+    },
+    "Setup.Weather.Action": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wetter anzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Weather"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher la météo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il meteo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "天気を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날씨 표시"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon het weer"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị thời tiết"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示天气"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示天氣"
+          }
+        }
+      }
+    },
+    "Setup.Weather.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann die Vorhersage in deinem Kalender anzeigen. Erlaube den Zugriff auf die Ortungsdienste, um das Wetter an deinem Standort zu sehen, oder wähle später in den Einstellungen einen Ort."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can show the forecast on your calendar. Allow access to Location Services to see the weather where you are, or choose a place later in Settings."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio peut afficher les prévisions sur votre calendrier. Autorisez l’accès au service de localisation pour voir la météo là où vous êtes, ou choisissez un lieu plus tard dans Réglages."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio può mostrare le previsioni sul calendario. Consenti l’accesso a Localizzazione per vedere il meteo dove ti trovi, oppure scegli un luogo più tardi in Impostazioni."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioでは、カレンダーに天気予報を表示できます。現在地の天気を表示するには位置情報サービスへのアクセスを許可してください。場所はあとで設定から選ぶこともできます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 캘린더에 일기 예보를 표시할 수 있습니다. 현재 위치의 날씨를 보려면 위치 서비스 접근을 허용하거나, 나중에 설정에서 장소를 선택하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan de weersverwachting in je agenda tonen. Sta toegang tot Locatievoorzieningen toe om het weer op je locatie te zien, of kies later een plaats in Instellingen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio có thể hiển thị dự báo trên lịch của bạn. Hãy cho phép truy cập Dịch vụ định vị để xem thời tiết nơi bạn đang ở, hoặc chọn một địa điểm sau trong Cài đặt."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在日历上显示天气预报。若要查看当前位置的天气，请允许访问“定位服务”，也可以稍后在设置中选取地点。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在行事曆上顯示天氣預報。若要查看目前位置的天氣，請允許取用「定位服務」，也可以稍後在設定中選擇地點。"
+          }
+        }
+      }
+    },
+    "Setup.Weather.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieh das Wetter"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the Weather"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affichez la météo"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi il meteo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "天気を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날씨 보기"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk het weer"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem thời tiết"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看天气"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看天氣"
           }
         }
       }

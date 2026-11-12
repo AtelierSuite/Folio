@@ -2,7 +2,7 @@ import XCTest
 
 final class OnboardingTests: XCTestCase {
     @MainActor
-    func testGetStartedShowsPermissionsAndContinueDismissesOnboarding() throws {
+    func testGetStartedShowsFeatureSetupAndSkippingEveryStepDismissesOnboarding() throws {
         let app = XCUIApplication()
         app.launchArguments += ["-Onboarding.HasCompleted", "NO", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
@@ -13,18 +13,19 @@ final class OnboardingTests: XCTestCase {
         attachScreenshot(named: "OnboardingWelcome")
         app.buttons["OnboardingGetStarted"].tap()
 
-        let permissionsTitle = app.staticTexts["OnboardingPermissionsTitle"]
-        XCTAssertTrue(permissionsTitle.waitForExistence(timeout: 5))
-        XCTAssertTrue(app.descendants(matching: .any)["OnboardingPermission.calendar"].exists)
-        attachScreenshot(named: "OnboardingPermissions")
-        app.buttons["OnboardingContinue"].tap()
+        let setupTitle = app.staticTexts["OnboardingSetupTitle"]
+        XCTAssertTrue(setupTitle.waitForExistence(timeout: 5))
+        attachScreenshot(named: "OnboardingSetup")
 
-        let dismissed = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "exists == false"),
-            object: permissionsTitle
-        )
-        XCTAssertEqual(XCTWaiter.wait(for: [dismissed], timeout: 5), .completed)
+        let notNow = app.buttons["OnboardingNotNow"]
+        for _ in 0..<OnboardingTests.maximumSetupSteps where notNow.waitForExistence(timeout: 3) {
+            notNow.tap()
+            _ = setupTitle.waitForNonExistence(timeout: 1)
+        }
+        XCTAssertTrue(setupTitle.waitForNonExistence(timeout: 5))
     }
+
+    private static let maximumSetupSteps = 8
 
     private func attachScreenshot(named name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())

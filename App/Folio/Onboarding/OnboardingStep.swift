@@ -1,4 +1,4 @@
-enum OnboardingStep {
+enum OnboardingStep: Hashable {
     case welcome
-    case permissions
+    case setup(OnboardingSetupStep)
 }
