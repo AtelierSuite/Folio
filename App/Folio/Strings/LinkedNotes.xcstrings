@@ -356,7 +356,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントのメモを作成"
+            "value": "予定メモを作成"
           }
         },
         "ko": {
@@ -421,7 +421,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リンクされたメモを開く"
+            "value": "予定メモを開く"
           }
         },
         "ko": {
@@ -1006,7 +1006,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントのメモを作成すると、そのメモへのリンクがイベントのURLに追加され、Appleのカレンダーからメモを開けるようになります。すでにURLがあるイベントや編集できないイベントは変更されません。"
+            "value": "予定メモを作成すると、そのメモへのリンクがイベントのURLに追加され、Appleのカレンダーからメモを開けるようになります。すでにURLがあるイベントや編集できないイベントは変更されません。"
           }
         },
         "ko": {
@@ -1071,7 +1071,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リンクされたメモ"
+            "value": "予定メモ"
           }
         },
         "ko": {
@@ -1136,7 +1136,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントにメモのリンクを追加"
+            "value": "イベントに予定メモのリンクを追加"
           }
         },
         "ko": {
