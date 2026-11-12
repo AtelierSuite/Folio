@@ -9,7 +9,12 @@ struct WakeUpAlarmSection: View {
         Section {
             Toggle(String(localized: "Toggle", table: "WakeUpAlarms"), isOn: Binding(
                 get: { wakeUpAlarms.isEnabled },
-                set: { newValue in Task { await wakeUpAlarms.setEnabled(newValue) } }
+                set: { newValue in
+                    Task {
+                        guard await permissionCenter.allowsTurningOn(newValue, needing: .alarms) else { return }
+                        await wakeUpAlarms.setEnabled(newValue)
+                    }
+                }
             ))
             .disabled(!wakeUpAlarms.isSupported)
             .accessibilityIdentifier("WakeUpAlarmToggle")
@@ -21,7 +26,7 @@ struct WakeUpAlarmSection: View {
         } footer: {
             Text(footer)
         }
-        .disabled(permissionCenter.isMissingAccess(to: .alarms))
+        .disabled(permissionCenter.isBlocked(.alarms))
     }
 
     private var footer: String {

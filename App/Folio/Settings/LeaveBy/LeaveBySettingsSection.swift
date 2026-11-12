@@ -10,9 +10,14 @@ struct LeaveBySettingsSection: View {
             Section {
                 Toggle(String(localized: "Settings.Toggle", table: "LeaveBy"), isOn: Binding(
                     get: { arrivalAlerts.isLeaveByEnabled },
-                    set: { newValue in Task { await arrivalAlerts.setLeaveByEnabled(newValue) } }
+                    set: { newValue in
+                        Task {
+                            guard await permissionCenter.allowsTurningOn(newValue, needing: .location) else { return }
+                            await arrivalAlerts.setLeaveByEnabled(newValue)
+                        }
+                    }
                 ))
-                .disabled(permissionCenter.isMissingAccess(to: .location))
+                .disabled(permissionCenter.isBlocked(.location))
                 .accessibilityIdentifier("LeaveByToggle")
                 if arrivalAlerts.isLeaveByEnabled {
                     LocationAlertAccessRows(

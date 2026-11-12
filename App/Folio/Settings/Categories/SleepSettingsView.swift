@@ -6,7 +6,8 @@ struct SleepSettingsView: View {
         Form {
             PermissionPromptSection(
                 kind: .health,
-                message: String(localized: "Prompt.Sleep", table: "Permissions")
+                message: String(localized: "Prompt.Sleep", table: "Permissions"),
+                asksOnToggle: true
             )
             SleepSettingsSection()
         }

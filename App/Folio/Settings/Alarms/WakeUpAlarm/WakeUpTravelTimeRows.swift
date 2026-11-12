@@ -8,7 +8,12 @@ struct WakeUpTravelTimeRows: View {
     var body: some View {
         Toggle(String(localized: "TravelTime", table: "WakeUpAlarms"), isOn: Binding(
             get: { wakeUpAlarms.addsTravelTime },
-            set: { addsTravelTime in Task { await wakeUpAlarms.setAddsTravelTime(addsTravelTime) } }
+            set: { addsTravelTime in
+                Task {
+                    guard await permissionCenter.allowsTurningOn(addsTravelTime, needing: .location) else { return }
+                    await wakeUpAlarms.setAddsTravelTime(addsTravelTime)
+                }
+            }
         ))
         .disabled(isMissingLocationAccess)
         .accessibilityIdentifier("WakeUpTravelTimeToggle")
@@ -23,6 +28,6 @@ struct WakeUpTravelTimeRows: View {
     }
 
     private var isMissingLocationAccess: Bool {
-        permissionCenter.isMissingAccess(to: .location)
+        permissionCenter.isBlocked(.location)
     }
 }

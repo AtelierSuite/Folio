@@ -10,11 +10,13 @@ struct AlarmSettingsView: View {
         Form {
             PermissionPromptSection(
                 kind: .alarms,
-                message: String(localized: "Prompt.Alarms", table: "Permissions")
+                message: String(localized: "Prompt.Alarms", table: "Permissions"),
+                asksOnToggle: true
             )
             PermissionPromptSection(
                 kind: .location,
-                message: String(localized: "Prompt.WakeUpTravelTime", table: "Permissions")
+                message: String(localized: "Prompt.WakeUpTravelTime", table: "Permissions"),
+                asksOnToggle: true
             )
             WakeUpAlarmSection()
             LeaveAlarmSection()

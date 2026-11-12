@@ -20,7 +20,7 @@ struct TravelTimeSettingsSection: View {
         } footer: {
             Text(String(localized: "Settings.Footer", table: "TravelTime"))
         }
-        .disabled(permissions.isMissingAccess(to: .location))
+        .disabled(permissions.isBlocked(.location))
         .onChange(of: permissions.status(of: .location)) {
             travelTime.locationAuthorizationDidChange()
         }
@@ -30,7 +30,10 @@ struct TravelTimeSettingsSection: View {
         Binding {
             travelTime.isEnabled
         } set: { isEnabled in
-            travelTime.setEnabled(isEnabled)
+            Task {
+                guard await permissions.allowsTurningOn(isEnabled, needing: .location) else { return }
+                travelTime.setEnabled(isEnabled)
+            }
         }
     }
 }

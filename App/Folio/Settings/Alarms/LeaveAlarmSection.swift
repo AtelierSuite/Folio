@@ -8,7 +8,7 @@ struct LeaveAlarmSection: View {
 
     private var isAvailable: Bool {
         leaveAlerts.isSupported && leaveAlerts.isEnabled && scheduler.isEnabled
-            && !permissionCenter.isMissingAccess(to: .alarms)
+            && !permissionCenter.isBlocked(.alarms)
     }
 
     var body: some View {

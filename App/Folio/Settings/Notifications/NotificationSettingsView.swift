@@ -10,7 +10,8 @@ struct NotificationSettingsView: View {
             NotificationPermissionPromptSection()
             PermissionPromptSection(
                 kind: .location,
-                message: String(localized: "Prompt.LocationAlerts", table: "Permissions")
+                message: String(localized: "Prompt.LocationAlerts", table: "Permissions"),
+                asksOnToggle: true
             )
             Section {
                 Toggle(String(localized: "Enabled", table: "Notifications"), isOn: binding(
@@ -20,7 +21,7 @@ struct NotificationSettingsView: View {
                         await permissionCenter.refresh(.notifications)
                     }
                 ))
-                .disabled(permissionCenter.isMissingAccess(to: .notifications))
+                .disabled(permissionCenter.isBlocked(.notifications))
                 .accessibilityIdentifier("NotificationsEnabledToggle")
             } footer: {
                 Text(String(localized: "Enabled.Footer", table: "Notifications"))

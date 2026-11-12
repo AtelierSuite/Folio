@@ -6,7 +6,8 @@ struct FlexTimeSettingsView: View {
         Form {
             PermissionPromptSection(
                 kind: .health,
-                message: String(localized: "Prompt.FlexTime", table: "Permissions")
+                message: String(localized: "Prompt.FlexTime", table: "Permissions"),
+                asksOnToggle: true
             )
             FlexTimeDaysSection()
             FlexTimeSleepSection()

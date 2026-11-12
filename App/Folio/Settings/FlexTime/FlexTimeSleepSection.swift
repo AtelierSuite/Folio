@@ -11,9 +11,14 @@ struct FlexTimeSleepSection: View {
             if isSleepAvailable {
                 Toggle(String(localized: "Settings.UseSleep", table: "FlexTime"), isOn: Binding(
                     get: { sleepStore.informsFlexTime },
-                    set: { sleepStore.setInformsFlexTime($0) }
+                    set: { informs in
+                        Task {
+                            guard await permissionCenter.allowsTurningOn(informs, needing: .health) else { return }
+                            sleepStore.setInformsFlexTime(informs)
+                        }
+                    }
                 ))
-                .disabled(permissionCenter.isMissingAccess(to: .health))
+                .disabled(permissionCenter.isBlocked(.health))
                 .accessibilityIdentifier("FlexTimeSleepToggle")
             }
         } header: {

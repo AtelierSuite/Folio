@@ -8,9 +8,14 @@ struct SleepTimelineToggle: View {
     var body: some View {
         Toggle(String(localized: "Settings.ShowOnTimeline", table: "Sleep"), isOn: Binding(
             get: { store.isShownOnTimeline },
-            set: { store.setShownOnTimeline($0) }
+            set: { isShown in
+                Task {
+                    guard await permissionCenter.allowsTurningOn(isShown, needing: .health) else { return }
+                    store.setShownOnTimeline(isShown)
+                }
+            }
         ))
-        .disabled(permissionCenter.isMissingAccess(to: .health))
+        .disabled(permissionCenter.isBlocked(.health))
         .accessibilityIdentifier("SleepTimelineToggle")
     }
 }

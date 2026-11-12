@@ -7,10 +7,11 @@ struct WeatherSettingsView: View {
 
     var body: some View {
         Form {
-            if weather.locationMode == .current {
+            if weather.isEnabled && weather.locationMode == .current {
                 PermissionPromptSection(
                     kind: .location,
-                    message: String(localized: "Prompt.Weather", table: "Permissions")
+                    message: String(localized: "Prompt.Weather", table: "Permissions"),
+                    asksOnToggle: true
                 )
             }
             WeatherSettingsSection()

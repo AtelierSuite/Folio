@@ -10,7 +10,12 @@ struct LeaveAlertsSection: View {
         Section {
             Toggle(String(localized: "Settings.Toggle", table: "LeaveAlerts"), isOn: Binding(
                 get: { leaveAlerts.isEnabled },
-                set: { newValue in Task { await leaveAlerts.setEnabled(newValue) } }
+                set: { newValue in
+                    Task {
+                        guard await permissionCenter.allowsTurningOn(newValue, needing: .location) else { return }
+                        await leaveAlerts.setEnabled(newValue)
+                    }
+                }
             ))
             .disabled(!leaveAlerts.isSupported || !scheduler.isEnabled || isMissingLocationAccess)
             .accessibilityIdentifier("LeaveAlertsToggle")
@@ -35,6 +40,6 @@ struct LeaveAlertsSection: View {
     }
 
     private var isMissingLocationAccess: Bool {
-        permissionCenter.isMissingAccess(to: .location)
+        permissionCenter.isBlocked(.location)
     }
 }

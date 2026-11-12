@@ -14,7 +14,8 @@ struct CalendarNotificationSettingsView: View {
             NotificationPermissionPromptSection()
             PermissionPromptSection(
                 kind: .alarms,
-                message: String(localized: "Prompt.AlarmStyle", table: "Permissions")
+                message: String(localized: "Prompt.AlarmStyle", table: "Permissions"),
+                asksOnToggle: true
             )
             #if os(macOS)
             if capabilities.supports(.notificationSoundInstallation) && scheduler.needsSoundInstallation {

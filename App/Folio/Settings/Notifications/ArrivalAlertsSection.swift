@@ -10,7 +10,12 @@ struct ArrivalAlertsSection: View {
         Section {
             Toggle(String(localized: "Settings.Toggle", table: "ArrivalAlerts"), isOn: Binding(
                 get: { arrivalAlerts.isEnabled },
-                set: { newValue in Task { await arrivalAlerts.setEnabled(newValue) } }
+                set: { newValue in
+                    Task {
+                        guard await permissionCenter.allowsTurningOn(newValue, needing: .location) else { return }
+                        await arrivalAlerts.setEnabled(newValue)
+                    }
+                }
             ))
             .disabled(!arrivalAlerts.isSupported || !scheduler.isEnabled || isMissingLocationAccess)
             .accessibilityIdentifier("ArrivalAlertsToggle")
@@ -34,6 +39,6 @@ struct ArrivalAlertsSection: View {
     }
 
     private var isMissingLocationAccess: Bool {
-        permissionCenter.isMissingAccess(to: .location)
+        permissionCenter.isBlocked(.location)
     }
 }

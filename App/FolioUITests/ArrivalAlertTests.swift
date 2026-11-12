@@ -11,8 +11,7 @@ final class ArrivalAlertTests: XCTestCase {
 
         app.tabBars.buttons["Settings"].firstMatch.tap()
         app.buttons["NotificationSettingsLink"].tap()
-        app.turnOnNotifications()
-        app.continuePermissionPrompt("location", allowing: ["Allow While Using App", "アプリの使用中は許可"])
+        turnOn(app.switches["NotificationsEnabledToggle"], allowing: ["Allow", "許可"])
         turnOn(app.switches["ArrivalAlertsToggle"], allowing: ["Allow While Using App", "アプリの使用中は許可"])
         attachScreenshot(named: "ArrivalSettings")
 
