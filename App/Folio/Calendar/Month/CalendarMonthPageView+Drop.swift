@@ -7,7 +7,9 @@ extension CalendarMonthPageView {
         guard calendar.startOfDay(for: payload.sourceDay) != day.date else { return false }
         if let event = eventsByEntryIdentifier[payload.entryIdentifier] {
             let interval = CalendarDayMove.interval(
-                DateInterval(start: event.startDate, end: max(event.startDate, event.endDate)),
+                DateInterval(
+                    start: event.scheduledStartDate, end: max(event.scheduledStartDate, event.scheduledEndDate)
+                ),
                 isAllDay: event.isAllDay, from: payload.sourceDay, to: day.date, calendar: calendar
             )
             perform(.event(event), to: interval, hasDueTime: !event.isAllDay, anchor: frame)

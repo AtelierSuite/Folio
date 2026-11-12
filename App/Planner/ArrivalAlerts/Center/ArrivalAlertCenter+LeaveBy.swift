@@ -23,7 +23,7 @@ extension ArrivalAlertCenter {
         guard let arrival = nearest, !leaveBySettings.hasHandledArrival(at: arrival.event) else { return }
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
-        let events = await source.events(in: leaveByPlanner.interval(after: now)).filter {
+        let events = await source.flexTimeEvents(in: leaveByPlanner.interval(after: now)).filter {
             !hiddenCalendars.contains($0.calendarIdentifier) && !$0.isHiddenInvitation(among: hiddenInvitations)
         }
         do {

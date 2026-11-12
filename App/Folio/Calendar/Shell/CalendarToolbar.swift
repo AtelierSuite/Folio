@@ -59,6 +59,7 @@ struct CalendarToolbar: ToolbarContent {
     @ToolbarContentBuilder
     private var regularActions: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
+            FlexTimeButton()
             ReminderInboxButton(isShowingInbox: $isShowingInbox)
             CalendarAddMenu(composer: $composer)
             if !capabilities.supports(.calendarViewMenuCommands) {

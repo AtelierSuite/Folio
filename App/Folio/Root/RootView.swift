@@ -37,6 +37,7 @@ struct RootView: View {
         .undoToastHost()
         .connectsUndo()
         .onboarding()
+        .promptsFlexTime()
         .handlesNotificationRoutes()
         .environment(router)
         .opensCalendarDeepLinks(with: router)

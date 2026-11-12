@@ -10,7 +10,7 @@ private struct SleepRefreshModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onChange(of: scenePhase) { _, phase in
-                guard phase == .active, store.isActive else { return }
+                guard phase == .active, store.isRead else { return }
                 store.invalidate()
             }
     }

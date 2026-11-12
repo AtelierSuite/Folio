@@ -8,7 +8,7 @@ struct SettingsIconLabel: View {
         Label {
             Text(category.title)
         } icon: {
-            Image(systemName: category.systemImage)
+            category.image
                 .resizable()
                 .scaledToFit()
                 .fontWeight(.medium)
@@ -18,5 +18,11 @@ struct SettingsIconLabel: View {
                 .frame(width: iconSize, height: iconSize)
                 .background(category.color.gradient, in: .rect(cornerRadius: iconSize * 0.27))
         }
+    }
+}
+
+private extension SettingsCategory {
+    var image: Image {
+        self == .flexTime ? Image(.flextime) : Image(systemName: systemImage)
     }
 }

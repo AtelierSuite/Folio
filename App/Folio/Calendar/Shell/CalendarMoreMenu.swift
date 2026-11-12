@@ -28,6 +28,7 @@ struct CalendarMoreMenu: View {
                 }
                 .badge(pendingInvitationCount)
                 .accessibilityIdentifier("InvitationsButton")
+                FlexTimeButton()
             }
         }
         .badge(pendingInvitationCount)

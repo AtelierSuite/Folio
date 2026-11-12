@@ -13,6 +13,15 @@ public enum DayHighlightSettings {
         return code.flatMap { HolidaySource.supportedRegionCodes.contains($0) ? $0 : nil }
     }
 
+    /// The holidays shown in the calendar, or `nil` while holidays aren't highlighted.
+    public static func highlightedHolidaySource(in defaults: UserDefaults = AppGroup.userDefaults) -> HolidaySource? {
+        guard defaults.bool(forKey: highlightsHolidaysKey),
+              let regionCode = resolvedRegionCode(stored: defaults.string(forKey: holidayRegionKey) ?? "") else {
+            return nil
+        }
+        return HolidaySource(regionCode: regionCode)
+    }
+
     public static func sortedRegionCodes(in locale: Locale) -> [String] {
         HolidaySource.supportedRegionCodes.sorted { first, second in
             let firstName = regionName(for: first, in: locale)

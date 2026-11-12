@@ -8,6 +8,9 @@ struct EventDetailInfoSection: View {
 
     var body: some View {
         Section {
+            if event.isDelayedByFlexTime {
+                EventDetailFlexTimeRow(event: event)
+            }
             LabeledContent(String(localized: "Field.Calendar", table: "EventEditor")) {
                 HStack(spacing: 6) {
                     Circle()

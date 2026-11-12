@@ -32,12 +32,21 @@ extension CalendarTimelineContainer {
         if let source = dragSource, let proposal = session.proposal {
             dropHandler.spanDialogAnchor = CGRect(origin: drag.globalPointer, size: .zero)
             await dropHandler.move(
-                source, to: proposal, hasDueTime: true, store: store, undoCoordinator: undoCoordinator
+                source, to: savedInterval(for: source, droppedOn: proposal), hasDueTime: true,
+                store: store, undoCoordinator: undoCoordinator
             )
             await load()
         }
         dragSource = nil
         drag.finish()
+    }
+
+    /// Events on a Flex Time day are drawn later than they are saved.
+    private func savedInterval(for source: CalendarDragSource, droppedOn interval: DateInterval) -> DateInterval {
+        guard case .event(let event) = source else { return interval }
+        return store.flexTimeSchedule.scheduledInterval(
+            displayedAs: interval, calendarIdentifier: event.calendarIdentifier
+        )
     }
 }
 

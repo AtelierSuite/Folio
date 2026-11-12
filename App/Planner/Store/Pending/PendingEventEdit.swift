@@ -11,7 +11,7 @@ public struct PendingEventEdit: Sendable, Hashable {
     public init(event: CalendarEvent, draft: EventDraft) {
         localIdentifier = event.reference.localIdentifier
         occurrenceDate = event.reference.occurrenceDate
-        editedStartDate = event.startDate
+        editedStartDate = event.scheduledStartDate
         self.draft = draft
     }
 

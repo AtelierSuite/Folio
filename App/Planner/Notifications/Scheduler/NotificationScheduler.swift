@@ -27,6 +27,7 @@ public final class NotificationScheduler {
     @ObservationIgnored let earlyAlertSettings: ReminderEarlyAlertSettings
     @ObservationIgnored public let capabilities: PlatformCapabilities
     @ObservationIgnored let visibilityStorage: CalendarVisibilityStorage
+    @ObservationIgnored let flexTimeStorage: FlexTimeStorage
     @ObservationIgnored let planner: NotificationPlanner
     @ObservationIgnored let horizon: NotificationHorizon
     @ObservationIgnored let clock: @Sendable () -> Date
@@ -51,6 +52,7 @@ public final class NotificationScheduler {
         earlyAlertSettings: ReminderEarlyAlertSettings = .shared,
         capabilities: PlatformCapabilities = .current,
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
+        flexTimeStorage: FlexTimeStorage = FlexTimeStorage(),
         planner: NotificationPlanner? = nil,
         horizon: NotificationHorizon = NotificationHorizon(),
         clock: @escaping @Sendable () -> Date = { .now }
@@ -69,6 +71,7 @@ public final class NotificationScheduler {
         self.earlyAlertSettings = earlyAlertSettings
         self.capabilities = capabilities
         self.visibilityStorage = visibilityStorage
+        self.flexTimeStorage = flexTimeStorage
         let resolver = NotificationStyleResolver(settings: styleSettings, capabilities: capabilities)
         self.planner = planner ?? NotificationPlanner(
             styleResolver: resolver.style(for:),
@@ -141,7 +144,13 @@ public final class NotificationScheduler {
     private func plan(after now: Date, budget: Int) async -> NotificationPlan {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
-        let events = includesEvents ? await source.events(in: horizon.eventInterval(from: now)) : []
+        let events = includesEvents
+            ? await source.flexTimeEvents(
+                in: horizon.eventInterval(from: now),
+                schedule: flexTimeStorage.schedule(),
+                calendar: planner.formatter.calendar
+            )
+            : []
         let reminders = includesReminders
             ? await source.reminders(completedIn: DateInterval(start: now, duration: 0))
             : []
