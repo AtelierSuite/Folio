@@ -9,7 +9,7 @@ struct OnboardingTimelinePreview: View {
         GeometryReader { geometry in
             let rowHeight = geometry.size.height / Metrics.rowCount
             ZStack(alignment: .topLeading) {
-                ForEach(0..<(step.showsHourLines ? Int(Metrics.rowCount) : 0), id: \.self) { row in
+                ForEach(0..<(step.showsPanel ? Int(Metrics.rowCount) : 0), id: \.self) { row in
                     Rectangle()
                         .fill(.separator)
                         .frame(height: 1)
@@ -31,10 +31,14 @@ struct OnboardingTimelinePreview: View {
             }
         }
         .frame(height: Metrics.height)
-        .padding(12)
-        .background(.background.secondary, in: .rect(cornerRadius: 16))
+        .padding(step.showsPanel ? 12 : 0)
+        .background(panelStyle, in: .rect(cornerRadius: 16))
         .accessibilityHidden(true)
         .task(id: reducesMotion) { await play() }
+    }
+
+    private var panelStyle: AnyShapeStyle {
+        step.showsPanel ? AnyShapeStyle(.background.secondary) : AnyShapeStyle(.clear)
     }
 
     private var animatedCount: Int {

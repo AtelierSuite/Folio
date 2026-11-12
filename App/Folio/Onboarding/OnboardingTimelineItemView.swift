@@ -65,7 +65,7 @@ struct OnboardingTimelineItemView: View {
         .padding(.horizontal, 10)
         .frame(maxHeight: .infinity)
         .background(.background, in: .rect(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.08), radius: 4, y: 1)
+        .shadow(color: .black.opacity(0.12), radius: 6, y: 2)
     }
 
     private func symbol(_ name: String) -> some View {

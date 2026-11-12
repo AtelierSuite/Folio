@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension OnboardingSetupStep {
-    var showsHourLines: Bool {
+    var showsPanel: Bool {
         self != .alerts
     }
 
