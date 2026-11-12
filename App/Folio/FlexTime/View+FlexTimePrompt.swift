@@ -18,6 +18,7 @@ private struct FlexTimePromptModifier: ViewModifier {
                 }
             )) { prompt in
                 FlexTimeSheet(prompt: prompt)
+                    .interactiveDismissDisabled()
             }
     }
 }
