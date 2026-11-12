@@ -106,14 +106,14 @@ final class InvitationsTests: XCTestCase {
             app.swipeUp()
         }
         switchControl(of: toggle).tap()
-        app.buttons["Calendar"].tap()
+        app.buttons["Schedule"].tap()
 
         XCTAssertTrue(app.staticTexts["Team Offsite"].waitForExistence(timeout: 10))
         XCTAssertFalse(concert.waitForExistence(timeout: 3))
 
         app.buttons["Settings"].tap()
         switchControl(of: toggle).tap()
-        app.buttons["Calendar"].tap()
+        app.buttons["Schedule"].tap()
         XCTAssertTrue(scrollUntilExists(concert, in: app))
     }
 

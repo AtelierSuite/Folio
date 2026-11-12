@@ -35,7 +35,7 @@ final class LinkedNotesTests: XCTestCase {
         attachScreenshot(named: "add-menu-daily-note", app: app)
         dailyNote.tap()
         XCTAssertTrue(app.textViews.firstMatch.waitForExistence(timeout: 10))
-        app.tabBars.buttons["Calendar"].firstMatch.tap()
+        app.tabBars.buttons["Schedule"].firstMatch.tap()
     }
 
     /// iOS asks before opening a custom URL scheme; the button title follows the system language.
