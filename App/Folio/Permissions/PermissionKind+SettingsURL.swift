@@ -15,6 +15,14 @@ extension PermissionKind {
         #endif
     }
 
+    var appSettingsURL: URL? {
+        #if os(macOS)
+        settingsURL
+        #else
+        URL(string: UIApplication.openSettingsURLString)
+        #endif
+    }
+
     #if os(macOS)
     private var macSettingsPath: String {
         let privacy = "x-apple.systempreferences:com.apple.preference.security"

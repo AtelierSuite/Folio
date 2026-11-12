@@ -25,6 +25,14 @@ struct PermissionStatusTests {
         #expect(!PermissionStatus.notDetermined.canBeFixedInSettings)
     }
 
+    @Test func undecidedDeniedAndRestrictedStatusesAreMissingAccess() {
+        let missing = Set([PermissionStatus.notDetermined, .limited, .denied, .restricted])
+        let all: [PermissionStatus] = [.notDetermined, .limited, .granted, .denied, .restricted, .unknown, .unavailable]
+        for status in all {
+            #expect(status.isMissingAccess == missing.contains(status))
+        }
+    }
+
     @Test func unknownMayHideMissingAccess() {
         #expect(PermissionStatus.unknown.mayHideMissingAccess)
         #expect(!PermissionStatus.granted.mayHideMissingAccess)
