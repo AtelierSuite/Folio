@@ -1,7 +1,6 @@
 import Planner
 import SwiftUI
 
-/// Health access is only requested the first time sleep is turned on for Flex Time.
 struct FlexTimeSleepSection: View {
     @Environment(\.platformCapabilities) private var capabilities
     @Environment(SleepStore.self) private var sleepStore
@@ -12,10 +11,9 @@ struct FlexTimeSleepSection: View {
             if isSleepAvailable {
                 Toggle(String(localized: "Settings.UseSleep", table: "FlexTime"), isOn: Binding(
                     get: { sleepStore.informsFlexTime },
-                    set: { usesSleep in
-                        Task { await setUsesSleep(usesSleep) }
-                    }
+                    set: { sleepStore.setInformsFlexTime($0) }
                 ))
+                .disabled(permissionCenter.isMissingAccess(to: .health))
                 .accessibilityIdentifier("FlexTimeSleepToggle")
             }
         } header: {
@@ -31,12 +29,5 @@ struct FlexTimeSleepSection: View {
 
     private var isSleepAvailable: Bool {
         capabilities.supports(.sleep) && sleepStore.isAvailable
-    }
-
-    private func setUsesSleep(_ usesSleep: Bool) async {
-        if usesSleep {
-            await permissionCenter.request(.health)
-        }
-        sleepStore.setInformsFlexTime(usesSleep)
     }
 }
