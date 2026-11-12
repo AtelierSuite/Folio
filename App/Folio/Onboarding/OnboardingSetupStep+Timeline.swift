@@ -1,6 +1,10 @@
 import SwiftUI
 
 extension OnboardingSetupStep {
+    var showsHourLines: Bool {
+        self != .alerts
+    }
+
     var timelineItems: [OnboardingTimelineItem] {
         let items = animatedItems
         let background = backgroundBlocks.enumerated().map { index, block in
@@ -19,7 +23,7 @@ extension OnboardingSetupStep {
         switch self {
         case .calendar: []
         case .reminders: [(0.3, 1.2), (3, 1.2)]
-        case .alerts: [(0.3, 1.2), (1.9, 1), (3.3, 1.4)]
+        case .alerts: []
         case .weather: [(0.6, 1.4), (2.8, 1.2)]
         case .sleep: [(2.6, 1), (3.8, 1)]
         }
@@ -41,9 +45,15 @@ extension OnboardingSetupStep {
             ]
         case .alerts:
             [
-                OnboardingTimelineItem(id: 0, placement: .badge, start: 0.3, color: .orange),
-                OnboardingTimelineItem(id: 1, placement: .badge, start: 1.9, color: .orange),
-                OnboardingTimelineItem(id: 2, placement: .badge, start: 3.3, color: .orange)
+                OnboardingTimelineItem(
+                    id: 0, placement: .notification, start: 0.2, length: 1.4, color: .red, symbol: "calendar"
+                ),
+                OnboardingTimelineItem(
+                    id: 1, placement: .notification, start: 1.8, length: 1.4, color: .purple, symbol: "checklist"
+                ),
+                OnboardingTimelineItem(
+                    id: 2, placement: .notification, start: 3.4, length: 1.4, color: .blue, symbol: "calendar"
+                )
             ]
         case .weather:
             ["sun.max.fill", "cloud.sun.fill", "cloud.fill", "cloud.rain.fill", "cloud.sun.fill"]

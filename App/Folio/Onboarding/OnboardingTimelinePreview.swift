@@ -9,7 +9,7 @@ struct OnboardingTimelinePreview: View {
         GeometryReader { geometry in
             let rowHeight = geometry.size.height / Metrics.rowCount
             ZStack(alignment: .topLeading) {
-                ForEach(0..<Int(Metrics.rowCount), id: \.self) { row in
+                ForEach(0..<(step.showsHourLines ? Int(Metrics.rowCount) : 0), id: \.self) { row in
                     Rectangle()
                         .fill(.separator)
                         .frame(height: 1)
@@ -21,9 +21,9 @@ struct OnboardingTimelinePreview: View {
                         .frame(
                             width: width(of: item, in: geometry.size.width),
                             height: max(item.length * rowHeight - 3, 14),
-                            alignment: item.placement == .badge ? .topTrailing : .topLeading
+                            alignment: .topLeading
                         )
-                        .offset(x: item.placement == .gutter ? 0 : Metrics.gutter, y: item.start * rowHeight + 2)
+                        .offset(x: leadingOffset(of: item), y: item.start * rowHeight + 2)
                         .opacity(isShown(item) ? 1 : 0)
                         .scaleEffect(isShown(item) ? 1 : 0.8, anchor: .leading)
                         .offset(y: isShown(item) ? 0 : -12)
@@ -46,7 +46,12 @@ struct OnboardingTimelinePreview: View {
     }
 
     private func width(of item: OnboardingTimelineItem, in totalWidth: CGFloat) -> CGFloat {
-        item.placement == .gutter ? Metrics.gutter : max(totalWidth - Metrics.gutter, 0)
+        if item.placement == .gutter { return Metrics.gutter }
+        return item.spansFullWidth ? totalWidth : max(totalWidth - Metrics.gutter, 0)
+    }
+
+    private func leadingOffset(of item: OnboardingTimelineItem) -> CGFloat {
+        item.placement == .gutter || item.spansFullWidth ? 0 : Metrics.gutter
     }
 
     private func play() async {

@@ -5,7 +5,7 @@ struct OnboardingTimelineItem: Identifiable {
         case block
         case reminder
         case gutter
-        case badge
+        case notification
     }
 
     let id: Int
@@ -15,4 +15,8 @@ struct OnboardingTimelineItem: Identifiable {
     var color: Color = .gray
     var symbol: String?
     var isAnimated = true
+
+    var spansFullWidth: Bool {
+        placement == .notification
+    }
 }
