@@ -17,9 +17,9 @@ final class OnboardingTests: XCTestCase {
         XCTAssertTrue(setupTitle.waitForExistence(timeout: 5))
         attachScreenshot(named: "OnboardingSetup")
 
-        let notNow = app.buttons["OnboardingNotNow"]
-        for _ in 0..<OnboardingTests.maximumSetupSteps where notNow.waitForExistence(timeout: 3) {
-            notNow.tap()
+        let skip = app.buttons["OnboardingSkip"]
+        for _ in 0..<OnboardingTests.maximumSetupSteps where skip.waitForExistence(timeout: 3) {
+            skip.tap()
             _ = setupTitle.waitForNonExistence(timeout: 1)
         }
         XCTAssertTrue(setupTitle.waitForNonExistence(timeout: 5))

@@ -42,7 +42,6 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
 
     var title: String { localized("Title") }
     var description: String { localized("Description") }
-    var actionTitle: String { localized("Action") }
 
     private func localized(_ suffix: String) -> String {
         let key = "Setup.\(rawValue.prefix(1).uppercased() + rawValue.dropFirst()).\(suffix)"

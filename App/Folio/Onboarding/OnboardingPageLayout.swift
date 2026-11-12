@@ -62,7 +62,7 @@ struct OnboardingPageLayout<Content: View>: View {
     @ViewBuilder private var secondaryButton: some View {
         if let secondaryTitle, let secondaryAction {
             Button(secondaryTitle, action: secondaryAction)
-                .accessibilityIdentifier("OnboardingNotNow")
+                .accessibilityIdentifier("OnboardingSkip")
         }
     }
 

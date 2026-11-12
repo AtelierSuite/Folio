@@ -7,10 +7,10 @@ struct OnboardingSetupPage: View {
 
     var body: some View {
         OnboardingPageLayout(
-            buttonTitle: step.actionTitle,
+            buttonTitle: String(localized: "Action.Continue", table: "Onboarding"),
             buttonIdentifier: "OnboardingSetUp",
             action: onSetUp,
-            secondaryTitle: String(localized: "Action.NotNow", table: "Onboarding"),
+            secondaryTitle: String(localized: "Action.SkipForNow", table: "Onboarding"),
             secondaryAction: onSkip
         ) {
             Image(systemName: step.systemImage)
