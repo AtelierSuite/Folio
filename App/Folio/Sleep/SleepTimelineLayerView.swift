@@ -9,8 +9,12 @@ struct SleepTimelineLayerView: View {
     var body: some View {
         TimelineSlotLayout(dayCount: context.days.count, hourHeight: context.hourHeight) {
             ForEach(blocks) { block in
-                SleepBlockView(isAsleep: block.isAsleep, showsIcon: block.isSessionStart)
+                SleepBlockView(isAsleep: block.isAsleep)
                     .timelineSlot(TimelineSlot(block.segment))
+            }
+            ForEach(summaries) { summary in
+                SleepSummaryLabel(asleepDuration: summary.asleepDuration)
+                    .timelineSlot(TimelineSlot(summary.segment))
             }
         }
         .allowsHitTesting(false)
@@ -28,9 +32,18 @@ struct SleepTimelineLayerView: View {
                 context.days.segments(from: stretch.interval.start, to: stretch.interval.end)
                     .map { (isAsleep: stretch.isAsleep, daySegment: $0) }
             }
-            return daySegments.enumerated().map { index, item in
-                SleepBlock(isAsleep: item.isAsleep, segment: item.daySegment, isSessionStart: index == 0)
+            return daySegments.map { item in
+                SleepBlock(isAsleep: item.isAsleep, segment: item.daySegment)
             }
+        }
+    }
+
+    private var summaries: [SleepSessionLabel] {
+        sessions.compactMap { session in
+            guard let segment = context.days.segments(
+                from: session.interval.start, to: session.interval.end
+            ).first else { return nil }
+            return SleepSessionLabel(asleepDuration: session.asleepDuration, segment: segment)
         }
     }
 
@@ -63,7 +76,13 @@ struct SleepTimelineLayerView: View {
 private struct SleepBlock: Identifiable {
     let isAsleep: Bool
     let segment: TimelineDaySegment
-    let isSessionStart: Bool
+
+    var id: TimelineDaySegment { segment }
+}
+
+private struct SleepSessionLabel: Identifiable {
+    let asleepDuration: TimeInterval
+    let segment: TimelineDaySegment
 
     var id: TimelineDaySegment { segment }
 }
