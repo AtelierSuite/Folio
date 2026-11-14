@@ -3,15 +3,12 @@ import SwiftUI
 struct OnboardingSetupPage: View {
     let step: OnboardingSetupStep
     let onSetUp: () -> Void
-    let onSkip: () -> Void
 
     var body: some View {
         OnboardingPageLayout(
             buttonTitle: String(localized: "Action.Continue", table: "Onboarding"),
             buttonIdentifier: "OnboardingSetUp",
-            action: onSetUp,
-            secondaryTitle: String(localized: "Action.SkipForNow", table: "Onboarding"),
-            secondaryAction: onSkip
+            action: onSetUp
         ) {
             OnboardingGraphic(step: step)
                 .id(step)

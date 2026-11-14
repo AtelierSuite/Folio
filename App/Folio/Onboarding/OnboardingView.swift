@@ -25,8 +25,6 @@ struct OnboardingView: View {
                         await setup.setUp(setupStep)
                         advance()
                     }
-                } onSkip: {
-                    advance()
                 }
                 .id(setupStep)
             }
