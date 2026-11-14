@@ -4,8 +4,6 @@ struct OnboardingPageLayout<Content: View>: View {
     let buttonTitle: String
     let buttonIdentifier: String
     let action: () -> Void
-    var secondaryTitle: String?
-    var secondaryAction: (() -> Void)?
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -20,7 +18,6 @@ struct OnboardingPageLayout<Content: View>: View {
             Divider()
             HStack {
                 Spacer()
-                secondaryButton
                 button
             }
             .padding(.horizontal, 20)
@@ -43,12 +40,9 @@ struct OnboardingPageLayout<Content: View>: View {
         .scrollBounceBehavior(.basedOnSize)
         .scrollEdgeEffectStyle(.soft, for: .bottom)
         .safeAreaBar(edge: .bottom, spacing: 0) {
-            VStack(spacing: 16) {
-                button
-                secondaryButton
-            }
-            .frame(maxWidth: 560)
-            .padding(24)
+            button
+                .frame(maxWidth: 560)
+                .padding(24)
         }
         .background(alignment: .top) { accentGlow.ignoresSafeArea() }
         #endif
@@ -57,13 +51,6 @@ struct OnboardingPageLayout<Content: View>: View {
     private var button: some View {
         OnboardingContinueButton(title: buttonTitle, action: action)
             .accessibilityIdentifier(buttonIdentifier)
-    }
-
-    @ViewBuilder private var secondaryButton: some View {
-        if let secondaryTitle, let secondaryAction {
-            Button(secondaryTitle, action: secondaryAction)
-                .accessibilityIdentifier("OnboardingSkip")
-        }
     }
 
     private var accentGlow: some View {
