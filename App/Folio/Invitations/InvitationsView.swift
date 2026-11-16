@@ -23,7 +23,7 @@ struct InvitationsView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 #endif
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button(role: .confirm) { dismiss() }
                     }
                     #if os(macOS)
