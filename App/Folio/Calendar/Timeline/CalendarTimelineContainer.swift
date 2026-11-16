@@ -5,6 +5,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(CalendarStore.self) var store
     @Environment(UndoCoordinator.self) var undoCoordinator
     @Environment(CalendarNavigation.self) var navigation
+    @Environment(MedicationStore.self) private var medicationStore
     @Environment(\.platformCapabilities) private var capabilities
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
@@ -27,6 +28,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State var entries: [TimelineEntry] = []
     @State var eventsByEntryIdentifier: [String: CalendarEvent] = [:]
     @State var remindersByEntryIdentifier: [String: ReminderItem] = [:]
+    @State private var medicationMarkersByEntryIdentifier: [String: MedicationDoseMarker] = [:]
     @State var drag = TimelineDragController()
     @State var dropHandler = CalendarDropHandler()
     @State var dragSource: CalendarDragSource?
@@ -82,6 +84,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
             .environment(drag)
             .environment(\.weatherSnapshot, weather)
             .environment(\.travelEstimates, travelEstimates)
+            .environment(\.medicationDoseMarkers, medicationMarkersByEntryIdentifier)
             .reminderCompletion(
                 undoCoordinator: undoCoordinator, remindersByEntryIdentifier: remindersByEntryIdentifier
             )
@@ -90,7 +93,11 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         .modifier(scrollSync)
         .focusedSceneValue(\.timelineZoom, zoom)
         .task(id: LoadKey(
-            revision: store.contentRevision, span: strip.days.span, excluded: excludedCalendarIdentifiers
+            revision: store.contentRevision,
+            medicationRevision: medicationStore.revision,
+            showsMedications: medicationStore.isShownOnTimeline,
+            span: strip.days.span,
+            excluded: excludedCalendarIdentifiers
         )) {
             await load()
         }
@@ -126,14 +133,18 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         let calendar = strip.calendar
         async let events = store.events(in: span)
         async let reminders = store.reminders(in: span, calendar: calendar)
+        async let doses = medicationStore.doses(in: span)
         let shownEvents = await events.filter { !excludedCalendarIdentifiers.contains($0.calendarIdentifier) }
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
+        let medicationMarkers = await MedicationDoseMarker.markers(for: doses)
         guard !Task.isCancelled else { return }
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
+        medicationMarkersByEntryIdentifier = Dictionary(uniqueKeysWithValues: medicationMarkers.map { ($0.id, $0) })
         self.events = shownEvents
         entries = EventDuplicateDetector(calendar: calendar).groups(in: shownEvents).map(TimelineEntry.init(group:))
             + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
+            + medicationMarkers.map { $0.timelineEntry(in: calendar.timeZone) }
         relayout()
     }
 
@@ -143,6 +154,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
 
     private struct LoadKey: Equatable {
         let revision: Int
+        let medicationRevision: Int
+        let showsMedications: Bool
         let span: DateInterval?
         let excluded: Set<String>
     }
