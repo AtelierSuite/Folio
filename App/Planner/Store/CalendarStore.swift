@@ -25,6 +25,7 @@ public final class CalendarStore {
     @ObservationIgnored let visibilityStorage: CalendarVisibilityStorage
     @ObservationIgnored let reminderSettings: ReminderSettings
     @ObservationIgnored let flexTimeStorage: FlexTimeStorage
+    @ObservationIgnored let reminderNotifications: any ReminderNotificationDismissing
     @ObservationIgnored let now: @Sendable () -> Date
     @ObservationIgnored var visibleInterval: DateInterval?
     @ObservationIgnored private var changeObservation: Task<Void, Never>?
@@ -35,6 +36,7 @@ public final class CalendarStore {
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
         reminderSettings: ReminderSettings = ReminderSettings(),
         flexTimeStorage: FlexTimeStorage = FlexTimeStorage(),
+        reminderNotifications: any ReminderNotificationDismissing = NoReminderNotificationDismisser(),
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.source = source
@@ -42,6 +44,7 @@ public final class CalendarStore {
         self.visibilityStorage = visibilityStorage
         self.reminderSettings = reminderSettings
         self.flexTimeStorage = flexTimeStorage
+        self.reminderNotifications = reminderNotifications
         self.now = now
         overdueReminderPolicy = reminderSettings.overduePolicy
         eventAuthorization = source.authorizationStatus(for: .event)
