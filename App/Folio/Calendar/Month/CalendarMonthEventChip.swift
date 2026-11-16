@@ -3,12 +3,13 @@ import SwiftUI
 
 struct CalendarMonthEventChip: View {
     let item: MonthDayItem
+    @AppStorage(TimelineSettings.compressesTextKey) private var compressesText = false
 
     private let shape = Rectangle()
 
     var body: some View {
         TimelineEntryTitleView(entry: item.entry)
-            .calendarMonthTextFit()
+            .horizontalTextFit(isEnabled: compressesText)
             .font(.caption2.weight(.semibold))
             .lineLimit(1)
             .padding(.horizontal, 3)

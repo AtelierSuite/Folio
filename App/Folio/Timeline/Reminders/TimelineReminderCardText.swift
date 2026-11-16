@@ -8,32 +8,19 @@ struct TimelineReminderCardText: View {
     let textMetrics: TimelineCardTextMetrics
     let compressesText: Bool
 
-    private var titleSize: CGFloat {
-        textMetrics.titlePointSize * presentation.textScale
-    }
-
-    private var detailSize: CGFloat {
-        textMetrics.detailPointSize * presentation.textScale
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: textMetrics.lineSpacing) {
             TimelineReminderTitleView(entry: entry)
-                .font(.system(size: titleSize, weight: .semibold))
+                .font(.system(size: textMetrics.titlePointSize, weight: .semibold))
                 .lineLimit(presentation.titleLineLimit)
-                .minimumScaleFactor(minimumScaleFactor(for: titleSize))
+                .horizontalTextFit(isEnabled: compressesText && presentation.titleLineLimit == 1)
             if presentation.detail >= .titleAndTime {
                 Text(timeDescription)
-                    .font(.system(size: detailSize))
+                    .font(.system(size: textMetrics.detailPointSize))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(minimumScaleFactor(for: detailSize))
+                    .horizontalTextFit(isEnabled: compressesText)
             }
         }
-    }
-
-    private func minimumScaleFactor(for pointSize: CGFloat) -> CGFloat {
-        guard compressesText, pointSize > 0 else { return 1 }
-        return min(1, textMetrics.minimumPointSize / pointSize)
     }
 }

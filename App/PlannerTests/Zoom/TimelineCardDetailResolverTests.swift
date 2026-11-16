@@ -23,14 +23,14 @@ struct TimelineCardDetailResolverTests {
     }
 
     @Test func eachLevelNeedsMoreRoomThanTheOneBelow() {
-        let heights = TimelineCardDetail.allCases.map { resolver().requiredHeight(for: $0, textScale: 1) }
+        let heights = TimelineCardDetail.allCases.map { resolver().requiredHeight(for: $0) }
         #expect(heights == heights.sorted())
         #expect(Set(heights).count == heights.count)
     }
 
     @Test func cardOfExactlyTheRequiredHeightGetsThatLevel() {
         for level in [TimelineCardDetail.titleAndTime, .full] {
-            let height = resolver().requiredHeight(for: level, textScale: 1)
+            let height = resolver().requiredHeight(for: level)
             #expect(detail(height: height) == level)
             #expect(detail(height: height - 0.5) < level)
         }
@@ -56,41 +56,10 @@ struct TimelineCardDetailResolverTests {
         #expect(detail(height: 36) == .titleAndTime)
     }
 
-    @Test func normalModeNeverScalesText() {
-        for height in stride(from: CGFloat(4), through: 200, by: 3) {
-            let presentation = resolver().presentation(for: CGSize(width: 200, height: height))
-            #expect(presentation.textScale == 1 || presentation.detail == .bar)
+    @Test func compressModeKeepsTheSameDetailForTheHeight() {
+        for height in stride(from: CGFloat(4), through: 200, by: 1.5) {
+            #expect(detail(height: height, compressing: true) == detail(height: height))
         }
-    }
-
-    @Test func compressModeScalesInsteadOfDroppingDetail() {
-        let presentation = resolver(compressing: true).presentation(for: CGSize(width: 200, height: 26))
-        #expect(presentation.detail == .titleAndTime)
-        #expect(presentation.textScale < 1)
-        #expect(presentation.textScale >= metrics.minimumTextScale)
-        #expect(detail(height: 26) == .title)
-    }
-
-    @Test func compressedTextFitsTheCard() {
-        let compressing = resolver(compressing: true)
-        for height in stride(from: CGFloat(4), through: 80, by: 1.5) {
-            let presentation = compressing.presentation(for: CGSize(width: 200, height: height))
-            guard presentation.detail != .bar else { continue }
-            let needed = compressing.requiredHeight(
-                for: presentation.detail, textScale: presentation.textScale, padded: presentation.showsPadding
-            )
-            #expect(needed <= height + 0.001)
-        }
-    }
-
-    @Test func compressedTextStopsAtTheMinimumSizeThenBecomesABar() {
-        let compressing = resolver(compressing: true)
-        let smallest = metrics.minimumPointSize
-        let tooSmall = compressing.presentation(for: CGSize(width: 200, height: smallest - 0.5))
-        #expect(tooSmall.detail == .bar)
-        let justFits = compressing.presentation(for: CGSize(width: 200, height: smallest))
-        #expect(justFits.detail == .title)
-        #expect(abs(justFits.textScale * metrics.titlePointSize - smallest) < 0.001)
     }
 
     @Test func compressModeKeepsNarrowerCardsAsText() {
