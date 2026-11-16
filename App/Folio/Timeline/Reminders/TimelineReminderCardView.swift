@@ -14,10 +14,6 @@ struct TimelineReminderCardView: View {
         placement.entry
     }
 
-    private var titleSize: CGFloat {
-        textMetrics.titlePointSize * presentation.textScale
-    }
-
     private let shape = Rectangle()
 
     var body: some View {
@@ -30,7 +26,7 @@ struct TimelineReminderCardView: View {
             } else {
                 HStack(alignment: .top, spacing: 2) {
                     TimelineReminderCheckbox(entry: entry)
-                        .font(.system(size: titleSize))
+                        .font(.system(size: textMetrics.titlePointSize))
                     TimelineReminderCardText(
                         entry: entry,
                         timeDescription: timeDescription,

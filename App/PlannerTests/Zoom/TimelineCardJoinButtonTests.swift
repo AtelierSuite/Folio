@@ -23,7 +23,7 @@ struct TimelineCardJoinButtonTests {
     }
 
     @Test func hidesWhenItWouldCrowdTheTitle() {
-        let minimumWidth = resolver.minimumWidth(textScale: 1)
+        let minimumWidth = resolver.minimumWidth
         #expect(!showsJoinButton(width: minimumWidth + 10, height: 120))
         #expect(showsJoinButton(width: minimumWidth + 24, height: 120))
     }

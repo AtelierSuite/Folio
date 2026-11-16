@@ -8,7 +8,7 @@ public struct TimelineCardTextMetrics: Sendable, Equatable {
     public var lineSpacing: CGFloat = 1
     public var verticalPadding: CGFloat = 4
     public var horizontalPadding: CGFloat = 9
-    public var minimumPointSize: CGFloat = 6.5
+    public var minimumHorizontalTextScale: CGFloat = 0.5
     public var maximumTitleLines = 4
 
     public init(titlePointSize: CGFloat, detailPointSize: CGFloat) {
@@ -22,9 +22,5 @@ public struct TimelineCardTextMetrics: Sendable, Equatable {
 
     public var detailLineHeight: CGFloat {
         detailPointSize * lineHeightMultiple
-    }
-
-    public var minimumTextScale: CGFloat {
-        min(1, minimumPointSize / max(titlePointSize, minimumPointSize))
     }
 }

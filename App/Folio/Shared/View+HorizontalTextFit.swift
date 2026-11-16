@@ -1,20 +1,21 @@
 import SwiftUI
 
 extension View {
-    func calendarMonthTextFit() -> some View {
-        modifier(CalendarMonthTextFit())
+    /// Narrows a single line of text to fit its width, keeping its height, like the month view in Calendar.
+    func horizontalTextFit(isEnabled: Bool) -> some View {
+        modifier(HorizontalTextFit(isEnabled: isEnabled))
     }
 }
 
-private struct CalendarMonthTextFit: ViewModifier {
-    @AppStorage(TimelineSettings.compressesTextKey) private var compressesText = false
+private struct HorizontalTextFit: ViewModifier {
+    let isEnabled: Bool
     @State private var naturalWidth: CGFloat = 0
     @State private var availableWidth: CGFloat = 0
 
     private static let minimumHorizontalScale: CGFloat = 0.5
 
     func body(content: Content) -> some View {
-        if compressesText {
+        if isEnabled {
             content
                 .hidden()
                 .frame(maxWidth: .infinity, alignment: .leading)

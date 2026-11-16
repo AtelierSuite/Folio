@@ -5,7 +5,6 @@ extension TimelineCardDetailResolver {
     public func showsJoinButton(
         for presentation: TimelineCardPresentation, cardSize: CGSize, buttonWidth: CGFloat
     ) -> Bool {
-        presentation.detail >= .titleAndTime
-            && cardSize.width >= minimumWidth(textScale: presentation.textScale) + buttonWidth
+        presentation.detail >= .titleAndTime && cardSize.width >= minimumWidth + buttonWidth
     }
 }
