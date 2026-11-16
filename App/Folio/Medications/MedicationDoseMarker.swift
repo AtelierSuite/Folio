@@ -7,7 +7,7 @@ struct MedicationDoseMarker: Identifiable {
     let names: [String]
     let status: MedicationDoseStatus
 
-    var id: Date { date }
+    var id: String { "medication.\(date.timeIntervalSinceReferenceDate)" }
 
     static func markers(for doses: [MedicationDose]) -> [MedicationDoseMarker] {
         Dictionary(grouping: doses, by: \.date)
@@ -20,6 +20,21 @@ struct MedicationDoseMarker: Identifiable {
                 )
             }
             .sorted { $0.date < $1.date }
+    }
+
+    /// Laid out like a timed reminder so it shares columns with the cards at the same time.
+    func timelineEntry(in timeZone: TimeZone) -> TimelineEntry {
+        TimelineEntry(
+            id: id,
+            title: title,
+            start: date,
+            end: date,
+            timeZone: timeZone,
+            color: TimelineColor(red: 0.19, green: 0.69, blue: 0.78),
+            isReadOnly: true,
+            kind: .medication,
+            isCompleted: status == .taken || status == .skipped
+        )
     }
 
     var title: String {

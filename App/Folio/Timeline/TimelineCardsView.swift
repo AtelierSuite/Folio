@@ -31,7 +31,9 @@ struct TimelineCardsView: View {
                 )
                 let presentation = resolver.presentation(for: size)
                 Group {
-                    if placement.entry.kind == .reminder {
+                    if placement.entry.kind == .medication {
+                        TimelineMedicationCardView(entry: placement.entry)
+                    } else if placement.entry.kind == .reminder {
                         TimelineReminderCardView(
                             placement: placement,
                             timeZone: layout.days.calendar.timeZone,

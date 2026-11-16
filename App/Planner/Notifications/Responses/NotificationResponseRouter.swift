@@ -11,6 +11,9 @@ public struct NotificationResponseRouter: Sendable {
     }
 
     public func outcome(actionIdentifier: String, userInfo: [AnyHashable: Any]) -> NotificationResponseOutcome? {
+        if NotificationUserInfo.medication(from: userInfo) != nil {
+            return actionIdentifier == UNNotificationDefaultActionIdentifier ? .open(.url(HealthApp.browseURL)) : nil
+        }
         guard let item = NotificationUserInfo.item(from: userInfo) else { return nil }
         let meeting = NotificationUserInfo.meeting(from: userInfo)
         if actionIdentifier == UNNotificationDefaultActionIdentifier {
