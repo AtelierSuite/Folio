@@ -28,6 +28,15 @@ struct NotificationResponseRouterTests {
         #expect(meetingURL == NotificationActionFixtures.zoomURL)
     }
 
+    @Test func tappingAMedicationAlertOpensHealth() {
+        let reminder = MedicationReminder(date: meetingStart, doses: [])
+        let outcome = NotificationResponseRouter(now: meetingStart).outcome(
+            actionIdentifier: UNNotificationDefaultActionIdentifier,
+            userInfo: NotificationUserInfo.make(for: reminder)
+        )
+        #expect(outcome == .open(.url(HealthApp.browseURL)))
+    }
+
     @Test func tappingLongBeforeTheMeetingOnlyOpensTheEvent() throws {
         let router = NotificationResponseRouter(now: meetingStart.addingTimeInterval(-2 * 3600))
         let outcome = router.outcome(actionIdentifier: UNNotificationDefaultActionIdentifier, userInfo: try meeting())
