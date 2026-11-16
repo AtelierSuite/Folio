@@ -37,7 +37,7 @@ struct FolioApp: App {
         #if DEBUG
         ScreenshotStage.prepareSettings()
         #endif
-        let calendarStore = CalendarStore()
+        let calendarStore = CalendarStore(reminderNotifications: UserNotificationReminderDismisser())
         _calendarStore = State(initialValue: calendarStore)
         let notificationScheduler = NotificationScheduler()
         let notificationNavigator = NotificationNavigator()

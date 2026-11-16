@@ -8,6 +8,7 @@ extension CalendarStore: ReminderCompleting {
             guard let reminder = await reminder(matching: reference) else { throw CalendarDataSourceError.itemNotFound }
             try await source.setCompleted(true, reminderIdentifier: reminder.reference.localIdentifier)
         }
+        await reminderNotifications.dismissNotifications(for: reference)
         await handleExternalChange()
     }
 }

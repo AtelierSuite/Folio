@@ -18,6 +18,9 @@ extension CalendarStore {
 
     public func setCompleted(_ isCompleted: Bool, for reminder: ReminderItem) async throws {
         try await source.setCompleted(isCompleted, reminderIdentifier: reminder.reference.localIdentifier)
+        if isCompleted {
+            await reminderNotifications.dismissNotifications(for: reminder.reference)
+        }
         await handleExternalChange()
     }
 

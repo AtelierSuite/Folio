@@ -6,7 +6,10 @@ public struct ReminderIntentActions {
     private let store: CalendarStore
     private let calendar: Calendar
 
-    public init(store: CalendarStore = CalendarStore(), calendar: Calendar = .current) {
+    public init(
+        store: CalendarStore = CalendarStore(reminderNotifications: UserNotificationReminderDismisser()),
+        calendar: Calendar = .current
+    ) {
         self.store = store
         self.calendar = calendar
     }
