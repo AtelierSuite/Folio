@@ -113,13 +113,14 @@ struct EventDetailView: View {
             doneButton
         }
         #else
-        ToolbarItem(placement: .cancellationAction) {
-            doneButton
-        }
         if !event.isReadOnly {
             ToolbarItem(placement: .primaryAction) {
                 editButton
             }
+            ToolbarSpacer(.fixed, placement: .primaryAction)
+        }
+        ToolbarItem(placement: .confirmationAction) {
+            doneButton
         }
         #endif
     }
