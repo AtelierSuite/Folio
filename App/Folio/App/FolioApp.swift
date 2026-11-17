@@ -4,6 +4,8 @@ import SwiftUI
 
 @main
 struct FolioApp: App {
+    /// Declared first so the stores below read synced settings when they load.
+    @State private var settingsSync = SettingsCloudSync.startedForApp()
     @State private var calendarStore: CalendarStore
     @State private var permissionCenter: PermissionCenter
     @State private var notesLibrary: NotesLibrary
@@ -101,6 +103,7 @@ struct FolioApp: App {
     var body: some Scene {
         WindowGroup(id: Self.mainWindowIdentifier) {
             RootView()
+                .reloadsSyncedSettings(from: settingsSync)
                 .updatesSearchIndex()
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
