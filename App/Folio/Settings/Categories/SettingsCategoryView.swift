@@ -19,6 +19,7 @@ struct SettingsCategoryView: View {
         case .travel: TravelSettingsView()
         case .countdowns: CountdownSettingsView()
         case .focusLevel: FocusLevelSettingsView()
+        case .workouts: WorkoutSettingsView()
         case .sleep: SleepSettingsView()
         case .medications: MedicationSettingsView()
         case .weather: WeatherSettingsView()
