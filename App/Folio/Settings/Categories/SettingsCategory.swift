@@ -15,6 +15,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case travel
     case countdowns
     case focusLevel
+    case workouts
     case sleep
     case medications
     case weather
@@ -41,6 +42,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: String(localized: "Category.Travel", table: "Settings")
         case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
         case .focusLevel: String(localized: "Category.FocusLevel", table: "Settings")
+        case .workouts: String(localized: "Category.Workouts", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .medications: String(localized: "Category.Medications", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
@@ -67,6 +69,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: "car.fill"
         case .countdowns: "timer"
         case .focusLevel: "bolt.fill"
+        case .workouts: "figure.run"
         case .sleep: "bed.double.fill"
         case .medications: "pills.fill"
         case .weather: "cloud.sun.fill"
@@ -93,6 +96,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: .blue
         case .countdowns: .green
         case .focusLevel: .orange
+        case .workouts: Color(.lime)
         case .sleep: .indigo
         case .medications: .teal
         case .weather: .cyan
@@ -117,6 +121,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .focusLevel, .sleep: capabilities.supports(.sleep)
         case .medications: capabilities.supports(.medications)
+        case .workouts: capabilities.supports(.workouts)
         default: true
         }
     }

@@ -23,6 +23,7 @@ struct FolioApp: App {
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var travelTimeStore = TravelTimeStore()
     @State private var sleepStore: SleepStore
+    @State private var workoutStore = WorkoutStore.makeForApp()
     @State private var flexTime: FlexTimeCenter
     @State private var medicationStore: MedicationStore
     @State private var systemTime = SystemTimeObserver()
@@ -126,6 +127,8 @@ struct FolioApp: App {
                 .environment(travelTimeStore)
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
+                .environment(workoutStore)
+                .refreshesWorkouts(workoutStore)
                 .environment(flexTime)
                 .environment(medicationStore)
                 .refreshesMedications(medicationStore)
@@ -181,6 +184,7 @@ struct FolioApp: App {
             .environment(weatherStore)
             .environment(travelTimeStore)
             .environment(sleepStore)
+            .environment(workoutStore)
             .environment(flexTime)
             .environment(medicationStore)
             .followsSystemTime(systemTime)

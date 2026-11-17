@@ -8,18 +8,23 @@ struct EnergyBoltGauge: View {
     private let segmentCount = EnergyCurve.gaugeSegmentCount
 
     var body: some View {
-        Image(systemName: "bolt")
-            .overlay {
-                Image(systemName: "bolt.fill")
-                    .mask {
-                        VStack(spacing: 0) {
-                            ForEach(0..<segmentCount, id: \.self) { band in
-                                Rectangle().opacity(band >= segmentCount - filledSegments ? 1 : 0)
-                            }
-                        }
-                    }
+        // The outline is masked to the empty bands so it never sits under the fill,
+        // where a translucent .secondary would double up and draw a lighter inner bolt.
+        ZStack {
+            Image(systemName: "bolt")
+                .mask { bands(filled: false) }
+            Image(systemName: "bolt.fill")
+                .mask { bands(filled: true) }
+        }
+        .font(.system(size: 12, weight: .semibold))
+        .foregroundStyle(filledSegments == segmentCount ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
+    }
+
+    private func bands(filled: Bool) -> some View {
+        VStack(spacing: 0) {
+            ForEach(0..<segmentCount, id: \.self) { band in
+                Rectangle().opacity((band >= segmentCount - filledSegments) == filled ? 1 : 0)
             }
-            .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(filledSegments == segmentCount ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
+        }
     }
 }

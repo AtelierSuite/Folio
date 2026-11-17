@@ -787,61 +787,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erstellt eine Markdown-Notiz in deinem Notizenordner."
+            "value" : "Erstellt eine Notiz in deinem Notizenordner."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creates a Markdown note in your notes folder."
+            "value" : "Creates a note in your notes folder."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crée une note Markdown dans votre dossier de notes."
+            "value" : "Crée une note dans votre dossier de notes."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crea una nota Markdown nella cartella delle note."
+            "value" : "Crea una nota nella cartella delle note."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メモのフォルダに Markdown のメモを作成します。"
+            "value" : "メモのフォルダにメモを作成します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "메모 폴더에 Markdown 메모를 만듭니다."
+            "value" : "메모 폴더에 메모를 만듭니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Maakt een Markdown-notitie aan in je notitiemap."
+            "value" : "Maakt een notitie aan in je notitiemap."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tạo ghi chú Markdown trong thư mục ghi chú của bạn."
+            "value" : "Tạo ghi chú trong thư mục ghi chú của bạn."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在笔记文件夹中创建 Markdown 笔记。"
+            "value" : "在笔记文件夹中创建笔记。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在筆記資料夾中建立 Markdown 筆記。"
+            "value" : "在筆記資料夾中建立筆記。"
           }
         }
       }

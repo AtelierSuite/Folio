@@ -1112,61 +1112,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deine Markdown-Notizen werden hier angezeigt."
+            "value": "Deine Notizen werden hier angezeigt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markdown notes you write will appear here."
+            "value": "Notes you write will appear here."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les notes Markdown que vous écrivez s’afficheront ici."
+            "value": "Les notes que vous écrivez s’afficheront ici."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le note Markdown che scrivi verranno mostrate qui."
+            "value": "Le note che scrivi verranno mostrate qui."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "作成したMarkdownメモがここに表示されます。"
+            "value": "作成したメモがここに表示されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "작성한 Markdown 메모가 여기에 표시됩니다."
+            "value": "작성한 메모가 여기에 표시됩니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markdown-notities die je schrijft worden hier weergegeven."
+            "value": "Notities die je schrijft worden hier weergegeven."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Các ghi chú Markdown bạn viết sẽ xuất hiện tại đây."
+            "value": "Các ghi chú bạn viết sẽ xuất hiện tại đây."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "你写的 Markdown 笔记将显示在这里。"
+            "value": "你写的笔记将显示在这里。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "你寫的 Markdown 筆記將顯示在這裡。"
+            "value": "你寫的筆記將顯示在這裡。"
           }
         }
       }
@@ -1827,61 +1827,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notizen werden als Markdown-Dateien gesichert. iCloud Drive synchronisiert sie auf deinen Geräten, und mit einem Ordner deiner Wahl kannst du sie mit anderen Apps wie Obsidian teilen."
+            "value": "Notizen werden als Textdateien gesichert. iCloud Drive synchronisiert sie auf deinen Geräten, und mit einem Ordner deiner Wahl kannst du sie mit anderen Apps wie Obsidian teilen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notes are saved as Markdown files. iCloud Drive keeps them in sync across your devices, and a folder of your choice lets you share them with other apps, such as Obsidian."
+            "value": "Notes are saved as plain text files. iCloud Drive keeps them in sync across your devices, and a folder of your choice lets you share them with other apps, such as Obsidian."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les notes sont enregistrées en fichiers Markdown. iCloud Drive les synchronise sur vos appareils, et un dossier de votre choix permet de les partager avec d’autres apps, comme Obsidian."
+            "value": "Les notes sont enregistrées en fichiers texte. iCloud Drive les synchronise sur vos appareils, et un dossier de votre choix permet de les partager avec d’autres apps, comme Obsidian."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le note vengono salvate come file Markdown. iCloud Drive le sincronizza sui tuoi dispositivi e una cartella a scelta ti permette di condividerle con altre app, come Obsidian."
+            "value": "Le note vengono salvate come file di testo. iCloud Drive le sincronizza sui tuoi dispositivi e una cartella a scelta ti permette di condividerle con altre app, come Obsidian."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "メモはMarkdownファイルとして保存されます。iCloud Driveではデバイス間で同期され、選択したフォルダではObsidianなどほかのAppと共有できます。"
+            "value": "メモはテキストファイルとして保存されます。iCloud Driveではデバイス間で同期され、選択したフォルダではObsidianなどほかのAppと共有できます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "메모는 Markdown 파일로 저장됩니다. iCloud Drive는 기기 간에 메모를 동기화하고, 선택한 폴더를 사용하면 Obsidian 등 다른 앱과 메모를 공유할 수 있습니다."
+            "value": "메모는 텍스트 파일로 저장됩니다. iCloud Drive는 기기 간에 메모를 동기화하고, 선택한 폴더를 사용하면 Obsidian 등 다른 앱과 메모를 공유할 수 있습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notities worden bewaard als Markdown-bestanden. iCloud Drive houdt ze synchroon op je apparaten en met een map naar keuze kun je ze delen met andere apps, zoals Obsidian."
+            "value": "Notities worden bewaard als tekstbestanden. iCloud Drive houdt ze synchroon op je apparaten en met een map naar keuze kun je ze delen met andere apps, zoals Obsidian."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ghi chú được lưu dưới dạng tệp Markdown. iCloud Drive đồng bộ ghi chú trên các thiết bị của bạn, còn thư mục bạn chọn cho phép chia sẻ ghi chú với ứng dụng khác như Obsidian."
+            "value": "Ghi chú được lưu dưới dạng tệp văn bản. iCloud Drive đồng bộ ghi chú trên các thiết bị của bạn, còn thư mục bạn chọn cho phép chia sẻ ghi chú với ứng dụng khác như Obsidian."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "笔记会存储为 Markdown 文件。iCloud 云盘可在你的设备间同步笔记，所选文件夹则可让你与 Obsidian 等其他 App 共享笔记。"
+            "value": "笔记会存储为文本文件。iCloud 云盘可在你的设备间同步笔记，所选文件夹则可让你与 Obsidian 等其他 App 共享笔记。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "筆記會儲存為 Markdown 檔案。iCloud 雲碟可在你的裝置間同步筆記，所選檔案夾則可讓你與 Obsidian 等其他 App 共享筆記。"
+            "value": "筆記會儲存為文字檔案。iCloud 雲碟可在你的裝置間同步筆記，所選檔案夾則可讓你與 Obsidian 等其他 App 共享筆記。"
           }
         }
       }

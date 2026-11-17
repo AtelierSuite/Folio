@@ -3576,6 +3576,71 @@
         }
       }
     },
+    "Prompt.Workouts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaube den Zugriff auf Health, um deine Trainings im Kalender anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your workouts on the calendar, allow access to Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour afficher vos exercices dans le calendrier, autorisez l’accès à Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per mostrare i tuoi allenamenti nel calendario, consenti l’accesso a Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワークアウトをカレンダーに表示するには、ヘルスケアへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "캘린더에 운동을 표시하려면 건강 앱에 대한 접근을 허용하십시오."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Gezondheid toe om je trainingen in je agenda te tonen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để hiển thị bài tập trên lịch, hãy cho phép truy cập Sức khỏe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要在日历上显示你的体能训练，请允许访问“健康”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要在行事曆上顯示你的體能訓練，請允許取用「健康」。"
+          }
+        }
+      }
+    },
     "Reminders.Denied.Description": {
       "extractionState": "manual",
       "localizations": {

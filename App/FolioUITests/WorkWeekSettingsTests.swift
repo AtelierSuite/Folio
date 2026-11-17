@@ -14,18 +14,31 @@ final class WorkWeekSettingsTests: XCTestCase {
         XCTAssertTrue(thursday.waitForExistence(timeout: 5))
         attachScreenshot(named: "WorkWeekSettings")
 
+        let calendarsRow = app.buttons["WorkWeek.Calendar.Selection"]
         let sampleToggle = app.switches.matching(identifier: "WorkWeek.Calendar.Folio Samples").firstMatch
+        openCalendarsSheet(calendarsRow, in: app)
         sampleToggle.swipeUpIfNeeded(in: app)
         setToggle(sampleToggle, isOn: false)
         attachScreenshot(named: "WorkWeekSettingsCalendars")
+        app.buttons["Done"].firstMatch.tap()
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForNonExistence(timeout: 5))
 
         app.tabBars.buttons["Settings"].firstMatch.tap()
+        openCalendarsSheet(calendarsRow, in: app)
         sampleToggle.swipeUpIfNeeded(in: app)
         setToggle(sampleToggle, isOn: true)
+        app.buttons["Done"].firstMatch.tap()
         app.tabBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.staticTexts["Lunch with Aiko"].waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    private func openCalendarsSheet(_ row: XCUIElement, in app: XCUIApplication) {
+        row.swipeUpIfNeeded(in: app)
+        row.tap()
+        XCTAssertTrue(app.switches.matching(identifier: "WorkWeek.Calendar.Folio Samples").firstMatch
+            .waitForExistence(timeout: 5))
     }
 
     @MainActor
