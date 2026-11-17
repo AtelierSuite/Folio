@@ -5,7 +5,7 @@ extension CalendarItemKind {
     var accountSymbolName: String {
         switch self {
         case .event: "calendar"
-        case .reminder: "checklist"
+        case .reminder: "list.bullet"
         }
     }
 
@@ -20,14 +20,10 @@ extension CalendarItemKind {
 struct CalendarKindLabel: View {
     let calendar: PlannerCalendar
     var subtitle: String?
-    var iconSize: CGFloat = 17
 
     var body: some View {
         HStack(spacing: 10) {
-            Image(systemName: calendar.kind.accountSymbolName)
-                .font(.system(size: iconSize))
-                .foregroundStyle(calendar.color.color)
-                .frame(width: iconSize + 4)
+            GradientCircleIcon(systemImage: calendar.kind.accountSymbolName, color: calendar.color.color)
                 .accessibilityLabel(calendar.kind.accountKindName)
             VStack(alignment: .leading, spacing: 2) {
                 Text(calendar.title)

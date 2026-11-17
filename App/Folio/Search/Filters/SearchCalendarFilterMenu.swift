@@ -28,7 +28,7 @@ struct SearchCalendarFilterMenu: View {
                 ForEach(CalendarAccountGroup.groups(calendars: calendars, lists: lists)) { group in
                     Section(group.title) {
                         ForEach(group.calendars) { calendar in
-                            CalendarKindLabel(calendar: calendar)
+                            Label(calendar.title, systemImage: calendar.kind.accountSymbolName)
                                 .tag(Optional(calendar.id))
                         }
                     }
