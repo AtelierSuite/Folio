@@ -96,7 +96,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: .blue
         case .countdowns: .green
         case .focusLevel: .orange
-        case .workouts: .green
+        case .workouts: Color(.lime)
         case .sleep: .indigo
         case .medications: .teal
         case .weather: .cyan

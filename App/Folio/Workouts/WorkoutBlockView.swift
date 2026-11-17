@@ -8,10 +8,10 @@ struct WorkoutBlockView: View {
 
     var body: some View {
         Rectangle()
-            .fill(Color.green.opacity(0.1))
+            .fill(Color(.lime).opacity(0.1))
             .overlay(alignment: .leading) {
                 Rectangle()
-                    .fill(Color.green.opacity(0.45))
+                    .fill(Color(.lime).opacity(0.45))
                     .frame(width: 3)
             }
             .overlay(alignment: .topLeading) {
@@ -33,7 +33,7 @@ private struct WorkoutBlockLabel: View {
                 .lineLimit(1)
         }
         .font(.caption2.weight(.medium))
-        .foregroundStyle(Color.green.opacity(0.85))
+        .foregroundStyle(Color(.lime))
         .padding(.leading, 7)
         .padding(.trailing, 2)
         .padding(.top, 3)
