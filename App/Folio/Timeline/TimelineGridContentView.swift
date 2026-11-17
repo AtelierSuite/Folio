@@ -22,13 +22,20 @@ struct TimelineGridContentView: View {
                 layers: gutterLayers,
                 context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
             )
-            TimelineHourLabelsView(
-                days: shownDays,
-                frames: frames,
-                columnsOnScreen: pages.columnsOnScreen,
-                hourHeight: hourHeight,
-                width: metrics.hourLabelWidth
-            )
+            ZStack(alignment: .topLeading) {
+                TimelineLayersView(
+                    layers: layers.filter { $0.placement == .behindHourLabels },
+                    context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
+                )
+                .frame(width: metrics.hourLabelWidth, height: hourHeight * 24, alignment: .topLeading)
+                TimelineHourLabelsView(
+                    days: shownDays,
+                    frames: frames,
+                    columnsOnScreen: pages.columnsOnScreen,
+                    hourHeight: hourHeight,
+                    width: metrics.hourLabelWidth
+                )
+            }
             TimelinePageScrollView(
                 pages: pages,
                 position: $position,
