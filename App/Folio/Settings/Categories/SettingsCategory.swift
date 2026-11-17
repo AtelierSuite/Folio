@@ -14,6 +14,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case wakeUpAlarm
     case travel
     case countdowns
+    case focusLevel
     case sleep
     case medications
     case weather
@@ -39,6 +40,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .wakeUpAlarm: String(localized: "Section", table: "WakeUpAlarms")
         case .travel: String(localized: "Category.Travel", table: "Settings")
         case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
+        case .focusLevel: String(localized: "Category.FocusLevel", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .medications: String(localized: "Category.Medications", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
@@ -64,6 +66,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .wakeUpAlarm: "alarm.fill"
         case .travel: "car.fill"
         case .countdowns: "timer"
+        case .focusLevel: "bolt.fill"
         case .sleep: "bed.double.fill"
         case .medications: "pills.fill"
         case .weather: "cloud.sun.fill"
@@ -89,6 +92,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .wakeUpAlarm: .orange
         case .travel: .blue
         case .countdowns: .green
+        case .focusLevel: .orange
         case .sleep: .indigo
         case .medications: .teal
         case .weather: .cyan
@@ -111,7 +115,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         switch self {
         case .wakeUpAlarm: capabilities.supports(.alarms)
         case .countdowns: capabilities.supports(.liveActivityCountdown)
-        case .sleep: capabilities.supports(.sleep)
+        case .focusLevel, .sleep: capabilities.supports(.sleep)
         case .medications: capabilities.supports(.medications)
         default: true
         }

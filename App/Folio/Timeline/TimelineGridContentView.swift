@@ -22,13 +22,22 @@ struct TimelineGridContentView: View {
                 layers: gutterLayers,
                 context: TimelineLayerContext(days: gutterDays, hourHeight: hourHeight)
             )
-            TimelineHourLabelsView(
-                days: shownDays,
-                frames: frames,
-                columnsOnScreen: pages.columnsOnScreen,
-                hourHeight: hourHeight,
-                width: metrics.hourLabelWidth
-            )
+            ZStack(alignment: .topLeading) {
+                TimelineLayersView(
+                    layers: layers.filter { $0.placement == .behindHourLabels },
+                    context: TimelineLayerContext(
+                        days: gutterDays, hourHeight: hourHeight, todayOnScreen: todayOnScreen
+                    )
+                )
+                .frame(width: metrics.hourLabelWidth, height: hourHeight * 24, alignment: .topLeading)
+                TimelineHourLabelsView(
+                    days: shownDays,
+                    frames: frames,
+                    columnsOnScreen: pages.columnsOnScreen,
+                    hourHeight: hourHeight,
+                    width: metrics.hourLabelWidth
+                )
+            }
             TimelinePageScrollView(
                 pages: pages,
                 position: $position,
@@ -65,6 +74,21 @@ struct TimelineGridContentView: View {
         let lowerBound = pages.dayRange(ofPageAt: firstIndex).lowerBound
         let upperBound = min(pages.dayRange(ofPageAt: firstIndex + shown.count - 1).upperBound, layout.days.count)
         return layout.page(lowerBound..<max(upperBound, lowerBound)).days
+    }
+
+    /// How much of today's column is between the viewport's edges, from 0 to 1.
+    private var todayOnScreen: Double {
+        let now = Date.now
+        guard frames.viewportWidth > 0,
+              let shown = frames.shownPages,
+              let firstIndex = pages.index(of: shown.firstPage),
+              let today = layout.days.intervals.firstIndex(where: { $0.contains(now) })
+        else { return 0 }
+        let columnWidth = frames.viewportWidth / CGFloat(max(pages.columnsOnScreen, 1))
+        let firstDay = pages.dayRange(ofPageAt: firstIndex).lowerBound
+        let leading = frames.leadingOffset + CGFloat(today - firstDay) * columnWidth
+        let visible = min(leading + columnWidth, frames.viewportWidth) - max(leading, 0)
+        return Double(min(max(visible / columnWidth, 0), 1))
     }
 
     /// Gutter layers, such as a second time zone, label the hours of the page in view.

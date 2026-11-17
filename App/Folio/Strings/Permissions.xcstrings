@@ -2991,6 +2991,71 @@
         }
       }
     },
+    "Prompt.FocusLevel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um dein Fokuslevel aus deinem Schlaf zu schätzen, erlaube den Zugriff auf Health."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To estimate your Focus Level from your sleep, allow access to Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour estimer votre niveau de concentration à partir de votre sommeil, autorisez l’accès à Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per stimare il livello di concentrazione dal sonno, consenti l’accesso a Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠から集中レベルを推定するには、ヘルスケアへのアクセスを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수면으로 집중도를 추정하려면 건강 접근을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sta toegang tot Gezondheid toe om je focusniveau te schatten op basis van je slaap."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để ước tính mức độ tập trung từ giấc ngủ, hãy cho phép truy cập Sức khỏe."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要根据睡眠估算专注程度，请允许访问健康。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "若要根據睡眠估算專注程度，請允許取用健康。"
+          }
+        }
+      }
+    },
     "Prompt.LocationAlerts": {
       "extractionState": "manual",
       "localizations": {

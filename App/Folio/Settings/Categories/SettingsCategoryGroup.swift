@@ -24,7 +24,7 @@ struct SettingsCategoryGroup: Hashable {
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.Integrations", table: "Settings"),
-                categories: [.weather, .sleep, .medications]
+                categories: [.weather, .focusLevel, .sleep, .medications]
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.System", table: "Settings"),

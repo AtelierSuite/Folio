@@ -4,15 +4,20 @@ import SwiftUI
 struct TimelineLayerContext {
     let days: TimelineDays
     let hourHeight: CGFloat
+    /// How much of today's column is on screen, from 0 to 1. Only hour label layers get a live value,
+    /// so layers there can fade as today scrolls away; elsewhere it stays at 1.
+    var todayOnScreen = 1.0
 }
 
 /// Extra content drawn on the timeline (reminders, weather, sleep, a second time zone)
 /// without the timeline knowing about it. Day layers fill the day columns and usually
-/// place their content with `TimelineSlotLayout`; gutter layers add a column before the hour labels.
+/// place their content with `TimelineSlotLayout`; gutter layers add a column before the hour labels;
+/// hour label layers draw behind the hour labels.
 struct TimelineLayer: Identifiable {
     enum Placement: Equatable {
         case belowEntries
         case aboveEntries
+        case behindHourLabels
         case gutter(width: CGFloat)
     }
 
