@@ -17,6 +17,8 @@ struct TimelineGridContentView: View {
     var onScrollPhaseChange: ((ScrollPhase) -> Void)?
 
     var body: some View {
+        let cardsLayout = hourHeight > 0
+            ? layout.fittingCards(minimumHours: Double(minimumCardHeight / hourHeight)) : layout
         HStack(alignment: .top, spacing: 0) {
             TimelineLayersView(
                 layers: gutterLayers,
@@ -46,7 +48,7 @@ struct TimelineGridContentView: View {
                 onScrollPhaseChange: onScrollPhaseChange
             ) { page in
                 TimelinePageGridView(
-                    layout: pages.dayRange(of: page).map(layout.page) ?? layout.page(0..<0),
+                    layout: pages.dayRange(of: page).map(cardsLayout.page) ?? cardsLayout.page(0..<0),
                     hourHeight: hourHeight,
                     layers: layers,
                     metrics: metrics,
@@ -56,13 +58,17 @@ struct TimelineGridContentView: View {
         }
         .frame(height: hourHeight * 24)
         .padding(.vertical, metrics.verticalInset)
-        .onChange(of: DragLayoutKey(layout: layout, hourHeight: hourHeight), initial: true) { _, key in
+        .onChange(of: DragLayoutKey(layout: cardsLayout, hourHeight: hourHeight), initial: true) { _, key in
             drag?.update(
                 layout: key.layout,
                 hourHeight: key.hourHeight,
                 minimumCardHeight: metrics.minimumCardHeight(hourHeight: key.hourHeight)
             )
         }
+    }
+
+    private var minimumCardHeight: CGFloat {
+        metrics.minimumCardHeight(hourHeight: hourHeight)
     }
 
     /// Every day on a page that is at least partly on screen, so the current time label stays
