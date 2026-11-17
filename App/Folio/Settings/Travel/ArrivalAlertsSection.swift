@@ -7,6 +7,13 @@ struct ArrivalAlertsSection: View {
     @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
+        if arrivalAlerts.isSupported && arrivalAlerts.isEnabled {
+            AlwaysLocationPromptSection(
+                authorization: arrivalAlerts.authorization,
+                isMonitoringAvailable: arrivalAlerts.isMonitoringAvailable,
+                table: "ArrivalAlerts"
+            )
+        }
         Section {
             Toggle(String(localized: "Settings.Toggle", table: "ArrivalAlerts"), isOn: Binding(
                 get: { arrivalAlerts.isEnabled },
@@ -19,13 +26,6 @@ struct ArrivalAlertsSection: View {
             ))
             .disabled(!arrivalAlerts.isSupported || !scheduler.isEnabled || isMissingLocationAccess)
             .accessibilityIdentifier("ArrivalAlertsToggle")
-            if arrivalAlerts.isSupported && arrivalAlerts.isEnabled {
-                LocationAlertAccessRows(
-                    authorization: arrivalAlerts.authorization,
-                    isMonitoringAvailable: arrivalAlerts.isMonitoringAvailable,
-                    table: "ArrivalAlerts"
-                )
-            }
         } header: {
             Text(String(localized: "Settings.Section", table: "ArrivalAlerts"))
         } footer: {

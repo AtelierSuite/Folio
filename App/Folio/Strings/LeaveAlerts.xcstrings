@@ -719,64 +719,64 @@
     "Settings.WhenInUse": {
       "extractionState": "manual",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stelle den Standortzugriff auf „Immer“, damit Aufbruchshinweise auch bei geschlossenem Folio aktuell bleiben."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Set location access to Always so time to leave alerts stay up to date while Folio is closed."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réglez l'accès à la position sur Toujours pour que les alertes de départ restent à jour quand Folio est fermé."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imposta l'accesso alla posizione su Sempre affinché gli avvisi di partenza restino aggiornati anche quando Folio è chiuso."
+            "value": "Time to leave alerts need location access set to Always."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioを閉じている間も出発時刻の通知を最新に保つには、位置情報へのアクセスを「常に」に設定してください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio가 닫혀 있을 때도 출발 시간 알림이 최신 상태로 유지되도록 위치 접근을 '항상'으로 설정하세요."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zet locatietoegang op Altijd zodat vertrekmeldingen actueel blijven terwijl Folio gesloten is."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đặt quyền truy cập vị trí thành Luôn luôn để cảnh báo giờ khởi hành luôn được cập nhật khi Folio đóng."
+            "value": "出発時刻の通知には、位置情報へのアクセスを「常に」にする必要があります。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将位置访问设为“始终”，以便在 Folio 关闭时出发时间提醒也能保持最新。"
+            "value": "出发时间提醒需要将位置访问设为“始终”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "將位置取用設為「永遠」，讓 Folio 關閉時出發時間提醒也能保持最新。"
+            "value": "出發時間提醒需要將位置取用權設為「永遠」。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "출발 시간 알림을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les alertes de départ nécessitent l’accès à la position Toujours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufbruchsmitteilungen brauchen den Standortzugriff „Immer“."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli avvisi di partenza richiedono l’accesso alla posizione Sempre."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertrekmeldingen hebben locatietoegang Altijd nodig."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo giờ khởi hành cần quyền truy cập vị trí Luôn luôn."
           }
         }
       }

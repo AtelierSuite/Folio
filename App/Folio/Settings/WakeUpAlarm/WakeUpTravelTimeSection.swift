@@ -6,6 +6,9 @@ struct WakeUpTravelTimeSection: View {
     @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
+        if wakeUpAlarms.addsTravelTime {
+            AlwaysLocationPromptSection(authorization: wakeUpAlarms.locationAuthorization, table: "WakeUpAlarms")
+        }
         Section {
             Toggle(String(localized: "TravelTime", table: "WakeUpAlarms"), isOn: Binding(
                 get: { wakeUpAlarms.addsTravelTime },
@@ -24,7 +27,6 @@ struct WakeUpTravelTimeSection: View {
                     set: { transport in Task { await wakeUpAlarms.setTransport(transport) } }
                 ), accessibilityIdentifier: "WakeUpTravelTransportPicker")
                 .disabled(isMissingLocationAccess)
-                LocationAlertAccessRows(authorization: wakeUpAlarms.locationAuthorization, table: "WakeUpAlarms")
             }
         } header: {
             Text(String(localized: "Section.TravelTime", table: "WakeUpAlarms"))

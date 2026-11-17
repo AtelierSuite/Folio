@@ -1174,64 +1174,64 @@
     "Settings.WhenInUse": {
       "extractionState": "manual",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stelle den Standortzugriff auf „Immer“, damit der Wecker die Fahrzeit anpassen kann, wenn du dich bei geschlossenem Folio bewegst."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Set location access to Always so the alarm can update its travel time when you move while Folio is closed."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réglez l'accès à la position sur Toujours pour que l’alarme mette à jour le temps de trajet quand vous vous déplacez alors que Folio est fermé."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imposta l'accesso alla posizione su Sempre affinché la sveglia aggiorni il tempo di viaggio quando ti sposti mentre Folio è chiuso."
+            "value": "Travel time needs location access set to Always."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioを閉じている間に移動したときもアラームの移動時間を更新できるように、位置情報へのアクセスを「常に」に設定してください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio가 닫혀 있을 때 이동해도 알람의 이동 시간이 갱신되도록 위치 접근을 '항상'으로 설정하세요."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zet locatietoegang op Altijd zodat het alarm de reistijd kan bijwerken als je je verplaatst terwijl Folio gesloten is."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đặt quyền truy cập vị trí thành Luôn luôn để báo thức có thể cập nhật thời gian di chuyển khi bạn di chuyển lúc Folio đóng."
+            "value": "移動時間には、位置情報へのアクセスを「常に」にする必要があります。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "将位置访问设为“始终”，以便在 Folio 关闭时你移动后闹钟也能更新行程时间。"
+            "value": "路程时间需要将位置访问设为“始终”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "將位置取用設為「永遠」，讓 Folio 關閉時你移動後鬧鐘也能更新交通時間。"
+            "value": "路程時間需要將位置取用權設為「永遠」。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 시간을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le temps de trajet nécessite l’accès à la position Toujours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Fahrzeit braucht den Standortzugriff „Immer“."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tempo di viaggio richiede l’accesso alla posizione Sempre."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reistijd heeft locatietoegang Altijd nodig."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian di chuyển cần quyền truy cập vị trí Luôn luôn."
           }
         }
       }

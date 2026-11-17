@@ -462,61 +462,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dieses iPhone kann gerade keine Orte überwachen, daher kommen keine Ankunftshinweise."
+            "value": "Dieses Gerät kann keine Ankünfte erkennen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This iPhone can't monitor locations right now, so arrival alerts won't arrive."
+            "value": "This device can't detect arrivals."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cet iPhone ne peut pas surveiller les lieux pour le moment : les alertes d'arrivée ne seront pas envoyées."
+            "value": "Cet appareil ne peut pas détecter les arrivées."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Questo iPhone al momento non può monitorare i luoghi, quindi gli avvisi di arrivo non arriveranno."
+            "value": "Questo dispositivo non può rilevare gli arrivi."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "このiPhoneは現在位置の監視ができないため、到着通知は届きません。"
+            "value": "このデバイスは到着を検知できません。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이 iPhone은 현재 위치를 모니터링할 수 없어 도착 알림을 받을 수 없습니다."
+            "value": "이 기기는 도착을 감지할 수 없습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deze iPhone kan nu geen locaties volgen, dus aankomstmeldingen komen niet binnen."
+            "value": "Dit apparaat kan aankomsten niet detecteren."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "iPhone này hiện không thể theo dõi vị trí, nên bạn sẽ không nhận được cảnh báo khi đến nơi."
+            "value": "Thiết bị này không thể phát hiện việc đến nơi."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这台 iPhone 目前无法监测位置，因此不会收到到达提醒。"
+            "value": "此设备无法检测到达。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "這部 iPhone 目前無法監測位置，因此不會收到抵達提醒。"
+            "value": "此裝置無法偵測抵達。"
           }
         }
       }
@@ -524,64 +524,64 @@
     "Settings.WhenInUse": {
       "extractionState": "manual",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stelle den Standortzugriff auf „Immer“, damit Ankunftshinweise auch funktionieren, wenn Folio geschlossen ist."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Set location access to Always so arrival alerts also work while Folio is closed."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réglez l'accès à la position sur « Toujours » pour que les alertes d'arrivée fonctionnent aussi quand Folio est fermé."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imposta l'accesso alla posizione su \"Sempre\" perché gli avvisi di arrivo funzionino anche quando Folio è chiuso."
+            "value": "Arrival alerts need location access set to Always."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioを閉じているときも到着通知が届くように、位置情報へのアクセスを「常に」に設定してください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio가 닫혀 있을 때도 도착 알림을 받으려면 위치 접근을 '항상'으로 설정하세요."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zet locatietoegang op 'Altijd' zodat aankomstmeldingen ook werken als Folio gesloten is."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đặt quyền truy cập vị trí thành Luôn luôn để cảnh báo khi đến nơi vẫn hoạt động khi Folio đã đóng."
+            "value": "到着通知には、位置情報へのアクセスを「常に」にする必要があります。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请将位置访问设为“始终”，这样 Folio 关闭时也能收到到达提醒。"
+            "value": "到达提醒需要将位置访问设为“始终”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請將位置取用權限設為「永遠」，這樣 Folio 關閉時也能收到抵達提醒。"
+            "value": "抵達提醒需要將位置取用權設為「永遠」。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "도착 알림을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les alertes d’arrivée nécessitent l’accès à la position Toujours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ankunftsmitteilungen brauchen den Standortzugriff „Immer“."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli avvisi di arrivo richiedono l’accesso alla posizione Sempre."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aankomstmeldingen hebben locatietoegang Altijd nodig."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo khi đến nơi cần quyền truy cập vị trí Luôn luôn."
           }
         }
       }

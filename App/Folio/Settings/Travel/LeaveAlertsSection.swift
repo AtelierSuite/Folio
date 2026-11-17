@@ -8,6 +8,9 @@ struct LeaveAlertsSection: View {
     @Environment(\.platformCapabilities) private var capabilities
 
     var body: some View {
+        if leaveAlerts.isSupported && leaveAlerts.isEnabled {
+            AlwaysLocationPromptSection(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
+        }
         Section {
             Toggle(String(localized: "Settings.Toggle", table: "LeaveAlerts"), isOn: Binding(
                 get: { leaveAlerts.isEnabled },
@@ -26,7 +29,6 @@ struct LeaveAlertsSection: View {
                     set: { newValue in Task { await leaveAlerts.setTransport(newValue) } }
                 ), accessibilityIdentifier: "TravelTransportPicker")
                 .disabled(isMissingLocationAccess)
-                LocationAlertAccessRows(authorization: leaveAlerts.authorization, table: "LeaveAlerts")
                 if capabilities.supports(.alarms) {
                     LeaveAlertStylePicker()
                 }
