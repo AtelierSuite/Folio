@@ -72,61 +72,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Fokuslevel wird aus deinem Schlaf in der Health-App geschätzt: wann du aufgewacht bist, wie lange du geschlafen hast und wie viel Schlaf dir zuletzt gefehlt hat. Die meisten Menschen sind am späten Vormittag und am späten Nachmittag am wachsten und haben nach dem Mittagessen ein Tief. Der Blitz neben jeder Stunde füllt sich, wenn du voraussichtlich in Bestform bist. Es ist eine Schätzung, also nimm sie als groben Anhaltspunkt."
+            "value": "Das Fokuslevel schätzt anhand deines Schlafs in der Health-App, wann du voraussichtlich am wachsten bist. Nimm es als groben Anhaltspunkt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focus Level is estimated from your sleep in the Health app: when you woke up, how long you slept and how much sleep you’ve been missing lately. Most people are sharpest in the late morning and late afternoon, with a dip after lunch. The bolt beside each hour fills up when you’re likely to be at your best. It’s an estimate, so treat it as a rough guide."
+            "value": "Focus Level estimates when you’re likely to be at your sharpest, based on your sleep in the Health app. Treat it as a rough guide."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le niveau de concentration est estimé à partir de votre sommeil dans l’app Santé : l’heure de votre réveil, la durée de votre sommeil et le manque de sommeil accumulé récemment. La plupart des gens sont plus alertes en fin de matinée et en fin d’après-midi, avec un creux après le déjeuner. L’éclair à côté de chaque heure se remplit quand vous êtes probablement au meilleur de votre forme. Il s’agit d’une estimation, à considérer comme un repère approximatif."
+            "value": "Le niveau de concentration estime les moments où vous serez probablement le plus alerte, à partir de votre sommeil dans l’app Santé. Considérez-le comme un repère approximatif."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Il livello di concentrazione è stimato dal sonno registrato in Salute: quando ti sei svegliato, quanto hai dormito e quanto sonno ti è mancato di recente. La maggior parte delle persone è più lucida a fine mattinata e a fine pomeriggio, con un calo dopo pranzo. Il fulmine accanto a ogni ora si riempie quando probabilmente sei al meglio. È una stima, quindi consideralo un riferimento approssimativo."
+            "value": "Il livello di concentrazione stima quando sarai probabilmente più lucido, in base al sonno registrato in Salute. Consideralo un riferimento approssimativo."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "集中レベルは、ヘルスケアの睡眠データ（起きた時刻、睡眠時間、最近の睡眠不足）をもとに推定されます。多くの人は午前の遅い時間と午後の遅い時間に最も集中しやすく、昼食後に下がりがちです。各時間の横にある稲妻は、調子が良さそうな時間ほど満たされます。あくまで推定なので、目安としてご利用ください。"
+            "value": "集中レベルは、ヘルスケアの睡眠データをもとに、集中しやすい時間帯を推定します。目安としてご利用ください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "집중도는 건강 앱의 수면 데이터(일어난 시각, 수면 시간, 최근 부족한 수면)를 바탕으로 추정합니다. 대부분의 사람은 늦은 오전과 늦은 오후에 가장 또렷하고, 점심 식사 후에는 떨어집니다. 각 시간 옆의 번개는 컨디션이 좋을 것 같은 시간일수록 채워집니다. 추정치이므로 대략적인 참고용으로 활용하세요."
+            "value": "집중도는 건강 앱의 수면 데이터를 바탕으로 가장 집중하기 좋은 시간대를 추정합니다. 대략적인 참고용으로 활용하세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je focusniveau wordt geschat op basis van je slaap in de Gezondheid-app: wanneer je wakker werd, hoe lang je sliep en hoeveel slaap je de laatste tijd tekortkwam. De meeste mensen zijn het scherpst laat in de ochtend en laat in de middag, met een dip na de lunch. De bliksem naast elk uur vult zich wanneer je waarschijnlijk op je best bent. Het is een schatting, dus zie het als een ruwe richtlijn."
+            "value": "Het focusniveau schat op basis van je slaap in de Gezondheid-app wanneer je waarschijnlijk het scherpst bent. Zie het als een ruwe richtlijn."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mức độ tập trung được ước tính từ giấc ngủ trong ứng dụng Sức khỏe: thời điểm bạn thức dậy, bạn đã ngủ bao lâu và gần đây bạn thiếu ngủ bao nhiêu. Hầu hết mọi người tỉnh táo nhất vào cuối buổi sáng và cuối buổi chiều, và giảm sút sau bữa trưa. Tia sét bên cạnh mỗi giờ sẽ đầy hơn khi bạn có khả năng ở trạng thái tốt nhất. Đây chỉ là ước tính, hãy xem như một gợi ý tương đối."
+            "value": "Mức độ tập trung ước tính thời điểm bạn có khả năng tỉnh táo nhất, dựa trên giấc ngủ trong ứng dụng Sức khỏe. Hãy xem như một gợi ý tương đối."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "专注程度根据健康 App 中的睡眠数据估算：你何时醒来、睡了多久，以及最近缺了多少觉。大多数人在上午晚些时候和下午晚些时候最清醒，午饭后会有所下降。每个小时旁的闪电在你状态可能最好时会被填满。这只是估算，请作为大致参考。"
+            "value": "专注程度会根据健康 App 中的睡眠数据，估算你最可能精力充沛的时段。请作为大致参考。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "專注程度根據健康 App 中的睡眠資料估算：你何時醒來、睡了多久，以及最近缺了多少睡眠。大多數人在上午稍晚和下午稍晚時最清醒，午餐後則會下降。每個小時旁的閃電在你狀態可能最好時會被填滿。這只是估算，請當作大致參考。"
+            "value": "專注程度會根據健康 App 中的睡眠資料，估算你最可能精神最好的時段。請當作大致參考。"
           }
         }
       }
