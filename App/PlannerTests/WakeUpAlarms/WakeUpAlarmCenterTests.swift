@@ -52,6 +52,17 @@ struct WakeUpAlarmCenterTests {
         #expect(center.upcomingAlarms.map(\.event.title) == ["standup"])
     }
 
+    @Test func changingTheSoundReschedulesWithTheNewSound() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        #expect(alarms.scheduledAlarms.map(\.sound) == [.system])
+        await center.setSound(.kaminari)
+        #expect(alarms.scheduledCount == 1)
+        #expect(alarms.scheduledAlarms.map(\.sound) == [.kaminari])
+        #expect(center.sound == .kaminari)
+    }
+
     @Test func changingTheLeadTimeReschedulesAndDisablingCancels() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(events: [standup], alarms: alarms)

@@ -13,6 +13,7 @@ public final class LeaveAlertCenter {
     public internal(set) var authorization: ArrivalAuthorization = .notDetermined
     public internal(set) var scheduledAlerts: [LeaveAlert] = []
     public internal(set) var ringsAsAlarm: Bool
+    public internal(set) var alarmSound: AlarmSound
     public internal(set) var alarmAuthorization: NotificationAuthorization = .notDetermined
 
     @ObservationIgnored let locator: (any LeaveLocating)?
@@ -68,6 +69,7 @@ public final class LeaveAlertCenter {
         self.formatter = formatter
         self.clock = clock
         ringsAsAlarm = settings.ringsAsAlarm
+        alarmSound = settings.alarmSound
         isEnabled = isSupported && settings.isEnabled
         transport = settings.transport
         authorization = locator?.authorization ?? .notDetermined

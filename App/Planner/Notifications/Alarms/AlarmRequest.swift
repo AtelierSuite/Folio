@@ -8,6 +8,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
     /// `nil` for an alarm the user set on its own, not for an event or reminder.
     public let item: NotificationItem?
     public let secondaryAction: AlarmSecondaryAction
+    public let sound: AlarmSound
 
     public init(
         id: UUID,
@@ -15,7 +16,8 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         title: String,
         tint: PlannerColor?,
         item: NotificationItem?,
-        secondaryAction: AlarmSecondaryAction
+        secondaryAction: AlarmSecondaryAction,
+        sound: AlarmSound = .system
     ) {
         self.id = id
         self.fireDate = fireDate
@@ -23,6 +25,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         self.tint = tint
         self.item = item
         self.secondaryAction = secondaryAction
+        self.sound = sound
     }
 
     public init(alert: PlannedNotification) {

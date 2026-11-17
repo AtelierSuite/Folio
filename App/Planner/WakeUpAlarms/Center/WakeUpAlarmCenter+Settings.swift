@@ -65,4 +65,10 @@ extension WakeUpAlarmCenter {
         settings.transport = transport
         await replan()
     }
+
+    public func setSound(_ sound: AlarmSound) async {
+        self.sound = sound
+        settings.sound = sound
+        await replan()
+    }
 }

@@ -1,14 +1,15 @@
 import Foundation
 
 extension WakeUpAlarm {
-    func request(formatter: NotificationContentFormatter) -> AlarmRequest {
+    func request(formatter: NotificationContentFormatter, sound: AlarmSound) -> AlarmRequest {
         AlarmRequest(
-            id: AlarmIdentifier.make(fromNotificationIdentifier: id),
+            id: sound.alarmIdentifier(fromNotificationIdentifier: id),
             fireDate: fireDate,
             title: formatter.wakeUpTitle(for: self),
             tint: nil,
             item: NotificationItem(kind: .event, reference: event.reference, fireDate: fireDate),
-            secondaryAction: .snooze(WakeUpAlarmPlanner.snoozeDuration)
+            secondaryAction: .snooze(WakeUpAlarmPlanner.snoozeDuration),
+            sound: sound
         )
     }
 }

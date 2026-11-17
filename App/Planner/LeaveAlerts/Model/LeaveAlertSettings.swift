@@ -4,6 +4,7 @@ public struct LeaveAlertSettings: @unchecked Sendable {
     public static let isEnabledKey = "LeaveAlerts.Enabled"
     public static let transportKey = "LeaveAlerts.Transport"
     public static let ringsAsAlarmKey = "LeaveAlerts.RingsAsAlarm"
+    public static let alarmSoundKey = "LeaveAlerts.AlarmSound"
 
     private let defaults: UserDefaults
 
@@ -24,5 +25,10 @@ public struct LeaveAlertSettings: @unchecked Sendable {
     public var ringsAsAlarm: Bool {
         get { defaults.bool(forKey: Self.ringsAsAlarmKey) }
         nonmutating set { defaults.set(newValue, forKey: Self.ringsAsAlarmKey) }
+    }
+
+    public var alarmSound: AlarmSound {
+        get { defaults.string(forKey: Self.alarmSoundKey).flatMap(AlarmSound.init(rawValue:)) ?? .system }
+        nonmutating set { defaults.set(newValue.rawValue, forKey: Self.alarmSoundKey) }
     }
 }
