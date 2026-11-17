@@ -2,14 +2,20 @@ import SwiftUI
 
 extension GraphicsContext {
     /// Draws nested copies of a shape from its edge outwards at low opacity, so it fades to nothing
-    /// at its outer edge instead of ending in a hard line.
+    /// at its outer edge instead of ending in a hard line. The copies are spaced so the opacity eases
+    /// out along a smoothstep curve, flattening at both ends rather than falling off in a straight line.
     func drawSoftened(_ outline: (CGFloat) -> Path, draw: (GraphicsContext, Path) -> Void) {
         var context = self
         let levels = EnergyGlowStyle.softeningLevels
         context.opacity = 1.0 / Double(levels) * 1.6
         for level in 1...levels {
-            draw(context, outline(CGFloat(level) / CGFloat(levels)))
+            draw(context, outline(Self.inverseSmoothstep(Double(level) / Double(levels))))
         }
+    }
+
+    /// The reach at which the smoothstep falloff has dropped by `fraction`.
+    private static func inverseSmoothstep(_ fraction: Double) -> CGFloat {
+        CGFloat(0.5 - sin(asin(1 - 2 * fraction) / 3))
     }
 
     /// Diagonal stripes inside `area`.
