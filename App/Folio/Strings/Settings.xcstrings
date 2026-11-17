@@ -1369,64 +1369,64 @@
     "Travel.NotificationsOff": {
       "extractionState": "manual",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aktiviere Mitteilungen, um diese zu nutzen."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on notifications to use these."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Activez les notifications pour les utiliser."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Attiva le notifiche per usarli."
+            "value": "Turn on notifications to use travel alerts."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "使うには通知をオンにしてください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "사용하려면 알림을 켜십시오."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zet meldingen aan om deze te gebruiken."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bật thông báo để sử dụng."
+            "value": "移動の通知を使うには、通知をオンにしてください。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "请打开通知以使用这些功能。"
+            "value": "打开通知即可使用出行提醒。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "請開啟通知以使用這些功能。"
+            "value": "開啟通知即可使用出行提醒。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이동 알림을 사용하려면 알림을 켜세요."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activez les notifications pour utiliser les alertes de trajet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviere Mitteilungen, um Fahrtmitteilungen zu nutzen."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attiva le notifiche per usare gli avvisi di viaggio."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet meldingen aan om reismeldingen te gebruiken."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bật thông báo để dùng thông báo di chuyển."
           }
         }
       }
