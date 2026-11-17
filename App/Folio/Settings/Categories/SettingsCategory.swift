@@ -5,6 +5,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case general
     case accounts
     case calendars
+    case reminders
     case workWeek
     case flexTime
     case notes
@@ -32,6 +33,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: String(localized: "Category.General", table: "Settings")
         case .accounts: String(localized: "Category.Accounts", table: "Settings")
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
+        case .reminders: String(localized: "Settings.Header", table: "Reminders")
         case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .flexTime: String(localized: "Title", table: "FlexTime")
         case .notes: String(localized: "Category.Notes", table: "Settings")
@@ -59,6 +61,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: "gearshape.fill"
         case .accounts: "person.crop.circle.fill"
         case .calendars: "calendar"
+        case .reminders: "list.bullet"
         case .workWeek: "briefcase.fill"
         case .flexTime: "clock.arrow.circlepath"
         case .notes: "note.text"
@@ -86,6 +89,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: .gray
         case .accounts: .blue
         case .calendars: .red
+        case .reminders: .orange
         case .workWeek: .brown
         case .flexTime: .mint
         case .notes: .yellow

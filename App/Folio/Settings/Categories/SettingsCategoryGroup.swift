@@ -12,10 +12,7 @@ struct SettingsCategoryGroup: Hashable {
     static var groups: [SettingsCategoryGroup] {
         var groups = [
             SettingsCategoryGroup(header: nil, categories: [.accounts, .general]),
-            SettingsCategoryGroup(
-                header: String(localized: "Group.CalendarsAndNotes", table: "Settings"),
-                categories: [.calendars, .workWeek, .flexTime, .notes]
-            ),
+            SettingsCategoryGroup(header: nil, categories: [.calendars, .reminders, .workWeek, .flexTime, .notes]),
             SettingsCategoryGroup(
                 header: String(localized: "Group.NotificationsAndAlarms", table: "Settings"),
                 categories: [
