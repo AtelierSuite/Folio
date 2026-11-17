@@ -2,12 +2,12 @@ import Planner
 import SwiftUI
 
 enum EnergyGlowStyle {
-    static let peakColor = Color.teal
-    static let lowColor = Color.purple
-    static let peakOpacity = 0.3
-    static let stripeOpacity = 0.55
+    static let peakColor = Color.orange
+    static let lowColor = Color.indigo
+    static let peakOpacity = 0.16
+    static let stripeOpacity = 0.32
     static let stripeSpacing: CGFloat = 5
-    static let stripeWidth: CGFloat = 1.5
+    static let stripeWidth: CGFloat = 1.2
     static let outlineStepHours = 1.0 / 12
     static let softeningLevels = 40
 
