@@ -1,71 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Settings.Footer": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zeigt bei deiner Ankunft, wann du zum nächsten Termin aufbrechen musst."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "When you arrive somewhere, shows when to leave for your next event."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "À votre arrivée quelque part, indique quand partir pour votre prochain évènement."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quando arrivi da qualche parte, mostra quando partire per il prossimo evento."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "予定の場所に着くと、次の予定に向けて出発する時間を表示します。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "어딘가에 도착하면 다음 일정을 위해 출발할 시간을 보여 줍니다."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toont bij aankomst wanneer je naar je volgende afspraak moet vertrekken."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Khi bạn đến nơi, hiển thị giờ cần đi đến sự kiện tiếp theo."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "到达某地后，显示前往下一个日程的出发时间。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "抵達某地後，顯示前往下一個行程的出發時間。"
-          }
-        }
-      }
-    },
     "Settings.Section": {
       "extractionState": "manual",
       "localizations": {
@@ -127,71 +62,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "出發時間小工具"
-          }
-        }
-      }
-    },
-    "Settings.Toggle": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aufbruchszeit"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leave By"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heure de départ"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ora di partenza"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "出発時間"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "출발 시간"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vertrektijd"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Giờ khởi hành"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "出发时间"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "出發時間"
           }
         }
       }
@@ -264,64 +134,64 @@
     "Settings.WhenInUse": {
       "extractionState": "manual",
       "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die Aufbruchszeit braucht den Standortzugriff „Immer“, damit iOS Folio deine Ankunft auch bei geschlossener App melden kann."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Leave By needs location access set to Always, so iOS can tell Folio when you arrive while it's closed."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heure de départ nécessite l’accès Toujours, pour que iOS signale votre arrivée à Folio quand l’app est fermée."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ora di partenza richiede l’accesso Sempre, così iOS può segnalare a Folio il tuo arrivo quando l’app è chiusa."
+            "value": "The Leave By widget needs location access set to Always."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "「出発時間」には、位置情報へのアクセスを「常に」にする必要があります。Folioを閉じている間も到着を検知するためです。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "출발 시간을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다. 그래야 Folio가 닫혀 있어도 도착을 감지할 수 있습니다."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vertrektijd heeft locatietoegang Altijd nodig, zodat iOS je aankomst aan Folio kan doorgeven als de app dicht is."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Giờ khởi hành cần quyền vị trí Luôn luôn để iOS báo cho Folio khi bạn đến nơi lúc ứng dụng đang đóng."
+            "value": "「出発時間」ウィジェットには、位置情報へのアクセスを「常に」にする必要があります。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "“出发时间”需要将位置访问设为“始终”，这样 Folio 关闭时 iOS 也能告知你已到达。"
+            "value": "“出发时间”小组件需要将位置访问设为“始终”。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "「出發時間」需要將位置取用權設為「永遠」，這樣 Folio 關閉時 iOS 也能告知你已抵達。"
+            "value": "「出發時間」小工具需要將位置取用權設為「永遠」。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "출발 시간 위젯을 사용하려면 위치 접근을 '항상'으로 설정해야 합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le widget Heure de départ nécessite l’accès à la position Toujours."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Widget „Aufbruchszeit“ braucht den Standortzugriff „Immer“."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il widget Ora di partenza richiede l’accesso alla posizione Sempre."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De widget Vertrektijd heeft locatietoegang Altijd nodig."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiện ích Giờ khởi hành cần quyền truy cập vị trí Luôn luôn."
           }
         }
       }

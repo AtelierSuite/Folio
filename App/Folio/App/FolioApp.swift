@@ -112,6 +112,7 @@ struct FolioApp: App {
                 .refreshesPermissions(of: permissionCenter)
                 .environment(notificationScheduler)
                 .environment(arrivalAlerts)
+                .tracksLeaveByWidgets(arrivalAlerts)
                 .environment(leaveAlerts)
             .environment(wakeUpAlarms)
                 .environment(wakeUpAlarms)

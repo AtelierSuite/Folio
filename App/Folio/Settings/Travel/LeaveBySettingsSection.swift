@@ -1,39 +1,30 @@
 import Planner
 import SwiftUI
 
+/// Leave By turns itself on while its widget is placed, so this only appears when location access stops it working.
 struct LeaveBySettingsSection: View {
     @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
     @Environment(PermissionCenter.self) private var permissionCenter
 
+    private var needsAttention: Bool {
+        arrivalAlerts.isLeaveByEnabled
+            && (arrivalAlerts.authorization == .whenInUse || !arrivalAlerts.isMonitoringAvailable)
+    }
+
     var body: some View {
-        if arrivalAlerts.isSupported {
-            Section {
-                Toggle(String(localized: "Settings.Toggle", table: "LeaveBy"), isOn: Binding(
-                    get: { arrivalAlerts.isLeaveByEnabled },
-                    set: { newValue in
-                        Task {
-                            guard await permissionCenter.allowsTurningOn(newValue, needing: .location) else { return }
-                            await arrivalAlerts.setLeaveByEnabled(newValue)
-                        }
-                    }
-                ))
-                .disabled(permissionCenter.isBlocked(.location))
-                .accessibilityIdentifier("LeaveByToggle")
-                if arrivalAlerts.isLeaveByEnabled {
+        Group {
+            if needsAttention {
+                Section(String(localized: "Settings.Section", table: "LeaveBy")) {
                     LocationAlertAccessRows(
                         authorization: arrivalAlerts.authorization,
                         isMonitoringAvailable: arrivalAlerts.isMonitoringAvailable,
                         table: "LeaveBy"
                     )
                 }
-            } header: {
-                Text(String(localized: "Settings.Section", table: "LeaveBy"))
-            } footer: {
-                Text(String(localized: "Settings.Footer", table: "LeaveBy"))
             }
-            .onChange(of: permissionCenter.status(of: .location), initial: true) {
-                arrivalAlerts.refreshAuthorization()
-            }
+        }
+        .onChange(of: permissionCenter.status(of: .location), initial: true) {
+            arrivalAlerts.refreshAuthorization()
         }
     }
 }
