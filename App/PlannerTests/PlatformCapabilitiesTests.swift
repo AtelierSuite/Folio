@@ -26,6 +26,7 @@ struct PlatformCapabilitiesTests {
         #expect(!capabilities.supports(.menuBarExtra))
         #expect(!capabilities.supports(.sleep))
         #expect(!capabilities.supports(.medications))
+        #expect(!capabilities.supports(.workouts))
         #expect(!capabilities.supports(.geofencedNotifications))
         #expect(!capabilities.supports(.leaveAlerts))
         #expect(!capabilities.supports(.liveActivityCountdown))
