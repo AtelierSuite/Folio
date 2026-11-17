@@ -9,6 +9,7 @@ struct SettingsCategoryView: View {
         case .general: GeneralSettingsView()
         case .accounts: AccountsSettingsView()
         case .calendars: CalendarsSettingsView()
+        case .reminders: RemindersSettingsView()
         case .workWeek: WorkWeekSettingsView()
         case .flexTime: FlexTimeSettingsView()
         case .notes: NotesSettingsView()

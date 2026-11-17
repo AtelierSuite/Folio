@@ -16,8 +16,6 @@ struct ReminderSettingsSection: View {
                 }
             }
             .accessibilityIdentifier("OverdueReminderPolicyPicker")
-        } header: {
-            Text(String(localized: "Settings.Header", table: "Reminders"))
         } footer: {
             Text(String(localized: "Settings.Overdue.Footer", table: "Reminders"))
         }

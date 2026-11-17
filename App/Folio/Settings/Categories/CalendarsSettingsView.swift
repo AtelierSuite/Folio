@@ -10,7 +10,6 @@ struct CalendarsSettingsView: View {
                 asksOnToggle: true
             )
             EventLocationsSettingsSection()
-            ReminderSettingsSection()
             InvitationSettingsSection()
             DuplicateDetectionSection()
             TravelTimeSettingsSection()
