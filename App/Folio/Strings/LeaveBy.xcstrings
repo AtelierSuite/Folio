@@ -7,61 +7,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wenn du am Ort eines Termins ankommst, berechnet Folio einmal, wann du zum nächsten aufbrechen musst, mit dem Verkehrsmittel der Aufbruchshinweise. Dein Standort wird dafür im Hintergrund verwendet."
+            "value": "Zeigt bei deiner Ankunft, wann du zum nächsten Termin aufbrechen musst."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "When you reach an event's location, Folio works out once when you need to leave for your next event, using the travel mode from Time to Leave. This uses your location in the background."
+            "value": "When you arrive somewhere, shows when to leave for your next event."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quand vous arrivez au lieu d’un événement, Folio calcule une fois l’heure de départ pour le suivant, avec le mode de transport des alertes de départ. Votre position est utilisée en arrière-plan."
+            "value": "À votre arrivée quelque part, indique quand partir pour votre prochain évènement."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quando arrivi al luogo di un evento, Folio calcola una volta quando partire per il successivo, usando il mezzo degli avvisi di partenza. La posizione viene usata in background."
+            "value": "Quando arrivi da qualche parte, mostra quando partire per il prossimo evento."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "予定の場所に着くと、「出発時刻」の移動手段を使って、次の予定に向けて出発すべき時間を一度だけ計算します。バックグラウンドで位置情報を使用します。"
+            "value": "予定の場所に着くと、次の予定に向けて出発する時間を表示します。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트 장소에 도착하면 출발 시간 알림의 이동 수단으로 다음 일정을 위해 언제 출발해야 하는지 한 번 계산합니다. 백그라운드에서 위치를 사용합니다."
+            "value": "어딘가에 도착하면 다음 일정을 위해 출발할 시간을 보여 줍니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Als je op de locatie van een afspraak aankomt, berekent Folio eenmalig wanneer je naar de volgende moet vertrekken, met het vervoer van de vertrekmeldingen. Je locatie wordt op de achtergrond gebruikt."
+            "value": "Toont bij aankomst wanneer je naar je volgende afspraak moet vertrekken."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Khi bạn đến địa điểm của một sự kiện, Folio tính một lần thời điểm cần đi đến sự kiện tiếp theo, dùng phương tiện trong cảnh báo khởi hành. Tính năng này dùng vị trí của bạn trong nền."
+            "value": "Khi bạn đến nơi, hiển thị giờ cần đi đến sự kiện tiếp theo."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "到达日程地点后，Folio 会按“出发时间提醒”的出行方式计算一次前往下一个日程的出发时间。此功能会在后台使用你的位置。"
+            "value": "到达某地后，显示前往下一个日程的出发时间。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "抵達行程地點後，Folio 會按「出發時間提醒」的交通方式計算一次前往下一個行程的出發時間。此功能會在背景使用你的位置。"
+            "value": "抵達某地後，顯示前往下一個行程的出發時間。"
           }
         }
       }

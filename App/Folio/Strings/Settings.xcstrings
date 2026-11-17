@@ -1372,61 +1372,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktiviere „Hinweise auf diesem Gerät“ unter „Alle Mitteilungen“, um Hinweise für unterwegs zu erhalten."
+            "value": "Aktiviere Mitteilungen, um diese zu nutzen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on Alerts on This Device in All Notifications to get travel alerts."
+            "value": "Turn on notifications to use these."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activez Alertes sur cet appareil dans Toutes les notifications pour recevoir les alertes de trajet."
+            "value": "Activez les notifications pour les utiliser."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Attiva Avvisi su questo dispositivo in Tutte le notifiche per ricevere gli avvisi sugli spostamenti."
+            "value": "Attiva le notifiche per usarli."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "移動の通知を受け取るには、「すべての通知」で「このデバイスで通知」をオンにしてください。"
+            "value": "使うには通知をオンにしてください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이동 알림을 받으려면 모든 알림에서 이 기기에서 알림을 켜십시오."
+            "value": "사용하려면 알림을 켜십시오."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zet Meldingen op dit apparaat aan bij Alle meldingen om meldingen voor onderweg te krijgen."
+            "value": "Zet meldingen aan om deze te gebruiken."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bật Cảnh báo trên thiết bị này trong Tất cả thông báo để nhận cảnh báo di chuyển."
+            "value": "Bật thông báo để sử dụng."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "要接收出行提醒，请在“所有通知”中打开“在此设备上提醒”。"
+            "value": "请打开通知以使用这些功能。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要接收交通提醒，請在「所有通知」中開啟「在此裝置上提醒」。"
+            "value": "請開啟通知以使用這些功能。"
           }
         }
       }

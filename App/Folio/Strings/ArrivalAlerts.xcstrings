@@ -267,61 +267,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erhalte einen Hinweis, wenn du am Ort eines Termins ankommst – von 2 Stunden vor Beginn bis 2 Stunden danach. Aktiviere ihn für jeden Termin im Termineditor."
+            "value": "Erinnert dich, wenn du am Ort eines Termins ankommst. Für jeden Termin einzeln aktivieren."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Get an alert when you arrive at an event's location, from 2 hours before it starts until 2 hours after. Turn it on for each event in the event editor."
+            "value": "Alerts you when you arrive at an event. Turn it on for each event."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Recevez une alerte quand vous arrivez au lieu d'un événement, de 2 heures avant son début à 2 heures après. Activez-la pour chaque événement dans l'éditeur."
+            "value": "Vous alerte à votre arrivée sur le lieu d’un évènement. Activez-le pour chaque évènement."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ricevi un avviso quando arrivi nel luogo di un evento, da 2 ore prima dell'inizio a 2 ore dopo. Attivalo per ogni evento nell'editor degli eventi."
+            "value": "Ti avvisa quando arrivi al luogo di un evento. Attivalo per ogni evento."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントの場所に到着したとき、開始2時間前から開始2時間後までの間に通知します。イベントごとにイベント編集画面でオンにしてください。"
+            "value": "予定の場所に着くと通知します。予定ごとにオンにしてください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트 시작 2시간 전부터 시작 2시간 후까지 이벤트 장소에 도착하면 알려 줍니다. 이벤트 편집기에서 이벤트마다 켜세요."
+            "value": "일정 장소에 도착하면 알려 줍니다. 일정마다 켜십시오."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Krijg een melding als je aankomt op de locatie van een activiteit, van 2 uur voor de start tot 2 uur erna. Zet het per activiteit aan in de activiteiteneditor."
+            "value": "Waarschuwt je wanneer je bij een afspraak aankomt. Zet het per afspraak aan."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nhận cảnh báo khi bạn đến địa điểm của sự kiện, từ 2 giờ trước khi bắt đầu đến 2 giờ sau. Bật cho từng sự kiện trong trình chỉnh sửa sự kiện."
+            "value": "Báo khi bạn đến địa điểm sự kiện. Bật cho từng sự kiện."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在活动开始前 2 小时到开始后 2 小时内到达活动地点时提醒你。请在活动编辑器中为每个活动单独打开。"
+            "value": "到达日程地点时提醒你。请为每个日程单独打开。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在活動開始前 2 小時到開始後 2 小時內抵達活動地點時提醒你。請在活動編輯器中為每個活動個別開啟。"
+            "value": "抵達行程地點時提醒你。請為每個行程個別開啟。"
           }
         }
       }
