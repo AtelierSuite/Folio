@@ -9,7 +9,7 @@ struct EnergyBleedView: View {
     var body: some View {
         Canvas { graphics, size in
             let columnWidth = size.width / CGFloat(max(context.days.count, 1))
-            let reach = min(96, columnWidth * 0.5)
+            let reach = min(48, columnWidth * 0.3)
             for (index, interval) in context.days.intervals.enumerated() {
                 let curve = EnergyPreview.curve(forDayStarting: interval.start, calendar: context.days.calendar)
                 let originX = CGFloat(index) * columnWidth
