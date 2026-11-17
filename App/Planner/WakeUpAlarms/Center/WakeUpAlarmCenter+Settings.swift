@@ -65,4 +65,15 @@ extension WakeUpAlarmCenter {
         settings.transport = transport
         await replan()
     }
+
+    public func reloadSettings() async {
+        leadMinutes = settings.leadMinutes
+        earliestMinutes = settings.earliestMinutes
+        latestEventMinutes = settings.latestEventMinutes
+        skipsHolidays = settings.skipsHolidays
+        addsTravelTime = settings.addsTravelTime
+        transport = settings.transport
+        updateLocationMonitoring()
+        await replan()
+    }
 }

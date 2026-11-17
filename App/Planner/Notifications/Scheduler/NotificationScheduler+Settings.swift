@@ -35,4 +35,12 @@ extension NotificationScheduler {
         _ = try? await center.requestAuthorization()
         return await center.authorization()
     }
+
+    public func reloadSettings() async {
+        includesEvents = settings.includesEvents
+        includesReminders = settings.includesReminders
+        eventSound = soundSettings.sound(for: .event)
+        reminderSound = soundSettings.sound(for: .reminder)
+        await replan()
+    }
 }

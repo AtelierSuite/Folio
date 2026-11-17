@@ -44,6 +44,11 @@ public final class WorkWeekPreferences {
         isUsingLocaleWorkdays = true
     }
 
+    public func reloadWorkdays() {
+        workdays = storage.resolvedWorkdays(calendar: calendar)
+        isUsingLocaleWorkdays = storage.workdays == nil
+    }
+
     public func countsForWorkWeek(calendarIdentifier: String) -> Bool {
         !excludedCalendarIdentifiers.contains(calendarIdentifier)
     }
