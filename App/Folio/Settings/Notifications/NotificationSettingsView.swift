@@ -8,11 +8,6 @@ struct NotificationSettingsView: View {
     var body: some View {
         Form {
             NotificationPermissionPromptSection()
-            PermissionPromptSection(
-                kind: .location,
-                message: String(localized: "Prompt.LocationAlerts", table: "Permissions"),
-                asksOnToggle: true
-            )
             Section {
                 Toggle(String(localized: "Enabled", table: "Notifications"), isOn: binding(
                     get: { scheduler.isEnabled },
@@ -38,9 +33,6 @@ struct NotificationSettingsView: View {
             }
             .disabled(!scheduler.isEnabled)
             SnoozeDurationsSection()
-            LeaveAlertsSection()
-            ArrivalAlertsSection()
-            LeaveBySettingsSection()
         }
         .settingsCategoryStyle(.notifications)
         .task(id: permissionCenter.status(of: .notifications)) {

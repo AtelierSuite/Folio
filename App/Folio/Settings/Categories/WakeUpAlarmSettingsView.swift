@@ -1,9 +1,8 @@
 import Planner
 import SwiftUI
 
-struct AlarmSettingsView: View {
+struct WakeUpAlarmSettingsView: View {
     @Environment(WakeUpAlarmCenter.self) private var wakeUpAlarms
-    @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(PermissionCenter.self) private var permissionCenter
 
     var body: some View {
@@ -15,13 +14,11 @@ struct AlarmSettingsView: View {
                 asksOnToggle: true
             )
             WakeUpAlarmSection()
-            LeaveAlarmSection()
         }
-        .settingsCategoryStyle(.alarms)
+        .settingsCategoryStyle(.wakeUpAlarm)
         .task(id: accessStatuses) {
             await permissionCenter.refresh(.alarms)
             await wakeUpAlarms.replan()
-            await leaveAlerts.replan()
         }
     }
 

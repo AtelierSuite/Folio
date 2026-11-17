@@ -261,67 +261,197 @@
         }
       }
     },
-    "Settings.AlarmFooter": {
+    "Settings.AlertStyle": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erfordert aktivierte Aufbruchshinweise unter Mitteilungen."
+            "value": "Hinweisstil"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Needs Time to Leave Alerts turned on in Notifications."
+            "value": "Alert Style"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nécessite d’activer Alertes de départ dans Notifications."
+            "value": "Style d’alerte"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Richiede Avvisi di partenza attivi in Notifiche."
+            "value": "Stile avviso"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "「通知」で「出発時刻の通知」をオンにすると使えます。"
+            "value": "通知方法"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "알림에서 출발 시간 알림을 켜야 합니다."
+            "value": "알림 방식"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vereist dat Vertrekmeldingen aan staat bij Meldingen."
+            "value": "Meldingsstijl"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cần bật Cảnh báo giờ khởi hành trong Thông báo."
+            "value": "Kiểu cảnh báo"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "需在“通知”中打开“出发时间提醒”。"
+            "value": "提醒方式"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "需在「通知」中開啟「出發時間提醒」。"
+            "value": "提醒方式"
+          }
+        }
+      }
+    },
+    "Settings.AlertStyle.Alarm": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wecker"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarme"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sveglia"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラーム"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알람"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wekker"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo thức"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "闹钟"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鬧鐘"
+          }
+        }
+      }
+    },
+    "Settings.AlertStyle.Notification": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifica"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melding"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知"
           }
         }
       }
@@ -387,71 +517,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "根據你所在的位置和目前的交通時間，在該出發前往行程時提醒你。請在行程編輯器中為每個行程個別開啟。"
-          }
-        }
-      }
-    },
-    "Settings.RingsAsAlarm": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Als Wecker klingeln"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ring as Alarm"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sonner comme une alarme"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Suona come sveglia"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "アラームで知らせる"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알람으로 울리기"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Afgaan als wekker"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Đổ chuông như báo thức"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "以闹钟响铃"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "以鬧鐘響鈴"
           }
         }
       }
