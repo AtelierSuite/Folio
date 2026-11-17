@@ -8,11 +8,15 @@ struct CalendarTimelineOverlays {
     var shadesNight = true
 
     func layers(for days: TimelineDays) -> [TimelineLayer] {
-        sleepLayers + weatherLayers(for: days) + alarmLayers
+        energyLayers + sleepLayers + weatherLayers(for: days) + alarmLayers
     }
 
     private var alarmLayers: [TimelineLayer] {
         capabilities.supports(.alarms) ? [.standaloneAlarms] : []
+    }
+
+    private var energyLayers: [TimelineLayer] {
+        EnergyPreview.isEnabled ? TimelineLayer.energy : []
     }
 
     private var sleepLayers: [TimelineLayer] {
