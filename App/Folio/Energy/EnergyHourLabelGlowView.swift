@@ -1,18 +1,18 @@
 import Planner
 import SwiftUI
 
-/// The part of the glow behind the hour labels.
+/// The part of the glow behind the hour labels. It shows today, and fades as today scrolls away.
 struct EnergyHourLabelGlowView: View {
     let context: TimelineLayerContext
 
-    private var curve: EnergyCurve? {
-        context.days.intervals.first.map {
-            EnergyPreview.curve(forDayStarting: $0.start, calendar: context.days.calendar)
-        }
+    private var todaysCurve: EnergyCurve {
+        let calendar = context.days.calendar
+        return EnergyPreview.curve(forDayStarting: calendar.startOfDay(for: .now), calendar: calendar)
     }
 
     var body: some View {
-        if let curve {
+        if context.todayOnScreen > 0 {
+            let curve = todaysCurve
             Canvas { graphics, size in
                 graphics.fill(
                     Path(CGRect(origin: .zero, size: size)),
@@ -27,6 +27,7 @@ struct EnergyHourLabelGlowView: View {
                     layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor)
                 }
             }
+            .opacity(context.todayOnScreen)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
         }

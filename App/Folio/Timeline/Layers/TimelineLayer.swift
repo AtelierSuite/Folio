@@ -4,6 +4,9 @@ import SwiftUI
 struct TimelineLayerContext {
     let days: TimelineDays
     let hourHeight: CGFloat
+    /// How much of today's column is on screen, from 0 to 1. Only hour label layers get a live value,
+    /// so layers there can fade as today scrolls away; elsewhere it stays at 1.
+    var todayOnScreen = 1.0
 }
 
 /// Extra content drawn on the timeline (reminders, weather, sleep, a second time zone)
