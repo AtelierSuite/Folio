@@ -35,4 +35,19 @@ struct EnergyCurveTests {
         #expect(rested.lowStrength(atHour: 23) > 0.5)
         #expect(rested.markers.last?.kind == .windDown)
     }
+
+    @Test func gaugeIsFullAtThePeaksAndLowInTheDip() throws {
+        let peaks = rested.markers.filter { $0.kind == .peak }.map { Int($0.hour) }
+        let dip = try #require(rested.markers.first { $0.kind == .dip })
+        for peak in peaks {
+            #expect(rested.gaugeSegments(forHourStarting: peak) == EnergyCurve.gaugeSegmentCount)
+        }
+        let dipSegments = try #require(rested.gaugeSegments(forHourStarting: Int(dip.hour)))
+        #expect(dipSegments < EnergyCurve.gaugeSegmentCount)
+    }
+
+    @Test func gaugeIsEmptyBeforeWakingAndLateAtNight() {
+        #expect(rested.gaugeSegments(forHourStarting: 5) == nil)
+        #expect(rested.gaugeSegments(forHourStarting: 23) == 0)
+    }
 }

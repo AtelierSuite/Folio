@@ -7,6 +7,11 @@ public struct EnergyCurve: Sendable, Equatable {
     public static let sampleStep = 1.0 / 12
     public static let sampleCount = Int(24 / sampleStep) + 1
 
+    /// How many of a gauge's segments are filled at full energy.
+    public static let gaugeSegmentCount = 3
+
+    /// Alertness from 0 to 1 against the rest of the waking day, or nil before waking.
+    public let levels: [Double?]
     public let peakStrengths: [Double]
     public let lowStrengths: [Double]
     public let markers: [EnergyMarker]
@@ -15,6 +20,7 @@ public struct EnergyCurve: Sendable, Equatable {
         let model = EnergyModel(inputs)
         let hours = (0..<Self.sampleCount).map { Double($0) * Self.sampleStep }
         let levels = model.normalizedLevels(at: hours)
+        self.levels = levels
         peakStrengths = levels.map { level in
             guard let level else { return 0 }
             return pow(max(0, (level - 0.62) / 0.38), 1.4)
@@ -25,6 +31,16 @@ public struct EnergyCurve: Sendable, Equatable {
         }
         markers = model.markers(hours: hours, levels: levels)
     }
+
+    /// The filled segments of an energy gauge for the hour starting at `hour`, read at its middle,
+    /// or nil when the person is not yet awake then.
+    public func gaugeSegments(forHourStarting hour: Int) -> Int? {
+        let position = Int(((Double(hour) + 0.5) / Self.sampleStep).rounded())
+        guard levels.indices.contains(position), let level = levels[position] else { return nil }
+        return Self.gaugeThresholds.filter { level >= $0 }.count
+    }
+
+    private static let gaugeThresholds = [0.3, 0.55, 0.8]
 
     public func peakStrength(atHour hour: Double) -> Double {
         Self.interpolate(peakStrengths, atHour: hour)
