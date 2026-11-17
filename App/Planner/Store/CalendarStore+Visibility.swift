@@ -30,4 +30,10 @@ extension CalendarStore {
     public func calendar(withIdentifier identifier: String) -> PlannerCalendar? {
         eventCalendars.first { $0.id == identifier } ?? reminderLists.first { $0.id == identifier }
     }
+
+    public func reloadDisplaySettings() {
+        hidesDeclinedEvents = visibilityStorage.hidesDeclinedEvents
+        overdueReminderPolicy = reminderSettings.overduePolicy
+        contentRevision += 1
+    }
 }
