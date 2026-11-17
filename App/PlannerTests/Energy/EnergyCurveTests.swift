@@ -43,7 +43,7 @@ struct EnergyCurveTests {
             #expect(rested.gaugeSegments(forHourStarting: peak) == EnergyCurve.gaugeSegmentCount)
         }
         let dipSegments = try #require(rested.gaugeSegments(forHourStarting: Int(dip.hour)))
-        #expect(dipSegments < EnergyCurve.gaugeSegmentCount)
+        #expect(dipSegments <= 1)
     }
 
     @Test func gaugeIsEmptyBeforeWakingAndLateAtNight() {

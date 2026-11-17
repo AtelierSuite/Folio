@@ -40,7 +40,7 @@ public struct EnergyCurve: Sendable, Equatable {
         return Self.gaugeThresholds.filter { level >= $0 }.count
     }
 
-    private static let gaugeThresholds = [0.3, 0.55, 0.8]
+    private static let gaugeThresholds = [0.5, 0.78, 0.88]
 
     public func peakStrength(atHour hour: Double) -> Double {
         Self.interpolate(peakStrengths, atHour: hour)
