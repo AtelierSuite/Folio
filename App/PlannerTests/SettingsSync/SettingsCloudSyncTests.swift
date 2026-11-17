@@ -99,4 +99,13 @@ struct SettingsCloudSyncTests {
         sync.applyCloudValues(for: ["Synced"])
         #expect(!notified)
     }
+
+    @Test func reportsChangesThatArrivedBeforeAnyoneListened() {
+        cloud.values["Synced"] = 3
+        sync.reconcile()
+        var notified = 0
+        sync.didApplyCloudChanges = { notified += 1 }
+        sync.didApplyCloudChanges = { notified += 1 }
+        #expect(notified == 1)
+    }
 }

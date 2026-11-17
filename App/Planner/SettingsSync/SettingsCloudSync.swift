@@ -4,12 +4,20 @@ import Foundation
 /// iCloud wins at launch and on incoming changes; local edits are pushed as they happen.
 @MainActor
 public final class SettingsCloudSync {
-    public var didApplyCloudChanges: (@MainActor () -> Void)?
+    /// Runs at once when set, if changes arrived before anyone was listening.
+    public var didApplyCloudChanges: (@MainActor () -> Void)? {
+        didSet {
+            guard hasUnreportedChanges, let didApplyCloudChanges else { return }
+            hasUnreportedChanges = false
+            didApplyCloudChanges()
+        }
+    }
 
     private let domains: [SyncedDefaultsDomain]
     private let cloud: any CloudKeyValueStoring
     private let notificationCenter: NotificationCenter
     private var lastSyncedValues: [String: Any] = [:]
+    private var hasUnreportedChanges = false
     private var observers: [any NSObjectProtocol] = []
 
     public init(
@@ -71,7 +79,7 @@ public final class SettingsCloudSync {
             }
         }
         if appliedAny {
-            didApplyCloudChanges?()
+            reportAppliedChanges()
         }
     }
 
@@ -88,7 +96,7 @@ public final class SettingsCloudSync {
             }
         }
         if appliedAny {
-            didApplyCloudChanges?()
+            reportAppliedChanges()
         }
     }
 
@@ -104,6 +112,14 @@ public final class SettingsCloudSync {
                 }
                 lastSyncedValues[key] = local
             }
+        }
+    }
+
+    private func reportAppliedChanges() {
+        if let didApplyCloudChanges {
+            didApplyCloudChanges()
+        } else {
+            hasUnreportedChanges = true
         }
     }
 
