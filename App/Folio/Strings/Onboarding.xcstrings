@@ -267,61 +267,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schreibe Notizen in Markdown und behalte sie neben deinen Plänen."
+            "value": "Schreibe Notizen und behalte sie neben deinen Plänen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Write notes in Markdown and keep them next to your plans."
+            "value": "Write notes and keep them next to your plans."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rédigez vos notes en Markdown et gardez-les à côté de vos projets."
+            "value": "Rédigez vos notes et gardez-les à côté de vos projets."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scrivi note in Markdown e tienile accanto ai tuoi piani."
+            "value": "Scrivi note e tienile accanto ai tuoi piani."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markdownでメモを書き、予定のそばに置いておけます。"
+            "value": "メモを書き、予定のそばに置いておけます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markdown으로 메모를 작성하고 일정 옆에 두세요."
+            "value": "메모를 작성하고 일정 옆에 두세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schrijf notities in Markdown en houd ze bij je planning."
+            "value": "Schrijf notities en houd ze bij je planning."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Viết ghi chú bằng Markdown và đặt chúng ngay cạnh kế hoạch của bạn."
+            "value": "Viết ghi chú và đặt chúng ngay cạnh kế hoạch của bạn."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "用 Markdown 写备忘录，并将其放在你的计划旁边。"
+            "value": "写备忘录，并将其放在你的计划旁边。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "用 Markdown 寫備忘錄，並將其放在你的計畫旁邊。"
+            "value": "寫備忘錄，並將其放在你的計畫旁邊。"
           }
         }
       }
