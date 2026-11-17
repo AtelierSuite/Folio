@@ -82,6 +82,7 @@ enum SyncedSettingsKeys {
         CalendarWeekLayout.storageKey,
         "Calendar.MultiDayCount",
         NoteSortOrder.storageKey,
-        WeatherNightSettings.shadesNightKey
+        WeatherNightSettings.shadesNightKey,
+        FocusLevelSettings.bleedsUnderEventsKey
     ]
 }
