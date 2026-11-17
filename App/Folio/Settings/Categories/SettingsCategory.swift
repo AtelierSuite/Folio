@@ -11,7 +11,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case notifications
     case eventNotifications
     case reminderNotifications
-    case alarms
+    case wakeUpAlarm
+    case travel
     case countdowns
     case sleep
     case medications
@@ -35,7 +36,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: String(localized: "Category.AllNotifications", table: "Settings")
         case .eventNotifications: String(localized: "Section.Events", table: "NotificationSounds")
         case .reminderNotifications: String(localized: "Section.Reminders", table: "NotificationSounds")
-        case .alarms: String(localized: "Category.Alarms", table: "Settings")
+        case .wakeUpAlarm: String(localized: "Section", table: "WakeUpAlarms")
+        case .travel: String(localized: "Category.Travel", table: "Settings")
         case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .medications: String(localized: "Category.Medications", table: "Settings")
@@ -59,7 +61,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: "bell.badge.fill"
         case .eventNotifications: "calendar.badge.clock"
         case .reminderNotifications: "checklist"
-        case .alarms: "alarm.fill"
+        case .wakeUpAlarm: "alarm.fill"
+        case .travel: "car.fill"
         case .countdowns: "timer"
         case .sleep: "bed.double.fill"
         case .medications: "pills.fill"
@@ -83,7 +86,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .notifications: .pink
         case .eventNotifications: .red
         case .reminderNotifications: .purple
-        case .alarms: .orange
+        case .wakeUpAlarm: .orange
+        case .travel: .blue
         case .countdowns: .green
         case .sleep: .indigo
         case .medications: .teal
@@ -105,7 +109,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
 
     func isAvailable(with capabilities: PlatformCapabilities) -> Bool {
         switch self {
-        case .alarms: capabilities.supports(.alarms)
+        case .wakeUpAlarm: capabilities.supports(.alarms)
         case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .sleep: capabilities.supports(.sleep)
         case .medications: capabilities.supports(.medications)

@@ -5,7 +5,7 @@ extension ArrivalAlertCenter {
     static func makeForApp() -> ArrivalAlertCenter {
         let center = ArrivalAlertCenter(capabilities: .current)
         center.onLeaveByChange = {
-            WidgetCenter.shared.reloadTimelines(ofKind: "LeaveByWidget")
+            WidgetCenter.shared.reloadTimelines(ofKind: leaveByWidgetKind)
             WidgetCenter.shared.reloadTimelines(ofKind: "DayLoadWidget")
         }
         center.start()

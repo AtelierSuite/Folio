@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-struct WakeUpAlarmOptionRows: View {
+struct WakeUpLeadTimePicker: View {
     static let leadOptions = [15, 30, 45, 60, 75, 90, 105, 120, 150, 180]
 
     @Environment(WakeUpAlarmCenter.self) private var wakeUpAlarms
@@ -16,22 +16,6 @@ struct WakeUpAlarmOptionRows: View {
             }
         }
         .accessibilityIdentifier("WakeUpLeadTimePicker")
-        WakeUpTravelTimeRows()
-        MinutesOfDayPicker(
-            title: String(localized: "Earliest", table: "WakeUpAlarms"),
-            minutes: wakeUpAlarms.earliestMinutes,
-            select: { minutes in Task { await wakeUpAlarms.setEarliestMinutes(minutes) } }
-        )
-        .accessibilityIdentifier("WakeUpEarliestPicker")
-        MinutesOfDayPicker(
-            title: String(localized: "LatestEvent", table: "WakeUpAlarms"),
-            minutes: wakeUpAlarms.latestEventMinutes,
-            select: { minutes in Task { await wakeUpAlarms.setLatestEventMinutes(minutes) } }
-        )
-        .accessibilityIdentifier("WakeUpLatestEventPicker")
-        WakeUpHolidayToggle()
-        WakeUpCalendarsLink()
-        WakeUpNextAlarmRow(alarm: wakeUpAlarms.upcomingAlarms.first)
     }
 
     private func leadText(_ minutes: Int) -> String {

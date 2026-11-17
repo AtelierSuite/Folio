@@ -326,6 +326,71 @@
         }
       }
     },
+    "Action.TurnOn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn On"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オンにする"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "켜기"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivieren"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attiva"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zet aan"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bật"
+          }
+        }
+      }
+    },
     "Alarms.Denied.Description": {
       "extractionState": "manual",
       "localizations": {
@@ -2932,61 +2997,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um dich mit deinem aktuellen Standort an den Aufbruch oder bei deiner Ankunft zu erinnern, erlaube den Zugriff auf die Ortungsdienste."
+            "value": "Erlaube den Standortzugriff, um Hinweise für unterwegs zu nutzen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "To use your current location to alert you when it’s time to leave or when you arrive, allow access to Location Services."
+            "value": "Allow location access to use travel alerts."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pour utiliser votre position actuelle afin de vous alerter quand il est l’heure de partir ou à votre arrivée, autorisez l’accès au service de localisation."
+            "value": "Autorisez l’accès à la position pour utiliser les alertes de trajet."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Per usare la tua posizione attuale per avvisarti quando è ora di partire o quando arrivi, consenti l’accesso a Localizzazione."
+            "value": "Consenti l’accesso alla posizione per usare gli avvisi sugli spostamenti."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "現在地を使って出発時刻や到着をお知らせするには、位置情報サービスへのアクセスを許可してください。"
+            "value": "移動の通知を使うには、位置情報へのアクセスを許可してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "현재 위치를 사용해 출발할 시간이나 도착 시 알려 주려면 위치 서비스 접근을 허용하세요."
+            "value": "이동 알림을 사용하려면 위치 접근을 허용하십시오."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie een melding te krijgen wanneer het tijd is om te vertrekken of wanneer je aankomt."
+            "value": "Geef toegang tot je locatie om meldingen voor onderweg te gebruiken."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Để dùng vị trí hiện tại nhằm báo cho bạn khi đến giờ khởi hành hoặc khi bạn đến nơi, hãy cho phép truy cập Dịch vụ định vị."
+            "value": "Cho phép truy cập vị trí để dùng cảnh báo di chuyển."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要使用当前位置在该出发时或到达时提醒你，请允许访问定位服务。"
+            "value": "允许访问位置以使用出行提醒。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要使用目前位置在該出發時或抵達時提醒你，請允許取用定位服務。"
+            "value": "允許取用位置以使用交通提醒。"
           }
         }
       }
@@ -3322,61 +3387,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um mit deinem aktuellen Standort die Fahrzeit in deinen Weckalarm einzurechnen, erlaube den Zugriff auf die Ortungsdienste."
+            "value": "Erlaube den Standortzugriff, um die Fahrzeit hinzuzufügen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "To use your current location to add travel time to your wake-up alarm, allow access to Location Services."
+            "value": "Allow location access to add travel time."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pour utiliser votre position actuelle afin d’ajouter le temps de trajet à votre alarme de réveil, autorisez l’accès au service de localisation."
+            "value": "Autorisez l’accès à la position pour ajouter le temps de trajet."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Per usare la tua posizione attuale per aggiungere il tempo di viaggio alla sveglia mattutina, consenti l’accesso a Localizzazione."
+            "value": "Consenti l’accesso alla posizione per aggiungere il tempo di percorrenza."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "現在地を使って目覚ましアラームに移動時間を加えるには、位置情報サービスへのアクセスを許可してください。"
+            "value": "移動時間を加えるには、位置情報へのアクセスを許可してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "현재 위치를 사용해 기상 알람에 이동 시간을 더하려면 위치 서비스 접근을 허용하세요."
+            "value": "이동 시간을 추가하려면 위치 접근을 허용하십시오."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sta toegang tot Locatievoorzieningen toe om met je huidige locatie reistijd aan je wekker toe te voegen."
+            "value": "Geef toegang tot je locatie om reistijd toe te voegen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Để dùng vị trí hiện tại nhằm cộng thời gian di chuyển vào báo thức dậy, hãy cho phép truy cập Dịch vụ định vị."
+            "value": "Cho phép truy cập vị trí để cộng thời gian di chuyển."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要使用当前位置为起床闹钟加上行程时间，请允许访问定位服务。"
+            "value": "允许访问位置以加上行程时间。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "若要使用目前位置為起床鬧鐘加上交通時間，請允許取用定位服務。"
+            "value": "允許取用位置以加上交通時間。"
           }
         }
       }
