@@ -19,7 +19,8 @@ struct WakeUpAlarmSection: View {
             .disabled(!wakeUpAlarms.isSupported)
             .accessibilityIdentifier("WakeUpAlarmToggle")
             if wakeUpAlarms.isEnabled {
-                WakeUpAlarmOptionRows()
+                WakeUpCalendarsLink()
+                WakeUpLeadTimePicker()
             }
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))
@@ -27,12 +28,21 @@ struct WakeUpAlarmSection: View {
             Text(footer)
         }
         .disabled(permissionCenter.isBlocked(.alarms))
+        if wakeUpAlarms.isEnabled {
+            WakeUpTimingSection()
+                .disabled(permissionCenter.isBlocked(.alarms))
+            PermissionPromptSection(
+                kind: .location,
+                message: String(localized: "Prompt.WakeUpTravelTime", table: "Permissions"),
+                asksOnToggle: true
+            )
+            WakeUpTravelTimeSection()
+                .disabled(permissionCenter.isBlocked(.alarms))
+        }
     }
 
     private var footer: String {
         guard wakeUpAlarms.isSupported else { return String(localized: "Unsupported", table: "WakeUpAlarms") }
-        let footer = String(localized: "Footer", table: "WakeUpAlarms")
-        guard wakeUpAlarms.isEnabled && wakeUpAlarms.addsTravelTime else { return footer }
-        return footer + " " + String(localized: "TravelTime.Footer", table: "WakeUpAlarms")
+        return String(localized: "Footer", table: "WakeUpAlarms")
     }
 }
