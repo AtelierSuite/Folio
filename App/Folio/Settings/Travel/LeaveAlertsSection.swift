@@ -31,6 +31,13 @@ struct LeaveAlertsSection: View {
                 .disabled(isMissingLocationAccess)
                 if capabilities.supports(.alarms) {
                     LeaveAlertStylePicker()
+                    if leaveAlerts.ringsAsAlarm {
+                        AlarmSoundPicker(
+                            selection: leaveAlerts.alarmSound,
+                            select: { sound in Task { await leaveAlerts.setAlarmSound(sound) } },
+                            accessibilityIdentifier: "LeaveAlarmSoundPicker"
+                        )
+                    }
                 }
             }
         } header: {

@@ -21,6 +21,11 @@ struct WakeUpAlarmSection: View {
             if wakeUpAlarms.isEnabled {
                 WakeUpCalendarsLink()
                 WakeUpLeadTimePicker()
+                AlarmSoundPicker(
+                    selection: wakeUpAlarms.sound,
+                    select: { sound in Task { await wakeUpAlarms.setSound(sound) } },
+                    accessibilityIdentifier: "WakeUpAlarmSoundPicker"
+                )
             }
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))
