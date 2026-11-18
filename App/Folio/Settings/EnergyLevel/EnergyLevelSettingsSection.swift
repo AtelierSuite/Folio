@@ -1,14 +1,14 @@
 import Planner
 import SwiftUI
 
-struct FocusLevelSettingsSection: View {
+struct EnergyLevelSettingsSection: View {
     @Environment(PermissionCenter.self) private var permissionCenter
-    @AppStorage(FocusLevelSettings.isShownKey) private var isShown = false
-    @AppStorage(FocusLevelSettings.bleedsUnderEventsKey) private var bleedsUnderEvents = true
+    @AppStorage(EnergyLevelSettings.isShownKey) private var isShown = false
+    @AppStorage(EnergyLevelSettings.bleedsUnderEventsKey) private var bleedsUnderEvents = true
 
     var body: some View {
         Section {
-            Toggle(String(localized: "Settings.ShowOnCalendar", table: "FocusLevel"), isOn: Binding(
+            Toggle(String(localized: "Settings.ShowOnCalendar", table: "EnergyLevel"), isOn: Binding(
                 get: { isShown },
                 set: { newValue in
                     Task {
@@ -20,11 +20,11 @@ struct FocusLevelSettingsSection: View {
             .disabled(permissionCenter.isBlocked(.health))
             .accessibilityIdentifier("FocusLevelToggle")
             if isShown {
-                Toggle(String(localized: "Settings.BleedsUnderEvents", table: "FocusLevel"), isOn: $bleedsUnderEvents)
+                Toggle(String(localized: "Settings.BleedsUnderEvents", table: "EnergyLevel"), isOn: $bleedsUnderEvents)
                     .accessibilityIdentifier("FocusLevelBleedToggle")
             }
         } footer: {
-            Text(String(localized: "Settings.Footer", table: "FocusLevel"))
+            Text(String(localized: "Settings.Footer", table: "EnergyLevel"))
         }
     }
 }
