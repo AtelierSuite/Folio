@@ -58,6 +58,20 @@ final class NotificationActionTests: XCTestCase {
     }
 
     @MainActor
+    func testDirectionsOpensMapsWithoutOpeningFolio() throws {
+        let app = launch(with: ["-SeedTestAlertMeeting"])
+        enableNotifications(in: app)
+        XCUIDevice.shared.press(.home)
+
+        let alert = expandDeliveredAlert(titled: "Folio Test Meeting")
+        alert.buttons["Directions"].firstMatch.tap()
+        let maps = XCUIApplication(bundleIdentifier: "com.apple.Maps")
+        XCTAssertTrue(maps.wait(for: .runningForeground, timeout: 20))
+        attachScreenshot(named: "Directions")
+        XCTAssertNotEqual(app.state, .runningForeground)
+    }
+
+    @MainActor
     func testTappingAnAlertOpensTheEvent() throws {
         let app = launch(with: ["-SeedTestAlertEvent"])
         enableNotifications(in: app)

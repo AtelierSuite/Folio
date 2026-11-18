@@ -21,6 +21,24 @@ final class NotificationViewController: UIViewController, UNNotificationContentE
         }
     }
 
+    /// Directions opens Maps from here so Folio doesn't come forward first.
+    func didReceive(
+        _ response: UNNotificationResponse,
+        completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void
+    ) {
+        let userInfo = response.notification.request.content.userInfo
+        guard response.actionIdentifier == NotificationAction.directions.identifier,
+              let url = NotificationUserInfo.place(from: userInfo)?.directionsURL,
+              let extensionContext else {
+            completion(.dismissAndForwardAction)
+            return
+        }
+        Task {
+            let opened = await extensionContext.open(url)
+            completion(opened ? .dismiss : .dismissAndForwardAction)
+        }
+    }
+
     private func show(_ rootView: NotificationDetailView) {
         if let hostingController {
             hostingController.rootView = rootView
