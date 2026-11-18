@@ -30,10 +30,12 @@ struct CalendarToolbar: ToolbarContent {
                     navigation.page(mode, forward: false)
                 }
             }
-            Button(String(localized: "Toolbar.Today", table: "Calendar")) {
-                navigation.goToToday()
+            if capabilities.supports(.calendarTodayButton) {
+                Button(String(localized: "Toolbar.Today", table: "Calendar")) {
+                    navigation.goToToday()
+                }
+                .disabled(navigation.isShowingToday)
             }
-            .disabled(navigation.isShowingToday)
             if capabilities.supports(.calendarPagingButtons) {
                 Button(String(localized: "Toolbar.Next", table: "Calendar"), systemImage: "chevron.right") {
                     navigation.page(mode, forward: true)

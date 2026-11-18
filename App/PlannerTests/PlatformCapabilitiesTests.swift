@@ -7,7 +7,8 @@ struct PlatformCapabilitiesTests {
         #expect(
             capabilities.supportedFeatures
                 == Set(PlatformFeature.allCases).subtracting([
-                    .calendarPagingButtons, .calendarViewMenuCommands, .notificationSoundInstallation, .menuBarExtra
+                    .calendarPagingButtons, .calendarTodayButton, .calendarViewMenuCommands,
+                    .notificationSoundInstallation, .menuBarExtra
                 ])
         )
     }
@@ -21,6 +22,7 @@ struct PlatformCapabilitiesTests {
         #expect(capabilities.supports(.notificationThumbnails))
         #expect(capabilities.supports(.keptEventAlerts))
         #expect(capabilities.supports(.calendarPagingButtons))
+        #expect(!capabilities.supports(.calendarTodayButton))
         #expect(!capabilities.supports(.calendarViewMenuCommands))
         #expect(!capabilities.supports(.notificationSoundInstallation))
         #expect(!capabilities.supports(.menuBarExtra))
@@ -42,8 +44,8 @@ struct PlatformCapabilitiesTests {
         #expect(
             capabilities.supportedFeatures
                 == [
-                    .timeSensitiveNotifications, .weather, .calendarPagingButtons, .calendarViewMenuCommands,
-                    .notificationSoundInstallation, .menuBarExtra
+                    .timeSensitiveNotifications, .weather, .calendarPagingButtons, .calendarTodayButton,
+                    .calendarViewMenuCommands, .notificationSoundInstallation, .menuBarExtra
                 ]
         )
     }
