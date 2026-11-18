@@ -114,7 +114,7 @@ let icons: [Icon] = [
     Icon(name: "advanced", glyph: .system("slider.horizontal.3"),
          base: .tinted(hex(0xA3A3AB), hex(0x6E6E76)), colors: [white], keyline: .square),
     Icon(name: "debug", glyph: .system("ladybug.fill"),
-         base: .tinted(hex(0x7AD957), hex(0x3E9E2C)), colors: [], keyline: .circle, artwork: .ladybug)
+         base: .tinted(hex(0x9ED8FF), hex(0x4BA6F2)), colors: [], keyline: .circle, artwork: .ladybug)
 ]
 
 let fileManager = FileManager.default
@@ -341,19 +341,34 @@ func mapArtwork() -> some View {
 
 func ladybugArtwork() -> some View {
     let area = Keyline.circle.rect
-    let headRadius: CGFloat = 13
-    let bodyRadius: CGFloat = 31
+    let headRadius: CGFloat = 15
+    let bodyRadius: CGFloat = 30
     let headCenter = CGPoint(x: area.midX, y: area.minY + headRadius)
     let bodyCenter = CGPoint(x: area.midX, y: area.maxY - bodyRadius)
-    let ink = hex(0x1C1C1E)
-    let spots = [CGPoint(x: -14, y: -9), CGPoint(x: 14, y: -9), CGPoint(x: -16, y: 12), CGPoint(x: 16, y: 12)]
+    let ink = hex(0x2C2C2E)
+    let spots: [(CGPoint, CGFloat)] = [
+        (CGPoint(x: -15, y: -8), 6.5), (CGPoint(x: 15, y: -8), 6.5),
+        (CGPoint(x: -14, y: 14), 5), (CGPoint(x: 14, y: 14), 5)
+    ]
     return ZStack(alignment: .topLeading) {
         circle(ink, center: headCenter, radius: headRadius)
-        circle(hex(0xFF3B30), center: bodyCenter, radius: bodyRadius)
-        bar(ink, CGRect(x: area.midX - 1.75, y: bodyCenter.y - bodyRadius + 2, width: 3.5, height: bodyRadius * 2 - 4))
+        circle(white, center: CGPoint(x: headCenter.x - 6, y: headCenter.y - 3), radius: 3)
+        circle(white, center: CGPoint(x: headCenter.x + 6, y: headCenter.y - 3), radius: 3)
+        Circle()
+            .fill(LinearGradient(colors: [hex(0xFF6B5E), hex(0xE5312A)].map { Color(nsColor: $0) },
+                                 startPoint: .top, endPoint: .bottom))
+            .frame(width: bodyRadius * 2, height: bodyRadius * 2)
+            .offset(x: bodyCenter.x - bodyRadius, y: bodyCenter.y - bodyRadius)
+        bar(ink, CGRect(x: area.midX - 1.5, y: bodyCenter.y - bodyRadius, width: 3, height: bodyRadius * 2))
         ForEach(0..<spots.count, id: \.self) { index in
-            circle(ink, center: CGPoint(x: bodyCenter.x + spots[index].x, y: bodyCenter.y + spots[index].y), radius: 6)
+            let (offset, radius) = spots[index]
+            circle(ink, center: CGPoint(x: bodyCenter.x + offset.x, y: bodyCenter.y + offset.y), radius: radius)
         }
+        Ellipse()
+            .fill(Color.white.opacity(0.35))
+            .frame(width: 12, height: 7)
+            .rotationEffect(.degrees(-35))
+            .offset(x: bodyCenter.x - 24, y: bodyCenter.y - 21)
     }
 }
 
