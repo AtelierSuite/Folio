@@ -9,27 +9,32 @@ struct WatchTimelineView: View {
     var body: some View {
         TimelineView(.everyMinute) { context in
             let agenda = WatchAgenda(events: events, from: context.date, calendar: .current)
-            if hasLoaded && agenda.isEmpty {
-                WatchTimelineEmptyView()
-            } else {
-                WatchAgendaList(agenda: agenda, now: context.date)
+            Group {
+                if hasLoaded && agenda.isEmpty {
+                    WatchTimelineEmptyView()
+                } else {
+                    WatchAgendaList(agenda: agenda, now: context.date)
+                }
             }
-        }
-        .task(id: loadKey) {
-            let now = Date.now
-            events = await model.events(
-                for: .days(startingOn: now, count: WatchAgenda.defaultDayCount, calendar: .current),
-                at: now
-            )
-            hasLoaded = true
+            .task(id: loadKey(for: context.date)) {
+                await loadEvents(startingOn: context.date)
+            }
         }
     }
 
-    private var loadKey: WatchEventsLoadKey {
+    private func loadKey(for date: Date) -> WatchEventsLoadKey {
         WatchEventsLoadKey(
-            firstDay: Calendar.current.startOfDay(for: .now),
+            firstDay: Calendar.current.startOfDay(for: date),
             dayCount: WatchAgenda.defaultDayCount,
             revision: model.revision
         )
+    }
+
+    private func loadEvents(startingOn date: Date) async {
+        events = await model.events(
+            for: .days(startingOn: date, count: WatchAgenda.defaultDayCount, calendar: .current),
+            at: .now
+        )
+        hasLoaded = true
     }
 }
