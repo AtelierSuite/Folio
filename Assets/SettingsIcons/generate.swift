@@ -252,7 +252,7 @@ func calendarArtwork() -> some View {
             .fill(LinearGradient(colors: [hex(0xFF6259), hex(0xE5352B)].map { Color(nsColor: $0) },
                                  startPoint: .top, endPoint: .bottom))
             .frame(width: canvas, height: 38)
-        ForEach(0..<12, id: \.self) { index in
+        ForEach(1..<11, id: \.self) { index in
             let center = CGPoint(x: columns[index % 4], y: rows[index / 4])
             if index == 6 {
                 circle(calendarRed, center: center, radius: 11)
