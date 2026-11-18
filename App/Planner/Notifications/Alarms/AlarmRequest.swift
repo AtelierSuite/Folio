@@ -36,7 +36,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
             title: alert.content.alarmTitle,
             tint: alert.color,
             item: NotificationItem(kind: alert.kind, reference: alert.reference, fireDate: alert.fireDate),
-            secondaryAction: .alertSnooze,
+            secondaryAction: .snooze,
             source: alert.alarmSource
         )
     }

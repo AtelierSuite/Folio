@@ -33,10 +33,11 @@ public struct AlarmSynchronizer: Sendable {
             scheduledIdentifiers: scheduled,
             ownedIdentifiers: owned,
             heldIdentifiers: held,
-            retainedIdentifiers: retained
+            retainedIdentifiers: retained,
+            recordedActions: ledger.secondaryActions
         )
         await client.cancel(identifiers: diff.identifiersToCancel)
-        var live = Set(scheduled).intersection(diff.plannedIdentifiers)
+        var live = Set(scheduled).intersection(diff.plannedIdentifiers).subtracting(diff.changedIdentifiers)
         var failed: [AlarmRequest] = []
         for request in diff.alarmsToSchedule {
             if (try? await client.schedule(request)) != nil {
@@ -46,11 +47,14 @@ public struct AlarmSynchronizer: Sendable {
             }
         }
         var sources = previousSources.filter { retained.contains($0.key) }
+        var actions = ledger.secondaryActions.filter { retained.contains($0.key) }
         for request in requests where live.contains(request.id) {
             sources[request.id] = request.source
+            actions[request.id] = request.secondaryAction
         }
         ledger.identifiers = live.union(retained)
         ledger.sources = sources
+        ledger.secondaryActions = actions
         return Outcome(scheduledCount: live.count, failed: failed)
     }
 }

@@ -87,6 +87,41 @@ struct AlarmPlanDiffTests {
     }
     #endif
 
+    @Test func reschedulesOwnedAlarmsWhoseSnoozeChanged() {
+        let changed = request("changed", hours: 1)
+        let unchanged = request("unchanged", hours: 2)
+        let unrecorded = request("unrecorded", hours: 3)
+        let diff = AlarmPlanDiff(
+            planned: [changed, unchanged, unrecorded],
+            scheduledIdentifiers: [changed.id, unchanged.id, unrecorded.id],
+            ownedIdentifiers: [changed.id, unchanged.id, unrecorded.id],
+            recordedActions: [changed.id: .snooze(60), unchanged.id: unchanged.secondaryAction]
+        )
+        #expect(diff.identifiersToCancel == [changed.id])
+        #expect(diff.alarmsToSchedule == [changed])
+    }
+
+    @Test func synchronizerRecordsSecondaryActionsAndReschedulesChangedOnes() async {
+        let client = FakeAlarmClient()
+        let defaults = UserDefaults(suiteName: "AlarmPlanDiffTests.\(UUID().uuidString)")!
+        let ledger = AlarmLedger(key: "Test", defaults: defaults)
+        let synchronizer = AlarmSynchronizer(client: client, ledger: ledger)
+        let original = request("standup", hours: 1)
+        _ = await synchronizer.synchronize([original])
+        #expect(ledger.secondaryActions == [original.id: original.secondaryAction])
+        let snoozeChanged = AlarmRequest(
+            id: original.id, fireDate: original.fireDate, title: original.title,
+            tint: original.tint, item: original.item, secondaryAction: .snooze(20 * 60), source: original.source
+        )
+        _ = await synchronizer.synchronize([snoozeChanged])
+        #expect(client.scheduledAlarms.map(\.secondaryAction) == [.snooze(20 * 60)])
+        #expect(client.cancelCount == 1)
+        #expect(ledger.identifiers == [original.id])
+        #expect(ledger.secondaryActions == [original.id: .snooze(20 * 60)])
+        _ = await synchronizer.synchronize([snoozeChanged])
+        #expect(client.scheduleCount == 2)
+    }
+
     @Test func requestUsesTheAlarmTitleAndColor() {
         let event = NotificationFixtures.event("standup", start: NotificationFixtures.hours(1))
         let candidate = NotificationCandidate(

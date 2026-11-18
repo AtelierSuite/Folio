@@ -32,7 +32,7 @@ struct StandaloneAlarmCenterTests {
         #expect(scheduled.fireDate == wakeTime)
         #expect(scheduled.title == "Gym")
         #expect(scheduled.item == nil)
-        #expect(scheduled.secondaryAction == .snooze(StandaloneAlarm.snoozeDuration))
+        #expect(scheduled.secondaryAction == .snooze(AlarmSnoozeSettings().duration))
         #expect(center.alarms.map(\.fireDate) == [wakeTime])
     }
 

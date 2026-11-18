@@ -25,9 +25,7 @@ public struct StandaloneAlarm: Sendable, Hashable, Codable, Identifiable {
             title: title,
             tint: nil,
             item: nil,
-            secondaryAction: .snooze(StandaloneAlarm.snoozeDuration)
+            secondaryAction: .snooze
         )
     }
-
-    public static let snoozeDuration: TimeInterval = 9 * 60
 }
