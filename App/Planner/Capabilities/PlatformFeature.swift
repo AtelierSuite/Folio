@@ -6,6 +6,7 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case alarms
     case sleep
     case medications
+    case workouts
     case geofencedNotifications
     case leaveAlerts
     case weather
@@ -13,6 +14,7 @@ public enum PlatformFeature: String, Sendable, CaseIterable {
     case notificationThumbnails
     case keptEventAlerts
     case calendarPagingButtons
+    case calendarTodayButton
     case calendarViewMenuCommands
     case notificationSoundInstallation
     case menuBarExtra

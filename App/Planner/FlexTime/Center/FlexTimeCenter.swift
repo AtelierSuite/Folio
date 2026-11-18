@@ -50,6 +50,13 @@ public final class FlexTimeCenter {
         enabledDayKinds = storage.enabledDayKinds
     }
 
+    public func reloadSettings() async {
+        enabledDayKinds = storage.enabledDayKinds
+        revision += 1
+        store.flexTimeDidChange()
+        await didChange?()
+    }
+
     public var todayDelay: TimeInterval {
         _ = revision
         return storage.delay(on: HolidayDay(date: clock(), timeZone: calendar().timeZone))

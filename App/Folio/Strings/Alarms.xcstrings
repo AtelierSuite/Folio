@@ -1,0 +1,136 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Snooze.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How long an alarm waits before ringing again after you tap Snooze. Applies to event, reminder, wake-up and calendar alarms."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スヌーズをタップしてからアラームが再び鳴るまでの時間です。イベント、リマインダー、起床、カレンダーのアラームに適用されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "轻点“稍后提醒”后闹钟再次响起前等待的时间。适用于日程、提醒事项、起床和日历闹钟。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點一下「稍後提醒」後鬧鐘再次響起前等待的時間。適用於行程、提醒事項、起床和行事曆鬧鐘。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 알림을 탭한 후 알람이 다시 울릴 때까지의 시간입니다. 이벤트, 미리 알림, 기상 및 캘린더 알람에 적용됩니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Délai avant qu’une alarme ne sonne à nouveau après avoir touché Répéter. S’applique aux alarmes d’évènements, de rappels, de réveil et du calendrier."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie lange ein Wecker nach dem Tippen auf „Schlummern“ wartet, bevor er erneut klingelt. Gilt für Ereignis-, Erinnerungs-, Aufwach- und Kalenderwecker."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quanto attende una sveglia prima di suonare di nuovo dopo aver toccato Posticipa. Vale per le sveglie di eventi, promemoria, risveglio e calendario."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoelang een wekker wacht voordat hij opnieuw afgaat nadat je op Sluimer tikt. Geldt voor wekkers van activiteiten, herinneringen, wakker worden en de agenda."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian chờ trước khi báo thức đổ chuông lại sau khi bạn chạm vào Báo lại. Áp dụng cho báo thức sự kiện, lời nhắc, thức dậy và lịch."
+          }
+        }
+      }
+    },
+    "Snooze.Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snooze Time"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スヌーズの間隔"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后提醒时长"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍後提醒時長"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 알림 간격"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée de répétition"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlummerdauer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata posticipo"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluimertijd"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian báo lại"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

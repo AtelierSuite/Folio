@@ -1,3 +1,6 @@
+#if canImport(AlarmKit) && os(iOS)
+import AlarmKit
+#endif
 import Foundation
 import Testing
 @testable import Planner
@@ -57,6 +60,66 @@ struct AlarmPlanDiffTests {
         #expect(outcome.scheduledCount == 1)
         #expect(outcome.failed == [second])
         #expect(ledger.identifiers == [first.id])
+    }
+
+    @Test func synchronizerLeavesASnoozedAlarmAloneAndStopsOwningIt() async {
+        let client = FakeAlarmClient()
+        let defaults = UserDefaults(suiteName: "AlarmPlanDiffTests.\(UUID().uuidString)")!
+        let ledger = AlarmLedger(key: "Test", defaults: defaults)
+        let synchronizer = AlarmSynchronizer(client: client, ledger: ledger)
+        let rung = request("rung", hours: 1)
+        let next = request("next", hours: 2)
+        _ = await synchronizer.synchronize([rung, next])
+        client.snooze(rung.id)
+        let outcome = await synchronizer.synchronize([next])
+        #expect(outcome.failed.isEmpty)
+        #expect(client.cancelCount == 0)
+        #expect(client.snoozingIdentifiers == [rung.id])
+        #expect(ledger.identifiers == [next.id])
+    }
+
+    #if canImport(AlarmKit) && os(iOS)
+    @Test func onlyAlarmsWaitingToRingCountAsScheduled() {
+        #expect(Alarm.State.scheduled.isWaitingToRing)
+        #expect(!Alarm.State.countdown.isWaitingToRing)
+        #expect(!Alarm.State.paused.isWaitingToRing)
+        #expect(!Alarm.State.alerting.isWaitingToRing)
+    }
+    #endif
+
+    @Test func reschedulesOwnedAlarmsWhoseSnoozeChanged() {
+        let changed = request("changed", hours: 1)
+        let unchanged = request("unchanged", hours: 2)
+        let unrecorded = request("unrecorded", hours: 3)
+        let diff = AlarmPlanDiff(
+            planned: [changed, unchanged, unrecorded],
+            scheduledIdentifiers: [changed.id, unchanged.id, unrecorded.id],
+            ownedIdentifiers: [changed.id, unchanged.id, unrecorded.id],
+            recordedActions: [changed.id: .snooze(60), unchanged.id: unchanged.secondaryAction]
+        )
+        #expect(diff.identifiersToCancel == [changed.id])
+        #expect(diff.alarmsToSchedule == [changed])
+    }
+
+    @Test func synchronizerRecordsSecondaryActionsAndReschedulesChangedOnes() async {
+        let client = FakeAlarmClient()
+        let defaults = UserDefaults(suiteName: "AlarmPlanDiffTests.\(UUID().uuidString)")!
+        let ledger = AlarmLedger(key: "Test", defaults: defaults)
+        let synchronizer = AlarmSynchronizer(client: client, ledger: ledger)
+        let original = request("standup", hours: 1)
+        _ = await synchronizer.synchronize([original])
+        #expect(ledger.secondaryActions == [original.id: original.secondaryAction])
+        let snoozeChanged = AlarmRequest(
+            id: original.id, fireDate: original.fireDate, title: original.title,
+            tint: original.tint, item: original.item, secondaryAction: .snooze(20 * 60), source: original.source
+        )
+        _ = await synchronizer.synchronize([snoozeChanged])
+        #expect(client.scheduledAlarms.map(\.secondaryAction) == [.snooze(20 * 60)])
+        #expect(client.cancelCount == 1)
+        #expect(ledger.identifiers == [original.id])
+        #expect(ledger.secondaryActions == [original.id: .snooze(20 * 60)])
+        _ = await synchronizer.synchronize([snoozeChanged])
+        #expect(client.scheduleCount == 2)
     }
 
     @Test func requestUsesTheAlarmTitleAndColor() {

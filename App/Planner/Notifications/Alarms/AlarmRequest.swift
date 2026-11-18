@@ -8,6 +8,8 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
     /// `nil` for an alarm the user set on its own, not for an event or reminder.
     public let item: NotificationItem?
     public let secondaryAction: AlarmSecondaryAction
+    /// What the alarm rings for, which stays the same when its time or wording changes.
+    public let source: String
     public let sound: AlarmSound
 
     public init(
@@ -17,6 +19,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         tint: PlannerColor?,
         item: NotificationItem?,
         secondaryAction: AlarmSecondaryAction,
+        source: String? = nil,
         sound: AlarmSound = .system
     ) {
         self.id = id
@@ -25,6 +28,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         self.tint = tint
         self.item = item
         self.secondaryAction = secondaryAction
+        self.source = source ?? id.uuidString
         self.sound = sound
     }
 
@@ -35,11 +39,19 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
             title: alert.content.alarmTitle,
             tint: alert.color,
             item: NotificationItem(kind: alert.kind, reference: alert.reference, fireDate: alert.fireDate),
-            secondaryAction: .alertSnooze
+            secondaryAction: .snooze,
+            source: alert.alarmSource
         )
     }
 
     public var link: URL? {
         item.map { CalendarDeepLink.url(forEvent: $0.reference, startingAt: $0.date) }
+    }
+}
+
+extension PlannedNotification {
+    /// The alert the alarm rings for, unlike `id`, which also changes with the alert's wording.
+    var alarmSource: String {
+        "\(kind.rawValue).\(reference.storageKey)@\(Int(fireDate.timeIntervalSince1970.rounded(.down)))"
     }
 }

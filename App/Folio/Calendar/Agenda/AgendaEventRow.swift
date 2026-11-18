@@ -5,15 +5,8 @@ struct AgendaEventRow: View {
     let event: CalendarEvent
     var duplicateCount = 1
 
-    private var outline: some InsettableShape {
-        RoundedRectangle(cornerRadius: 6).inset(by: -4)
-    }
-
     var body: some View {
         HStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 2)
-                .fill(event.color.color)
-                .frame(width: 4)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Text(event.title)
@@ -35,7 +28,6 @@ struct AgendaEventRow: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             Spacer(minLength: 0)
             if event.isReadOnly {
                 Image(systemName: "lock.fill")
@@ -44,6 +36,5 @@ struct AgendaEventRow: View {
                     .accessibilityLabel(String(localized: "Event.ReadOnly", table: "Agenda"))
             }
         }
-        .invitationCardStyle(event.invitationCardStyle, color: event.color.color, in: outline)
     }
 }

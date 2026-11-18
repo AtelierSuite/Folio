@@ -1,5 +1,4 @@
 import Foundation
-import Synchronization
 import Testing
 @testable import Planner
 
@@ -33,7 +32,7 @@ struct StandaloneAlarmCenterTests {
         #expect(scheduled.fireDate == wakeTime)
         #expect(scheduled.title == "Gym")
         #expect(scheduled.item == nil)
-        #expect(scheduled.secondaryAction == .snooze(StandaloneAlarm.snoozeDuration))
+        #expect(scheduled.secondaryAction == .snooze(AlarmSnoozeSettings().duration))
         #expect(center.alarms.map(\.fireDate) == [wakeTime])
     }
 
@@ -114,21 +113,5 @@ struct StandaloneAlarmCenterTests {
         let center = try makeCenter(platform: .mac)
         #expect(!center.isSupported)
         #expect(await center.add(at: wakeTime, label: "") == .failed)
-    }
-}
-
-private final class MovableClock: Sendable {
-    private let date: Mutex<Date>
-
-    init(_ date: Date) {
-        self.date = Mutex(date)
-    }
-
-    var now: Date {
-        date.withLock { $0 }
-    }
-
-    func move(to newDate: Date) {
-        date.withLock { $0 = newDate }
     }
 }

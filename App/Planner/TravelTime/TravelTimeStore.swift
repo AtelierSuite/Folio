@@ -53,6 +53,12 @@ public final class TravelTimeStore {
         revision += 1
     }
 
+    public func reloadSettings() {
+        isEnabled = settings.isEnabled
+        transport = settings.transport
+        revision += 1
+    }
+
     public var hasLocationAccess: Bool {
         locator?.authorizationStatus == .granted
     }

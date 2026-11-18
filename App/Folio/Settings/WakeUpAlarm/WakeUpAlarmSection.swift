@@ -19,7 +19,7 @@ struct WakeUpAlarmSection: View {
             .disabled(!wakeUpAlarms.isSupported)
             .accessibilityIdentifier("WakeUpAlarmToggle")
             if wakeUpAlarms.isEnabled {
-                WakeUpCalendarsLink()
+                WakeUpCalendarsRow()
                 WakeUpLeadTimePicker()
                 AlarmSoundPicker(
                     selection: wakeUpAlarms.sound,

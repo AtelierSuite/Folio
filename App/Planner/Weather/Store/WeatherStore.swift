@@ -58,6 +58,13 @@ public final class WeatherStore {
         revision += 1
     }
 
+    public func reloadSettings() {
+        isEnabled = settings.isEnabled
+        locationMode = settings.locationMode
+        chosenPlace = settings.chosenPlace
+        revision += 1
+    }
+
     public var usesCurrentLocation: Bool {
         locationMode == .current && locator?.authorizationStatus == .granted
     }

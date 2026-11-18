@@ -1,8 +1,5 @@
 import Planner
 import SwiftUI
-#if os(iOS)
-import UIKit
-#endif
 
 extension View {
     /// Connects the window's `UndoManager` to the undo coordinator and writes staged deletes
@@ -49,10 +46,11 @@ private struct UndoSceneConnection: ViewModifier {
     private func commitPending() {
         guard coordinator.hasPendingCommit else { return }
         #if os(iOS)
-        let backgroundTask = UIApplication.shared.beginBackgroundTask()
+        let backgroundTask = UndoBackgroundTask()
+        backgroundTask.begin()
         Task {
             await coordinator.commitPending()
-            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask.end()
         }
         #else
         Task {

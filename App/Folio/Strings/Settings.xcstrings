@@ -131,6 +131,71 @@
         }
       }
     },
+    "Category.Alarms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarms"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラーム"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "闹钟"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鬧鐘"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알람"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alarmes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wecker"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sveglie"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wekkers"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo thức"
+          }
+        }
+      }
+    },
     "Category.AllNotifications": {
       "extractionState": "manual",
       "localizations": {
@@ -976,67 +1041,67 @@
         }
       }
     },
-    "Group.CalendarsAndNotes": {
+    "Category.Workouts": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kalender & Notizen"
+            "value": "Trainings"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calendars & Notes"
+            "value": "Workouts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calendriers et notes"
+            "value": "Exercices"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Calendari e note"
+            "value": "Allenamenti"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "カレンダーとメモ"
+            "value": "ワークアウト"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "캘린더 및 메모"
+            "value": "운동"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Agenda's en notities"
+            "value": "Trainingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lịch và ghi chú"
+            "value": "Bài tập"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日历与备忘录"
+            "value": "体能训练"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "行事曆與備忘錄"
+            "value": "體能訓練"
           }
         }
       }

@@ -2,9 +2,14 @@ import Foundation
 
 extension NotificationScheduler {
     /// Schedules the alarms and returns the alerts AlarmKit refused, restyled as Time Sensitive notifications.
-    func replanAlarms(_ planned: [PlannedNotification]) async -> (count: Int, fallbacks: [PlannedNotification]) {
+    func replanAlarms(
+        _ planned: [PlannedNotification],
+        liveSources: Set<String>
+    ) async -> (count: Int, fallbacks: [PlannedNotification]) {
         let synchronizer = AlarmSynchronizer(client: alarmClient, ledger: alarmLedger)
-        let outcome = await synchronizer.synchronize(planned.map(AlarmRequest.init(alert:)))
+        let outcome = await synchronizer.synchronize(
+            planned.map(AlarmRequest.init(alert:)), liveSources: liveSources
+        )
         let failedIdentifiers = Set(outcome.failed.map(\.id))
         let fallbacks = planned
             .filter { failedIdentifiers.contains(AlarmIdentifier.make(for: $0)) }

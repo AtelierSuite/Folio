@@ -50,6 +50,13 @@ public final class SearchIndexer {
         await reindexCalendar()
     }
 
+    public func reloadRange() async {
+        guard storage.range != range else { return }
+        range = storage.range
+        guard isActive else { return }
+        await reindexCalendar()
+    }
+
     public func search(_ query: SearchQuery) async -> [SearchDocument] {
         await catalog.search(query)
     }

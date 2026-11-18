@@ -6,6 +6,7 @@ final class FakeAlarmClient: AlarmSchedulingClient {
     struct State {
         var authorization: NotificationAuthorization
         var scheduled: [UUID: AlarmRequest?] = [:]
+        var snoozing: Set<UUID> = []
         var limit = Int.max
         var scheduleCount = 0
         var cancelCount = 0
@@ -37,6 +38,19 @@ final class FakeAlarmClient: AlarmSchedulingClient {
         state.withLock { $0.cancelCount }
     }
 
+    var snoozingIdentifiers: Set<UUID> {
+        state.withLock { $0.snoozing }
+    }
+
+    /// Mirrors AlarmKit, where an alarm that rang and was snoozed counts down instead of waiting to ring.
+    func snooze(_ identifier: UUID) {
+        state.withLock { state in
+            if state.scheduled.removeValue(forKey: identifier) != nil {
+                state.snoozing.insert(identifier)
+            }
+        }
+    }
+
     func setLimit(_ limit: Int) {
         state.withLock { $0.limit = limit }
     }
@@ -57,6 +71,10 @@ final class FakeAlarmClient: AlarmSchedulingClient {
         state.withLock { Array($0.scheduled.keys) }
     }
 
+    func heldIdentifiers() async -> [UUID] {
+        state.withLock { Array($0.snoozing) }
+    }
+
     func schedule(_ request: AlarmRequest) async throws {
         try state.withLock { state in
             guard state.scheduled.count < state.limit else { throw FakeAlarmError.limitReached }
@@ -67,8 +85,12 @@ final class FakeAlarmClient: AlarmSchedulingClient {
 
     func cancel(identifiers: [UUID]) async {
         state.withLock { state in
-            for identifier in identifiers where state.scheduled.removeValue(forKey: identifier) != nil {
-                state.cancelCount += 1
+            for identifier in identifiers {
+                let removed = state.scheduled.removeValue(forKey: identifier) != nil
+                    || state.snoozing.remove(identifier) != nil
+                if removed {
+                    state.cancelCount += 1
+                }
             }
         }
     }

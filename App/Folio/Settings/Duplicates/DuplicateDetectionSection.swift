@@ -7,19 +7,19 @@ struct DuplicateDetectionSection: View {
     @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(ArrivalAlertCenter.self) private var arrivalAlerts
 
-    private var calendars: [PlannerCalendar] {
-        store.eventCalendars + store.reminderLists
-    }
-
     var body: some View {
-        if !calendars.isEmpty {
+        if !store.eventCalendars.isEmpty || !store.reminderLists.isEmpty {
             Section {
-                ForEach(calendars) { calendar in
-                    Toggle(isOn: binding(for: calendar)) {
-                        CalendarKindLabel(calendar: calendar)
-                    }
-                    .accessibilityIdentifier("DuplicateDetection.\(calendar.title)")
-                }
+                CalendarSelectionRow(
+                    title: String(localized: "Title.CalendarsAndLists", table: "CalendarSelection"),
+                    sheetTitle: String(localized: "Settings.Header", table: "Duplicates"),
+                    calendars: store.eventCalendars,
+                    lists: store.reminderLists,
+                    footer: String(localized: "Settings.Footer", table: "Duplicates"),
+                    accessibilityPrefix: "DuplicateDetection",
+                    isSelected: { store.detectsDuplicates(in: $0) },
+                    setSelected: setDetectsDuplicates
+                )
             } header: {
                 Text(String(localized: "Settings.Header", table: "Duplicates"))
             } footer: {
@@ -28,17 +28,12 @@ struct DuplicateDetectionSection: View {
         }
     }
 
-    private func binding(for calendar: PlannerCalendar) -> Binding<Bool> {
-        Binding(
-            get: { store.detectsDuplicates(in: calendar) },
-            set: { isOn in
-                store.setDetectsDuplicates(isOn, in: calendar)
-                Task {
-                    await scheduler.replan()
-                    await leaveAlerts.replan()
-                    await arrivalAlerts.replan()
-                }
-            }
-        )
+    private func setDetectsDuplicates(_ isOn: Bool, in calendar: PlannerCalendar) {
+        store.setDetectsDuplicates(isOn, in: calendar)
+        Task {
+            await scheduler.replan()
+            await leaveAlerts.replan()
+            await arrivalAlerts.replan()
+        }
     }
 }

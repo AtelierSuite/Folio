@@ -7,7 +7,7 @@ struct RootView: View {
     @State private var router = AppRouter()
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: tabSelection) {
             Tab(String(localized: "Tab.Schedule", table: "Root"), systemImage: "calendar", value: AppTab.calendar) {
                 CalendarView()
             }
@@ -52,6 +52,17 @@ struct RootView: View {
                 noteNavigator.requestedNoteURL = nil
                 router.open(.note(url))
             }
+        }
+    }
+
+    private var tabSelection: Binding<AppTab> {
+        Binding {
+            selectedTab
+        } set: { tab in
+            if tab == .calendar && selectedTab == .calendar {
+                router.requestToday()
+            }
+            selectedTab = tab
         }
     }
 

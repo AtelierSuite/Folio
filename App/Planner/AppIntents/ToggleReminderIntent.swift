@@ -20,7 +20,7 @@ public struct ToggleReminderIntent: AppIntent {
     }
 
     public func perform() async throws -> some IntentResult {
-        try await EventKitDataSource.shared.setCompleted(isCompleted, reminderIdentifier: reminderIdentifier)
+        try await ReminderCompletionToggle().setCompleted(isCompleted, reminderIdentifier: reminderIdentifier)
         return .result()
     }
 }

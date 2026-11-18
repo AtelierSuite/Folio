@@ -7,7 +7,9 @@ public struct ReminderIntentActions {
     private let calendar: Calendar
 
     public init(
-        store: CalendarStore = CalendarStore(reminderNotifications: UserNotificationReminderDismisser()),
+        store: CalendarStore = CalendarStore(
+            reminderNotifications: UserNotificationReminderDismisser(removesScheduledAlerts: true)
+        ),
         calendar: Calendar = .current
     ) {
         self.store = store

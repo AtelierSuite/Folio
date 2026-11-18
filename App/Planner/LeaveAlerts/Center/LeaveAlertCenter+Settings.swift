@@ -29,4 +29,11 @@ extension LeaveAlertCenter {
     public func refreshAuthorization() {
         authorization = locator?.authorization ?? .notDetermined
     }
+
+    public func reloadSettings() async {
+        transport = settings.transport
+        ringsAsAlarm = settings.ringsAsAlarm
+        alarmSound = settings.alarmSound
+        await replan()
+    }
 }

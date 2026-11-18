@@ -4,6 +4,8 @@ import SwiftUI
 
 @main
 struct FolioApp: App {
+    /// Declared first so the stores below read synced settings when they load.
+    @State private var settingsSync = SettingsCloudSync.startedForApp()
     @State private var calendarStore: CalendarStore
     @State private var permissionCenter: PermissionCenter
     @State private var notesLibrary: NotesLibrary
@@ -21,6 +23,7 @@ struct FolioApp: App {
     @State private var weatherStore = WeatherStore.makeForApp()
     @State private var travelTimeStore = TravelTimeStore()
     @State private var sleepStore: SleepStore
+    @State private var workoutStore = WorkoutStore.makeForApp()
     @State private var flexTime: FlexTimeCenter
     @State private var medicationStore: MedicationStore
     @State private var systemTime = SystemTimeObserver()
@@ -101,6 +104,7 @@ struct FolioApp: App {
     var body: some Scene {
         WindowGroup(id: Self.mainWindowIdentifier) {
             RootView()
+                .reloadsSyncedSettings(from: settingsSync)
                 .updatesSearchIndex()
                 .environment(\.platformCapabilities, .current)
                 .environment(calendarStore)
@@ -123,6 +127,8 @@ struct FolioApp: App {
                 .environment(travelTimeStore)
                 .environment(sleepStore)
                 .refreshesSleep(sleepStore)
+                .environment(workoutStore)
+                .refreshesWorkouts(workoutStore)
                 .environment(flexTime)
                 .environment(medicationStore)
                 .refreshesMedications(medicationStore)
@@ -174,10 +180,12 @@ struct FolioApp: App {
             .environment(arrivalAlerts)
             .environment(leaveAlerts)
             .environment(wakeUpAlarms)
+            .environment(standaloneAlarms)
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(travelTimeStore)
             .environment(sleepStore)
+            .environment(workoutStore)
             .environment(flexTime)
             .environment(medicationStore)
             .followsSystemTime(systemTime)

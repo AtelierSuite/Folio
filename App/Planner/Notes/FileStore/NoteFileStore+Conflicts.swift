@@ -14,17 +14,27 @@ extension NoteFileStore {
         return try FileCoordination.write(at: url) { coordinatedURL in
             let currentText = try? String(contentsOf: coordinatedURL, encoding: .utf8)
             var copies: [URL] = []
+            var leftUnresolved = false
             for version in versions {
-                let versionText = try? String(contentsOf: version.url, encoding: .utf8)
-                if let versionText, versionText != currentText {
+                let action = NoteConflictVersionAction(
+                    versionText: try? String(contentsOf: version.url, encoding: .utf8),
+                    currentText: currentText
+                )
+                if case .saveConflictedCopy(let versionText) = action {
                     let copyURL = try writeConflictedCopy(
                         versionText, besides: coordinatedURL, date: version.modificationDate ?? .now
                     )
                     copies.append(copyURL)
                 }
-                version.isResolved = true
+                if action.resolvesVersion {
+                    version.isResolved = true
+                } else {
+                    leftUnresolved = true
+                }
             }
-            try NSFileVersion.removeOtherVersionsOfItem(at: coordinatedURL)
+            if !leftUnresolved {
+                try NSFileVersion.removeOtherVersionsOfItem(at: coordinatedURL)
+            }
             return copies
         }
     }

@@ -17,4 +17,9 @@ public struct WakeUpAlarm: Sendable, Hashable, Identifiable {
         let fireSeconds = Int(fireDate.timeIntervalSince1970.rounded(.down))
         return "\(Self.identifierPrefix)\(event.reference.storageKey)@\(fireSeconds)"
     }
+
+    /// The event the alarm wakes the user for, which stays the same when travel time moves the alarm.
+    public var source: String {
+        "\(Self.identifierPrefix)\(event.reference.storageKey)"
+    }
 }

@@ -23,11 +23,14 @@ struct CalendarNotificationSettingsView: View {
             }
             #endif
             Section {
+                Toggle(includeTitle, isOn: includesKind)
+                    .disabled(!scheduler.isEnabled)
+                    .accessibilityIdentifier("NotificationsIncludeToggle")
                 NotificationSoundPicker(kind: kind, calendar: nil, player: player)
+                    .disabled(!isIncluded)
             } footer: {
                 Text(String(localized: "Section.Footer", table: "NotificationSounds"))
             }
-            .disabled(!isIncluded)
             if kind == .event && capabilities.supports(.keptEventAlerts) {
                 KeepEventAlertsSection()
                     .disabled(!isIncluded)
@@ -64,6 +67,27 @@ struct CalendarNotificationSettingsView: View {
 
     private var isIncluded: Bool {
         scheduler.isEnabled && (kind == .event ? scheduler.includesEvents : scheduler.includesReminders)
+    }
+
+    private var includesKind: Binding<Bool> {
+        Binding(
+            get: { kind == .event ? scheduler.includesEvents : scheduler.includesReminders },
+            set: { newValue in
+                Task {
+                    if kind == .event {
+                        await scheduler.setIncludesEvents(newValue)
+                    } else {
+                        await scheduler.setIncludesReminders(newValue)
+                    }
+                }
+            }
+        )
+    }
+
+    private var includeTitle: String {
+        kind == .event
+            ? String(localized: "Items.Events", table: "Notifications")
+            : String(localized: "Items.Reminders", table: "Notifications")
     }
 
     private var emptyText: String {

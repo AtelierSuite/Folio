@@ -5,6 +5,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case general
     case accounts
     case calendars
+    case reminders
+    case alarms
     case workWeek
     case flexTime
     case notes
@@ -15,6 +17,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case travel
     case countdowns
     case focusLevel
+    case workouts
     case sleep
     case medications
     case weather
@@ -31,6 +34,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: String(localized: "Category.General", table: "Settings")
         case .accounts: String(localized: "Category.Accounts", table: "Settings")
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
+        case .reminders: String(localized: "Settings.Header", table: "Reminders")
+        case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .flexTime: String(localized: "Title", table: "FlexTime")
         case .notes: String(localized: "Category.Notes", table: "Settings")
@@ -41,6 +46,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: String(localized: "Category.Travel", table: "Settings")
         case .countdowns: String(localized: "Category.Countdowns", table: "Settings")
         case .focusLevel: String(localized: "Category.FocusLevel", table: "Settings")
+        case .workouts: String(localized: "Category.Workouts", table: "Settings")
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .medications: String(localized: "Category.Medications", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
@@ -57,16 +63,19 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: "gearshape.fill"
         case .accounts: "person.crop.circle.fill"
         case .calendars: "calendar"
+        case .reminders: "list.bullet"
+        case .alarms: "alarm.waves.left.and.right.fill"
         case .workWeek: "briefcase.fill"
         case .flexTime: "clock.arrow.circlepath"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
-        case .eventNotifications: "calendar.badge.clock"
+        case .eventNotifications: "calendar.day.timeline.leading"
         case .reminderNotifications: "checklist"
         case .wakeUpAlarm: "alarm.fill"
         case .travel: "car.fill"
         case .countdowns: "timer"
         case .focusLevel: "bolt.fill"
+        case .workouts: "figure.run"
         case .sleep: "bed.double.fill"
         case .medications: "pills.fill"
         case .weather: "cloud.sun.fill"
@@ -83,6 +92,8 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .general: .gray
         case .accounts: .blue
         case .calendars: .red
+        case .reminders: .orange
+        case .alarms: .red
         case .workWeek: .brown
         case .flexTime: .mint
         case .notes: .yellow
@@ -93,6 +104,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .travel: .blue
         case .countdowns: .green
         case .focusLevel: .orange
+        case .workouts: Color(.lime)
         case .sleep: .indigo
         case .medications: .teal
         case .weather: .cyan
@@ -113,10 +125,11 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
 
     func isAvailable(with capabilities: PlatformCapabilities) -> Bool {
         switch self {
-        case .wakeUpAlarm: capabilities.supports(.alarms)
+        case .alarms, .wakeUpAlarm: capabilities.supports(.alarms)
         case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .focusLevel, .sleep: capabilities.supports(.sleep)
         case .medications: capabilities.supports(.medications)
+        case .workouts: capabilities.supports(.workouts)
         default: true
         }
     }

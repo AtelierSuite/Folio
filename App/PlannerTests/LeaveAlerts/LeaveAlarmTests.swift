@@ -8,14 +8,17 @@ struct LeaveAlarmTests {
         let center: LeaveAlertCenter
         let scheduler: RecordingLeaveAlertScheduler
         let alarms: FakeAlarmClient
+        let defaults: UserDefaults
     }
 
     private func makeHarness(
         events: [CalendarEvent],
         ringsAsAlarm: Bool = true,
-        alarms: FakeAlarmClient = FakeAlarmClient()
+        alarms: FakeAlarmClient = FakeAlarmClient(),
+        estimator: FakeTravelTimeEstimator = FakeTravelTimeEstimator(travelTime: 1800),
+        defaults sharedDefaults: UserDefaults? = nil
     ) throws -> Harness {
-        let defaults = try #require(UserDefaults(suiteName: "LeaveAlarmTests.\(UUID().uuidString)"))
+        let defaults = try sharedDefaults ?? #require(UserDefaults(suiteName: "LeaveAlarmTests.\(UUID().uuidString)"))
         let settings = LeaveAlertSettings(defaults: defaults)
         settings.isEnabled = true
         settings.ringsAsAlarm = ringsAsAlarm
@@ -31,15 +34,16 @@ struct LeaveAlarmTests {
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             preferences: InMemoryArrivalPreferences(enabled: Set(events.map(\.reference.storageKey))),
             resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
-            estimator: FakeTravelTimeEstimator(travelTime: 1800),
+            estimator: estimator,
             scheduler: scheduler,
             ledger: LeaveAlertLedger(defaults: defaults),
+            travelTimes: LeaveTravelTimeCache(defaults: defaults),
             alarmClient: alarms,
             alarmLedger: AlarmLedger(key: "Leave", defaults: defaults),
             formatter: NotificationFixtures.formatter,
             clock: { ArrivalFixtures.now }
         )
-        return Harness(center: center, scheduler: scheduler, alarms: alarms)
+        return Harness(center: center, scheduler: scheduler, alarms: alarms, defaults: defaults)
     }
 
     private let dentist = ArrivalFixtures.event("Dentist", start: ArrivalFixtures.hours(2))
@@ -90,5 +94,36 @@ struct LeaveAlarmTests {
         let refused = try makeHarness(events: [dentist], alarms: full)
         await refused.center.replan()
         #expect(refused.scheduler.pendingAlerts.count == 1)
+    }
+
+    @Test func keepsTheAlarmWhenTheLookupFailsAfterARelaunch() async throws {
+        let first = try makeHarness(events: [dentist])
+        await first.center.replan()
+        let alarm = try #require(first.alarms.scheduledAlarms.first)
+        let failing = FakeTravelTimeEstimator(travelTime: nil)
+        failing.setFailing(true)
+        let relaunched = try makeHarness(
+            events: [dentist], alarms: first.alarms, estimator: failing, defaults: first.defaults
+        )
+        await relaunched.center.replan()
+        #expect(relaunched.alarms.scheduledAlarms.map(\.id) == [alarm.id])
+        #expect(relaunched.center.scheduledAlerts.map(\.travelTime) == [1800])
+        #expect(relaunched.scheduler.pendingAlerts.isEmpty)
+    }
+
+    @Test func doesNotReuseTheTravelTimeForAMovedEvent() async throws {
+        let first = try makeHarness(events: [dentist])
+        await first.center.replan()
+        let moved = ArrivalFixtures.event(
+            "Dentist", start: ArrivalFixtures.hours(2), coordinate: ArrivalFixtures.coordinate(5)
+        )
+        #expect(moved.id == dentist.id)
+        let failing = FakeTravelTimeEstimator(travelTime: nil)
+        failing.setFailing(true)
+        let relaunched = try makeHarness(
+            events: [moved], alarms: first.alarms, estimator: failing, defaults: first.defaults
+        )
+        await relaunched.center.replan()
+        #expect(relaunched.center.scheduledAlerts.isEmpty)
     }
 }

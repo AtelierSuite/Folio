@@ -53,6 +53,7 @@ struct LeaveAlertCenterTests {
             estimator: estimator,
             scheduler: scheduler,
             ledger: LeaveAlertLedger(defaults: defaults),
+            travelTimes: LeaveTravelTimeCache(defaults: defaults),
             alarmClient: alarms,
             alarmLedger: AlarmLedger(key: "Leave", defaults: defaults),
             formatter: NotificationFixtures.formatter,
@@ -127,6 +128,32 @@ struct LeaveAlertCenterTests {
         harness.locator?.coordinate = nil
         await harness.center.replan()
         #expect(harness.scheduler.pendingAlerts.count == 1)
+    }
+
+    @Test func keepsTheAlertWhenTheTravelTimeLookupFails() async throws {
+        let harness = try makeHarness(events: [ArrivalFixtures.event("Dentist", start: ArrivalFixtures.hours(2))])
+        await harness.center.replan()
+        let scheduled = harness.scheduler.pendingAlerts
+        harness.estimator.setFailing(true)
+        harness.clock.now = ArrivalFixtures.hours(0.5)
+        await harness.center.replan()
+        #expect(harness.scheduler.pendingAlerts.map(\.id) == scheduled.map(\.id))
+        #expect(harness.center.scheduledAlerts.map(\.id) == scheduled.map(\.id))
+    }
+
+    @Test func keepsThePendingAlertWhenTheLookupFailsAfterARelaunch() async throws {
+        let event = ArrivalFixtures.event("Dentist", start: ArrivalFixtures.hours(2))
+        let harness = try makeHarness(events: [event])
+        await harness.center.replan()
+        harness.center.scheduledAlerts = []
+        harness.estimator.setFailing(true)
+        await harness.center.replan()
+        #expect(harness.scheduler.pendingAlerts.count == 1)
+        #expect(harness.center.scheduledAlerts.map(\.travelTime) == [1800])
+        harness.estimator.setFailing(false)
+        harness.estimator.setTravelTime(2700)
+        await harness.center.replan()
+        #expect(harness.scheduler.pendingAlerts.map(\.leaveDate) == [ArrivalFixtures.hours(1.25)])
     }
 
     @Test func requestsLocationAccessWhenTurnedOn() async throws {

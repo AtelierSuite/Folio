@@ -48,7 +48,7 @@ struct WakeUpAlarmCenterTests {
         #expect(scheduled.fireDate == Fixtures.date(2026, 10, 29).addingTimeInterval(7.5 * 3600))
         #expect(scheduled.title.contains("standup"))
         #expect(scheduled.title.contains("9:00"))
-        #expect(scheduled.secondaryAction == .snooze(WakeUpAlarmPlanner.snoozeDuration))
+        #expect(scheduled.secondaryAction == .snooze(AlarmSnoozeSettings().duration))
         #expect(center.upcomingAlarms.map(\.event.title) == ["standup"])
     }
 

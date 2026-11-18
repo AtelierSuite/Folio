@@ -122,6 +122,7 @@ public final class WakeUpAlarmCenter {
     private func performReplan() async {
         authorization = await alarmClient.authorization()
         var alarms: [WakeUpAlarm] = []
+        var liveSources: Set<String> = []
         if isEnabled && authorization.allowsScheduling {
             let now = clock()
             let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers.union(excludedCalendarIdentifiers)
@@ -135,9 +136,14 @@ public final class WakeUpAlarmCenter {
                 ? await travelTimes(to: alarmPlanner.morningEvents(in: events, after: now), now: now)
                 : [:]
             alarms = alarmPlanner.alarms(for: events, after: now, travelTimes: travelTimes)
+            let lookBackStart = now.addingTimeInterval(-AlarmSynchronizer.heldAlarmLookBack)
+            liveSources = Set(
+                alarmPlanner.alarms(for: events, after: lookBackStart, travelTimes: travelTimes).map(\.source)
+            )
         }
         let requests = alarms.map { $0.request(formatter: formatter, sound: sound) }
-        let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger).synchronize(requests)
+        let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger)
+            .synchronize(requests, liveSources: liveSources)
         let failed = Set(outcome.failed.map(\.id))
         upcomingAlarms = zip(alarms, requests).filter { !failed.contains($0.1.id) }.map(\.0)
         settings.upcomingFireDates = upcomingAlarms.map(\.fireDate)

@@ -4,8 +4,6 @@ import Foundation
 /// but never before the earliest time of day. Events that start before the earliest time,
 /// or from the latest event time on, don't count. Days in `skippedDays` never ring.
 public struct WakeUpAlarmPlanner: Sendable {
-    public static let snoozeDuration: TimeInterval = 9 * 60
-
     public var leadTime: TimeInterval
     public var earliestMinutes: Int
     public var latestEventMinutes: Int
