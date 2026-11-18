@@ -11,6 +11,10 @@ struct TimelineEntryTitleView: View {
                     .imageScale(.small)
                     .accessibilityLabel(String(localized: "Accessibility.Reminder", table: "Timeline"))
             }
+            if entry.isBirthday {
+                BirthdayGlyph()
+                    .imageScale(.small)
+            }
             Text(entry.title)
             DuplicateCountBadge(count: entry.duplicateCount)
         }

@@ -18,12 +18,13 @@ extension CalendarItemKind {
 }
 
 struct CalendarKindLabel: View {
+    @Environment(CalendarStore.self) private var store
     let calendar: PlannerCalendar
     var subtitle: String?
 
     var body: some View {
         HStack(spacing: 10) {
-            GradientCircleIcon(systemImage: calendar.kind.accountSymbolName, color: calendar.color.color)
+            GradientCircleIcon(systemImage: symbolName, color: calendar.color.color)
                 .accessibilityLabel(calendar.kind.accountKindName)
             VStack(alignment: .leading, spacing: 2) {
                 Text(calendar.title)
@@ -35,5 +36,11 @@ struct CalendarKindLabel: View {
             }
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private var symbolName: String {
+        store.isBirthdayCalendar(calendar)
+            ? BirthdayStyle.symbolName
+            : calendar.kind.accountSymbolName
     }
 }

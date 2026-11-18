@@ -9,6 +9,9 @@ struct AgendaEventRow: View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    if event.isBirthday {
+                        BirthdayGlyph()
+                    }
                     Text(event.title)
                     DuplicateCountBadge(count: duplicateCount)
                 }
