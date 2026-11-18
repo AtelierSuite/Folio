@@ -38,6 +38,17 @@ struct BirthdayAlertTests {
         #expect(plan.isEmpty)
     }
 
+    @Test func birthdayAlertsAreMarkedAsBirthdays() {
+        let alerts = planner(alarms: [.relative(offset: 0)])
+        let birthdayPlan = alerts.plan(events: [birthday()], reminders: [], after: now, budget: 60)
+        let eventPlan = alerts.plan(
+            events: [birthday(alarms: [.relative(offset: 0)], isBirthday: false)], reminders: [], after: now, budget: 60
+        )
+        #expect(birthdayPlan.map(\.isBirthday) == [true])
+        #expect(eventPlan.map(\.isBirthday) == [false])
+        #expect(birthdayPlan.map(\.id) != eventPlan.map(\.id))
+    }
+
     @Test func settingsChooseTheDefaultAlerts() throws {
         let defaults = try #require(UserDefaults(suiteName: "BirthdayAlertTests.\(UUID().uuidString)"))
         let settings = BirthdaySettings(defaults: defaults)

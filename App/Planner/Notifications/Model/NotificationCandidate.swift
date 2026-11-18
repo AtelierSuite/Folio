@@ -10,6 +10,7 @@ public struct NotificationCandidate: Sendable, Hashable {
     public let place: NotificationPlace?
     public let color: PlannerColor?
     public let imageURL: URL?
+    public let isBirthday: Bool
 
     public init(
         fireDate: Date,
@@ -20,7 +21,8 @@ public struct NotificationCandidate: Sendable, Hashable {
         meeting: NotificationMeeting? = nil,
         place: NotificationPlace? = nil,
         color: PlannerColor? = nil,
-        imageURL: URL? = nil
+        imageURL: URL? = nil,
+        isBirthday: Bool = false
     ) {
         self.fireDate = fireDate
         self.endDate = endDate
@@ -31,5 +33,6 @@ public struct NotificationCandidate: Sendable, Hashable {
         self.place = place
         self.color = color
         self.imageURL = imageURL
+        self.isBirthday = isBirthday
     }
 }

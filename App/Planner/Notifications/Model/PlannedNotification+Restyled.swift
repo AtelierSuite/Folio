@@ -11,7 +11,8 @@ extension PlannedNotification {
             meeting: meeting,
             place: place,
             color: color,
-            imageURL: imageURL
+            imageURL: imageURL,
+            isBirthday: isBirthday
         )
     }
 

@@ -67,7 +67,8 @@ public struct NotificationPlanner: Sendable {
                     meeting: meeting,
                     place: place,
                     color: event.color,
-                    imageURL: images[event.reference]
+                    imageURL: images[event.reference],
+                    isBirthday: event.isBirthday
                 )
             }
         }
