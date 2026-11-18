@@ -53,6 +53,7 @@ struct LeaveAlertCenterTests {
             estimator: estimator,
             scheduler: scheduler,
             ledger: LeaveAlertLedger(defaults: defaults),
+            travelTimes: LeaveTravelTimeCache(defaults: defaults),
             alarmClient: alarms,
             alarmLedger: AlarmLedger(key: "Leave", defaults: defaults),
             formatter: NotificationFixtures.formatter,
@@ -148,6 +149,7 @@ struct LeaveAlertCenterTests {
         harness.estimator.setFailing(true)
         await harness.center.replan()
         #expect(harness.scheduler.pendingAlerts.count == 1)
+        #expect(harness.center.scheduledAlerts.map(\.travelTime) == [1800])
         harness.estimator.setFailing(false)
         harness.estimator.setTravelTime(2700)
         await harness.center.replan()

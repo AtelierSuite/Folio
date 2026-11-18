@@ -26,6 +26,7 @@ public final class LeaveAlertCenter {
     @ObservationIgnored let planner: LeaveAlertPlanner
     @ObservationIgnored let scheduler: any LeaveAlertScheduling
     @ObservationIgnored let ledger: LeaveAlertLedger
+    @ObservationIgnored let travelTimes: LeaveTravelTimeCache
     @ObservationIgnored let alarmClient: any AlarmSchedulingClient
     @ObservationIgnored let alarmLedger: AlarmLedger
     @ObservationIgnored let formatter: NotificationContentFormatter
@@ -46,6 +47,7 @@ public final class LeaveAlertCenter {
         planner: LeaveAlertPlanner = LeaveAlertPlanner(),
         scheduler: any LeaveAlertScheduling = UserNotificationLeaveAlertScheduler(),
         ledger: LeaveAlertLedger = LeaveAlertLedger(),
+        travelTimes: LeaveTravelTimeCache = LeaveTravelTimeCache(),
         alarmClient: (any AlarmSchedulingClient)? = nil,
         alarmLedger: AlarmLedger = AlarmLedger(key: LeaveAlertCenter.alarmLedgerKey),
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
@@ -63,6 +65,7 @@ public final class LeaveAlertCenter {
         self.planner = planner
         self.scheduler = scheduler
         self.ledger = ledger
+        self.travelTimes = travelTimes
         self.alarmClient = alarmClient ?? DefaultAlarmClient.make(capabilities: capabilities)
         self.alarmLedger = alarmLedger
         self.formatter = formatter
@@ -124,6 +127,7 @@ public final class LeaveAlertCenter {
             await scheduler.schedule(alert, now: now)
         }
         ledger.record(alerts, now: now)
+        travelTimes.record(alerts, now: now)
         scheduledAlerts = alerts
         leaveLog.info("Scheduled \(alerts.count) leave alerts")
     }
@@ -147,7 +151,8 @@ public final class LeaveAlertCenter {
                     from: origin, to: destination, by: transport, arrivingAt: event.startDate
                 )
             } catch {
-                guard let previous = previousTravelTime(to: event, at: destination) else {
+                // Directions can be unreachable for a while, so the last estimate keeps the alert going.
+                guard let previous = travelTimes.travelTime(for: event, to: destination, by: transport) else {
                     plan.unestimatedEvents.append(event)
                     continue
                 }
@@ -160,12 +165,5 @@ public final class LeaveAlertCenter {
             }
         }
         return plan
-    }
-
-    /// Directions can be unreachable for a while, so the last estimate keeps the alert going until they're back.
-    private func previousTravelTime(to event: CalendarEvent, at destination: PlannerCoordinate) -> TimeInterval? {
-        scheduledAlerts.first {
-            $0.event.id == event.id && $0.destination == destination && $0.transport == transport
-        }?.travelTime
     }
 }
