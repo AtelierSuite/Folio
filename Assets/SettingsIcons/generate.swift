@@ -244,6 +244,18 @@ func render(_ icon: Icon, to url: URL, guides: Bool) {
         context.endPDFPage()
         context.closePDF()
     }
+    stripVolatileMetadata(at: url)
+}
+
+func stripVolatileMetadata(at url: URL) {
+    guard var text = String(data: try! Data(contentsOf: url), encoding: .isoLatin1) else { return }
+    for (pattern, replacement) in [
+        (#"D:\d{14}Z00'00'"#, "D:20260101000000Z00'00'"),
+        (#"<[0-9a-f]{32}>"#, "<" + String(repeating: "0", count: 32) + ">")
+    ] {
+        text = text.replacingOccurrences(of: pattern, with: replacement, options: .regularExpression)
+    }
+    try! text.data(using: .isoLatin1)!.write(to: url)
 }
 
 func renderGrid(to url: URL) {
@@ -255,6 +267,7 @@ func renderGrid(to url: URL) {
     drawGuides(in: context)
     context.endPDFPage()
     context.closePDF()
+    stripVolatileMetadata(at: url)
 }
 
 let contents = """
