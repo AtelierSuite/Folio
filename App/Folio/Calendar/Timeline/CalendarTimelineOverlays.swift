@@ -6,8 +6,8 @@ struct CalendarTimelineOverlays {
     let capabilities: PlatformCapabilities
     var weather: WeatherSnapshot = .empty
     var shadesNight = true
-    var showsFocusLevel = false
-    var focusLevelBleedsUnderEvents = true
+    var showsEnergyLevel = false
+    var energyLevelBleedsUnderEvents = true
 
     func layers(for days: TimelineDays) -> [TimelineLayer] {
         energyLayers + sleepLayers + workoutLayers + weatherLayers(for: days) + alarmLayers
@@ -18,8 +18,8 @@ struct CalendarTimelineOverlays {
     }
 
     private var energyLayers: [TimelineLayer] {
-        guard showsFocusLevel, capabilities.supports(.sleep) else { return [] }
-        return TimelineLayer.energy(bleedsUnderEvents: focusLevelBleedsUnderEvents)
+        guard showsEnergyLevel, capabilities.supports(.sleep) else { return [] }
+        return TimelineLayer.energy(bleedsUnderEvents: energyLevelBleedsUnderEvents)
     }
 
     private var sleepLayers: [TimelineLayer] {

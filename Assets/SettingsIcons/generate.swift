@@ -99,7 +99,7 @@ let icons: [Icon] = [
          base: .tinted(hex(0xF7F3EA), hex(0xECE5D3)), colors: [], keyline: .square, artwork: .map),
     Icon(name: "countdowns", glyph: .system("timer"),
          base: .tinted(hex(0x5DE07A), hex(0x24B04A)), colors: [white], keyline: .circle),
-    Icon(name: "focusLevel", glyph: .system("bolt.fill"),
+    Icon(name: "energyLevel", glyph: .system("bolt.fill"),
          base: .tinted(hex(0xFFC14D), hex(0xFF8A00)), colors: [white], keyline: .portrait),
     Icon(name: "workouts", glyph: .system("figure.run"),
          base: .tinted(hex(0xD7F75B), hex(0xA5D610)), colors: [hex(0x1C1C1E)], keyline: .portrait),

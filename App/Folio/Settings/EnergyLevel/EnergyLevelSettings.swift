@@ -1,6 +1,6 @@
 import Foundation
 
-enum FocusLevelSettings {
+enum EnergyLevelSettings {
     static let isShownKey = "FocusLevel.IsShown"
     static let bleedsUnderEventsKey = "FocusLevel.BleedsUnderEvents"
 }

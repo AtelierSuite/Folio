@@ -91,6 +91,6 @@ enum SyncedSettingsKeys {
         "Calendar.MultiDayCount",
         NoteSortOrder.storageKey,
         WeatherNightSettings.shadesNightKey,
-        FocusLevelSettings.bleedsUnderEventsKey
+        EnergyLevelSettings.bleedsUnderEventsKey
     ]
 }

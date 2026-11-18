@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-struct FocusLevelSettingsView: View {
+struct EnergyLevelSettingsView: View {
     var body: some View {
         Form {
             PermissionPromptSection(
@@ -9,8 +9,8 @@ struct FocusLevelSettingsView: View {
                 message: String(localized: "Prompt.FocusLevel", table: "Permissions"),
                 asksOnToggle: true
             )
-            FocusLevelSettingsSection()
+            EnergyLevelSettingsSection()
         }
-        .settingsCategoryStyle(.focusLevel)
+        .settingsCategoryStyle(.energyLevel)
     }
 }

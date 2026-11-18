@@ -72,61 +72,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das Fokuslevel schätzt anhand deines Schlafs in der Health-App, wann du voraussichtlich am wachsten bist. Nimm es als groben Anhaltspunkt."
+            "value": "Das Energielevel schätzt anhand deines Schlafs in der Health-App, wann du voraussichtlich am wachsten bist. Nimm es als groben Anhaltspunkt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focus Level estimates when you’re likely to be at your sharpest, based on your sleep in the Health app. Treat it as a rough guide."
+            "value": "Energy Level estimates when you’re likely to be at your sharpest, based on your sleep in the Health app. Treat it as a rough guide."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le niveau de concentration estime les moments où vous serez probablement le plus alerte, à partir de votre sommeil dans l’app Santé. Considérez-le comme un repère approximatif."
+            "value": "Le niveau d’énergie estime les moments où vous serez probablement le plus alerte, à partir de votre sommeil dans l’app Santé. Considérez-le comme un repère approximatif."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Il livello di concentrazione stima quando sarai probabilmente più lucido, in base al sonno registrato in Salute. Consideralo un riferimento approssimativo."
+            "value": "Il livello di energia stima quando sarai probabilmente più lucido, in base al sonno registrato in Salute. Consideralo un riferimento approssimativo."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "集中レベルは、ヘルスケアの睡眠データをもとに、集中しやすい時間帯を推定します。目安としてご利用ください。"
+            "value": "エネルギーレベルは、ヘルスケアの睡眠データをもとに、集中しやすい時間帯を推定します。目安としてご利用ください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "집중도는 건강 앱의 수면 데이터를 바탕으로 가장 집중하기 좋은 시간대를 추정합니다. 대략적인 참고용으로 활용하세요."
+            "value": "에너지 레벨은 건강 앱의 수면 데이터를 바탕으로 가장 집중하기 좋은 시간대를 추정합니다. 대략적인 참고용으로 활용하세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Het focusniveau schat op basis van je slaap in de Gezondheid-app wanneer je waarschijnlijk het scherpst bent. Zie het als een ruwe richtlijn."
+            "value": "Het energieniveau schat op basis van je slaap in de Gezondheid-app wanneer je waarschijnlijk het scherpst bent. Zie het als een ruwe richtlijn."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mức độ tập trung ước tính thời điểm bạn có khả năng tỉnh táo nhất, dựa trên giấc ngủ trong ứng dụng Sức khỏe. Hãy xem như một gợi ý tương đối."
+            "value": "Mức năng lượng ước tính thời điểm bạn có khả năng tỉnh táo nhất, dựa trên giấc ngủ trong ứng dụng Sức khỏe. Hãy xem như một gợi ý tương đối."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "专注程度会根据健康 App 中的睡眠数据，估算你最可能精力充沛的时段。请作为大致参考。"
+            "value": "精力程度会根据健康 App 中的睡眠数据，估算你最可能精力充沛的时段。请作为大致参考。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "專注程度會根據健康 App 中的睡眠資料，估算你最可能精神最好的時段。請當作大致參考。"
+            "value": "精力程度會根據健康 App 中的睡眠資料，估算你最可能精神最好的時段。請當作大致參考。"
           }
         }
       }
@@ -137,61 +137,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fokuslevel im Kalender anzeigen"
+            "value": "Energielevel im Kalender anzeigen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Show Focus Level on Calendar"
+            "value": "Show Energy Level on Calendar"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Afficher le niveau de concentration dans le calendrier"
+            "value": "Afficher le niveau d’énergie dans le calendrier"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostra il livello di concentrazione nel calendario"
+            "value": "Mostra il livello di energia nel calendario"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "カレンダーに集中レベルを表示"
+            "value": "カレンダーにエネルギーレベルを表示"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "캘린더에 집중도 표시"
+            "value": "캘린더에 에너지 레벨 표시"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focusniveau in agenda tonen"
+            "value": "Energieniveau in agenda tonen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hiển thị mức độ tập trung trên lịch"
+            "value": "Hiển thị mức năng lượng trên lịch"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在日历上显示专注程度"
+            "value": "在日历上显示精力程度"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在行事曆上顯示專注程度"
+            "value": "在行事曆上顯示精力程度"
           }
         }
       }

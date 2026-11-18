@@ -10,8 +10,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
     @AppStorage(WeatherNightSettings.shadesNightKey) var shadesNight = true
-    @AppStorage(FocusLevelSettings.isShownKey) var showsFocusLevel = false
-    @AppStorage(FocusLevelSettings.bleedsUnderEventsKey) var focusLevelBleedsUnderEvents = true
+    @AppStorage(EnergyLevelSettings.isShownKey) var showsEnergyLevel = false
+    @AppStorage(EnergyLevelSettings.bleedsUnderEventsKey) var energyLevelBleedsUnderEvents = true
     @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
     var showsSecondaryTimeZone = false
     @AppStorage(SecondaryTimeZoneSettings.identifierKey, store: AppGroup.userDefaults)
@@ -80,8 +80,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                     capabilities: capabilities,
                     weather: weather,
                     shadesNight: shadesNight,
-                    showsFocusLevel: showsFocusLevel,
-                    focusLevelBleedsUnderEvents: focusLevelBleedsUnderEvents
+                    showsEnergyLevel: showsEnergyLevel,
+                    energyLevelBleedsUnderEvents: energyLevelBleedsUnderEvents
                 ).layers(for: strip.days)
                     + secondaryTimeZoneLayers,
                 onSelectEntry: select,
