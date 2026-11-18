@@ -42,6 +42,10 @@ enum Glyph {
     case custom(String)
 }
 
+enum Artwork {
+    case calendar, reminders, weather
+}
+
 struct Icon {
     let name: String
     let glyph: Glyph
@@ -49,6 +53,7 @@ struct Icon {
     let colors: [NSColor]
     let keyline: Keyline
     var multicolor = false
+    var artwork: Artwork?
 }
 
 func hex(_ value: Int) -> NSColor {
@@ -69,9 +74,9 @@ let icons: [Icon] = [
     Icon(name: "general", glyph: .system("gearshape.fill"),
          base: .tinted(hex(0xA3A3AB), hex(0x6E6E76)), colors: [white], keyline: .circle),
     Icon(name: "calendars", glyph: .system("calendar"),
-         base: .plain, colors: [hex(0xFF3B30), graphite], keyline: .square),
+         base: .plain, colors: [], keyline: .square, artwork: .calendar),
     Icon(name: "reminders", glyph: .system("checklist"),
-         base: .plain, colors: [hex(0xFF9500), graphite], keyline: .square),
+         base: .plain, colors: [], keyline: .square, artwork: .reminders),
     Icon(name: "workWeek", glyph: .system("briefcase.fill"),
          base: .tinted(hex(0xC99A6B), hex(0x8E6239)), colors: [white], keyline: .landscape),
     Icon(name: "flexTime", glyph: .custom("flextime"),
@@ -100,8 +105,8 @@ let icons: [Icon] = [
          base: .tinted(hex(0x5B56D6), hex(0x1C1A5E)), colors: [hex(0xFFE27A), white], keyline: .circle),
     Icon(name: "medications", glyph: .system("pills.fill"),
          base: .tinted(hex(0x7FE0E0), hex(0x2AAFB8)), colors: [white, hex(0xFFE0DC)], keyline: .landscape),
-    Icon(name: "weather", glyph: .system("cloud.sun.fill"),
-         base: .tinted(hex(0x5CC8FF), hex(0x2D8CF0)), colors: [white, hex(0xFFD60A)], keyline: .landscape),
+    Icon(name: "weather", glyph: .system("cloud.fill"),
+         base: .tinted(hex(0x5CC8FF), hex(0x2D8CF0)), colors: [white], keyline: .landscape, artwork: .weather),
     Icon(name: "search", glyph: .system("magnifyingglass"),
          base: .plain, colors: [graphite], keyline: .circle),
     Icon(name: "advanced", glyph: .system("slider.horizontal.3"),
@@ -200,19 +205,110 @@ func baseView(_ base: Base) -> some View {
 }
 
 @MainActor
-func iconView(_ icon: Icon) -> some View {
+func fittedSymbol(_ icon: Icon, in target: CGRect) -> some View {
     let ink = inkBounds(of: icon)
-    let target = icon.keyline.size
     let scale = min(target.width / ink.width, target.height / ink.height)
     let box = measuringBox * scale
+    return symbol(for: icon)
+        .frame(width: box, height: box)
+        .offset(x: target.midX - ink.width * scale / 2 - ink.minX * scale,
+                y: target.midY - ink.height * scale / 2 - ink.minY * scale)
+}
+
+func circle(_ color: NSColor, center: CGPoint, radius: CGFloat) -> some View {
+    Circle()
+        .fill(Color(nsColor: color))
+        .frame(width: radius * 2, height: radius * 2)
+        .offset(x: center.x - radius, y: center.y - radius)
+}
+
+func ring(_ color: NSColor, center: CGPoint, radius: CGFloat, lineWidth: CGFloat) -> some View {
+    Circle()
+        .strokeBorder(Color(nsColor: color), lineWidth: lineWidth)
+        .frame(width: radius * 2, height: radius * 2)
+        .offset(x: center.x - radius, y: center.y - radius)
+}
+
+func bar(_ color: NSColor, _ rect: CGRect) -> some View {
+    Capsule()
+        .fill(Color(nsColor: color))
+        .frame(width: rect.width, height: rect.height)
+        .offset(x: rect.minX, y: rect.minY)
+}
+
+let calendarRed = hex(0xFF3B30)
+let quietGrey = hex(0xC7C7CC)
+
+func calendarArtwork() -> some View {
+    let square = Keyline.square.rect
+    let columns = (0..<4).map { square.minX + 4 + CGFloat($0) * 20 }
+    let rows = (0..<3).map { square.maxY - 4 - CGFloat(2 - $0) * 18 }
     return ZStack(alignment: .topLeading) {
-        baseView(icon.base)
-        symbol(for: icon)
-            .frame(width: box, height: box)
-            .offset(x: (canvas - ink.width * scale) / 2 - ink.minX * scale,
-                    y: (canvas - ink.height * scale) / 2 - ink.minY * scale)
+        Rectangle()
+            .fill(LinearGradient(colors: [hex(0xFF6259), hex(0xE5352B)].map { Color(nsColor: $0) },
+                                 startPoint: .top, endPoint: .bottom))
+            .frame(width: canvas, height: 38)
+        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.minX + 8, y: 11, width: 8, height: 16))
+        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.maxX - 16, y: 11, width: 8, height: 16))
+        ForEach(0..<12, id: \.self) { index in
+            let center = CGPoint(x: columns[index % 4], y: rows[index / 4])
+            if index == 6 {
+                circle(calendarRed, center: center, radius: 9)
+            } else {
+                circle(quietGrey, center: center, radius: 4)
+            }
+        }
     }
-    .frame(width: canvas, height: canvas)
+}
+
+func reminderArtwork() -> some View {
+    let square = Keyline.square.rect
+    let radius: CGFloat = 9.5
+    let colors = [hex(0xFF9500), hex(0x007AFF), calendarRed]
+    let lengths: [CGFloat] = [1, 0.78, 0.58]
+    return ZStack(alignment: .topLeading) {
+        ForEach(0..<3, id: \.self) { index in
+            let center = CGPoint(x: square.minX + radius, y: square.minY + radius + CGFloat(index) * (square.height - radius * 2) / 2)
+            if index == 0 {
+                circle(colors[index], center: center, radius: radius)
+                Path { path in
+                    path.move(to: CGPoint(x: center.x - 4.4, y: center.y + 0.2))
+                    path.addLine(to: CGPoint(x: center.x - 1, y: center.y + 3.6))
+                    path.addLine(to: CGPoint(x: center.x + 5, y: center.y - 3.6))
+                }
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 3.2, lineCap: .round, lineJoin: .round))
+            } else {
+                ring(colors[index], center: center, radius: radius, lineWidth: 3.4)
+            }
+            let start = square.minX + 28
+            bar(quietGrey, CGRect(x: start, y: center.y - 3.5, width: (square.maxX - start) * lengths[index], height: 7))
+        }
+    }
+}
+
+@MainActor
+func weatherArtwork(_ icon: Icon) -> some View {
+    let sunRadius: CGFloat = 22
+    let sunCenter = CGPoint(x: Keyline.landscape.rect.maxX - sunRadius, y: Keyline.circle.rect.minY + sunRadius)
+    let square = Keyline.square.rect
+    return ZStack(alignment: .topLeading) {
+        circle(hex(0xFFD60A), center: sunCenter, radius: sunRadius)
+        fittedSymbol(icon, in: CGRect(x: Keyline.landscape.rect.minX, y: square.maxY - 50, width: 72, height: 50))
+    }
+}
+
+@MainActor
+func iconView(_ icon: Icon) -> some View {
+    ZStack(alignment: .topLeading) {
+        baseView(icon.base)
+        switch icon.artwork {
+        case .calendar: calendarArtwork()
+        case .reminders: reminderArtwork()
+        case .weather: weatherArtwork(icon)
+        case nil: fittedSymbol(icon, in: icon.keyline.rect)
+        }
+    }
+    .frame(width: canvas, height: canvas, alignment: .topLeading)
 }
 
 func drawGuides(in context: CGContext) {
