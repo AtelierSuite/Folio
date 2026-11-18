@@ -50,6 +50,7 @@ public final class NotificationScheduler {
         styleSettings: NotificationStyleSettings = .shared,
         allDayAlertTimeSettings: AllDayAlertTimeSettings = .shared,
         earlyAlertSettings: ReminderEarlyAlertSettings = .shared,
+        birthdaySettings: BirthdaySettings = .shared,
         capabilities: PlatformCapabilities = .current,
         visibilityStorage: CalendarVisibilityStorage = CalendarVisibilityStorage(),
         flexTimeStorage: FlexTimeStorage = FlexTimeStorage(),
@@ -77,7 +78,8 @@ public final class NotificationScheduler {
             styleResolver: resolver.style(for:),
             allDayAlertMinutes: allDayAlertTimeSettings.minutesAfterMidnight(forCalendar:),
             soundResolver: soundSettings.resolvedSound(for:),
-            reminderEarlyAlerts: earlyAlertSettings.alerts(for:)
+            reminderEarlyAlerts: earlyAlertSettings.alerts(for:),
+            birthdayAlarms: { birthdaySettings.defaultAlarms }
         )
         self.horizon = horizon
         self.clock = clock
