@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
-"""Synthesizes Folio's alarm sounds, ten of them, from a mellow touch to an alarm that can't be slept through.
+"""Builds Folio's alarm sounds, ten of them, from a mellow touch to an alarm that can't be slept through.
 
 Usage: python3 generate_alarms.py <output directory> [Alarm-Name ...]
+
+Every note is a recorded instrument from Logic Pro's sound library (see logic_samples.py), which has to be
+installed: vibraphone, African marimba, Steinway, glockenspiel, kalimba, music box, glass xylophone,
+electric piano, fairytale bells and a rattling alarm bell. Roots of the single notes were measured, since
+Logic names notes an octave low (middle C is C3) and one recording holds several strikes.
 
 Each sound is one short phrase repeated to just under 30 seconds, since AlarmKit is reported to stop custom
 sounds at about that length. The phrase is rendered as a steady loop, with its reverb and echo tails folded
@@ -9,8 +14,7 @@ back onto its start, so the repeats run on seamlessly and the file also loops cl
 
 Sounds get louder and brighter through the list, and every one is mastered close to full scale with a
 limiter, since an alarm has to carry across a room. Written at 44.1 kHz as 16-bit linear PCM, like the
-notification sounds. Reuses generate.py's voices and encoder, including the sampled Steinway, so it needs
-Logic Pro's sound library too.
+notification sounds, with generate.py's encoder.
 """
 
 import math
@@ -18,37 +22,56 @@ import os
 import sys
 
 import generate
-from generate import Instruments, SAMPLE_RATE, TAU, echo, highpass, lowpass, reverb
+import logic_samples
+from generate import SAMPLE_RATE, Track, echo, highpass, lowpass, reverb
+from logic_samples import Multisample, OneShot
 
 CEILING = 10 ** (-1.2 / 20)
 MAXIMUM_LENGTH = 29.0
 
+VIBRAPHONE = Multisample("Mallet/Vibraphone.exs", "Mallet/Vibraphone_consolidated.caf")
+MARIMBA = Multisample("Mallet/African Marimba.exs", "Mallet/African Marimba_consolidated.caf")
+GLOCKENSPIEL = OneShot("Alchemy Samples/Mallets/Metal Mallets/Glockenspiel 03.caf", 91.85, end=1.0)
+KALIMBA = OneShot("Alchemy Samples/Mallets/Wooden Mallets/Kalimba/Kalimba C4.caf", 72)
+MUSIC_BOX = OneShot("Mallet/Toy Music Box.aif", 84.02)
+FAIRYTALE_BELLS = OneShot("Synthesizer/Keys/Fairytales Bells Sample.aif", 90.04)
+RATTLING_BELL = OneShot("Mallet/Rattling Bell Decay.aif", 72)
+ELECTRIC_PIANO_LOW = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 C3.caf", 60)
+ELECTRIC_PIANO_HIGH = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 F#4.caf", 78)
 
-class AlarmInstruments(Instruments):
-    """Plays at written pitch, unlike the notification sounds, so urgent alarms can sit in the bright band
-    the ear catches first. Adds sustained, gated tones for the digital alarms."""
 
-    @staticmethod
-    def frequency(pitch):
-        return generate.note(pitch)
+class AlarmTrack(Track):
+    """Places recorded notes, each scaled to the same peak so amplitude alone sets the balance."""
 
-    def tone(self, start, frequency, amplitude, length, attack=0.004, release=0.012):
+    def play(self, instrument, start, pitch, amplitude=1.0, velocity=100, take=0, hold=None, release=0.1):
+        """Plays the note at pitch, or at the recording's own pitch when pitch is None."""
+        key = logic_samples.key_number(pitch) if pitch else None
+        length = hold + release * 6 if hold else None
+        recording = logic_samples.normalized(instrument.note(key, velocity, take, length))
         first = int(start * SAMPLE_RATE)
-        held = int(length * SAMPLE_RATE)
-        tail = int(release * SAMPLE_RATE)
-        step = TAU * frequency / SAMPLE_RATE
-        for index in range(max(0, min(len(self) - first, held + tail))):
-            time = index / SAMPLE_RATE
-            envelope = min(1.0, time / attack)
-            if index > held:
-                envelope *= 1 - (index - held) / tail
-            self.samples[first + index] += amplitude * envelope * math.sin(step * index)
+        held = int(hold * SAMPLE_RATE) if hold else len(recording)
+        fall = release * SAMPLE_RATE
+        for index, value in enumerate(recording[:max(0, len(self) - first)]):
+            damper = 1.0 if index < held else math.exp(-(index - held) / fall)
+            self.samples[first + index] += amplitude * damper * value
 
-    def beep(self, start, pitch, length, amplitude=1.0, harmonics=1):
-        """A clean digital beep: a sine, or with harmonics a band-limited square of odd partials."""
-        frequency = self.frequency(pitch)
-        for order in range(1, 2 * harmonics, 2):
-            self.tone(start, frequency * order, amplitude / order, length)
+    def piano(self, start, pitch, amplitude=1.0, velocity=100, hold=0.45, release=0.08):
+        """The Steinway from generate.py, which handles that instrument's damper zones."""
+        key = logic_samples.key_number(pitch)
+        recording = generate.SampledPiano.shared().note(key, velocity)
+        loudest = max(abs(value) for value in recording) or 1
+        first = int(start * SAMPLE_RATE)
+        held = int(hold * SAMPLE_RATE)
+        for index, value in enumerate(recording[:max(0, len(self) - first)]):
+            damper = 1.0 if index < held else math.exp(-(index - held) / (release * SAMPLE_RATE))
+            if damper < 1e-4:
+                break
+            self.samples[first + index] += amplitude * damper * value / loudest
+
+    def electric_piano(self, start, pitch, amplitude=1.0, hold=None, release=0.1):
+        key = logic_samples.key_number(pitch)
+        instrument = ELECTRIC_PIANO_LOW if abs(key - 60) < abs(key - 78) else ELECTRIC_PIANO_HIGH
+        self.play(instrument, start, pitch, amplitude, hold=hold, release=release)
 
 
 class Loop:
@@ -56,9 +79,10 @@ class Loop:
 
     def __init__(self, period, tail=3.0):
         self.period = period
-        self.track = AlarmInstruments(period + tail)
+        self.track = AlarmTrack(period + tail)
 
-    def render(self, room=0.0, mix=0.0, damping=0.5, delay=None, brightness=12000, loudness=-12.0, headroom=6.0):
+    def render(self, room=0.0, mix=0.0, damping=0.5, delay=None, brightness=12000, loudness=-12.0, headroom=6.0,
+               release=0.08):
         samples = self.track.samples
         if delay:
             samples = echo(samples, *delay)
@@ -69,7 +93,7 @@ class Loop:
         folded = [0.0] * length
         for index, value in enumerate(samples):
             folded[index % length] += value
-        cycle = master(lowpass(highpass(folded * 4, 180), brightness), length, loudness, headroom)
+        cycle = master(lowpass(highpass(folded * 4, 180), brightness), length, loudness, headroom, release)
         repeated = cycle * int(MAXIMUM_LENGTH // self.period)
         fade = int(0.01 * SAMPLE_RATE)
         for index in range(fade):
@@ -89,16 +113,17 @@ def limit(samples, gain, release=0.08):
     return output
 
 
-def master(samples, length, loudness, headroom):
+def master(samples, length, loudness, headroom, release):
     """Raises the steady loop until its loudness reaches the target, with the limiter holding peaks under the
-    ceiling. Headroom caps how many decibels the limiter may squeeze, so soft sounds keep their dynamics.
+    ceiling. Headroom caps how many decibels the limiter may squeeze, so soft sounds keep their dynamics, and a
+shorter release lets urgent sounds stay loud between strikes.
     Runs over several repeats so the limiter has settled by the cycle that is kept."""
     loudest = max(abs(value) for value in samples) or 1
     gain = CEILING / loudest
     most = gain * 10 ** (headroom / 20)
     target = 10 ** (loudness / 20)
     for _ in range(8):
-        limited = limit(samples, gain)
+        limited = limit(samples, gain, release)
         cycle = limited[-length:]
         power = math.sqrt(sum(value * value for value in cycle) / length) or 1
         if power >= target * 0.97:
@@ -109,108 +134,145 @@ def master(samples, length, loudness, headroom):
     return cycle
 
 
-def sequence(track, voice, notes, **options):
-    for start, pitch in notes:
-        voice(track, start, pitch, **options)
+def limit(samples, gain, release=0.08):
+    """A peak limiter: reacts instantly to anything over the ceiling, then lets go smoothly."""
+    coefficient = math.exp(-1 / (release * SAMPLE_RATE))
+    envelope = 0.0
+    output = []
+    for value in samples:
+        boosted = value * gain
+        envelope = max(abs(boosted), envelope * coefficient)
+        output.append(boosted * (CEILING / envelope if envelope > CEILING else 1.0))
+    return output
+
+
+def master(samples, length, loudness, headroom, release):
+    """Raises the steady loop until its loudness reaches the target, with the limiter holding peaks under the
+    ceiling. Headroom caps how many decibels the limiter may squeeze, so soft sounds keep their dynamics, and a
+shorter release lets urgent sounds stay loud between strikes.
+    Runs over several repeats so the limiter has settled by the cycle that is kept."""
+    loudest = max(abs(value) for value in samples) or 1
+    gain = CEILING / loudest
+    most = gain * 10 ** (headroom / 20)
+    target = 10 ** (loudness / 20)
+    for _ in range(8):
+        limited = limit(samples, gain, release)
+        cycle = limited[-length:]
+        power = math.sqrt(sum(value * value for value in cycle) / length) or 1
+        if power >= target * 0.97:
+            break
+        if gain >= most:
+            break
+        gain = min(most, gain * min(2.0, target / power))
+    return cycle
 
 
 def evenly(spacing, pitches, offset=0.0):
     return [(offset + index * spacing, pitch) for index, pitch in enumerate(pitches)]
 
 
+def sequence(track, instrument, notes, **options):
+    for take, (start, pitch) in enumerate(notes):
+        track.play(instrument, start, pitch, take=take, **options)
+
+
 def yoake():
-    """Daybreak: a Steinway slowly opening up an F major ninth, with a soft vibraphone glow on top."""
+    """Daybreak: a Steinway slowly opening up an F major ninth, with a vibraphone glowing on top."""
     loop = Loop(4.8)
-    sequence(loop.track, Instruments.piano, evenly(0.38, ("F3", "C4", "F4", "A4", "C5", "E5", "G5")),
-             amplitude=0.7, velocity=70, hold=2.4, release=0.4)
-    loop.track.vibraphone(2.28, "G5", 0.3, decay=1.2, tone=0.5)
-    return loop.render(room=0.6, mix=0.22, brightness=12000, loudness=-14.0, headroom=4.0)
+    for start, pitch in evenly(0.38, ("F3", "C4", "F4", "A4", "C5", "E5", "G5")):
+        loop.track.piano(start, pitch, 0.7, velocity=70, hold=2.4, release=0.4)
+    loop.track.play(VIBRAPHONE, 2.28, "G5", 0.35, velocity=60)
+    loop.track.play(VIBRAPHONE, 2.28, "E5", 0.25, velocity=60)
+    return loop.render(room=0.6, mix=0.15, brightness=14000, loudness=-14.0, headroom=4.0)
 
 
 def komorebi():
-    """Dappled Light: a gentle Steinway lullaby, rising and falling onto a warm C major chord."""
+    """Dappled Light: a kalimba lullaby rising and falling onto a soft vibraphone chord."""
     loop = Loop(3.6)
-    sequence(loop.track, Instruments.piano, evenly(0.24, ("C5", "E5", "G5", "E5", "D5", "G5")),
-             amplitude=0.75, velocity=80, hold=0.5, release=0.2)
-    for pitch, amplitude in (("C4", 0.6), ("G4", 0.5), ("E5", 0.6)):
-        loop.track.piano(1.44, pitch, amplitude, velocity=80, hold=1.4, release=0.35)
-    return loop.render(room=0.45, mix=0.18, brightness=12000, loudness=-13.0, headroom=4.5)
+    sequence(loop.track, KALIMBA, evenly(0.24, ("C5", "E5", "G5", "E5", "D5", "G5")), amplitude=0.8)
+    for pitch, amplitude in (("C5", 0.5), ("E5", 0.45), ("G5", 0.4)):
+        loop.track.play(VIBRAPHONE, 1.44, pitch, amplitude, velocity=70)
+    loop.track.play(KALIMBA, 1.44, "C5", 0.7)
+    return loop.render(room=0.45, mix=0.12, brightness=14000, loudness=-13.0, headroom=4.5)
 
 
 def hibari():
-    """Skylark: a celesta and glockenspiel trilling up a G major chord, twice, like birdsong at dawn."""
+    """Skylark: a music box trilling up a G major chord, twice, with a glockenspiel sparkle."""
     loop = Loop(3.2)
     for offset in (0.0, 0.9):
-        sequence(loop.track, Instruments.celesta, evenly(0.11, ("G5", "B5", "D6", "G6"), offset),
-                 amplitude=0.5, decay=0.45, tone=1.4)
-        sequence(loop.track, Instruments.celesta, evenly(0.11, ("G4", "B4", "D5", "G5"), offset),
-                 amplitude=0.3, decay=0.45, tone=1.0)
-        loop.track.glockenspiel(offset + 0.44, "B6", 0.45, decay=0.6)
-    return loop.render(room=0.3, mix=0.1, brightness=14000, loudness=-12.0, headroom=5.0)
+        sequence(loop.track, MUSIC_BOX, evenly(0.11, ("G5", "B5", "D6", "G6"), offset), amplitude=0.7)
+        loop.track.play(GLOCKENSPIEL, offset + 0.44, "B6", 0.5)
+    loop.track.play(VIBRAPHONE, 0.0, "G4", 0.35, velocity=70)
+    return loop.render(room=0.3, mix=0.1, brightness=15000, loudness=-12.0, headroom=8.0)
 
 
 def shiokaze():
-    """Sea Breeze: a lively marimba figure rolling around A minor, over a low marimba pulse."""
+    """Sea Breeze: a lively African marimba figure rolling around A minor, over a low marimba pulse."""
     loop = Loop(2.4)
-    sequence(loop.track, Instruments.marimba,
-             evenly(0.15, ("A4", "C5", "E5", "A5", "E5", "C5", "E5", "G5")), amplitude=0.75, tone=1.3)
-    loop.track.marimba(1.2, "A5", 0.8, decay=0.5, tone=1.3)
-    for start, pitch in ((0.0, "A3"), (0.6, "E3"), (1.2, "A3")):
-        loop.track.marimba(start, pitch, 0.6, decay=0.45, tone=0.8)
-    return loop.render(room=0.25, mix=0.08, brightness=14000, loudness=-11.0, headroom=6.0)
+    sequence(loop.track, MARIMBA, evenly(0.15, ("A4", "C5", "E5", "A5", "E5", "C5", "E5", "G5")),
+             amplitude=0.8, velocity=100)
+    loop.track.play(MARIMBA, 1.2, "A5", 0.85, velocity=110)
+    for take, (start, pitch) in enumerate(((0.0, "A3"), (0.6, "E3"), (1.2, "A3"))):
+        loop.track.play(MARIMBA, start, pitch, 0.7, velocity=100, take=take)
+    return loop.render(room=0.25, mix=0.06, brightness=15000, loudness=-11.0, headroom=6.0)
 
 
 def kane():
-    """Temple Bell: two firm bell chords with a struck piano octave beneath, left to ring."""
+    """Temple Bell: two chords of fairytale bells over a firmly struck Steinway octave, left to ring."""
     loop = Loop(3.0)
     for start in (0.0, 0.55):
-        for pitch, amplitude in (("A4", 0.7), ("E5", 0.5), ("A5", 0.35)):
-            loop.track.bell(start, pitch, amplitude, decay=0.9, tone=1.5)
-        loop.track.piano(start, "A3", 0.45, velocity=110, hold=0.9, release=0.3)
-    return loop.render(room=0.5, mix=0.2, brightness=14000, loudness=-10.5, headroom=6.0)
+        for pitch, amplitude in (("A5", 0.6), ("E6", 0.45), ("C#6", 0.3)):
+            loop.track.play(FAIRYTALE_BELLS, start, pitch, amplitude)
+        loop.track.piano(start, "A2", 0.4, velocity=110, hold=1.2, release=0.3)
+        loop.track.piano(start, "A3", 0.35, velocity=110, hold=1.2, release=0.3)
+    return loop.render(room=0.5, mix=0.12, brightness=15000, loudness=-10.5, headroom=6.0)
 
 
 def hibiki():
-    """Echo: a bright synth pluck arpeggio up a C major chord over a bass pluck, echoes trailing behind."""
+    """Echo: an electric piano arpeggio up a C major chord over a low root, echoes trailing behind."""
     loop = Loop(2.0)
-    sequence(loop.track, Instruments.synth_pluck,
-             evenly(0.1, ("C5", "E5", "G5", "C6", "G5", "E5", "G5", "C6")), amplitude=0.55, decay=0.3, tone=1.4)
-    loop.track.synth_pluck(0.0, "C3", 0.7, decay=0.5, tone=1.0)
-    return loop.render(room=0.25, mix=0.08, delay=(0.3, 0.3, 0.25), brightness=14000, loudness=-10.0,
+    for start, pitch in evenly(0.1, ("C5", "E5", "G5", "C6", "G5", "E5", "G5", "C6")):
+        loop.track.electric_piano(start, pitch, 0.6, hold=0.18, release=0.08)
+    loop.track.electric_piano(0.0, "C3", 0.8, hold=0.9, release=0.2)
+    return loop.render(room=0.25, mix=0.06, delay=(0.3, 0.3, 0.25), brightness=15000, loudness=-10.0,
                        headroom=11.0)
 
 
 def tsubame():
-    """Swallow: quick bell trills darting between two notes, doubled by a glockenspiel."""
+    """Swallow: quick trills darting between two notes on glockenspiel and music box."""
     loop = Loop(1.6)
     trill = [(index * 0.06, "D6" if index % 2 == 0 else "A5") for index in range(9)]
-    sequence(loop.track, Instruments.bell, trill, amplitude=0.55, decay=0.2, tone=1.6)
-    sequence(loop.track, Instruments.glockenspiel, trill, amplitude=0.25, decay=0.2)
-    return loop.render(room=0.2, mix=0.06, brightness=15000, loudness=-9.0, headroom=8.0)
+    sequence(loop.track, GLOCKENSPIEL, trill, amplitude=0.6, hold=0.12, release=0.1)
+    sequence(loop.track, MUSIC_BOX, trill, amplitude=0.5, hold=0.12, release=0.1)
+    return loop.render(room=0.2, mix=0.05, brightness=16000, loudness=-9.0, headroom=12.0, release=0.04)
 
 
 def arashi():
-    """Storm: a pair of rising digital beeps with a little harmonic edge."""
+    """Storm: a hard-struck marimba and glockenspiel calling a rising figure, again and again."""
     loop = Loop(1.2)
-    for start, pitch in ((0.0, "E6"), (0.16, "E6"), (0.32, "A6")):
-        loop.track.beep(start, pitch, 0.1, 0.6, harmonics=3)
-    return loop.render(brightness=16000, loudness=-8.0, headroom=14.0)
+    for take, (start, pitch) in enumerate(((0.0, "E6"), (0.16, "E6"), (0.32, "A6"))):
+        loop.track.play(MARIMBA, start, pitch, 0.9, velocity=127, take=take)
+        loop.track.play(GLOCKENSPIEL, start, pitch, 0.55, hold=0.2, release=0.08)
+    return loop.render(room=0.15, mix=0.04, brightness=16000, loudness=-8.0, headroom=16.0, release=0.03)
 
 
 def hayate():
-    """Gale: the classic alarm clock, four quick square-wave beeps and a breath."""
-    loop = Loop(1.0)
-    for index in range(4):
-        loop.track.beep(index * 0.12, "A6", 0.07, 0.6, harmonics=5)
-    return loop.render(brightness=16000, loudness=-7.0, headroom=14.0)
+    """Gale: a real alarm bell ringing in bursts, like an old wind-up alarm clock."""
+    loop = Loop(1.2)
+    loop.track.play(RATTLING_BELL, 0.0, None, 1.0, hold=0.7, release=0.04)
+    return loop.render(brightness=16000, loudness=-7.0, headroom=14.0, release=0.025)
 
 
 def kaminari():
-    """Thunder: a relentless two-tone square-wave alarm, for mornings that cannot be missed."""
+    """Thunder: a relentless two-tone alarm on glockenspiel and music box over a ringing alarm bell."""
     loop = Loop(0.8)
     for index in range(6):
-        loop.track.beep(index * 0.11, "C7" if index % 2 == 0 else "F#6", 0.09, 0.6, harmonics=6)
-    return loop.render(brightness=16000, loudness=-6.0, headroom=10.0)
+        pitch = "C7" if index % 2 == 0 else "F#6"
+        start = index * 0.11
+        loop.track.play(GLOCKENSPIEL, start, pitch, 0.7, hold=0.09, release=0.03)
+        loop.track.play(MUSIC_BOX, start, pitch, 0.5, hold=0.09, release=0.03)
+    loop.track.play(RATTLING_BELL, 0.0, None, 0.5, hold=0.62, release=0.04)
+    return loop.render(brightness=16000, loudness=-6.0, headroom=18.0, release=0.02)
 
 
 SOUNDS = {
