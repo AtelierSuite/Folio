@@ -7,9 +7,14 @@ import Planner
 @Observable
 final class AppRouter {
     var pendingDestination: AppDestination?
+    private(set) var todayRequestCount = 0
 
     func open(_ destination: AppDestination) {
         pendingDestination = destination
+    }
+
+    func requestToday() {
+        todayRequestCount += 1
     }
 }
 
