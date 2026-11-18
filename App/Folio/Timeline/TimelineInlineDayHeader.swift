@@ -18,7 +18,7 @@ struct TimelineInlineDayHeader: View {
 
     private var numberStyle: AnyShapeStyle {
         if isToday {
-            return AnyShapeStyle(Color.accentColor)
+            return AnyShapeStyle(.white)
         }
         return isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.primary)
     }
@@ -42,6 +42,10 @@ struct TimelineInlineDayHeader: View {
                 .fontWeight(isToday ? .bold : .semibold)
                 .monospacedDigit()
                 .foregroundStyle(numberStyle)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(isToday ? Color.accentColor : .clear, in: Capsule())
+                .padding(.leading, -6)
             Text(day.start.formatted(Date.FormatStyle(timeZone: calendar.timeZone).weekday(.abbreviated)))
                 .foregroundStyle(isHighlighted ? AnyShapeStyle(Color.dayHighlight) : AnyShapeStyle(.secondary))
             AlternateCalendarDayLabel(date: day.start, font: .subheadline)
