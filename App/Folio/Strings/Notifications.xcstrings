@@ -397,61 +397,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ereignisse"
+            "value": "Ereignishinweise"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Events"
+            "value": "Event Alerts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Événements"
+            "value": "Alertes d’événements"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eventi"
+            "value": "Avvisi eventi"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベント"
+            "value": "イベントの通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트"
+            "value": "이벤트 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activiteiten"
+            "value": "Activiteitmeldingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sự kiện"
+            "value": "Cảnh báo sự kiện"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日程"
+            "value": "日程提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "行程"
+            "value": "行程提醒"
           }
         }
       }
@@ -462,126 +462,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erinnerungen"
+            "value": "Erinnerungshinweise"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reminders"
+            "value": "Reminder Alerts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rappels"
+            "value": "Alertes de rappels"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Promemoria"
+            "value": "Avvisi promemoria"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リマインダー"
+            "value": "リマインダーの通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "미리 알림"
+            "value": "미리 알림 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Herinneringen"
+            "value": "Herinneringsmeldingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lời nhắc"
+            "value": "Cảnh báo lời nhắc"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事项"
+            "value": "提醒事项提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事項"
-          }
-        }
-      }
-    },
-    "Items.Section": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hinweise für"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alert For"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alertes pour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvisi per"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "通知する項目"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 대상"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meldingen voor"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cảnh báo cho"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "提醒内容"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "提醒內容"
+            "value": "提醒事項提醒"
           }
         }
       }

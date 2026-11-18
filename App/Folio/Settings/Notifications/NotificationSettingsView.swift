@@ -21,17 +21,6 @@ struct NotificationSettingsView: View {
             } footer: {
                 Text(String(localized: "Enabled.Footer", table: "Notifications"))
             }
-            Section(String(localized: "Items.Section", table: "Notifications")) {
-                Toggle(String(localized: "Items.Events", table: "Notifications"), isOn: binding(
-                    get: { scheduler.includesEvents },
-                    set: { await scheduler.setIncludesEvents($0) }
-                ))
-                Toggle(String(localized: "Items.Reminders", table: "Notifications"), isOn: binding(
-                    get: { scheduler.includesReminders },
-                    set: { await scheduler.setIncludesReminders($0) }
-                ))
-            }
-            .disabled(!scheduler.isEnabled)
             SnoozeDurationsSection()
         }
         .settingsCategoryStyle(.notifications)
