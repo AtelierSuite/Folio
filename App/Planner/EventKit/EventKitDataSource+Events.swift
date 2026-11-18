@@ -5,7 +5,9 @@ extension EventKitDataSource {
     public func events(in interval: DateInterval) async -> [CalendarEvent] {
         guard authorizationStatus(for: .event).allowsReading else { return [] }
         let predicate = eventStore.predicateForEvents(withStart: interval.start, end: interval.end, calendars: nil)
-        var events = eventStore.events(matching: predicate).map(CalendarEvent.init)
+        let birthdayCalendars = BirthdaySettings.shared.markedCalendarIdentifiers
+        var events = eventStore.events(matching: predicate)
+            .map { CalendarEvent($0, birthdayCalendars: birthdayCalendars) }
         #if DEBUG
         events = events.map(SampleInvitations.decorate)
         #endif

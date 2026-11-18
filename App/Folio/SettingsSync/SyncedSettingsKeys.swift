@@ -13,8 +13,13 @@ enum SyncedSettingsKeys {
     }
 
     private static var appGroupKeys: [String] {
-        weatherKeys + flexTimeKeys + notificationKeys + travelKeys + wakeUpAlarmKeys + calendarKeys
+        weatherKeys + flexTimeKeys + notificationKeys + travelKeys + wakeUpAlarmKeys + calendarKeys + birthdayKeys
     }
+
+    private static let birthdayKeys = [
+        BirthdaySettings.alertsOnTheDayKey,
+        BirthdaySettings.alertsDayBeforeKey
+    ]
 
     private static let weatherKeys = [
         WeatherSettings.isEnabledKey,

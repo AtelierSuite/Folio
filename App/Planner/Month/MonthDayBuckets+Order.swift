@@ -12,7 +12,8 @@ extension MonthDayBuckets {
     }
 
     private static func rank(of item: MonthDayItem) -> Int {
-        switch (item.isSpanning, item.entry.kind) {
+        if item.entry.isBirthday { return -1 }
+        return switch (item.isSpanning, item.entry.kind) {
         case (true, .event): 0
         case (true, .reminder), (true, .medication): 1
         case (false, _): 2

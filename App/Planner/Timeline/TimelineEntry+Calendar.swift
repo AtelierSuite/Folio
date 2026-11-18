@@ -22,7 +22,8 @@ extension TimelineEntry {
             hasLink: event.url != nil,
             meetingLink: event.meetingLink,
             invitationStyle: event.invitationCardStyle,
-            duplicateCount: duplicateCount
+            duplicateCount: duplicateCount,
+            isBirthday: event.isBirthday
         )
     }
 

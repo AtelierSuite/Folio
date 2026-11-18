@@ -4,11 +4,16 @@ struct TimelineLaneSolver {
     struct Item {
         let firstDayIndex: Int
         let lastDayIndex: Int
+        var isPinnedToTop = false
     }
 
-    /// Longer spans are placed first so multi-day entries keep a straight bar across days.
+    /// Pinned items take the top lanes. Then longer spans are placed first so multi-day entries keep a
+    /// straight bar across days.
     static func lanes(for items: [Item]) -> [Int] {
         let order = items.indices.sorted { lhs, rhs in
+            if items[lhs].isPinnedToTop != items[rhs].isPinnedToTop {
+                return items[lhs].isPinnedToTop
+            }
             if items[lhs].firstDayIndex != items[rhs].firstDayIndex {
                 return items[lhs].firstDayIndex < items[rhs].firstDayIndex
             }

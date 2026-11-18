@@ -10,6 +10,7 @@ public struct NotificationPlanner: Sendable {
     public var allDayAlertMinutes: @Sendable (String) -> Int?
     public var soundResolver: @Sendable (NotificationCandidate) -> NotificationSound
     public var reminderEarlyAlerts: @Sendable (CalendarItemReference) -> [ReminderEarlyAlert]
+    public var birthdayAlarms: @Sendable () -> [CalendarAlarm]
 
     public init(
         reservedSlots: Int = defaultReservedSlots,
@@ -17,7 +18,8 @@ public struct NotificationPlanner: Sendable {
         styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard },
         allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil },
         soundResolver: @escaping @Sendable (NotificationCandidate) -> NotificationSound = { _ in .system },
-        reminderEarlyAlerts: @escaping @Sendable (CalendarItemReference) -> [ReminderEarlyAlert] = { _ in [] }
+        reminderEarlyAlerts: @escaping @Sendable (CalendarItemReference) -> [ReminderEarlyAlert] = { _ in [] },
+        birthdayAlarms: @escaping @Sendable () -> [CalendarAlarm] = { [] }
     ) {
         self.reservedSlots = reservedSlots
         self.formatter = formatter
@@ -25,6 +27,7 @@ public struct NotificationPlanner: Sendable {
         self.allDayAlertMinutes = allDayAlertMinutes
         self.soundResolver = soundResolver
         self.reminderEarlyAlerts = reminderEarlyAlerts
+        self.birthdayAlarms = birthdayAlarms
     }
 
     public func budget(foreignPendingCount: Int) -> Int {
@@ -64,7 +67,8 @@ public struct NotificationPlanner: Sendable {
                     meeting: meeting,
                     place: place,
                     color: event.color,
-                    imageURL: images[event.reference]
+                    imageURL: images[event.reference],
+                    isBirthday: event.isBirthday
                 )
             }
         }
@@ -87,10 +91,11 @@ public struct NotificationPlanner: Sendable {
     }
 
     private func fireDates(for event: CalendarEvent, after now: Date) -> [Date] {
+        let alarms = event.isBirthday && event.alarms.isEmpty ? birthdayAlarms() : event.alarms
         guard event.isAllDay, let minutes = allDayAlertMinutes(event.calendarIdentifier) else {
-            return fireDates(for: event.alarms, anchor: event.startDate, after: now)
+            return fireDates(for: alarms, anchor: event.startDate, after: now)
         }
-        let retimed = event.alarms.compactMap { alarm -> Date? in
+        let retimed = alarms.compactMap { alarm -> Date? in
             guard let fireDate = alarm.fireDate(relativeTo: event.startDate) else { return nil }
             guard case .relative = alarm else { return fireDate }
             let startOfDay = formatter.calendar.startOfDay(for: fireDate)

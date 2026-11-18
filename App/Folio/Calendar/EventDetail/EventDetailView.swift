@@ -24,6 +24,11 @@ struct EventDetailView: View {
         NavigationStack {
             Form {
                 EventDetailHeader(event: event, recurrence: draft?.recurrence)
+                #if os(iOS)
+                if let contactIdentifier = event.birthdayContactIdentifier {
+                    BirthdayContactSection(event: event, contactIdentifier: contactIdentifier)
+                }
+                #endif
                 if let meetingLink = event.meetingLink {
                     EventDetailJoinSection(link: meetingLink)
                 }

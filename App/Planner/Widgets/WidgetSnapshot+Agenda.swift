@@ -1,13 +1,13 @@
 import Foundation
 
 extension WidgetSnapshot {
-    /// Today's all-day events, then the timed events that haven't ended yet.
+    /// Today's birthdays, then the other all-day events, then the timed events that haven't ended yet.
     public func todayEvents(at date: Date, calendar: Calendar) -> [CalendarEvent] {
         guard let today = calendar.dateInterval(of: .day, for: date) else { return [] }
         let todays = events.filter { $0.overlaps(today) }
         let allDay = todays.filter(\.isAllDay)
         let timed = todays.filter { !$0.isAllDay && $0.endDate > date }
-        return allDay + timed
+        return allDay.birthdaysFirst + timed
     }
 
     /// Reminders due today, including overdue ones, earliest first.

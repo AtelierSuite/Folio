@@ -268,61 +268,61 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio zeigt die Namen und Fotos der Teilnehmer deiner Termine."
+            "value" : "Folio zeigt die Namen und Fotos der Teilnehmer deiner Termine und öffnet die Kontaktkarte von Geburtstagskindern."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio shows the names and photos of the people attending your events."
+            "value" : "Folio shows the names and photos of the people attending your events, and opens the contact card of the person whose birthday it is."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio affiche les noms et les photos des participants à vos événements."
+            "value" : "Folio affiche les noms et les photos des participants à vos événements, et ouvre la fiche de contact de la personne dont c’est l’anniversaire."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio mostra i nomi e le foto dei partecipanti ai tuoi eventi."
+            "value" : "Folio mostra i nomi e le foto dei partecipanti ai tuoi eventi e apre la scheda contatto di chi compie gli anni."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folioはイベントの参加者の名前と写真を表示します。"
+            "value" : "Folioはイベントの参加者の名前と写真を表示し、誕生日の人の連絡先カードを開きます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio는 이벤트 참석자의 이름과 사진을 표시합니다."
+            "value" : "Folio는 이벤트 참석자의 이름과 사진을 표시하고, 생일인 사람의 연락처 카드를 엽니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio toont de namen en foto’s van de deelnemers aan je afspraken."
+            "value" : "Folio toont de namen en foto’s van de deelnemers aan je afspraken en opent de contactkaart van wie er jarig is."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio hiển thị tên và ảnh của những người tham dự sự kiện."
+            "value" : "Folio hiển thị tên và ảnh của những người tham dự sự kiện, và mở thẻ liên hệ của người có sinh nhật."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio 会显示日程参加者的姓名和照片。"
+            "value" : "Folio 会显示日程参加者的姓名和照片，并打开过生日的人的联系人名片。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folio 會顯示行程參加者的姓名和照片。"
+            "value" : "Folio 會顯示行程參加者的姓名和照片，並打開過生日的人的聯絡人名片。"
           }
         }
       }

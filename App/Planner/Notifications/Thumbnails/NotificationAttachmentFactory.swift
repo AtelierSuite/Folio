@@ -16,7 +16,7 @@ struct NotificationAttachmentFactory: Sendable {
         let color = notification.content.color ?? notification.color
         let picture = notification.imageURL.flatMap(NotificationThumbnailImage.jpegData(from:))
             .map { (data: $0, type: UTType.jpeg) }
-            ?? artwork(for: notification.kind, color: color).map { (data: $0, type: UTType.png) }
+            ?? artwork(for: notification, color: color).map { (data: $0, type: UTType.png) }
         guard let picture, let fileExtension = picture.type.preferredFilenameExtension else {
             return []
         }
@@ -36,9 +36,12 @@ struct NotificationAttachmentFactory: Sendable {
         }
     }
 
-    private func artwork(for kind: CalendarItemKind, color: PlannerColor?) -> Data? {
+    private func artwork(for notification: PlannedNotification, color: PlannerColor?) -> Data? {
         #if canImport(UIKit) && !os(watchOS)
-        NotificationThumbnailArtwork.pngData(for: kind, color: color)
+        if notification.isBirthday {
+            return NotificationBirthdayArtwork.pngData()
+        }
+        return NotificationThumbnailArtwork.pngData(for: notification.kind, color: color)
         #else
         nil
         #endif

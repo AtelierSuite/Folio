@@ -21,7 +21,8 @@ enum NotificationFixtures {
         location: String? = nil,
         isAllDay: Bool = false,
         occurrence: Date? = nil,
-        calendarIdentifier: String = "calendar-1"
+        calendarIdentifier: String = "calendar-1",
+        isBirthday: Bool = false
     ) -> CalendarEvent {
         CalendarEvent(
             reference: Fixtures.reference(
@@ -39,7 +40,8 @@ enum NotificationFixtures {
             endDate: start.addingTimeInterval(hours * 3600),
             isAllDay: isAllDay,
             isRecurring: occurrence != nil,
-            alarms: alarms
+            alarms: alarms,
+            isBirthday: isBirthday
         )
     }
 

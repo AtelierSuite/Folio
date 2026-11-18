@@ -14,13 +14,13 @@ struct AccountsSettingsView: View {
                 kind: .reminders,
                 message: String(localized: "Prompt.Reminders", table: "Permissions")
             )
-            if store.eventCalendars.isEmpty && store.reminderLists.isEmpty {
+            if accountCalendars.isEmpty && store.reminderLists.isEmpty {
                 Text(String(localized: "Empty", table: "CalendarVisibility"))
                     .foregroundStyle(.secondary)
             }
             DefaultCalendarsSection()
             CalendarAccountSections(
-                calendars: store.eventCalendars,
+                calendars: accountCalendars,
                 lists: store.reminderLists
             ) { calendar in
                 CalendarVisibilityRow(calendar: calendar)
@@ -28,5 +28,9 @@ struct AccountsSettingsView: View {
         }
         .accessibilityIdentifier("AccountsForm")
         .settingsCategoryStyle(.accounts)
+    }
+
+    private var accountCalendars: [PlannerCalendar] {
+        store.eventCalendars.excludingBirthdays
     }
 }

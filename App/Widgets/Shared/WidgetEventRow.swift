@@ -9,9 +9,15 @@ struct WidgetEventRow: View {
             HStack(spacing: 6) {
                 WidgetColorBar(color: event.color)
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(event.title)
-                        .font(.caption.weight(.semibold))
-                        .lineLimit(1)
+                    HStack(spacing: 3) {
+                        if event.isBirthday {
+                            WidgetBirthdayGlyph()
+                                .imageScale(.small)
+                        }
+                        Text(event.title)
+                    }
+                    .font(.caption.weight(.semibold))
+                    .lineLimit(1)
                     WidgetEventTimeText(event: event)
                         .font(.caption2)
                         .foregroundStyle(.secondary)
