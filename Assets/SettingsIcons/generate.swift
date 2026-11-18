@@ -242,30 +242,32 @@ let calendarRed = hex(0xFF3B30)
 let quietGrey = hex(0xC7C7CC)
 
 func calendarArtwork() -> some View {
-    let square = Keyline.square.rect
-    let columns = (0..<4).map { square.minX + 4 + CGFloat($0) * 20 }
-    let rows = (0..<3).map { square.maxY - 4 - CGFloat(2 - $0) * 18 }
+    let dotRadius: CGFloat = 5
+    let area = CGRect(x: Keyline.landscape.rect.minX, y: 50, width: Keyline.landscape.size.width,
+                      height: Keyline.circle.rect.maxY - 50)
+    let columns = (0..<4).map { area.minX + dotRadius + CGFloat($0) * (area.width - dotRadius * 2) / 3 }
+    let rows = (0..<3).map { area.minY + dotRadius + CGFloat($0) * (area.height - dotRadius * 2) / 2 }
     return ZStack(alignment: .topLeading) {
         Rectangle()
             .fill(LinearGradient(colors: [hex(0xFF6259), hex(0xE5352B)].map { Color(nsColor: $0) },
                                  startPoint: .top, endPoint: .bottom))
             .frame(width: canvas, height: 38)
-        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.minX + 8, y: 11, width: 8, height: 16))
-        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.maxX - 16, y: 11, width: 8, height: 16))
+        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.minX + 4, y: 10, width: 9, height: 18))
+        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.maxX - 13, y: 10, width: 9, height: 18))
         ForEach(0..<12, id: \.self) { index in
             let center = CGPoint(x: columns[index % 4], y: rows[index / 4])
             if index == 6 {
-                circle(calendarRed, center: center, radius: 9)
+                circle(calendarRed, center: center, radius: 11)
             } else {
-                circle(quietGrey, center: center, radius: 4)
+                circle(quietGrey, center: center, radius: dotRadius)
             }
         }
     }
 }
 
 func reminderArtwork() -> some View {
-    let square = Keyline.square.rect
-    let radius: CGFloat = 9.5
+    let square = Keyline.circle.rect
+    let radius: CGFloat = 11.5
     let colors = [hex(0xFF9500), hex(0x007AFF), calendarRed]
     let lengths: [CGFloat] = [1, 0.78, 0.58]
     return ZStack(alignment: .topLeading) {
@@ -274,16 +276,16 @@ func reminderArtwork() -> some View {
             if index == 0 {
                 circle(colors[index], center: center, radius: radius)
                 Path { path in
-                    path.move(to: CGPoint(x: center.x - 4.4, y: center.y + 0.2))
-                    path.addLine(to: CGPoint(x: center.x - 1, y: center.y + 3.6))
-                    path.addLine(to: CGPoint(x: center.x + 5, y: center.y - 3.6))
+                    path.move(to: CGPoint(x: center.x - 5.4, y: center.y + 0.2))
+                    path.addLine(to: CGPoint(x: center.x - 1.3, y: center.y + 4.3))
+                    path.addLine(to: CGPoint(x: center.x + 6, y: center.y - 4.3))
                 }
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 3.2, lineCap: .round, lineJoin: .round))
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 3.8, lineCap: .round, lineJoin: .round))
             } else {
-                ring(colors[index], center: center, radius: radius, lineWidth: 3.4)
+                ring(colors[index], center: center, radius: radius, lineWidth: 4)
             }
-            let start = square.minX + 28
-            bar(quietGrey, CGRect(x: start, y: center.y - 3.5, width: (square.maxX - start) * lengths[index], height: 7))
+            let start = square.minX + radius * 2 + 10
+            bar(quietGrey, CGRect(x: start, y: center.y - 4.5, width: (square.maxX - start) * lengths[index], height: 9))
         }
     }
 }
