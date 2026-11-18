@@ -54,13 +54,11 @@ struct EnergyCurveTests {
     @Test func gaugesOnlyAtPeaksAndWhereDipsStart() throws {
         let peaks = rested.markers.filter { $0.kind == .peak }.map { Int($0.hour) }
         let dip = try #require(rested.markers.first { $0.kind == .dip })
-        let hours = rested.gaugeHours
-        #expect(hours.count == 4)
-        #expect(hours.filter { peaks.contains($0) } == peaks)
-        let afternoonDipStart = try #require(hours.first { $0 > peaks[0] && !peaks.contains($0) })
-        #expect(afternoonDipStart <= Int(dip.hour))
-        #expect(rested.gaugeSegments(forHourStarting: afternoonDipStart) ?? 0 < EnergyCurve.gaugeSegmentCount)
-        let eveningDipStart = try #require(hours.last)
-        #expect(eveningDipStart > peaks[1])
+        #expect(rested.peakGaugeHours == peaks)
+        let dipStarts = rested.dipStartGaugeHours
+        #expect(dipStarts.count == 2)
+        #expect(dipStarts[0] > peaks[0] && dipStarts[0] <= Int(dip.hour))
+        #expect(rested.gaugeSegments(forHourStarting: dipStarts[0]) ?? 0 < EnergyCurve.gaugeSegmentCount)
+        #expect(dipStarts[1] > peaks[1])
     }
 }

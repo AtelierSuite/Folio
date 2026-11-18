@@ -42,17 +42,20 @@ public struct EnergyCurve: Sendable, Equatable {
 
     private static let gaugeThresholds = [0.5, 0.78, 0.88]
 
-    /// The hours worth a gauge: each peak, and the first hour after it where energy starts to dip.
-    public var gaugeHours: [Int] {
-        let peakHours = Set(markers.filter { $0.kind == .peak }.map { Int($0.hour) })
-        let dipStartHours = peakHours.compactMap { peakHour -> Int? in
+    public var peakGaugeHours: [Int] {
+        Array(Set(markers.filter { $0.kind == .peak }.map { Int($0.hour) })).sorted()
+    }
+
+    /// The first hour after each peak where energy starts to dip.
+    public var dipStartGaugeHours: [Int] {
+        let hours = peakGaugeHours.compactMap { peakHour -> Int? in
             guard let peakSegments = gaugeSegments(forHourStarting: peakHour) else { return nil }
             return (peakHour + 1..<24).first { hour in
                 guard let segments = gaugeSegments(forHourStarting: hour) else { return false }
                 return segments < peakSegments
             }
         }
-        return peakHours.union(dipStartHours).sorted()
+        return Array(Set(hours).subtracting(peakGaugeHours)).sorted()
     }
 
     public func peakStrength(atHour hour: Double) -> Double {
