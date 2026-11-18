@@ -17,13 +17,14 @@ Sounds get brighter and busier through the list, but every one is mastered to th
 notification sounds, with generate.py's encoder.
 """
 
+import collections
 import math
 import os
 import sys
 
 import generate
 import logic_samples
-from generate import SAMPLE_RATE, Track, echo, highpass, lowpass, reverb
+from generate import SAMPLE_RATE, Track, echo, highpass, lowpass
 from logic_samples import Multisample, OneShot
 
 CEILING = 10 ** (-1.2 / 20)
@@ -39,6 +40,13 @@ FAIRYTALE_BELLS = OneShot("Synthesizer/Keys/Fairytales Bells Sample.aif", 90.04)
 RATTLING_BELL = OneShot("Mallet/Rattling Bell Decay.aif", 72)
 ELECTRIC_PIANO_LOW = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 C3.caf", 60)
 ELECTRIC_PIANO_HIGH = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 F#4.caf", 78)
+
+LARGE_HALL = "01 Large Spaces/02 Halls/03.9s Prince Hall One-OST.SDIR"
+HALL = "02 Medium Spaces/01 Rooms/02.0s Prince Hall One-OST.SDIR"
+BRIGHT_HALL = "02 Medium Spaces/02 Halls/1.7s_Nice Hall.SDIR"
+ROOM = "02 Medium Spaces/01 Rooms/1.4s_Nice Room.SDIR"
+SMALL_ROOM = "02 Medium Spaces/01 Rooms/1.0s_Medium Room.SDIR"
+PLATE = "02 Medium Spaces/03 Plate Reverbs/1.3s_Soft Plate.SDIR"
 
 
 class AlarmTrack(Track):
@@ -82,13 +90,15 @@ class Loop:
         self.period = period
         self.track = AlarmTrack(period + tail)
 
-    def render(self, room=0.0, mix=0.0, damping=0.5, delay=None, brightness=12000, release=0.08):
+    def render(self, space=None, mix=0.0, delay=None, brightness=12000, release=0.08):
+        """Space is a recorded room from Logic's impulse responses, and mix how loud its reverb is against the
+        dry sound. Its whole tail is folded back onto the loop, so the reverb rings on across the repeat."""
         samples = self.track.samples
         if delay:
             samples = echo(samples, *delay)
-        if mix:
-            wet = reverb(samples, room, damping)
-            samples = [dry * (1 - mix * 0.5) + effect * mix for dry, effect in zip(samples, wet)]
+        if space and mix:
+            wet = convolve(samples, logic_samples.impulse_response(space))
+            samples = [dry + effect * mix for dry, effect in zip(samples + [0.0] * (len(wet) - len(samples)), wet)]
         length = int(self.period * SAMPLE_RATE)
         folded = [0.0] * length
         for index, value in enumerate(samples):
@@ -101,15 +111,72 @@ class Loop:
         return repeated
 
 
-def limit(samples, gain, release=0.08):
-    """A peak limiter: reacts instantly to anything over the ceiling, then lets go smoothly."""
+def fft(values, inverse=False):
+    """An iterative radix-2 FFT, in place, for lists whose length is a power of two."""
+    count = len(values)
+    other = 0
+    for index in range(1, count):
+        bit = count >> 1
+        while other & bit:
+            other ^= bit
+            bit >>= 1
+        other |= bit
+        if index < other:
+            values[index], values[other] = values[other], values[index]
+    size = 2
+    sign = 1 if inverse else -1
+    while size <= count:
+        half = size // 2
+        step = complex(math.cos(2 * math.pi / size), sign * math.sin(2 * math.pi / size))
+        twiddles = [1 + 0j]
+        for _ in range(half - 1):
+            twiddles.append(twiddles[-1] * step)
+        for start in range(0, count, size):
+            for offset in range(half):
+                upper = values[start + offset]
+                lower = values[start + offset + half] * twiddles[offset]
+                values[start + offset] = upper + lower
+                values[start + offset + half] = upper - lower
+        size *= 2
+    if inverse:
+        for index in range(count):
+            values[index] /= count
+    return values
+
+
+def convolve(samples, response):
+    """Plays the sound in a recorded room, by convolving it with the room's impulse response."""
+    length = len(samples) + len(response) - 1
+    size = 1 << (length - 1).bit_length()
+    signal = fft([complex(value) for value in samples] + [0j] * (size - len(samples)))
+    room = fft([complex(value) for value in response] + [0j] * (size - len(response)))
+    product = fft([first * second for first, second in zip(signal, room)], inverse=True)
+    return [value.real for value in product[:length]]
+
+
+def limit(samples, gain, release=0.08, lookahead=0.005):
+    """A lookahead peak limiter. It sees each peak coming and eases the gain down over the lookahead before it,
+    then lets go over the release, so the gain never jumps and the waveform is never bent into distortion."""
+    window = max(1, int(lookahead * SAMPLE_RATE))
+    needed = [min(1.0, CEILING / abs(value * gain)) if value else 1.0 for value in samples]
+    lowest = [0.0] * len(needed)
+    queue = collections.deque()
+    for index in range(len(needed) - 1, -1, -1):
+        while queue and needed[queue[-1]] >= needed[index]:
+            queue.pop()
+        queue.append(index)
+        while queue[0] >= index + window:
+            queue.popleft()
+        lowest[index] = needed[queue[0]]
     coefficient = math.exp(-1 / (release * SAMPLE_RATE))
-    envelope = 0.0
-    output = []
-    for value in samples:
-        boosted = value * gain
-        envelope = max(abs(boosted), envelope * coefficient)
-        output.append(boosted * (CEILING / envelope if envelope > CEILING else 1.0))
+    total = 0.0
+    recovering = 1.0
+    output = [0.0] * len(samples)
+    for index, value in enumerate(lowest):
+        total += value - (lowest[index - window] if index >= window else 1.0)
+        smoothed = (total + window) / window
+        recovering = min(smoothed, recovering * coefficient + (1 - coefficient))
+        output[index] = samples[index] * gain * min(recovering, needed[index])
     return output
 
 
@@ -189,7 +256,7 @@ def yoake():
         loop.track.piano(start, pitch, 0.7, velocity=70, hold=2.4, release=0.4)
     loop.track.play(VIBRAPHONE, 2.28, "G5", 0.35, velocity=60)
     loop.track.play(VIBRAPHONE, 2.28, "E5", 0.25, velocity=60)
-    return loop.render(room=0.6, mix=0.15, brightness=14000)
+    return loop.render(HALL, mix=0.5, brightness=14000)
 
 
 def komorebi():
@@ -199,7 +266,7 @@ def komorebi():
     for pitch, amplitude in (("C5", 0.5), ("E5", 0.45), ("G5", 0.4)):
         loop.track.play(VIBRAPHONE, 1.44, pitch, amplitude, velocity=70)
     loop.track.play(KALIMBA, 1.44, "C5", 0.7)
-    return loop.render(room=0.45, mix=0.12, brightness=14000)
+    return loop.render(HALL, mix=0.45, brightness=14000)
 
 
 def hibari():
@@ -209,7 +276,7 @@ def hibari():
         sequence(loop.track, MUSIC_BOX, evenly(0.11, ("G5", "B5", "D6", "G6"), offset), amplitude=0.7)
         loop.track.play(GLOCKENSPIEL, offset + 0.44, "B6", 0.5)
     loop.track.play(VIBRAPHONE, 0.0, "G4", 0.35, velocity=70)
-    return loop.render(room=0.3, mix=0.1, brightness=15000)
+    return loop.render(BRIGHT_HALL, mix=0.4, brightness=15000)
 
 
 def shiokaze():
@@ -220,7 +287,7 @@ def shiokaze():
     loop.track.play(MARIMBA, 1.2, "A5", 0.85, velocity=110)
     for take, (start, pitch) in enumerate(((0.0, "A3"), (0.6, "E3"), (1.2, "A3"))):
         loop.track.play(MARIMBA, start, pitch, 0.7, velocity=100, take=take)
-    return loop.render(room=0.25, mix=0.06, brightness=15000)
+    return loop.render(ROOM, mix=0.35, brightness=15000)
 
 
 def kane():
@@ -231,7 +298,7 @@ def kane():
             loop.track.play(FAIRYTALE_BELLS, start, pitch, amplitude)
         loop.track.piano(start, "A2", 0.4, velocity=110, hold=1.2, release=0.3)
         loop.track.piano(start, "A3", 0.35, velocity=110, hold=1.2, release=0.3)
-    return loop.render(room=0.5, mix=0.12, brightness=15000)
+    return loop.render(LARGE_HALL, mix=0.45, brightness=15000)
 
 
 def hibiki():
@@ -240,7 +307,7 @@ def hibiki():
     for start, pitch in evenly(0.1, ("C5", "E5", "G5", "C6", "G5", "E5", "G5", "C6")):
         loop.track.electric_piano(start, pitch, 0.6, hold=0.18, release=0.08)
     loop.track.electric_piano(0.0, "C3", 0.8, hold=0.9, release=0.2)
-    return loop.render(room=0.25, mix=0.06, delay=(0.3, 0.3, 0.25), brightness=15000)
+    return loop.render(PLATE, mix=0.3, delay=(0.3, 0.3, 0.25), brightness=15000)
 
 
 def tsubame():
@@ -249,7 +316,7 @@ def tsubame():
     trill = [(index * 0.06, "D6" if index % 2 == 0 else "A5") for index in range(9)]
     sequence(loop.track, GLOCKENSPIEL, trill, amplitude=0.6, hold=0.12, release=0.1)
     sequence(loop.track, MUSIC_BOX, trill, amplitude=0.5, hold=0.12, release=0.1)
-    return loop.render(room=0.2, mix=0.05, brightness=16000, release=0.04)
+    return loop.render(ROOM, mix=0.3, brightness=16000, release=0.06)
 
 
 def arashi():
@@ -258,14 +325,14 @@ def arashi():
     for take, (start, pitch) in enumerate(((0.0, "E6"), (0.16, "E6"), (0.32, "A6"))):
         loop.track.play(MARIMBA, start, pitch, 0.9, velocity=127, take=take)
         loop.track.play(GLOCKENSPIEL, start, pitch, 0.55, hold=0.2, release=0.08)
-    return loop.render(room=0.15, mix=0.04, brightness=16000, release=0.03)
+    return loop.render(SMALL_ROOM, mix=0.25, brightness=16000, release=0.05)
 
 
 def hayate():
     """Gale: a real alarm bell ringing in bursts, like an old wind-up alarm clock."""
     loop = Loop(1.2)
     loop.track.play(RATTLING_BELL, 0.0, None, 1.0, hold=0.7, release=0.04)
-    return loop.render(brightness=16000, release=0.025)
+    return loop.render(SMALL_ROOM, mix=0.2, brightness=16000, release=0.05)
 
 
 def kaminari():
@@ -277,7 +344,7 @@ def kaminari():
         loop.track.play(GLOCKENSPIEL, start, pitch, 0.7, hold=0.09, release=0.03)
         loop.track.play(MUSIC_BOX, start, pitch, 0.5, hold=0.09, release=0.03)
     loop.track.play(RATTLING_BELL, 0.0, None, 0.5, hold=0.62, release=0.04)
-    return loop.render(brightness=16000, release=0.02)
+    return loop.render(SMALL_ROOM, mix=0.2, brightness=16000, release=0.04)
 
 
 SOUNDS = {

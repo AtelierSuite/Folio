@@ -15,6 +15,7 @@ import tempfile
 LIBRARY = os.path.expanduser("~/Music/Logic Pro Library.bundle")
 INSTRUMENTS = os.path.join(LIBRARY, "Plug-In Settings/Sampler")
 SAMPLES = os.path.join(LIBRARY, "Samples")
+IMPULSE_RESPONSES = os.path.join(LIBRARY, "Impulse Responses")
 SAMPLE_RATE = 44100
 
 _decoded = {}
@@ -59,9 +60,34 @@ def key_number(name):
     return 12 * (int(rest) + 1) + offset
 
 
+def lowpass(samples, cutoff):
+    """A 4th-order Butterworth lowpass, as two cascaded biquads."""
+    angle = 2 * math.pi * cutoff / SAMPLE_RATE
+    cosine = math.cos(angle)
+    for quality in (0.5411961, 1.3065630):
+        alpha = math.sin(angle) / (2 * quality)
+        b0 = b2 = (1 - cosine) / 2 / (1 + alpha)
+        b1 = (1 - cosine) / (1 + alpha)
+        a1, a2 = -2 * cosine / (1 + alpha), (1 - alpha) / (1 + alpha)
+        x1 = x2 = y1 = y2 = 0.0
+        output = [0.0] * len(samples)
+        for index, value in enumerate(samples):
+            result = b0 * value + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2
+            x2, x1, y2, y1 = x1, value, y1, result
+            output[index] = result
+        samples = output
+    return samples
+
+
 def shift(samples, semitones, limit=None):
-    """Resamples to a new pitch with 4-point cubic Hermite interpolation, which keeps highs clean."""
+    """Resamples to a new pitch with 4-point cubic Hermite interpolation. Raising the pitch first filters out
+    whatever would land above the top of the audible band, which would otherwise fold back down as harsh,
+    out-of-tune tones."""
     ratio = 2 ** (semitones / 12)
+    if limit is not None:
+        samples = samples[:int(limit * ratio) + 4]
+    if ratio > 1.0001:
+        samples = lowpass(samples, 0.45 * SAMPLE_RATE / ratio)
     count = len(samples)
     length = int((count - 3) / ratio)
     if limit is not None:
@@ -79,6 +105,14 @@ def shift(samples, semitones, limit=None):
         curve = weight + difference + slope_after
         output[index] = ((curve * fraction - weight - curve) * fraction + slope_current) * fraction + current
     return output
+
+
+def impulse_response(name):
+    """A recorded room from Logic's Space Designer library, scaled to unit energy so a reverb's mix sets the
+    level of the wet sound against the dry one."""
+    samples = decode(os.path.join(IMPULSE_RESPONSES, name))
+    energy = math.sqrt(sum(value * value for value in samples)) or 1
+    return [value / energy for value in samples]
 
 
 def normalized(samples):
