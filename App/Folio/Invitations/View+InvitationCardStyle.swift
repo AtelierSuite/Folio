@@ -9,6 +9,10 @@ extension View {
     ) -> some View {
         modifier(InvitationCardStyleModifier(style: style, color: color, shape: shape))
     }
+
+    func invitationStatusStyle(_ style: InvitationCardStyle) -> some View {
+        modifier(InvitationStatusStyleModifier(style: style))
+    }
 }
 
 private struct InvitationCardStyleModifier<CardShape: InsettableShape>: ViewModifier {
@@ -16,15 +20,23 @@ private struct InvitationCardStyleModifier<CardShape: InsettableShape>: ViewModi
     let color: Color
     let shape: CardShape
 
-    @ViewBuilder
     func body(content: Content) -> some View {
-        let styled = content
+        content
             .overlay {
                 if style == .outlined {
                     shape.strokeBorder(color, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
                 }
             }
-            .opacity(style.opacity)
+            .invitationStatusStyle(style)
+    }
+}
+
+private struct InvitationStatusStyleModifier: ViewModifier {
+    let style: InvitationCardStyle
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        let styled = content.opacity(style.opacity)
         if let statusLabel = style.accessibilityLabel {
             styled.accessibilityLabel { label in
                 Text(statusLabel)

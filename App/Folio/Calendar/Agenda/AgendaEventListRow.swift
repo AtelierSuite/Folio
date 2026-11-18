@@ -13,6 +13,10 @@ struct AgendaEventListRow: View {
         group.primary
     }
 
+    private var isPending: Bool {
+        event.invitationCardStyle == .outlined
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             AgendaEventRow(event: event, duplicateCount: group.count)
@@ -27,10 +31,10 @@ struct AgendaEventListRow: View {
         .padding(.vertical, 10)
         .background(alignment: .leading) {
             Rectangle()
-                .fill(event.color.color)
+                .fill(event.color.color.opacity(isPending ? 0.35 : 1))
                 .frame(width: Self.stripWidth)
         }
-        .invitationCardStyle(event.invitationCardStyle, color: event.color.color, in: Rectangle().inset(by: 1))
+        .invitationStatusStyle(event.invitationCardStyle)
         .overlay(alignment: .bottom) {
             if showsDivider {
                 AgendaRowDivider(leadingInset: Self.contentLeadingInset)
