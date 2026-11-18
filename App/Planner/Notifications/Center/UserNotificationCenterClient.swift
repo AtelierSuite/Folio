@@ -29,8 +29,8 @@ public struct UserNotificationCenterClient: NotificationCenterClient {
         await center.pendingNotificationRequests().map(\.identifier)
     }
 
-    public func add(_ notification: PlannedNotification, now: Date) async throws {
-        let interval = max(1, notification.fireDate.timeIntervalSince(now))
+    public func add(_ notification: PlannedNotification) async throws {
+        let interval = notification.triggerInterval(from: .now)
         let request = UNNotificationRequest(
             identifier: notification.id,
             content: UNNotificationContent.make(
