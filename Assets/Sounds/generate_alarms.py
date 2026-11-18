@@ -4,17 +4,19 @@
 Usage: python3 generate_alarms.py <output directory> [Alarm-Name ...]
 
 Every note is a recorded instrument from Logic Pro's sound library (see logic_samples.py), which has to be
-installed: vibraphone, African marimba, Steinway, glockenspiel, kalimba, music box, glass xylophone,
+installed: vibraphone, African marimba, Steinway, glockenspiel, kalimba, music box,
 electric piano, fairytale bells and a rattling alarm bell. Roots of the single notes were measured, since
-Logic names notes an octave low (middle C is C3) and one recording holds several strikes.
+Logic names notes an octave low (middle C is C3) and one recording holds several strikes. The music box
+is Alchemy's Musical Box rather than Toy Music Box, whose recording knocks its wooden mechanism before
+every note.
 
 Each sound is one short phrase repeated to just under 30 seconds, since AlarmKit is reported to stop custom
 sounds at about that length. The phrase is rendered as a steady loop, with its reverb and echo tails folded
 back onto its start, so the repeats run on seamlessly and the file also loops cleanly if the system repeats it.
 
 Sounds get brighter and busier through the list, but every one is mastered to the same perceived loudness
-(LOUDNESS, in LUFS) with a limiter, so switching sounds never changes the volume, only the character. Written at 44.1 kHz as 16-bit linear PCM, like the
-notification sounds, with generate.py's encoder.
+(LOUDNESS, in LUFS) with a limiter, so switching sounds never changes the volume, only the character.
+Written at 44.1 kHz as 16-bit linear PCM, like the notification sounds, with generate.py's encoder.
 """
 
 import collections
@@ -35,7 +37,7 @@ VIBRAPHONE = Multisample("Mallet/Vibraphone.exs", "Mallet/Vibraphone_consolidate
 MARIMBA = Multisample("Mallet/African Marimba.exs", "Mallet/African Marimba_consolidated.caf")
 GLOCKENSPIEL = OneShot("Alchemy Samples/Mallets/Metal Mallets/Glockenspiel 03.caf", 91.85, end=1.0)
 KALIMBA = OneShot("Alchemy Samples/Mallets/Wooden Mallets/Kalimba/Kalimba C4.caf", 72)
-MUSIC_BOX = OneShot("Mallet/Toy Music Box.aif", 84.02)
+MUSIC_BOX = OneShot("Alchemy Samples/Mallets/Metal Mallets/Musical Box/Musical Box A#4.caf", 82.07)
 FAIRYTALE_BELLS = OneShot("Synthesizer/Keys/Fairytales Bells Sample.aif", 90.04)
 RATTLING_BELL = OneShot("Mallet/Rattling Bell Decay.aif", 72)
 ELECTRIC_PIANO_LOW = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 C3.caf", 60)
