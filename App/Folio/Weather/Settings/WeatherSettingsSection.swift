@@ -29,17 +29,29 @@ struct WeatherSettingsSection: View {
                     WeatherLocationView()
                 }
                 .accessibilityIdentifier("WeatherLocationLink")
-                Toggle(String(localized: "Settings.ShadeNight", table: "Weather"), isOn: $shadesNight)
-                    .accessibilityIdentifier("WeatherShadeNightToggle")
-                Toggle(String(localized: "Settings.ShowHourlyForecast", table: "Weather"), isOn: $showsHourlyForecast)
-                    .accessibilityIdentifier("WeatherHourlyForecastToggle")
-                Toggle(String(localized: "Settings.ShowRainAlerts", table: "Weather"), isOn: $showsRainAlerts)
-                    .accessibilityIdentifier("WeatherRainAlertsToggle")
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "Weather"))
         } footer: {
-            WeatherSettingsFooter()
+            if !weather.isEnabled {
+                WeatherSettingsFooter()
+            } else if !weather.hasLocation {
+                Text(String(localized: "Settings.NoLocation", table: "Weather"))
+            }
+        }
+        if weather.isEnabled {
+            Section {
+                Toggle(String(localized: "Settings.ShadeNight", table: "Weather"), isOn: $shadesNight)
+                    .accessibilityIdentifier("WeatherShadeNightToggle")
+            }
+            Section {
+                Toggle(String(localized: "Settings.ShowHourlyForecast", table: "Weather"), isOn: $showsHourlyForecast)
+                    .accessibilityIdentifier("WeatherHourlyForecastToggle")
+                Toggle(String(localized: "Settings.ShowRainAlerts", table: "Weather"), isOn: $showsRainAlerts)
+                    .accessibilityIdentifier("WeatherRainAlertsToggle")
+            } footer: {
+                WeatherSettingsFooter()
+            }
         }
     }
 }
