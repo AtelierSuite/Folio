@@ -265,7 +265,7 @@ func calendarArtwork() -> some View {
 
 func reminderArtwork() -> some View {
     let square = Keyline.circle.rect
-    let radius: CGFloat = 11.5
+    let radius: CGFloat = 9.5
     let colors = [hex(0xFF9500), hex(0x007AFF), calendarRed]
     let lengths: [CGFloat] = [1, 0.78, 0.58]
     return ZStack(alignment: .topLeading) {
