@@ -12,7 +12,7 @@ extension LeaveAlertCenter {
         let usesAlarms = ringsAsAlarm && alarmAuthorization.allowsScheduling
         let alarmAlerts = usesAlarms ? alerts.filter { $0.fireDate > now.addingTimeInterval(Self.alarmLeadTime) } : []
         guard usesAlarms || !alarmLedger.identifiers.isEmpty else { return alerts }
-        let requests = alarmAlerts.map { $0.alarmRequest(formatter: formatter) }
+        let requests = alarmAlerts.map { $0.alarmRequest(formatter: formatter, sound: alarmSound) }
         let outcome = await AlarmSynchronizer(client: alarmClient, ledger: alarmLedger).synchronize(requests)
         let failed = Set(outcome.failed.map(\.id))
         let ringing = Set(zip(alarmAlerts, requests).filter { !failed.contains($0.1.id) }.map(\.0.id))
@@ -27,17 +27,24 @@ extension LeaveAlertCenter {
         }
         await replan()
     }
+
+    public func setAlarmSound(_ sound: AlarmSound) async {
+        alarmSound = sound
+        settings.alarmSound = sound
+        await replan()
+    }
 }
 
 extension LeaveAlert {
-    func alarmRequest(formatter: NotificationContentFormatter) -> AlarmRequest {
+    func alarmRequest(formatter: NotificationContentFormatter, sound: AlarmSound) -> AlarmRequest {
         AlarmRequest(
-            id: AlarmIdentifier.make(fromNotificationIdentifier: id),
+            id: sound.alarmIdentifier(fromNotificationIdentifier: id),
             fireDate: fireDate,
             title: formatter.leaveAlarmTitle(for: self),
             tint: event.color,
             item: NotificationItem(kind: .event, reference: event.reference, fireDate: fireDate),
-            secondaryAction: .open
+            secondaryAction: .open,
+            sound: sound
         )
     }
 }

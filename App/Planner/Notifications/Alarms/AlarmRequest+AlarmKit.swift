@@ -1,4 +1,5 @@
 #if canImport(AlarmKit) && os(iOS)
+import ActivityKit
 import AlarmKit
 import AppIntents
 import Foundation
@@ -58,15 +59,21 @@ extension AlarmRequest {
                 schedule: .fixed(fireDate),
                 attributes: attributes,
                 appEntityIdentifier: entityIdentifier,
-                secondaryIntent: secondaryIntent
+                secondaryIntent: secondaryIntent,
+                sound: alertSound
             )
         }
         return AlarmManager.AlarmConfiguration(
             countdownDuration: countdownDuration,
             schedule: .fixed(fireDate),
             attributes: attributes,
-            secondaryIntent: secondaryIntent
+            secondaryIntent: secondaryIntent,
+            sound: alertSound
         )
+    }
+
+    private var alertSound: AlertConfiguration.AlertSound {
+        sound.fileName.map(AlertConfiguration.AlertSound.named) ?? .default
     }
 
     private var entityIdentifier: EntityIdentifier? {

@@ -66,6 +66,12 @@ extension WakeUpAlarmCenter {
         await replan()
     }
 
+    public func setSound(_ sound: AlarmSound) async {
+        self.sound = sound
+        settings.sound = sound
+        await replan()
+    }
+
     public func reloadSettings() async {
         leadMinutes = settings.leadMinutes
         earliestMinutes = settings.earliestMinutes
@@ -73,6 +79,7 @@ extension WakeUpAlarmCenter {
         skipsHolidays = settings.skipsHolidays
         addsTravelTime = settings.addsTravelTime
         transport = settings.transport
+        sound = settings.sound
         updateLocationMonitoring()
         await replan()
     }

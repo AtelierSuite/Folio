@@ -59,6 +59,15 @@ struct LeaveAlarmTests {
         #expect(alarm.item?.reference == dentist.reference)
     }
 
+    @Test func changingTheAlarmSoundReschedulesWithTheNewSound() async throws {
+        let harness = try makeHarness(events: [dentist])
+        await harness.center.replan()
+        #expect(harness.alarms.scheduledAlarms.map(\.sound) == [.system])
+        await harness.center.setAlarmSound(.yoake)
+        #expect(harness.alarms.scheduledCount == 1)
+        #expect(harness.alarms.scheduledAlarms.map(\.sound) == [.yoake])
+    }
+
     @Test func lateAlertsStayNotifications() async throws {
         let harness = try makeHarness(events: [ArrivalFixtures.event("Soon", start: ArrivalFixtures.hours(0.4))])
         await harness.center.replan()

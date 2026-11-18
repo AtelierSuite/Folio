@@ -33,6 +33,7 @@ extension LeaveAlertCenter {
     public func reloadSettings() async {
         transport = settings.transport
         ringsAsAlarm = settings.ringsAsAlarm
+        alarmSound = settings.alarmSound
         await replan()
     }
 }

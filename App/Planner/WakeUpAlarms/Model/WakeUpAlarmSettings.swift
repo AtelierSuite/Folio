@@ -9,6 +9,7 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public static let excludedCalendarIdentifiersKey = "WakeUpAlarm.ExcludedCalendars"
     public static let addsTravelTimeKey = "WakeUpAlarm.AddsTravelTime"
     public static let transportKey = "WakeUpAlarm.Transport"
+    public static let soundKey = "WakeUpAlarm.Sound"
     public static let lastOriginKey = "WakeUpAlarm.LastOrigin"
     public static let upcomingFireDatesKey = "WakeUpAlarm.UpcomingFireDates"
 
@@ -63,6 +64,11 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
     public var transport: TravelTransport {
         get { defaults.string(forKey: Self.transportKey).flatMap(TravelTransport.init(rawValue:)) ?? .driving }
         nonmutating set { defaults.set(newValue.rawValue, forKey: Self.transportKey) }
+    }
+
+    public var sound: AlarmSound {
+        get { defaults.string(forKey: Self.soundKey).flatMap(AlarmSound.init(rawValue:)) ?? .system }
+        nonmutating set { defaults.set(newValue == .system ? nil : newValue.rawValue, forKey: Self.soundKey) }
     }
 
     /// Where travel was last measured from, for replans that run while the current location can't be read.

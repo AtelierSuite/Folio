@@ -44,7 +44,8 @@ enum SyncedSettingsKeys {
     private static let travelKeys = [
         TravelTimeSettings.transportKey,
         LeaveAlertSettings.transportKey,
-        LeaveAlertSettings.ringsAsAlarmKey
+        LeaveAlertSettings.ringsAsAlarmKey,
+        LeaveAlertSettings.alarmSoundKey
     ]
 
     private static let wakeUpAlarmKeys = [
@@ -53,7 +54,8 @@ enum SyncedSettingsKeys {
         WakeUpAlarmSettings.latestEventMinutesKey,
         WakeUpAlarmSettings.skipsHolidaysKey,
         WakeUpAlarmSettings.addsTravelTimeKey,
-        WakeUpAlarmSettings.transportKey
+        WakeUpAlarmSettings.transportKey,
+        WakeUpAlarmSettings.soundKey
     ]
 
     private static let calendarKeys = [

@@ -10,6 +10,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
     public let secondaryAction: AlarmSecondaryAction
     /// What the alarm rings for, which stays the same when its time or wording changes.
     public let source: String
+    public let sound: AlarmSound
 
     public init(
         id: UUID,
@@ -18,7 +19,8 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         tint: PlannerColor?,
         item: NotificationItem?,
         secondaryAction: AlarmSecondaryAction,
-        source: String? = nil
+        source: String? = nil,
+        sound: AlarmSound = .system
     ) {
         self.id = id
         self.fireDate = fireDate
@@ -27,6 +29,7 @@ public struct AlarmRequest: Sendable, Hashable, Identifiable {
         self.item = item
         self.secondaryAction = secondaryAction
         self.source = source ?? id.uuidString
+        self.sound = sound
     }
 
     public init(alert: PlannedNotification) {
