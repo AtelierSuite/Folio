@@ -9,6 +9,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case alarms
     case workWeek
     case flexTime
+    case locations
     case notes
     case notifications
     case eventNotifications
@@ -39,6 +40,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .flexTime: String(localized: "Title", table: "FlexTime")
+        case .locations: String(localized: "Settings.Header", table: "Locations")
         case .notes: String(localized: "Category.Notes", table: "Settings")
         case .notifications: String(localized: "Category.AllNotifications", table: "Settings")
         case .eventNotifications: String(localized: "Section.Events", table: "NotificationSounds")
@@ -69,6 +71,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .alarms: .settingsAlarms
         case .workWeek: .settingsWorkWeek
         case .flexTime: .settingsFlexTime
+        case .locations: .settingsLocations
         case .notes: .settingsNotes
         case .notifications: .settingsNotifications
         case .eventNotifications: .settingsEventNotifications

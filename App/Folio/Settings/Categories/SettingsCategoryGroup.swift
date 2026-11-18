@@ -14,7 +14,7 @@ struct SettingsCategoryGroup: Hashable {
             SettingsCategoryGroup(header: nil, categories: [.accounts, .general]),
             SettingsCategoryGroup(
                 header: nil,
-                categories: [.calendars, .reminders, .alarms, .workWeek, .flexTime, .notes]
+                categories: [.calendars, .reminders, .alarms, .workWeek, .flexTime, .locations, .notes]
             ),
             SettingsCategoryGroup(
                 header: String(localized: "Group.NotificationsAndAlarms", table: "Settings"),

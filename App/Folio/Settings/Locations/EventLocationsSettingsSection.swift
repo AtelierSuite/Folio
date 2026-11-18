@@ -33,8 +33,6 @@ struct EventLocationsSettingsSection: View {
             .sheet(isPresented: $isAddingSavedLocation) {
                 SavedLocationEditorView { savedLocations.append($0) }
             }
-        } header: {
-            Text(String(localized: "Settings.Header", table: "Locations"))
         } footer: {
             Text(String(localized: "Settings.Footer", table: "Locations"))
         }
