@@ -64,7 +64,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .accounts: .settingsAccounts
         case .calendars: .settingsCalendars
         case .reminders: .settingsReminders
-        case .alarms: .settingsWakeUpAlarm
+        case .alarms: .settingsAlarms
         case .workWeek: .settingsWorkWeek
         case .flexTime: .settingsFlexTime
         case .notes: .settingsNotes

@@ -77,6 +77,8 @@ let icons: [Icon] = [
          base: .plain, colors: [], keyline: .square, artwork: .calendar),
     Icon(name: "reminders", glyph: .system("checklist"),
          base: .plain, colors: [], keyline: .square, artwork: .reminders),
+    Icon(name: "alarms", glyph: .system("alarm.waves.left.and.right.fill"),
+         base: .tinted(hex(0xFF7A70), hex(0xE0352B)), colors: [white], keyline: .landscape),
     Icon(name: "workWeek", glyph: .system("briefcase.fill"),
          base: .tinted(hex(0xC99A6B), hex(0x8E6239)), colors: [white], keyline: .landscape),
     Icon(name: "flexTime", glyph: .custom("flextime"),
