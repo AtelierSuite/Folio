@@ -29,6 +29,6 @@ public struct LeaveAlertSettings: @unchecked Sendable {
 
     public var alarmSound: AlarmSound {
         get { defaults.string(forKey: Self.alarmSoundKey).flatMap(AlarmSound.init(rawValue:)) ?? .system }
-        nonmutating set { defaults.set(newValue.rawValue, forKey: Self.alarmSoundKey) }
+        nonmutating set { defaults.set(newValue == .system ? nil : newValue.rawValue, forKey: Self.alarmSoundKey) }
     }
 }

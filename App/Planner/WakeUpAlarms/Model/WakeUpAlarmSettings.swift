@@ -68,7 +68,7 @@ public struct WakeUpAlarmSettings: @unchecked Sendable {
 
     public var sound: AlarmSound {
         get { defaults.string(forKey: Self.soundKey).flatMap(AlarmSound.init(rawValue:)) ?? .system }
-        nonmutating set { defaults.set(newValue.rawValue, forKey: Self.soundKey) }
+        nonmutating set { defaults.set(newValue == .system ? nil : newValue.rawValue, forKey: Self.soundKey) }
     }
 
     /// Where travel was last measured from, for replans that run while the current location can't be read.
