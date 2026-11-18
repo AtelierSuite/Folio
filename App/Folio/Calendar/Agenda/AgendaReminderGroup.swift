@@ -27,6 +27,7 @@ struct AgendaReminderGroup: View {
                     }
             }
         }
+        .background(Color.groupedRowBackground, in: shape)
         .overlay {
             shape.strokeBorder(.separator, lineWidth: 1 / displayScale)
         }
