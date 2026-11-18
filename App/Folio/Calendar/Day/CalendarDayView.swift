@@ -15,5 +15,6 @@ struct CalendarDayView: View {
         ) {
             CalendarDayLinkedNoteSlot(date: navigation.selectedDate)
         }
+        .environment(\.timelineDayHeaderStyle, .inline)
     }
 }

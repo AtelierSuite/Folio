@@ -18,6 +18,7 @@ struct CalendarMultiDayView: View {
             pageStep: .day,
             zoomScope: .multiDay
         )
+        .environment(\.timelineDayHeaderStyle, .inline)
         .toolbar {
             if !isCompact && !capabilities.supports(.calendarViewMenuCommands) {
                 ToolbarItem(placement: .primaryAction) {
