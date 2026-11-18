@@ -12,11 +12,12 @@ struct BirthdaySettingsView: View {
             )
             if let calendar = store.birthdayCalendar {
                 BirthdayVisibilitySection(calendar: calendar)
-                BirthdayAlertsSection(calendar: calendar)
             } else {
                 Text(String(localized: "Empty", table: "Birthdays"))
                     .foregroundStyle(.secondary)
             }
+            BirthdayCalendarsSection()
+            BirthdayAlertsSection(calendar: store.birthdayCalendar)
         }
         .accessibilityIdentifier("BirthdaysForm")
         .settingsCategoryStyle(.birthdays)
