@@ -366,8 +366,6 @@ func ladybugArtwork() -> some View {
     }
     return ZStack(alignment: .topLeading) {
         circle(ink, center: headCenter, radius: headRadius)
-        circle(white, center: CGPoint(x: headCenter.x - 6, y: headCenter.y - 3), radius: 3)
-        circle(white, center: CGPoint(x: headCenter.x + 6, y: headCenter.y - 3), radius: 3)
         circle(ink, center: bodyCenter, radius: bodyRadius - 1)
         ForEach([-1, 1] as [CGFloat], id: \.self) { side in
             Path { path in
@@ -385,11 +383,6 @@ func ladybugArtwork() -> some View {
         ForEach(0..<spotCenters.count, id: \.self) { index in
             circle(ink, center: spotCenters[index].center, radius: spotCenters[index].radius)
         }
-        Ellipse()
-            .fill(Color.white.opacity(0.35))
-            .frame(width: 11, height: 6)
-            .rotationEffect(.degrees(-40))
-            .offset(x: bodyCenter.x - 26, y: bodyCenter.y - 18)
     }
 }
 
