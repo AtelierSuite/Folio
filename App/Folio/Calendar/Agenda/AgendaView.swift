@@ -25,6 +25,8 @@ struct AgendaView: View {
                         onOpenReminder: { openedReminder = $0 }
                     )
                 }
+                .listStyle(.plain)
+                .environment(\.defaultMinListRowHeight, 0)
             }
         }
         .sheet(item: $openedReminder) { reminder in
