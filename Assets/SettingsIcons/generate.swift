@@ -83,6 +83,8 @@ let icons: [Icon] = [
          base: .tinted(hex(0xC99A6B), hex(0x8E6239)), colors: [white], keyline: .landscape),
     Icon(name: "flexTime", glyph: .custom("flextime"),
          base: .tinted(hex(0x6BE3CF), hex(0x1FB59A)), colors: [white], keyline: .circle),
+    Icon(name: "locations", glyph: .system("mappin.and.ellipse"),
+         base: .tinted(hex(0x7A8CFF), hex(0x4152E0)), colors: [white], keyline: .portrait),
     Icon(name: "notes", glyph: .system("note.text"),
          base: .plain, colors: [graphite, hex(0xFFB800)], keyline: .square),
     Icon(name: "notifications", glyph: .system("bell.badge.fill"),
