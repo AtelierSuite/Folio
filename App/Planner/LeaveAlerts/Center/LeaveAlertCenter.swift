@@ -105,18 +105,21 @@ public final class LeaveAlertCenter {
         guard let locator else { return }
         authorization = locator.authorization
         let now = clock()
-        var alerts: [LeaveAlert] = []
+        var plan = LeaveAlertPlan()
         if isActive {
             guard let origin = await locator.currentCoordinate() else {
                 leaveLog.info("Kept leave alerts as they were, since the current location is unknown")
                 return
             }
-            alerts = await plannedAlerts(from: origin, now: now)
+            plan = await plannedAlerts(from: origin, now: now)
         }
+        let alerts = plan.alerts
         let notifiedAlerts = await replanAlarms(for: alerts, now: now)
         let desired = Set(notifiedAlerts.map(\.id))
         let pending = await scheduler.pendingIdentifiers()
-        await scheduler.removePending(withIdentifiers: pending.filter { !desired.contains($0) })
+        await scheduler.removePending(withIdentifiers: pending.filter {
+            !desired.contains($0) && !plan.keepsPendingAlert(withIdentifier: $0)
+        })
         for alert in notifiedAlerts where !pending.contains(alert.id) {
             await scheduler.schedule(alert, now: now)
         }
@@ -125,10 +128,10 @@ public final class LeaveAlertCenter {
         leaveLog.info("Scheduled \(alerts.count) leave alerts")
     }
 
-    private func plannedAlerts(from origin: PlannerCoordinate, now: Date) async -> [LeaveAlert] {
+    private func plannedAlerts(from origin: PlannerCoordinate, now: Date) async -> LeaveAlertPlan {
         let hiddenCalendars = visibilityStorage.hiddenCalendarIdentifiers
         let hiddenInvitations = visibilityStorage.hiddenInvitationIdentifiers
-        var alerts: [LeaveAlert] = []
+        var plan = LeaveAlertPlan()
         let events = await source.flexTimeEvents(in: planner.interval(after: now)).filter {
             !hiddenCalendars.contains($0.calendarIdentifier)
                 && !$0.isHiddenInvitation(among: hiddenInvitations)
@@ -137,15 +140,32 @@ public final class LeaveAlertCenter {
         for event in EventDuplicateDetector().groups(in: events).map(\.primary) {
             guard planner.isEligible(event, now: now), !ledger.hasFired(for: event, now: now),
                   let destination = await resolver.coordinate(for: event),
-                  planner.needsTravel(from: origin, to: destination),
-                  let travelTime = try? await estimator.travelTime(
+                  planner.needsTravel(from: origin, to: destination) else { continue }
+            let travelTime: TimeInterval?
+            do {
+                travelTime = try await estimator.travelTime(
                     from: origin, to: destination, by: transport, arrivingAt: event.startDate
-                  ),
-                  let alert = planner.alert(
-                    for: event, to: destination, travelTime: travelTime, transport: transport, now: now
-                  ) else { continue }
-            alerts.append(alert)
+                )
+            } catch {
+                guard let previous = previousTravelTime(to: event, at: destination) else {
+                    plan.unestimatedEvents.append(event)
+                    continue
+                }
+                travelTime = previous
+            }
+            if let travelTime, let alert = planner.alert(
+                for: event, to: destination, travelTime: travelTime, transport: transport, now: now
+            ) {
+                plan.alerts.append(alert)
+            }
         }
-        return alerts
+        return plan
+    }
+
+    /// Directions can be unreachable for a while, so the last estimate keeps the alert going until they're back.
+    private func previousTravelTime(to event: CalendarEvent, at destination: PlannerCoordinate) -> TimeInterval? {
+        scheduledAlerts.first {
+            $0.event.id == event.id && $0.destination == destination && $0.transport == transport
+        }?.travelTime
     }
 }

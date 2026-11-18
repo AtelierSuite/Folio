@@ -4,6 +4,7 @@ import Synchronization
 
 final class FakeTravelTimeEstimator: TravelTimeEstimating {
     private let travelTime: Mutex<TimeInterval?>
+    private let isFailing = Mutex(false)
 
     init(travelTime: TimeInterval?) {
         self.travelTime = Mutex(travelTime)
@@ -13,14 +14,25 @@ final class FakeTravelTimeEstimator: TravelTimeEstimating {
         self.travelTime.withLock { $0 = travelTime }
     }
 
+    func setFailing(_ isFailing: Bool) {
+        self.isFailing.withLock { $0 = isFailing }
+    }
+
     func travelTime(
         from origin: PlannerCoordinate,
         to destination: PlannerCoordinate,
         by transport: TravelTransport,
         arrivingAt arrivalDate: Date
     ) async throws -> TimeInterval? {
-        travelTime.withLock { $0 }
+        if isFailing.withLock({ $0 }) {
+            throw FakeTravelTimeError.unreachable
+        }
+        return travelTime.withLock { $0 }
     }
+}
+
+enum FakeTravelTimeError: Error {
+    case unreachable
 }
 
 final class RecordingLeaveAlertScheduler: LeaveAlertScheduling {
