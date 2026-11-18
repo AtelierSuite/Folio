@@ -2,25 +2,25 @@ import Planner
 import SwiftUI
 
 struct AgendaReminderCard: View {
+    @Environment(\.displayScale) private var displayScale
     let reminder: ReminderItem
     let isFirst: Bool
     let isLast: Bool
     let onOpen: () -> Void
 
     private var shape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: 12, style: .continuous)
+        RoundedRectangle(cornerRadius: 10, style: .continuous)
     }
 
     var body: some View {
         AgendaReminderRow(reminder: reminder, onOpen: onOpen)
             .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .background(reminder.color.color.opacity(0.08), in: shape)
+            .padding(.vertical, 8)
             .overlay {
-                shape.strokeBorder(reminder.color.color.opacity(0.55), lineWidth: 1)
+                shape.strokeBorder(.separator, lineWidth: 2 / displayScale)
             }
-            .padding(.horizontal, 12)
-            .padding(.top, isFirst ? 10 : 4)
-            .padding(.bottom, isLast ? 10 : 4)
+            .padding(.horizontal, 16)
+            .padding(.top, isFirst ? 8 : 3)
+            .padding(.bottom, isLast ? 8 : 3)
     }
 }
