@@ -82,6 +82,8 @@ let icons: [Icon] = [
          base: .tinted(hex(0xFF6B8B), hex(0xE8305A)), colors: [hex(0xFFE14D), white], keyline: .portrait),
     Icon(name: "eventNotifications", glyph: .system("ticket.fill"),
          base: .tinted(hex(0xFF7A70), hex(0xE0352B)), colors: [white], keyline: .landscape),
+    Icon(name: "birthdays", glyph: .system("party.popper.fill"),
+         base: .tinted(hex(0xF46BE0), hex(0xB524C4)), colors: [hex(0xFFE14D), white], keyline: .circle),
     Icon(name: "reminderNotifications", glyph: .system("checklist"),
          base: .tinted(hex(0xC08CFF), hex(0x8A3FE0)), colors: [hex(0xFFE14D), white], keyline: .square),
     Icon(name: "wakeUpAlarm", glyph: .system("alarm.fill"),
