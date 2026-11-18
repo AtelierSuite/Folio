@@ -4,6 +4,7 @@ import SwiftUI
 struct CalendarView: View {
     @Environment(CalendarStore.self) var store
     @Environment(SystemTimeObserver.self) private var systemTime
+    @Environment(AppRouter.self) private var router
     @AppStorage("Calendar.ViewMode") var mode: CalendarViewMode = .day
     @State var navigation = CalendarNavigation()
     @State var composer: CalendarComposer?
@@ -56,6 +57,9 @@ struct CalendarView: View {
         .environment(navigation)
         .loadsPendingInvitationCount(into: $pendingInvitationCount, from: store)
         .handlesAppDestinations(show)
+        .onChange(of: router.todayRequestCount) {
+            navigation.goToToday()
+        }
         .onChange(of: systemTime.calendar, initial: true) {
             navigation.adopt(systemTime.calendar)
         }
