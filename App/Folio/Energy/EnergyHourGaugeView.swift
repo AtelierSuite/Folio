@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-/// A bolt halfway down each waking hour of the hour column, filled to that hour's energy.
+/// A bolt halfway down each peak hour and each hour a dip starts, filled to that hour's energy.
 struct EnergyHourGaugeView: View {
     let context: TimelineLayerContext
 
@@ -14,7 +14,7 @@ struct EnergyHourGaugeView: View {
     var body: some View {
         if let curve {
             ZStack(alignment: .topLeading) {
-                ForEach(0..<24, id: \.self) { hour in
+                ForEach(curve.gaugeHours, id: \.self) { hour in
                     if let filled = curve.gaugeSegments(forHourStarting: hour) {
                         EnergyBoltGauge(filledSegments: filled)
                             .position(x: 10, y: (CGFloat(hour) + 0.5) * context.hourHeight)
