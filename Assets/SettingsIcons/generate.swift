@@ -271,17 +271,7 @@ func reminderArtwork() -> some View {
     return ZStack(alignment: .topLeading) {
         ForEach(0..<3, id: \.self) { index in
             let center = CGPoint(x: square.minX + radius, y: square.minY + radius + CGFloat(index) * (square.height - radius * 2) / 2)
-            if index == 0 {
-                circle(colors[index], center: center, radius: radius)
-                Path { path in
-                    path.move(to: CGPoint(x: center.x - 5.4, y: center.y + 0.2))
-                    path.addLine(to: CGPoint(x: center.x - 1.3, y: center.y + 4.3))
-                    path.addLine(to: CGPoint(x: center.x + 6, y: center.y - 4.3))
-                }
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 3.8, lineCap: .round, lineJoin: .round))
-            } else {
-                ring(colors[index], center: center, radius: radius, lineWidth: 4)
-            }
+            ring(colors[index], center: center, radius: radius, lineWidth: 4)
             let start = square.minX + radius * 2 + 10
             bar(quietGrey, CGRect(x: start, y: center.y - 4.5, width: (square.maxX - start) * lengths[index], height: 9))
         }
