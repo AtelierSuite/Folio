@@ -20,6 +20,11 @@ struct PermissionBanner: View {
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    if hasAction(for: status) {
+                        Image(systemName: "chevron.forward")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.tertiary)
+                    }
                 }
                 .contentShape(.rect)
             }
@@ -31,7 +36,7 @@ struct PermissionBanner: View {
                 .labelStyle(.iconOnly)
                 .buttonStyle(.glass)
                 .buttonBorderShape(.circle)
-                .controlSize(.small)
+                .controlSize(.regular)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
