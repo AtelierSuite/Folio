@@ -8,13 +8,7 @@ struct SettingsIconLabel: View {
         Label {
             Text(category.title)
         } icon: {
-            SettingsIconTile(image: category.image, color: category.color, size: iconSize)
+            SettingsIcon(icon: category.icon, size: iconSize)
         }
-    }
-}
-
-private extension SettingsCategory {
-    var image: Image {
-        self == .flexTime ? Image(.flextime) : Image(systemName: systemImage)
     }
 }
