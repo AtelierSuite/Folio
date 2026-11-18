@@ -586,67 +586,67 @@
         }
       }
     },
-    "Contact.Show": {
+    "Contact.Prompt": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kontaktkarte anzeigen"
+            "value": "Erlaube den Kontaktzugriff, um die Kontaktkarte und das Alter dieser Person anzuzeigen."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Show Contact Card"
+            "value": "Allow Contacts access to show this person’s contact card and age."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Afficher la fiche de contact"
+            "value": "Autorisez l’accès aux contacts pour afficher la fiche de contact et l’âge de cette personne."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostra scheda contatto"
+            "value": "Consenti l’accesso ai contatti per mostrare la scheda contatto e l’età di questa persona."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "連絡先カードを表示"
+            "value": "連絡先へのアクセスを許可すると、この人の連絡先カードと年齢を表示できます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "연락처 카드 보기"
+            "value": "연락처 접근을 허용하면 이 사람의 연락처 카드와 나이를 표시할 수 있습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toon contactkaart"
+            "value": "Geef toegang tot je contacten om de contactkaart en leeftijd van deze persoon te tonen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hiện thẻ liên hệ"
+            "value": "Cho phép truy cập danh bạ để hiển thị thẻ liên hệ và tuổi của người này."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "显示联系人名片"
+            "value": "允许访问通讯录以显示此人的联系人名片和年龄。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "顯示聯絡人名片"
+            "value": "允許取用聯絡人以顯示此人的聯絡人名片和年齡。"
           }
         }
       }

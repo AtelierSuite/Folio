@@ -11,6 +11,28 @@ struct BirthdayContactSection: View {
     @State private var isShowingCard = false
 
     var body: some View {
+        Group {
+            if lookup == .noAccess {
+                PermissionPromptSection(
+                    kind: .contacts, message: String(localized: "Contact.Prompt", table: "Birthdays")
+                )
+            } else {
+                contactSection
+            }
+        }
+        .sheet(isPresented: $isShowingCard) {
+            if case .found(let contact) = lookup {
+                BirthdayContactCard(contactIdentifier: contact.identifier) { isShowingCard = false }
+                    .ignoresSafeArea()
+            }
+        }
+        .task(id: permissions.status(of: .contacts)) {
+            let identifier = contactIdentifier
+            lookup = await Task.detached { BirthdayContactReader().lookUp(identifier) }.value
+        }
+    }
+
+    @ViewBuilder private var contactSection: some View {
         Section {
             switch lookup {
             case .found(let contact):
@@ -25,29 +47,11 @@ struct BirthdayContactSection: View {
                 Text(String(localized: "Contact.NotShared", table: "Birthdays"))
                     .foregroundStyle(.secondary)
                 PermissionSettingsButton(kind: .contacts)
-            case .noAccess:
-                if permissions.status(of: .contacts)?.canRequest ?? true {
-                    PermissionRequestButton(
-                        kind: .contacts, title: String(localized: "Contact.Show", table: "Birthdays")
-                    )
-                } else {
-                    PermissionSettingsButton(kind: .contacts)
-                }
-            case nil:
+            case .noAccess, nil:
                 EmptyView()
             }
         } header: {
             Text(String(localized: "Contact.Header", table: "Birthdays"))
-        }
-        .sheet(isPresented: $isShowingCard) {
-            if case .found(let contact) = lookup {
-                BirthdayContactCard(contactIdentifier: contact.identifier) { isShowingCard = false }
-                    .ignoresSafeArea()
-            }
-        }
-        .task(id: permissions.status(of: .contacts)) {
-            let identifier = contactIdentifier
-            lookup = await Task.detached { BirthdayContactReader().lookUp(identifier) }.value
         }
     }
 }
