@@ -12,7 +12,11 @@ extension TimelineLayoutEngine {
             guard let firstDayIndex = days.intervals.firstIndex(where: { $0.end > interval.start }),
                   let lastDayIndex = days.intervals.lastIndex(where: { $0.start < interval.end }),
                   firstDayIndex <= lastDayIndex else { return nil }
-            let dayRange = TimelineLaneSolver.Item(firstDayIndex: firstDayIndex, lastDayIndex: lastDayIndex)
+            let dayRange = TimelineLaneSolver.Item(
+                firstDayIndex: firstDayIndex,
+                lastDayIndex: lastDayIndex,
+                isPinnedToTop: entry.isBirthday
+            )
             return VisibleAllDayEntry(entry: entry, interval: interval, days: dayRange)
         }
         let lanes = TimelineLaneSolver.lanes(for: visibleEntries.map(\.days))

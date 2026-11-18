@@ -38,7 +38,8 @@ struct AgendaDay: Identifiable {
             let dayInterval = DateInterval(start: dayStart, end: dayEnd)
             days.append(AgendaDay(
                 interval: dayInterval,
-                eventGroups: eventGroups.filter { $0.primary.overlaps(dayInterval) },
+                eventGroups: eventGroups.filter { $0.primary.overlaps(dayInterval) && $0.primary.isBirthday }
+                    + eventGroups.filter { $0.primary.overlaps(dayInterval) && !$0.primary.isBirthday },
                 reminders: reminders.filter { $0.isDue(in: dayInterval) }
             ))
             dayStart = dayEnd
