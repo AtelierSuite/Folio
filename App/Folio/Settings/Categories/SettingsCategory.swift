@@ -6,6 +6,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case accounts
     case calendars
     case reminders
+    case alarms
     case workWeek
     case flexTime
     case notes
@@ -34,6 +35,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .accounts: String(localized: "Category.Accounts", table: "Settings")
         case .calendars: String(localized: "Category.Calendars", table: "Settings")
         case .reminders: String(localized: "Settings.Header", table: "Reminders")
+        case .alarms: String(localized: "Category.Alarms", table: "Settings")
         case .workWeek: String(localized: "WorkWeek.Title", table: "Week")
         case .flexTime: String(localized: "Title", table: "FlexTime")
         case .notes: String(localized: "Category.Notes", table: "Settings")
@@ -62,6 +64,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .accounts: "person.crop.circle.fill"
         case .calendars: "calendar"
         case .reminders: "list.bullet"
+        case .alarms: "alarm.waves.left.and.right.fill"
         case .workWeek: "briefcase.fill"
         case .flexTime: "clock.arrow.circlepath"
         case .notes: "note.text"
@@ -90,6 +93,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .accounts: .blue
         case .calendars: .red
         case .reminders: .orange
+        case .alarms: .red
         case .workWeek: .brown
         case .flexTime: .mint
         case .notes: .yellow
@@ -121,7 +125,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
 
     func isAvailable(with capabilities: PlatformCapabilities) -> Bool {
         switch self {
-        case .wakeUpAlarm: capabilities.supports(.alarms)
+        case .alarms, .wakeUpAlarm: capabilities.supports(.alarms)
         case .countdowns: capabilities.supports(.liveActivityCountdown)
         case .focusLevel, .sleep: capabilities.supports(.sleep)
         case .medications: capabilities.supports(.medications)

@@ -10,6 +10,7 @@ struct SyncedSettingsReloader: ViewModifier {
     @Environment(NotificationScheduler.self) private var notificationScheduler
     @Environment(LeaveAlertCenter.self) private var leaveAlerts
     @Environment(WakeUpAlarmCenter.self) private var wakeUpAlarms
+    @Environment(StandaloneAlarmCenter.self) private var standaloneAlarms
     @Environment(SearchIndexer.self) private var searchIndexer
     @Environment(WeatherStore.self) private var weatherStore
     @Environment(TravelTimeStore.self) private var travelTimeStore
@@ -29,6 +30,7 @@ struct SyncedSettingsReloader: ViewModifier {
         let notificationScheduler = notificationScheduler
         let leaveAlerts = leaveAlerts
         let wakeUpAlarms = wakeUpAlarms
+        let standaloneAlarms = standaloneAlarms
         let searchIndexer = searchIndexer
         let weatherStore = weatherStore
         let travelTimeStore = travelTimeStore
@@ -44,6 +46,7 @@ struct SyncedSettingsReloader: ViewModifier {
                 await notificationScheduler.reloadSettings()
                 await leaveAlerts.reloadSettings()
                 await wakeUpAlarms.reloadSettings()
+                await standaloneAlarms.replan()
                 await searchIndexer.reloadRange()
             }
         }

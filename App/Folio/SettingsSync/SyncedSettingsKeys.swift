@@ -33,6 +33,7 @@ enum SyncedSettingsKeys {
     private static let notificationKeys = [
         NotificationSnoozeSettings.shortMinutesKey,
         NotificationSnoozeSettings.longMinutesKey,
+        AlarmSnoozeSettings.minutesKey,
         NotificationSettings.includesEventsKey,
         NotificationSettings.includesRemindersKey,
         NotificationSettings.keepsEventAlertsKey,

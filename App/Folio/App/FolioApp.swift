@@ -180,6 +180,7 @@ struct FolioApp: App {
             .environment(arrivalAlerts)
             .environment(leaveAlerts)
             .environment(wakeUpAlarms)
+            .environment(standaloneAlarms)
             .environment(searchIndexer)
             .environment(weatherStore)
             .environment(travelTimeStore)
