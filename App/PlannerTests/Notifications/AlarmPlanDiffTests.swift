@@ -1,3 +1,6 @@
+#if canImport(AlarmKit) && os(iOS)
+import AlarmKit
+#endif
 import Foundation
 import Testing
 @testable import Planner
@@ -58,6 +61,31 @@ struct AlarmPlanDiffTests {
         #expect(outcome.failed == [second])
         #expect(ledger.identifiers == [first.id])
     }
+
+    @Test func synchronizerLeavesASnoozedAlarmAloneAndStopsOwningIt() async {
+        let client = FakeAlarmClient()
+        let defaults = UserDefaults(suiteName: "AlarmPlanDiffTests.\(UUID().uuidString)")!
+        let ledger = AlarmLedger(key: "Test", defaults: defaults)
+        let synchronizer = AlarmSynchronizer(client: client, ledger: ledger)
+        let rung = request("rung", hours: 1)
+        let next = request("next", hours: 2)
+        _ = await synchronizer.synchronize([rung, next])
+        client.snooze(rung.id)
+        let outcome = await synchronizer.synchronize([next])
+        #expect(outcome.failed.isEmpty)
+        #expect(client.cancelCount == 0)
+        #expect(client.snoozingIdentifiers == [rung.id])
+        #expect(ledger.identifiers == [next.id])
+    }
+
+    #if canImport(AlarmKit) && os(iOS)
+    @Test func onlyAlarmsWaitingToRingCountAsScheduled() {
+        #expect(Alarm.State.scheduled.isWaitingToRing)
+        #expect(!Alarm.State.countdown.isWaitingToRing)
+        #expect(!Alarm.State.paused.isWaitingToRing)
+        #expect(!Alarm.State.alerting.isWaitingToRing)
+    }
+    #endif
 
     @Test func requestUsesTheAlarmTitleAndColor() {
         let event = NotificationFixtures.event("standup", start: NotificationFixtures.hours(1))
