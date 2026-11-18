@@ -314,11 +314,18 @@ def hibiki():
 
 
 def tsubame():
-    """Swallow: quick trills darting between two notes on glockenspiel and music box."""
-    loop = Loop(1.6)
-    trill = [(index * 0.06, "D6" if index % 2 == 0 else "A5") for index in range(9)]
-    sequence(loop.track, GLOCKENSPIEL, trill, amplitude=0.6, hold=0.12, release=0.1)
-    sequence(loop.track, MUSIC_BOX, trill, amplitude=0.5, hold=0.12, release=0.1)
+    """Swallow: a nylon-string guitar swooping up and down through D major and G, quicker and brighter than
+    Sunny Spot, ending on a leading note that pulls straight back into the next repeat. A glockenspiel catches
+    the top of each swoop."""
+    loop = Loop(1.92)
+    bars = (("D3", "A3", "D4", "F#4", "A4", "D5", "A4", "F#4"), ("G2", "D3", "G3", "B3", "D4", "G4", "A4", "C#5"))
+    for bar, notes in enumerate(bars):
+        for index, pitch in enumerate(notes):
+            start = bar * 0.96 + index * 0.12
+            loop.track.play(GUITAR, start, pitch, 0.9 if index == 0 else 0.75, velocity=105 if index == 0 else 95,
+                            hold=0.96 - index * 0.12 + 0.08, release=0.12)
+    for start, pitch in ((0.6, "D6"), (1.8, "C#6")):
+        loop.track.play(GLOCKENSPIEL, start, pitch, 0.3, hold=0.25, release=0.1)
     return loop.render(ROOM, mix=0.3, brightness=16000, release=0.06)
 
 
