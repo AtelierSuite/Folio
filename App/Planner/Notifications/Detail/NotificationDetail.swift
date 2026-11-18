@@ -9,6 +9,7 @@ public struct NotificationDetail: Sendable, Equatable {
     public let rows: [NotificationDetailRow]
     public let reminder: NotificationReminderDetails?
     public let medication: NotificationMedicationDetails?
+    public let place: NotificationPlace?
     let progress: NotificationEventProgress?
     let reminderProgress: NotificationReminderProgress?
 
@@ -32,11 +33,12 @@ public struct NotificationDetail: Sendable, Equatable {
         let time = reminder?.hasDueTime == false
             ? nil
             : NotificationUserInfo.time(from: userInfo) ?? (body.isEmpty ? nil : body)
-        let place = NotificationUserInfo.place(from: userInfo)?.name
+        let place = NotificationUserInfo.place(from: userInfo)
+        self.place = place
         let provider = NotificationUserInfo.meeting(from: userInfo)?.link.provider
         rows = [
             time.map { NotificationDetailRow(kind: .time, text: $0, systemImage: "clock") },
-            place.map { NotificationDetailRow(kind: .place, text: $0, systemImage: "mappin.and.ellipse") },
+            place?.name.map { NotificationDetailRow(kind: .place, text: $0, systemImage: "mappin.and.ellipse") },
             provider.map { NotificationDetailRow(kind: .meeting, text: $0.displayName, systemImage: $0.systemImage) },
             reminder?.repeatText.map { NotificationDetailRow(kind: .repeating, text: $0, systemImage: "repeat") }
         ].compactMap { $0 }
