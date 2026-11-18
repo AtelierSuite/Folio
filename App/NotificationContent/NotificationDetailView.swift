@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NotificationDetailView: View {
     let detail: NotificationDetail
+    var mapCoordinate: PlannerCoordinate?
 
     var body: some View {
         VStack(spacing: 12) {
@@ -33,6 +34,13 @@ struct NotificationDetailView: View {
             } else {
                 eventSummary
                 NotificationDetailFooterView(leading: detail.row(.place), trailing: detail.row(.meeting))
+                if let mapCoordinate {
+                    NotificationPlaceMapView(
+                        coordinate: mapCoordinate,
+                        name: detail.place?.name,
+                        accentColor: accentColor
+                    )
+                }
             }
         }
         .fixedSize(horizontal: false, vertical: true)

@@ -6,14 +6,26 @@ import UserNotificationsUI
 
 final class NotificationViewController: UIViewController, UNNotificationContentExtension {
     private var hostingController: UIHostingController<NotificationDetailView>?
+    private var geocodeTask: Task<Void, Never>?
 
     func didReceive(_ notification: UNNotification) {
         let content = notification.request.content
         let detail = NotificationDetail(title: content.title, body: content.body, userInfo: content.userInfo)
+        show(NotificationDetailView(detail: detail, mapCoordinate: detail.place?.coordinate))
+        geocodeTask?.cancel()
+        guard detail.place?.coordinate == nil, let address = detail.place?.name else { return }
+        geocodeTask = Task { [weak self] in
+            let coordinate = try? await MapKitLocationGeocoder().coordinate(for: address)
+            guard let coordinate, !Task.isCancelled else { return }
+            self?.show(NotificationDetailView(detail: detail, mapCoordinate: coordinate))
+        }
+    }
+
+    private func show(_ rootView: NotificationDetailView) {
         if let hostingController {
-            hostingController.rootView = NotificationDetailView(detail: detail)
+            hostingController.rootView = rootView
         } else {
-            embed(UIHostingController(rootView: NotificationDetailView(detail: detail)))
+            embed(UIHostingController(rootView: rootView))
         }
         updatePreferredSize()
     }
