@@ -5,8 +5,7 @@ public enum AlarmSecondaryAction: Sendable, Hashable, Codable {
     case snooze(TimeInterval)
     case open
 
-    public static var alertSnooze: AlarmSecondaryAction {
-        let durations = NotificationSnoozeSettings().durations
-        return .snooze(NotificationAction.snoozeShort.snoozeDuration(in: durations) ?? 300)
+    public static var snooze: AlarmSecondaryAction {
+        .snooze(AlarmSnoozeSettings().duration)
     }
 }

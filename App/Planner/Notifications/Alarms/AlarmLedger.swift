@@ -31,7 +31,26 @@ public struct AlarmLedger: @unchecked Sendable {
         }
     }
 
+    public var secondaryActions: [UUID: AlarmSecondaryAction] {
+        get {
+            guard let data = defaults.data(forKey: actionsKey),
+                  let stored = try? JSONDecoder().decode([String: AlarmSecondaryAction].self, from: data)
+            else { return [:] }
+            return Dictionary(uniqueKeysWithValues: stored.compactMap { identifier, action in
+                UUID(uuidString: identifier).map { ($0, action) }
+            })
+        }
+        nonmutating set {
+            let stored = Dictionary(uniqueKeysWithValues: newValue.map { ($0.key.uuidString, $0.value) })
+            defaults.set(try? JSONEncoder().encode(stored), forKey: actionsKey)
+        }
+    }
+
     private var sourcesKey: String {
         "\(key).Sources"
+    }
+
+    private var actionsKey: String {
+        "\(key).SecondaryActions"
     }
 }
