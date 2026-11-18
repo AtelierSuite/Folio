@@ -31,8 +31,17 @@ struct SearchFilterBar: View {
                 }
             }
             .padding(.horizontal)
-            .padding(.vertical, 6)
+            .padding(.top, 6)
+            .padding(.bottom, Self.bottomPadding)
         }
         .scrollIndicators(.hidden)
+    }
+
+    private static var bottomPadding: CGFloat {
+        #if os(iOS)
+        12
+        #else
+        6
+        #endif
     }
 }
