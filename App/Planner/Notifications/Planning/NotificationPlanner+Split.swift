@@ -21,7 +21,19 @@ extension NotificationPlanner {
             .sorted { ($0.fireDate, $0.id) < ($1.fireDate, $1.id) }
         return NotificationPlan(
             notifications: Array(notifications.prefix(max(0, budget))),
-            alarms: alarms
+            alarms: alarms,
+            liveAlarmSources: alarmBudget == nil ? [] : liveAlarmSources(events: events, reminders: reminders, at: now)
         )
+    }
+
+    /// Alarms that have rung may still be snoozing, so this looks back far enough to keep theirs live too.
+    func liveAlarmSources(events: [CalendarEvent], reminders: [ReminderItem], at now: Date) -> Set<String> {
+        let recent = plan(
+            events: events,
+            reminders: reminders,
+            after: now.addingTimeInterval(-AlarmSynchronizer.heldAlarmLookBack),
+            budget: .max
+        )
+        return Set(recent.filter { $0.style == .alarm }.map(\.alarmSource))
     }
 }

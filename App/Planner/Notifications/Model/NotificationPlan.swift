@@ -3,10 +3,17 @@ import Foundation
 public struct NotificationPlan: Sendable, Equatable {
     public let notifications: [PlannedNotification]
     public let alarms: [PlannedNotification]
+    /// The alarm-style alerts that still exist, including those that rang a short while ago.
+    public let liveAlarmSources: Set<String>
 
-    public init(notifications: [PlannedNotification], alarms: [PlannedNotification]) {
+    public init(
+        notifications: [PlannedNotification],
+        alarms: [PlannedNotification],
+        liveAlarmSources: Set<String> = []
+    ) {
         self.notifications = notifications
         self.alarms = alarms
+        self.liveAlarmSources = liveAlarmSources
     }
 
     public static let empty = NotificationPlan(notifications: [], alarms: [])

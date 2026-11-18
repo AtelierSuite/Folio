@@ -19,7 +19,12 @@ public struct AlarmKitClient: AlarmSchedulingClient {
 
     public func scheduledIdentifiers() async -> [UUID] {
         let alarms = (try? manager.alarms) ?? []
-        return alarms.filter { $0.state != .alerting }.map(\.id)
+        return alarms.filter { $0.state.isWaitingToRing }.map(\.id)
+    }
+
+    public func heldIdentifiers() async -> [UUID] {
+        let alarms = (try? manager.alarms) ?? []
+        return alarms.filter { !$0.state.isWaitingToRing }.map(\.id)
     }
 
     public func schedule(_ request: AlarmRequest) async throws {
@@ -29,6 +34,18 @@ public struct AlarmKitClient: AlarmSchedulingClient {
     public func cancel(identifiers: [UUID]) async {
         for identifier in identifiers {
             try? manager.cancel(id: identifier)
+        }
+    }
+}
+
+extension Alarm.State {
+    /// Alarms that have rung, are snoozing or are paused aren't part of any plan, so a replan only cancels them
+    /// once whatever they ring for is gone.
+    var isWaitingToRing: Bool {
+        switch self {
+        case .scheduled: true
+        case .countdown, .paused, .alerting: false
+        @unknown default: false
         }
     }
 }
