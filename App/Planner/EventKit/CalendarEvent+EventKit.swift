@@ -30,7 +30,8 @@ extension CalendarEvent {
             userStatus: .currentUserStatus(organizer: organizer, attendees: attendees),
             origin: CalendarOrigin(event.calendar),
             isBirthday: event.calendar?.type == .birthday
-                || birthdayCalendars.contains(event.calendar?.calendarIdentifier ?? "")
+                || birthdayCalendars.contains(event.calendar?.calendarIdentifier ?? ""),
+            birthdayContactIdentifier: event.birthdayContactIdentifier
         )
     }
 }

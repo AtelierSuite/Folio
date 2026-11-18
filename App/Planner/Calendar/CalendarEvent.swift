@@ -23,6 +23,8 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
     public let userStatus: ParticipantStatus?
     public let origin: CalendarOrigin?
     public let isBirthday: Bool
+    /// The person a system Birthdays calendar event was made for.
+    public let birthdayContactIdentifier: String?
     /// How much later than its calendar time the event is shown and alerted today. The dates above include it.
     public internal(set) var flexTimeDelay: TimeInterval = 0
 
@@ -47,7 +49,8 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         attendees: [EventParticipant] = [],
         userStatus: ParticipantStatus? = nil,
         origin: CalendarOrigin? = nil,
-        isBirthday: Bool = false
+        isBirthday: Bool = false,
+        birthdayContactIdentifier: String? = nil
     ) {
         self.reference = reference
         self.calendarIdentifier = calendarIdentifier
@@ -70,6 +73,7 @@ public struct CalendarEvent: Identifiable, Sendable, Hashable {
         self.userStatus = userStatus
         self.origin = origin
         self.isBirthday = isBirthday
+        self.birthdayContactIdentifier = birthdayContactIdentifier
     }
 
     public var id: String {
