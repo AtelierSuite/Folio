@@ -43,7 +43,7 @@ enum Glyph {
 }
 
 enum Artwork {
-    case calendar, reminders, weather, map
+    case calendar, reminders, weather, map, ladybug
 }
 
 struct Icon {
@@ -114,7 +114,7 @@ let icons: [Icon] = [
     Icon(name: "advanced", glyph: .system("slider.horizontal.3"),
          base: .tinted(hex(0xA3A3AB), hex(0x6E6E76)), colors: [white], keyline: .square),
     Icon(name: "debug", glyph: .system("ladybug.fill"),
-         base: .tinted(hex(0x7AD957), hex(0x3E9E2C)), colors: [], keyline: .circle, multicolor: true)
+         base: .tinted(hex(0x7AD957), hex(0x3E9E2C)), colors: [], keyline: .circle, artwork: .ladybug)
 ]
 
 let fileManager = FileManager.default
@@ -339,6 +339,24 @@ func mapArtwork() -> some View {
     }
 }
 
+func ladybugArtwork() -> some View {
+    let area = Keyline.circle.rect
+    let headRadius: CGFloat = 13
+    let bodyRadius: CGFloat = 31
+    let headCenter = CGPoint(x: area.midX, y: area.minY + headRadius)
+    let bodyCenter = CGPoint(x: area.midX, y: area.maxY - bodyRadius)
+    let ink = hex(0x1C1C1E)
+    let spots = [CGPoint(x: -14, y: -9), CGPoint(x: 14, y: -9), CGPoint(x: -16, y: 12), CGPoint(x: 16, y: 12)]
+    return ZStack(alignment: .topLeading) {
+        circle(ink, center: headCenter, radius: headRadius)
+        circle(hex(0xFF3B30), center: bodyCenter, radius: bodyRadius)
+        bar(ink, CGRect(x: area.midX - 1.75, y: bodyCenter.y - bodyRadius + 2, width: 3.5, height: bodyRadius * 2 - 4))
+        ForEach(0..<spots.count, id: \.self) { index in
+            circle(ink, center: CGPoint(x: bodyCenter.x + spots[index].x, y: bodyCenter.y + spots[index].y), radius: 6)
+        }
+    }
+}
+
 @MainActor
 func weatherArtwork(_ icon: Icon) -> some View {
     let sunRadius: CGFloat = 22
@@ -359,6 +377,7 @@ func iconView(_ icon: Icon) -> some View {
         case .reminders: reminderArtwork()
         case .weather: weatherArtwork(icon)
         case .map: mapArtwork()
+        case .ladybug: ladybugArtwork()
         case nil: fittedSymbol(icon, in: icon.keyline.rect)
         }
     }
