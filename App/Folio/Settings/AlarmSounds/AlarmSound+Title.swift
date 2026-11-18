@@ -9,7 +9,7 @@ extension AlarmSound {
         case .komorebi: String(localized: "Sound.Komorebi", table: "AlarmSounds")
         case .hibari: String(localized: "Sound.Hibari", table: "AlarmSounds")
         case .shiokaze: String(localized: "Sound.Shiokaze", table: "AlarmSounds")
-        case .kane: String(localized: "Sound.Kane", table: "AlarmSounds")
+        case .hidamari: String(localized: "Sound.Hidamari", table: "AlarmSounds")
         case .hibiki: String(localized: "Sound.Hibiki", table: "AlarmSounds")
         case .tsubame: String(localized: "Sound.Tsubame", table: "AlarmSounds")
         case .arashi: String(localized: "Sound.Arashi", table: "AlarmSounds")

@@ -5,7 +5,7 @@ Usage: python3 generate_alarms.py <output directory> [Alarm-Name ...]
 
 Every note is a recorded instrument from Logic Pro's sound library (see logic_samples.py), which has to be
 installed: vibraphone, African marimba, Steinway, glockenspiel, kalimba, music box,
-electric piano, fairytale bells and a rattling alarm bell. Roots of the single notes were measured, since
+nylon-string guitar, electric piano and a rattling alarm bell. Roots of the single notes were measured, since
 Logic names notes an octave low (middle C is C3) and one recording holds several strikes. The music box
 is Alchemy's Musical Box rather than Toy Music Box, whose recording knocks its wooden mechanism before
 every note.
@@ -35,15 +35,14 @@ LOUDNESS = -11.0
 
 VIBRAPHONE = Multisample("Mallet/Vibraphone.exs", "Mallet/Vibraphone_consolidated.caf")
 MARIMBA = Multisample("Mallet/African Marimba.exs", "Mallet/African Marimba_consolidated.caf")
+GUITAR = Multisample("Guitar/Classical Acoustic Guitar.exs", "Guitar/Classical Acoustic Guitar_consolidated.caf")
 GLOCKENSPIEL = OneShot("Alchemy Samples/Mallets/Metal Mallets/Glockenspiel 03.caf", 91.85, end=1.0)
 KALIMBA = OneShot("Alchemy Samples/Mallets/Wooden Mallets/Kalimba/Kalimba C4.caf", 72)
 MUSIC_BOX = OneShot("Alchemy Samples/Mallets/Metal Mallets/Musical Box/Musical Box A#4.caf", 82.07)
-FAIRYTALE_BELLS = OneShot("Synthesizer/Keys/Fairytales Bells Sample.aif", 90.04)
 RATTLING_BELL = OneShot("Mallet/Rattling Bell Decay.aif", 72)
 ELECTRIC_PIANO_LOW = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 C3.caf", 60)
 ELECTRIC_PIANO_HIGH = OneShot("Alchemy Samples/Keys/Electric Pianos/EPiano Mrk 1/EPiano Mrk 1 F#4.caf", 78)
 
-LARGE_HALL = "01 Large Spaces/02 Halls/03.9s Prince Hall One-OST.SDIR"
 HALL = "02 Medium Spaces/01 Rooms/02.0s Prince Hall One-OST.SDIR"
 BRIGHT_HALL = "02 Medium Spaces/02 Halls/1.7s_Nice Hall.SDIR"
 ROOM = "02 Medium Spaces/01 Rooms/1.4s_Nice Room.SDIR"
@@ -292,15 +291,17 @@ def shiokaze():
     return loop.render(ROOM, mix=0.35, brightness=15000)
 
 
-def kane():
-    """Temple Bell: two chords of fairytale bells over a firmly struck Steinway octave, left to ring."""
-    loop = Loop(3.0)
-    for start in (0.0, 0.55):
-        for pitch, amplitude in (("A5", 0.6), ("E6", 0.45), ("C#6", 0.3)):
-            loop.track.play(FAIRYTALE_BELLS, start, pitch, amplitude)
-        loop.track.piano(start, "A2", 0.4, velocity=110, hold=1.2, release=0.3)
-        loop.track.piano(start, "A3", 0.35, velocity=110, hold=1.2, release=0.3)
-    return loop.render(LARGE_HALL, mix=0.45, brightness=15000)
+def hidamari():
+    """Sunny Spot: a nylon-string guitar fingerpicking from C major seventh to F major seventh, warm and unhurried
+    but steady enough to get up to."""
+    loop = Loop(2.88)
+    bars = (("C3", "G3", "C4", "E4", "B4", "E4", "C4", "G3"), ("F2", "C3", "A3", "E4", "A4", "E4", "A3", "C3"))
+    for bar, notes in enumerate(bars):
+        for index, pitch in enumerate(notes):
+            velocity = 100 if index == 0 else 85
+            loop.track.play(GUITAR, bar * 1.44 + index * 0.18, pitch, 0.9 if index == 0 else 0.7,
+                            velocity=velocity, hold=1.44 - index * 0.18 + 0.1, release=0.15)
+    return loop.render(BRIGHT_HALL, mix=0.35, brightness=14000)
 
 
 def hibiki():
@@ -354,7 +355,7 @@ SOUNDS = {
     "Alarm-Komorebi": komorebi,
     "Alarm-Hibari": hibari,
     "Alarm-Shiokaze": shiokaze,
-    "Alarm-Kane": kane,
+    "Alarm-Hidamari": hidamari,
     "Alarm-Hibiki": hibiki,
     "Alarm-Tsubame": tsubame,
     "Alarm-Arashi": arashi,

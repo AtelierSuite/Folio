@@ -24,8 +24,8 @@ struct AlarmSoundTests {
     @Test func theSystemSoundKeepsTheIdentifierAndOthersChangeIt() {
         let plain = AlarmIdentifier.make(fromNotificationIdentifier: "wake")
         #expect(AlarmSound.system.alarmIdentifier(fromNotificationIdentifier: "wake") == plain)
-        #expect(AlarmSound.kane.alarmIdentifier(fromNotificationIdentifier: "wake") != plain)
-        #expect(AlarmSound.kane.alarmIdentifier(fromNotificationIdentifier: "wake")
+        #expect(AlarmSound.hidamari.alarmIdentifier(fromNotificationIdentifier: "wake") != plain)
+        #expect(AlarmSound.hidamari.alarmIdentifier(fromNotificationIdentifier: "wake")
                 != AlarmSound.kaminari.alarmIdentifier(fromNotificationIdentifier: "wake"))
     }
 }

@@ -7,7 +7,7 @@ public enum AlarmSound: String, Sendable, Hashable, CaseIterable, Codable, Ident
     case komorebi = "Alarm-Komorebi"
     case hibari = "Alarm-Hibari"
     case shiokaze = "Alarm-Shiokaze"
-    case kane = "Alarm-Kane"
+    case hidamari = "Alarm-Hidamari"
     case hibiki = "Alarm-Hibiki"
     case tsubame = "Alarm-Tsubame"
     case arashi = "Alarm-Arashi"

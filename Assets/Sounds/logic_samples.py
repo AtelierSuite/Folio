@@ -137,6 +137,7 @@ class Multisample:
             if kind == 1:
                 self.zones.append({
                     "root": body[1], "fine": struct.unpack("b", body[2:3])[0], "low": body[6], "high": body[7],
+                    "quiet": body[9], "loud": body[10],
                     "start": struct.unpack("<i", body[12:16])[0], "end": struct.unpack("<i", body[16:20])[0],
                     "group": struct.unpack("<i", body[88:92])[0]})
             elif kind == 2:
@@ -147,16 +148,46 @@ class Multisample:
         matches = []
         for zone in self.zones:
             group = self.groups[zone["group"]] if 0 <= zone["group"] < len(self.groups) else None
-            if group and not group["low"] <= velocity <= group["high"]:
+            if group and (not group["low"] <= velocity <= group["high"] or "NOTE OFF" in group["name"].upper()):
                 continue
-            if zone["low"] <= key <= zone["high"]:
+            if zone["low"] <= key <= zone["high"] and zone["quiet"] <= velocity <= zone["loud"]:
                 matches.append(zone)
         if not matches:
             raise ValueError(f"No zone for key {key} at velocity {velocity}")
         zone = matches[take % len(matches)]
         recording = decode(self.recording)[zone["start"]:zone["end"]]
         limit = int(length * SAMPLE_RATE) if length else None
-        return shift(recording, key - zone["root"] - zone["fine"] / 100, limit)
+        if zone["low"] <= zone["root"] <= zone["high"]:
+            root = zone["root"] + zone["fine"] / 100
+        else:
+            if "measured" not in zone:
+                zone["measured"] = measure_pitch(recording)
+            root = zone["measured"]
+        return shift(recording, key - root, limit)
+
+
+def measure_pitch(samples, lowest=60, highest=2000):
+    """The key a recorded note sounds at, by the YIN method, a tenth of a second in where the pitch has settled.
+    For Sampler zones whose stored root key lies outside their own key range, as in the classical guitar, where
+    every zone says 60 but sounds at the top of its range."""
+    window = 2048
+    start = int(0.1 * SAMPLE_RATE)
+    shortest, longest = int(SAMPLE_RATE / highest), int(SAMPLE_RATE / lowest)
+    region = samples[start:start + window + longest + 2]
+    differences = [0.0] * (longest + 2)
+    for lag in range(1, longest + 2):
+        differences[lag] = sum((region[index] - region[index + lag]) ** 2 for index in range(window))
+    running, normalized_differences = 0.0, [1.0] * (longest + 2)
+    for lag in range(1, longest + 2):
+        running += differences[lag]
+        normalized_differences[lag] = differences[lag] * lag / running if running else 1.0
+    for lag in range(shortest, longest):
+        before, current, after = normalized_differences[lag - 1:lag + 2]
+        if current < 0.15 and current <= after:
+            curve = before - 2 * current + after
+            offset = 0.5 * (before - after) / curve if curve else 0.0
+            return 69 + 12 * math.log2(SAMPLE_RATE / (lag + offset) / 440)
+    raise ValueError("No clear pitch in the recording")
 
 
 class OneShot:
