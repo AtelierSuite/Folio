@@ -9,6 +9,7 @@ struct SearchView: View {
     @State private var filters = SearchFilters()
     @State private var groups: [SearchResultGroup] = []
     @State private var searchedFilters: SearchFilters?
+    @State private var isSearchPresented = false
 
     var body: some View {
         NavigationStack {
@@ -30,6 +31,7 @@ struct SearchView: View {
             .navigationTitle(String(localized: "Title", table: "Search"))
             .searchable(
                 text: $filters.text,
+                isPresented: $isSearchPresented,
                 placement: Self.searchFieldPlacement,
                 prompt: String(localized: "Prompt", table: "Search")
             )
@@ -38,6 +40,9 @@ struct SearchView: View {
             await library.start()
             await indexer.activate()
             await indexer.updateNotes(library.notes)
+        }
+        .onChange(of: router.searchFocusRequestCount) {
+            isSearchPresented = true
         }
         .task(id: request) {
             await search()

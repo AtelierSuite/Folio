@@ -62,6 +62,9 @@ struct RootView: View {
             if tab == .calendar && selectedTab == .calendar {
                 router.requestToday()
             }
+            if tab == .search && selectedTab == .search {
+                router.requestSearchFocus()
+            }
             selectedTab = tab
         }
     }
