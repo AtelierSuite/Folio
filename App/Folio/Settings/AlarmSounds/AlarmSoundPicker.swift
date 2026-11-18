@@ -15,13 +15,8 @@ struct AlarmSoundPicker: View {
                 select(sound)
             }
         )) {
-            Text(AlarmSound.system.title).tag(AlarmSound.system)
-            ForEach(AlarmSoundGroup.allCases) { group in
-                Section(group.title) {
-                    ForEach(group.sounds) { sound in
-                        Text(sound.title).tag(sound)
-                    }
-                }
+            ForEach(AlarmSound.allCases) { sound in
+                Text(sound.title).tag(sound)
             }
         }
         .accessibilityIdentifier(accessibilityIdentifier)
