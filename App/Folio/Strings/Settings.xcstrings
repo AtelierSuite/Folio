@@ -527,61 +527,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fokuslevel"
+            "value": "Energielevel"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focus Level"
+            "value": "Energy Level"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Niveau de concentration"
+            "value": "Niveau d’énergie"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Livello di concentrazione"
+            "value": "Livello di energia"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "集中レベル"
+            "value": "エネルギーレベル"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "집중도"
+            "value": "에너지 레벨"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focusniveau"
+            "value": "Energieniveau"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mức độ tập trung"
+            "value": "Mức năng lượng"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "专注程度"
+            "value": "精力程度"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "專注程度"
+            "value": "精力程度"
           }
         }
       }
