@@ -10,9 +10,7 @@ struct EnergyBleedView: View {
     var body: some View {
         let now = Date.now
         if let today = context.days.intervals.firstIndex(where: { $0.contains(now) }) {
-            let curve = EnergyPreview.curve(
-                forDayStarting: context.days.intervals[today].start, calendar: context.days.calendar
-            )
+            let curve = EnergyPreview.todaysCurve(calendar: context.days.calendar)
             GeometryReader { proxy in
                 let columnWidth = proxy.size.width / CGFloat(max(context.days.count, 1))
                 EnergyDayBleedView(curve: curve, hourHeight: context.hourHeight)

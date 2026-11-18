@@ -1,18 +1,14 @@
 import Planner
 import SwiftUI
 
-/// A bolt halfway down each peak hour, filled to that hour's energy, and a hollow bolt where each dip starts.
+/// A bolt halfway down each of today's peak hours, filled to that hour's energy, and a hollow bolt
+/// where each dip starts. It fades as today scrolls away.
 struct EnergyHourGaugeView: View {
     let context: TimelineLayerContext
 
-    private var curve: EnergyCurve? {
-        context.days.intervals.first.map {
-            EnergyPreview.curve(forDayStarting: $0.start, calendar: context.days.calendar)
-        }
-    }
-
     var body: some View {
-        if let curve {
+        if context.todayOnScreen > 0 {
+            let curve = EnergyPreview.todaysCurve(calendar: context.days.calendar)
             ZStack(alignment: .topLeading) {
                 ForEach(curve.peakGaugeHours, id: \.self) { hour in
                     if let filled = curve.gaugeSegments(forHourStarting: hour) {
@@ -23,6 +19,7 @@ struct EnergyHourGaugeView: View {
                     bolt(filledSegments: 0, atHour: hour)
                 }
             }
+            .opacity(context.todayOnScreen)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
         }
