@@ -6,6 +6,7 @@ final class SettingsCategoriesTests: XCTestCase {
         ("accounts", "AccountsForm"),
         ("calendars", "SecondaryTimeZoneToggle"),
         ("workWeek", "WorkWeek.Day.5"),
+        ("locations", "DefaultLocationButton"),
         ("eventNotifications", "NotificationSoundDefault.Events"),
         ("reminderNotifications", "NotificationSoundDefault.Reminders"),
         ("notes", "LinkedNotes.WritesLinkToEvent"),

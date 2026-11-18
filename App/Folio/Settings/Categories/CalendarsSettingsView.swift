@@ -9,7 +9,6 @@ struct CalendarsSettingsView: View {
                 message: String(localized: "Prompt.TravelTime", table: "Permissions"),
                 asksOnToggle: true
             )
-            EventLocationsSettingsSection()
             InvitationSettingsSection()
             DuplicateDetectionSection()
             TravelTimeSettingsSection()
