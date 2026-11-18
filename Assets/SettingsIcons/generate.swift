@@ -43,7 +43,7 @@ enum Glyph {
 }
 
 enum Artwork {
-    case calendar, reminders, weather
+    case calendar, reminders, weather, map
 }
 
 struct Icon {
@@ -96,7 +96,7 @@ let icons: [Icon] = [
     Icon(name: "wakeUpAlarm", glyph: .system("alarm.fill"),
          base: .tinted(hex(0xFFB347), hex(0xFF5E62)), colors: [white], keyline: .circle),
     Icon(name: "travel", glyph: .system("map.fill"),
-         base: .tinted(hex(0x5CB8FF), hex(0x2470E8)), colors: [white], keyline: .square),
+         base: .tinted(hex(0xE8F3DA), hex(0xCFE6B8)), colors: [], keyline: .square, artwork: .map),
     Icon(name: "countdowns", glyph: .system("timer"),
          base: .tinted(hex(0x5DE07A), hex(0x24B04A)), colors: [white], keyline: .circle),
     Icon(name: "focusLevel", glyph: .system("bolt.fill"),
@@ -290,6 +290,42 @@ func reminderArtwork() -> some View {
     }
 }
 
+func mapArtwork() -> some View {
+    let pinScale = Keyline.landscape.rect.maxX - 60
+    let pin = { (x: CGFloat, y: CGFloat) in
+        CGPoint(x: 60 + (x - 62) * pinScale / 44, y: Keyline.circle.rect.minY + (y - 16) * pinScale / 44)
+    }
+    let road = Path { path in
+        path.move(to: CGPoint(x: 18, y: -5))
+        path.addCurve(to: CGPoint(x: 64, y: 60), control1: CGPoint(x: 30, y: 30), control2: CGPoint(x: 56, y: 40))
+        path.addCurve(to: CGPoint(x: 96, y: 125), control1: CGPoint(x: 72, y: 80), control2: CGPoint(x: 70, y: 100))
+    }
+    return ZStack(alignment: .topLeading) {
+        Path { path in
+            path.move(to: CGPoint(x: -5, y: 88))
+            path.addCurve(to: CGPoint(x: 70, y: 86), control1: CGPoint(x: 25, y: 78), control2: CGPoint(x: 40, y: 96))
+            path.addCurve(to: CGPoint(x: 125, y: 74), control1: CGPoint(x: 100, y: 76), control2: CGPoint(x: 110, y: 70))
+            path.addLine(to: CGPoint(x: 125, y: 95))
+            path.addCurve(to: CGPoint(x: 70, y: 104), control1: CGPoint(x: 105, y: 90), control2: CGPoint(x: 90, y: 104))
+            path.addCurve(to: CGPoint(x: -5, y: 108), control1: CGPoint(x: 50, y: 104), control2: CGPoint(x: 30, y: 96))
+            path.closeSubpath()
+        }
+        .fill(Color(nsColor: hex(0x7CC4F5)))
+        road.stroke(Color.white, lineWidth: 12)
+        road.stroke(Color(nsColor: hex(0xFFC93C)), lineWidth: 7)
+        Path { path in
+            path.move(to: pin(84, 16))
+            path.addCurve(to: pin(62, 37), control1: pin(71, 16), control2: pin(62, 25))
+            path.addCurve(to: pin(84, 72), control1: pin(62, 52), control2: pin(84, 72))
+            path.addCurve(to: pin(106, 37), control1: pin(84, 72), control2: pin(106, 52))
+            path.addCurve(to: pin(84, 16), control1: pin(106, 25), control2: pin(97, 16))
+            path.closeSubpath()
+        }
+        .fill(Color(nsColor: calendarRed))
+        circle(white, center: pin(84, 37), radius: 8 * pinScale / 44)
+    }
+}
+
 @MainActor
 func weatherArtwork(_ icon: Icon) -> some View {
     let sunRadius: CGFloat = 22
@@ -309,6 +345,7 @@ func iconView(_ icon: Icon) -> some View {
         case .calendar: calendarArtwork()
         case .reminders: reminderArtwork()
         case .weather: weatherArtwork(icon)
+        case .map: mapArtwork()
         case nil: fittedSymbol(icon, in: icon.keyline.rect)
         }
     }
