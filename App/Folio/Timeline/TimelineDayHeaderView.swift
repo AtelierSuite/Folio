@@ -34,6 +34,7 @@ struct TimelineDayHeaderView: View {
 }
 
 struct TimelinePageHeaderView: View {
+    @Environment(\.timelineDayHeaderStyle) private var style
     let intervals: ArraySlice<DateInterval>
     let calendar: Calendar
     var showsDayLabels = true
@@ -41,13 +42,19 @@ struct TimelinePageHeaderView: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(intervals, id: \.start) { day in
-                VStack(spacing: 2) {
-                    if showsDayLabels {
-                        TimelineDayHeaderLabel(day: day, calendar: calendar)
+                switch style {
+                case .stacked:
+                    VStack(spacing: 2) {
+                        if showsDayLabels {
+                            TimelineDayHeaderLabel(day: day, calendar: calendar)
+                        }
+                        TimelineDayHeaderWeather(dayStart: day.start)
                     }
-                    TimelineDayHeaderWeather(dayStart: day.start)
+                    .frame(maxWidth: .infinity)
+                case .inline:
+                    TimelineInlineDayHeader(day: day, calendar: calendar, showsDayLabels: showsDayLabels)
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
             }
         }
     }
