@@ -5,14 +5,9 @@ import SwiftUI
 struct EnergyHourLabelGlowView: View {
     let context: TimelineLayerContext
 
-    private var todaysCurve: EnergyCurve {
-        let calendar = context.days.calendar
-        return EnergyPreview.curve(forDayStarting: calendar.startOfDay(for: .now), calendar: calendar)
-    }
-
     var body: some View {
         if context.todayOnScreen > 0 {
-            let curve = todaysCurve
+            let curve = EnergyPreview.todaysCurve(calendar: context.days.calendar)
             Canvas { graphics, size in
                 graphics.fill(
                     Path(CGRect(origin: .zero, size: size)),
