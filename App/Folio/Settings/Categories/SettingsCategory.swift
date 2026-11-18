@@ -21,6 +21,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
     case sleep
     case medications
     case weather
+    case birthdays
     case search
     case advanced
     #if DEBUG
@@ -50,6 +51,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .sleep: String(localized: "Category.Sleep", table: "Settings")
         case .medications: String(localized: "Category.Medications", table: "Settings")
         case .weather: String(localized: "Category.Weather", table: "Settings")
+        case .birthdays: String(localized: "Category.Birthdays", table: "Settings")
         case .search: String(localized: "Category.Search", table: "Settings")
         case .advanced: String(localized: "Category.Advanced", table: "Settings")
         #if DEBUG
@@ -79,6 +81,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .sleep: .settingsSleep
         case .medications: .settingsMedications
         case .weather: .settingsWeather
+        case .birthdays: .settingsBirthdays
         case .search: .settingsSearch
         case .advanced: .settingsAdvanced
         #if DEBUG

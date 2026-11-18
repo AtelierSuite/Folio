@@ -1,0 +1,331 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Alerts.Header": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweise"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerts"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvisi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meldingen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cảnh báo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提醒"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提醒"
+          }
+        }
+      }
+    },
+    "Empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Geburtstagskalender gefunden. Aktiviere ihn in der App „Kalender“, um Geburtstage deiner Kontakte anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Birthdays calendar was found. Turn on the Birthdays calendar in the Calendar app to show birthdays from your contacts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun calendrier Anniversaires trouvé. Activez-le dans l’app Calendrier pour afficher les anniversaires de vos contacts."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun calendario Compleanni trovato. Attivalo nell’app Calendario per mostrare i compleanni dei tuoi contatti."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "誕生日カレンダーが見つかりません。カレンダーアプリで誕生日カレンダーをオンにすると、連絡先の誕生日が表示されます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생일 캘린더를 찾을 수 없습니다. 캘린더 앱에서 생일 캘린더를 켜면 연락처의 생일이 표시됩니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen verjaardagsagenda gevonden. Zet deze aan in de Agenda-app om verjaardagen van je contacten te tonen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tìm thấy lịch Sinh nhật. Hãy bật lịch này trong ứng dụng Lịch để hiển thị sinh nhật của danh bạ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未找到生日日历。在“日历”App 中打开生日日历即可显示通讯录中的生日。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找不到生日行事曆。在「行事曆」App 中開啟生日行事曆即可顯示聯絡人的生日。"
+          }
+        }
+      }
+    },
+    "Prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erlaube den Kalenderzugriff, um Geburtstage deiner Kontakte anzuzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow calendar access to show birthdays from your contacts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisez l’accès au calendrier pour afficher les anniversaires de vos contacts."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consenti l’accesso al calendario per mostrare i compleanni dei tuoi contatti."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カレンダーへのアクセスを許可すると、連絡先の誕生日を表示できます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "캘린더 접근을 허용하면 연락처의 생일을 표시할 수 있습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geef toegang tot je agenda om verjaardagen van je contacten te tonen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho phép truy cập lịch để hiển thị sinh nhật của danh bạ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允许访问日历以显示通讯录中的生日。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允許取用行事曆以顯示聯絡人的生日。"
+          }
+        }
+      }
+    },
+    "Show": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtstage anzeigen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Birthdays"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les anniversaires"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra compleanni"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "誕生日を表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "생일 표시"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon verjaardagen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị sinh nhật"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示生日"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示生日"
+          }
+        }
+      }
+    },
+    "Show.Footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtstage stammen von Kontakten, bei denen ein Geburtstag gespeichert ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birthdays come from the people in your contacts who have a birthday saved."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les anniversaires proviennent des contacts dont la date de naissance est enregistrée."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I compleanni provengono dai contatti con una data di nascita salvata."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "連絡先に誕生日が登録されている人の誕生日が表示されます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연락처에 생일이 저장된 사람의 생일이 표시됩니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verjaardagen komen van contacten waarvan een verjaardag is opgeslagen."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinh nhật được lấy từ những người trong danh bạ có lưu ngày sinh."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生日来自通讯录中保存了生日的联系人。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生日來自聯絡人中已儲存生日的人。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

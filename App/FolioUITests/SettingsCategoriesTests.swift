@@ -11,6 +11,7 @@ final class SettingsCategoriesTests: XCTestCase {
         ("notes", "LinkedNotes.WritesLinkToEvent"),
         ("search", "Search.Settings.MonthsBack"),
         ("weather", "WeatherToggle"),
+        ("birthdays", "BirthdaysForm"),
         ("wakeUpAlarm", "WakeUpAlarmToggle"),
         ("travel", "LeaveAlertsToggle"),
         ("medications", "MedicationTimelineToggle"),
