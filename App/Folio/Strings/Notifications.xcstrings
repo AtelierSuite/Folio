@@ -326,132 +326,67 @@
         }
       }
     },
-    "Enabled.Footer": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jedes iPhone, iPad und jeder Mac hat eine eigene Einstellung. Aktiviere Hinweise nur auf den Geräten, die dich erinnern sollen, damit nicht überall derselbe Hinweis erscheint."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Each iPhone, iPad and Mac has its own setting. Turn alerts on only on the devices you want to hear from, so the same alert doesn’t go off everywhere."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chaque iPhone, iPad et Mac a son propre réglage. N’activez les alertes que sur les appareils qui doivent vous prévenir, pour que la même alerte ne sonne pas partout."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ogni iPhone, iPad e Mac ha la propria impostazione. Attiva gli avvisi solo sui dispositivi da cui vuoi riceverli, così lo stesso avviso non suona ovunque."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iPhone、iPad、Macはそれぞれ個別に設定します。同じ通知がすべてのデバイスで鳴らないように、通知を受け取りたいデバイスでのみオンにしてください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iPhone, iPad, Mac마다 설정이 따로 있습니다. 같은 알림이 모든 기기에서 울리지 않도록 알림을 받고 싶은 기기에서만 켜세요."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elke iPhone, iPad en Mac heeft een eigen instelling. Zet meldingen alleen aan op de apparaten waarop je ze wilt krijgen, zodat dezelfde melding niet overal afgaat."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mỗi iPhone, iPad và Mac có cài đặt riêng. Chỉ bật cảnh báo trên các thiết bị bạn muốn nhận, để cùng một cảnh báo không reo trên mọi thiết bị."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "每台 iPhone、iPad 和 Mac 都有各自的设置。仅在想接收提醒的设备上打开，以免同一提醒在所有设备上响起。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "每部 iPhone、iPad 和 Mac 都有各自的設定。只在想接收提醒的裝置上開啟，以免同一提醒在所有裝置上響起。"
-          }
-        }
-      }
-    },
     "Items.Events": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ereignisse"
+            "value": "Ereignishinweise"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Events"
+            "value": "Event Alerts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Événements"
+            "value": "Alertes d’événements"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eventi"
+            "value": "Avvisi eventi"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベント"
+            "value": "イベントの通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트"
+            "value": "이벤트 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activiteiten"
+            "value": "Activiteitmeldingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sự kiện"
+            "value": "Cảnh báo sự kiện"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日程"
+            "value": "日程提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "行程"
+            "value": "行程提醒"
           }
         }
       }
@@ -462,126 +397,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erinnerungen"
+            "value": "Erinnerungshinweise"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reminders"
+            "value": "Reminder Alerts"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rappels"
+            "value": "Alertes de rappels"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Promemoria"
+            "value": "Avvisi promemoria"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "リマインダー"
+            "value": "リマインダーの通知"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "미리 알림"
+            "value": "미리 알림 알림"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Herinneringen"
+            "value": "Herinneringsmeldingen"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lời nhắc"
+            "value": "Cảnh báo lời nhắc"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事项"
+            "value": "提醒事项提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "提醒事項"
-          }
-        }
-      }
-    },
-    "Items.Section": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hinweise für"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alert For"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alertes pour"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvisi per"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "通知する項目"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "알림 대상"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meldingen voor"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cảnh báo cho"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "提醒内容"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "提醒內容"
+            "value": "提醒事項提醒"
           }
         }
       }
@@ -592,61 +462,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wenn du auf einen Terminhinweis tippst oder etwas daraus öffnest, legt Folio ihn lautlos wieder in die Mitteilungszentrale, bis der Termin endet. Schlummern oder Löschen entfernt den Hinweis weiterhin."
+            "value": "Geöffnete Hinweise bleiben bis zum Ende des Termins in der Mitteilungszentrale. Geschlummerte oder gelöschte Hinweise werden entfernt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "After you tap an event alert or open something from it, Folio silently puts it back in Notification Center until the event ends. Snoozing or clearing an alert still removes it."
+            "value": "Opened alerts stay in Notification Center until the event ends. Snoozed or cleared alerts are removed."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lorsque vous touchez une alerte d’événement ou ouvrez un élément depuis celle-ci, Folio la remet silencieusement dans le centre de notifications jusqu’à la fin de l’événement. Différer ou effacer une alerte la supprime toujours."
+            "value": "Les alertes ouvertes restent dans le centre de notifications jusqu’à la fin de l’événement. Les alertes différées ou effacées sont supprimées."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dopo che tocchi un avviso di evento o apri qualcosa da esso, Folio lo rimette silenziosamente nel Centro Notifiche fino al termine dell’evento. Posticipare o cancellare un avviso lo rimuove comunque."
+            "value": "Gli avvisi aperti restano nel Centro Notifiche fino al termine dell’evento. Gli avvisi posticipati o cancellati vengono rimossi."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントの通知をタップしたり通知から項目を開いたりした後も、イベントが終わるまでFolioが通知センターに音を鳴らさずに戻します。スヌーズまたは消去した通知は削除されます。"
+            "value": "開いた通知をイベント終了まで通知センターに残します。スヌーズまたは消去した通知は削除されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트 알림을 탭하거나 알림에서 항목을 열면 이벤트가 끝날 때까지 Folio가 소리 없이 알림 센터에 다시 넣습니다. 알림을 다시 알림으로 미루거나 지우면 삭제됩니다."
+            "value": "연 알림은 이벤트가 끝날 때까지 알림 센터에 유지됩니다. 다시 알림으로 미루거나 지운 알림은 삭제됩니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nadat je op een agendamelding tikt of er iets vanuit opent, zet Folio de melding geluidloos terug in het berichtencentrum tot het evenement afloopt. Sluimeren of wissen verwijdert de melding nog steeds."
+            "value": "Geopende meldingen blijven in het berichtencentrum tot het evenement afloopt. Gesluimerde of gewiste meldingen worden verwijderd."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sau khi bạn chạm vào thông báo sự kiện hoặc mở nội dung từ thông báo đó, Folio sẽ âm thầm đưa thông báo trở lại Trung tâm thông báo cho đến khi sự kiện kết thúc. Báo lại hoặc xóa thông báo vẫn sẽ gỡ thông báo."
+            "value": "Thông báo đã mở được giữ trong Trung tâm thông báo cho đến khi sự kiện kết thúc. Thông báo đã báo lại hoặc đã xóa sẽ bị gỡ."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "轻点日程提醒或从中打开内容后，Folio 会将其静默放回通知中心，直到日程结束。延后或清除提醒仍会将其移除。"
+            "value": "打开过的提醒会保留在通知中心，直到日程结束。延后或清除的提醒会被移除。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "點一下行程提醒或從中打開內容後，Folio 會將其靜音放回通知中心，直到行程結束。延後或清除提醒仍會將其移除。"
+            "value": "打開過的提醒會保留在通知中心，直到行程結束。延後或清除的提醒會被移除。"
           }
         }
       }

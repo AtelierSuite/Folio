@@ -66,7 +66,7 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         case .flexTime: "clock.arrow.circlepath"
         case .notes: "note.text"
         case .notifications: "bell.badge.fill"
-        case .eventNotifications: "calendar.badge.clock"
+        case .eventNotifications: "calendar.day.timeline.leading"
         case .reminderNotifications: "checklist"
         case .wakeUpAlarm: "alarm.fill"
         case .travel: "car.fill"
