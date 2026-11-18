@@ -339,36 +339,57 @@ func mapArtwork() -> some View {
     }
 }
 
+func ladybugWing(center: CGPoint, radius: CGFloat, side: CGFloat, angle: CGFloat) -> CGAffineTransform {
+    let pivot = CGPoint(x: center.x, y: center.y - radius * 0.82)
+    return CGAffineTransform(translationX: pivot.x, y: pivot.y)
+        .rotated(by: -side * angle * .pi / 180)
+        .translatedBy(x: -pivot.x, y: -pivot.y)
+}
+
 func ladybugArtwork() -> some View {
     let area = Keyline.circle.rect
     let headRadius: CGFloat = 15
-    let bodyRadius: CGFloat = 30
+    let bodyRadius: CGFloat = 29
     let headCenter = CGPoint(x: area.midX, y: area.minY + headRadius)
-    let bodyCenter = CGPoint(x: area.midX, y: area.maxY - bodyRadius)
+    let bodyCenter = CGPoint(x: area.midX, y: area.maxY - bodyRadius - 1)
     let ink = hex(0x2C2C2E)
-    let spots: [(CGPoint, CGFloat)] = [
-        (CGPoint(x: -15, y: -8), 6.5), (CGPoint(x: 15, y: -8), 6.5),
-        (CGPoint(x: -14, y: 14), 5), (CGPoint(x: 14, y: 14), 5)
-    ]
+    let spots: [(CGPoint, CGFloat)] = [(CGPoint(x: -14, y: -8), 6.5), (CGPoint(x: -13, y: 13), 5)]
+    let wingGradient = LinearGradient(colors: [hex(0xFF6B5E), hex(0xE5312A)].map { Color(nsColor: $0) },
+                                      startPoint: .top, endPoint: .bottom)
+    let openAngle: CGFloat = 9
+    let spotCenters = [-1, 1].flatMap { (side: CGFloat) in
+        spots.map { offset, radius in
+            let transform = ladybugWing(center: bodyCenter, radius: bodyRadius, side: side, angle: openAngle)
+            let center = CGPoint(x: bodyCenter.x - offset.x * side, y: bodyCenter.y + offset.y)
+            return (center: center.applying(transform), radius: radius)
+        }
+    }
     return ZStack(alignment: .topLeading) {
         circle(ink, center: headCenter, radius: headRadius)
         circle(white, center: CGPoint(x: headCenter.x - 6, y: headCenter.y - 3), radius: 3)
         circle(white, center: CGPoint(x: headCenter.x + 6, y: headCenter.y - 3), radius: 3)
-        Circle()
-            .fill(LinearGradient(colors: [hex(0xFF6B5E), hex(0xE5312A)].map { Color(nsColor: $0) },
-                                 startPoint: .top, endPoint: .bottom))
-            .frame(width: bodyRadius * 2, height: bodyRadius * 2)
-            .offset(x: bodyCenter.x - bodyRadius, y: bodyCenter.y - bodyRadius)
-        bar(ink, CGRect(x: area.midX - 1.5, y: bodyCenter.y - bodyRadius, width: 3, height: bodyRadius * 2))
-        ForEach(0..<spots.count, id: \.self) { index in
-            let (offset, radius) = spots[index]
-            circle(ink, center: CGPoint(x: bodyCenter.x + offset.x, y: bodyCenter.y + offset.y), radius: radius)
+        circle(ink, center: bodyCenter, radius: bodyRadius - 1)
+        ForEach([-1, 1] as [CGFloat], id: \.self) { side in
+            Path { path in
+                let points = (0...48).map { step in
+                    let angle = (90 + CGFloat(step) * 180 / 48) * .pi / 180
+                    return CGPoint(x: bodyCenter.x - side * cos(angle) * bodyRadius,
+                                   y: bodyCenter.y + sin(angle) * bodyRadius)
+                }
+                path.addLines(points)
+                path.closeSubpath()
+            }
+            .applying(ladybugWing(center: bodyCenter, radius: bodyRadius, side: side, angle: openAngle))
+            .fill(wingGradient)
+        }
+        ForEach(0..<spotCenters.count, id: \.self) { index in
+            circle(ink, center: spotCenters[index].center, radius: spotCenters[index].radius)
         }
         Ellipse()
             .fill(Color.white.opacity(0.35))
-            .frame(width: 12, height: 7)
-            .rotationEffect(.degrees(-35))
-            .offset(x: bodyCenter.x - 24, y: bodyCenter.y - 21)
+            .frame(width: 11, height: 6)
+            .rotationEffect(.degrees(-40))
+            .offset(x: bodyCenter.x - 26, y: bodyCenter.y - 18)
     }
 }
 
