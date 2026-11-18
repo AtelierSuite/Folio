@@ -1,9 +1,14 @@
 import Foundation
 import UserNotifications
 
-/// Clears a completed reminder's delivered alerts and pending snoozes; replanning drops its scheduled alerts.
+/// Clears a completed reminder's delivered alerts and pending snoozes. Its scheduled alerts are left to
+/// the next replan unless `removesScheduledAlerts` is set, for writes made while Folio isn't running.
 public struct UserNotificationReminderDismisser: ReminderNotificationDismissing {
-    public init() {}
+    private let pendingAlerts: PendingReminderAlerts
+
+    public init(removesScheduledAlerts: Bool = false) {
+        pendingAlerts = PendingReminderAlerts(includesScheduledAlerts: removesScheduledAlerts)
+    }
 
     private var center: UNUserNotificationCenter {
         .current()
@@ -17,12 +22,9 @@ public struct UserNotificationReminderDismisser: ReminderNotificationDismissing 
         if !delivered.isEmpty {
             center.removeDeliveredNotifications(withIdentifiers: delivered)
         }
-        let snoozed = await center.pendingNotificationRequests()
-            .filter { NotificationSnooze.isSnooze($0.identifier) }
-            .filter { NotificationUserInfo.isAlert($0.content.userInfo, for: reminder) }
-            .map(\.identifier)
-        if !snoozed.isEmpty {
-            center.removePendingNotificationRequests(withIdentifiers: snoozed)
+        let pending = pendingAlerts.identifiers(in: await center.pendingNotificationRequests(), for: reminder)
+        if !pending.isEmpty {
+            center.removePendingNotificationRequests(withIdentifiers: pending)
         }
     }
 }
