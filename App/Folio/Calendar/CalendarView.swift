@@ -21,7 +21,7 @@ struct CalendarView: View {
                 .navigationTitle(navigation.selectedDate.formatted(.dateTime.year().month(.wide)))
                 .alternateCalendarSubtitle(for: navigation.selectedDate, in: navigation.calendar)
                 #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
+                .toolbarTitleDisplayMode(.inlineLarge)
                 #endif
                 .toolbar {
                     CalendarToolbar(
