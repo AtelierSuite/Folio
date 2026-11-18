@@ -8,6 +8,7 @@ import Planner
 final class AppRouter {
     var pendingDestination: AppDestination?
     private(set) var todayRequestCount = 0
+    private(set) var searchFocusRequestCount = 0
 
     func open(_ destination: AppDestination) {
         pendingDestination = destination
@@ -15,6 +16,10 @@ final class AppRouter {
 
     func requestToday() {
         todayRequestCount += 1
+    }
+
+    func requestSearchFocus() {
+        searchFocusRequestCount += 1
     }
 }
 
