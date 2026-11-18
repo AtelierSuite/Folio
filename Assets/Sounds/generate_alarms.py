@@ -291,6 +291,15 @@ def shiokaze():
     return loop.render(ROOM, mix=0.35, brightness=15000)
 
 
+def hibiki():
+    """Echo: an electric piano arpeggio up a C major chord over a low root, echoes trailing behind."""
+    loop = Loop(2.0)
+    for start, pitch in evenly(0.1, ("C5", "E5", "G5", "C6", "G5", "E5", "G5", "C6")):
+        loop.track.electric_piano(start, pitch, 0.6, hold=0.18, release=0.08)
+    loop.track.electric_piano(0.0, "C3", 0.8, hold=0.9, release=0.2)
+    return loop.render(PLATE, mix=0.3, delay=(0.3, 0.3, 0.25), brightness=15000)
+
+
 def hidamari():
     """Sunny Spot: a nylon-string guitar fingerpicking from C major seventh to F major seventh, warm and unhurried
     but steady enough to get up to."""
@@ -302,15 +311,6 @@ def hidamari():
             loop.track.play(GUITAR, bar * 1.44 + index * 0.18, pitch, 0.9 if index == 0 else 0.7,
                             velocity=velocity, hold=1.44 - index * 0.18 + 0.1, release=0.15)
     return loop.render(BRIGHT_HALL, mix=0.35, brightness=14000)
-
-
-def hibiki():
-    """Echo: an electric piano arpeggio up a C major chord over a low root, echoes trailing behind."""
-    loop = Loop(2.0)
-    for start, pitch in evenly(0.1, ("C5", "E5", "G5", "C6", "G5", "E5", "G5", "C6")):
-        loop.track.electric_piano(start, pitch, 0.6, hold=0.18, release=0.08)
-    loop.track.electric_piano(0.0, "C3", 0.8, hold=0.9, release=0.2)
-    return loop.render(PLATE, mix=0.3, delay=(0.3, 0.3, 0.25), brightness=15000)
 
 
 def tsubame():
@@ -362,8 +362,8 @@ SOUNDS = {
     "Alarm-Komorebi": komorebi,
     "Alarm-Hibari": hibari,
     "Alarm-Shiokaze": shiokaze,
-    "Alarm-Hidamari": hidamari,
     "Alarm-Hibiki": hibiki,
+    "Alarm-Hidamari": hidamari,
     "Alarm-Tsubame": tsubame,
     "Alarm-Arashi": arashi,
     "Alarm-Hayate": hayate,

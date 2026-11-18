@@ -19,7 +19,7 @@ enum AlarmSoundGroup: CaseIterable, Identifiable {
     var sounds: [AlarmSound] {
         switch self {
         case .gentle: [.yoake, .komorebi, .hibari]
-        case .steady: [.shiokaze, .hidamari, .hibiki, .tsubame]
+        case .steady: [.shiokaze, .hibiki, .hidamari, .tsubame]
         case .urgent: [.arashi, .hayate, .kaminari]
         }
     }
