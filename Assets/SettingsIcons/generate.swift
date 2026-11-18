@@ -350,8 +350,14 @@ func ladybugArtwork() -> some View {
     let area = Keyline.circle.rect
     let headRadius: CGFloat = 15
     let bodyRadius: CGFloat = 29
-    let headCenter = CGPoint(x: area.midX, y: area.minY + headRadius)
-    let bodyCenter = CGPoint(x: area.midX, y: area.maxY - bodyRadius - 1)
+    let antennaReach: CGFloat = 7
+    let antennaTipRadius: CGFloat = 2.5
+    let headToBody: CGFloat = 31
+    let aboveHead = headRadius + antennaReach + antennaTipRadius
+    let span = aboveHead + headToBody + bodyRadius
+    let top = area.midY - span / 2
+    let headCenter = CGPoint(x: area.midX, y: top + aboveHead)
+    let bodyCenter = CGPoint(x: area.midX, y: headCenter.y + headToBody)
     let ink = hex(0x2C2C2E)
     let spots: [(CGPoint, CGFloat)] = [(CGPoint(x: -14, y: -8), 6.5), (CGPoint(x: -13, y: 13), 5)]
     let wingGradient = LinearGradient(colors: [hex(0xFF6B5E), hex(0xE5312A)].map { Color(nsColor: $0) },
@@ -365,6 +371,15 @@ func ladybugArtwork() -> some View {
         }
     }
     return ZStack(alignment: .topLeading) {
+        ForEach([-1, 1] as [CGFloat], id: \.self) { side in
+            let tip = CGPoint(x: headCenter.x + side * 11, y: headCenter.y - headRadius - antennaReach)
+            Path { path in
+                path.move(to: CGPoint(x: headCenter.x + side * 4, y: headCenter.y - headRadius + 3))
+                path.addLine(to: tip)
+            }
+            .stroke(Color(nsColor: ink), style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
+            circle(ink, center: tip, radius: antennaTipRadius)
+        }
         circle(ink, center: headCenter, radius: headRadius)
         circle(ink, center: bodyCenter, radius: bodyRadius - 1)
         ForEach([-1, 1] as [CGFloat], id: \.self) { side in
@@ -384,6 +399,8 @@ func ladybugArtwork() -> some View {
             circle(ink, center: spotCenters[index].center, radius: spotCenters[index].radius)
         }
     }
+    .frame(width: canvas, height: canvas, alignment: .topLeading)
+    .scaleEffect(min(1, area.height / span))
 }
 
 @MainActor
