@@ -527,61 +527,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wenn du auf einen Terminhinweis tippst oder etwas daraus öffnest, legt Folio ihn lautlos wieder in die Mitteilungszentrale, bis der Termin endet. Schlummern oder Löschen entfernt den Hinweis weiterhin."
+            "value": "Geöffnete Hinweise bleiben bis zum Ende des Termins in der Mitteilungszentrale. Geschlummerte oder gelöschte Hinweise werden entfernt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "After you tap an event alert or open something from it, Folio silently puts it back in Notification Center until the event ends. Snoozing or clearing an alert still removes it."
+            "value": "Opened alerts stay in Notification Center until the event ends. Snoozed or cleared alerts are removed."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lorsque vous touchez une alerte d’événement ou ouvrez un élément depuis celle-ci, Folio la remet silencieusement dans le centre de notifications jusqu’à la fin de l’événement. Différer ou effacer une alerte la supprime toujours."
+            "value": "Les alertes ouvertes restent dans le centre de notifications jusqu’à la fin de l’événement. Les alertes différées ou effacées sont supprimées."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dopo che tocchi un avviso di evento o apri qualcosa da esso, Folio lo rimette silenziosamente nel Centro Notifiche fino al termine dell’evento. Posticipare o cancellare un avviso lo rimuove comunque."
+            "value": "Gli avvisi aperti restano nel Centro Notifiche fino al termine dell’evento. Gli avvisi posticipati o cancellati vengono rimossi."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イベントの通知をタップしたり通知から項目を開いたりした後も、イベントが終わるまでFolioが通知センターに音を鳴らさずに戻します。スヌーズまたは消去した通知は削除されます。"
+            "value": "開いた通知をイベント終了まで通知センターに残します。スヌーズまたは消去した通知は削除されます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "이벤트 알림을 탭하거나 알림에서 항목을 열면 이벤트가 끝날 때까지 Folio가 소리 없이 알림 센터에 다시 넣습니다. 알림을 다시 알림으로 미루거나 지우면 삭제됩니다."
+            "value": "연 알림은 이벤트가 끝날 때까지 알림 센터에 유지됩니다. 다시 알림으로 미루거나 지운 알림은 삭제됩니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nadat je op een agendamelding tikt of er iets vanuit opent, zet Folio de melding geluidloos terug in het berichtencentrum tot het evenement afloopt. Sluimeren of wissen verwijdert de melding nog steeds."
+            "value": "Geopende meldingen blijven in het berichtencentrum tot het evenement afloopt. Gesluimerde of gewiste meldingen worden verwijderd."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sau khi bạn chạm vào thông báo sự kiện hoặc mở nội dung từ thông báo đó, Folio sẽ âm thầm đưa thông báo trở lại Trung tâm thông báo cho đến khi sự kiện kết thúc. Báo lại hoặc xóa thông báo vẫn sẽ gỡ thông báo."
+            "value": "Thông báo đã mở được giữ trong Trung tâm thông báo cho đến khi sự kiện kết thúc. Thông báo đã báo lại hoặc đã xóa sẽ bị gỡ."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "轻点日程提醒或从中打开内容后，Folio 会将其静默放回通知中心，直到日程结束。延后或清除提醒仍会将其移除。"
+            "value": "打开过的提醒会保留在通知中心，直到日程结束。延后或清除的提醒会被移除。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "點一下行程提醒或從中打開內容後，Folio 會將其靜音放回通知中心，直到行程結束。延後或清除提醒仍會將其移除。"
+            "value": "打開過的提醒會保留在通知中心，直到行程結束。延後或清除的提醒會被移除。"
           }
         }
       }
