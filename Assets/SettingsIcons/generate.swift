@@ -252,8 +252,6 @@ func calendarArtwork() -> some View {
             .fill(LinearGradient(colors: [hex(0xFF6259), hex(0xE5352B)].map { Color(nsColor: $0) },
                                  startPoint: .top, endPoint: .bottom))
             .frame(width: canvas, height: 38)
-        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.minX + 4, y: 10, width: 9, height: 18))
-        bar(white.withAlphaComponent(0.92), CGRect(x: Keyline.portrait.rect.maxX - 13, y: 10, width: 9, height: 18))
         ForEach(0..<12, id: \.self) { index in
             let center = CGPoint(x: columns[index % 4], y: rows[index / 4])
             if index == 6 {
