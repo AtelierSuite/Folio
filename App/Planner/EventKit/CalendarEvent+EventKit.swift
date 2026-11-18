@@ -1,7 +1,7 @@
 import EventKit
 
 extension CalendarEvent {
-    init(_ event: EKEvent) {
+    init(_ event: EKEvent, birthdayCalendars: Set<String> = []) {
         let isOrganizedBySomeoneElse = event.hasAttendees && !(event.organizer?.isCurrentUser ?? true)
         let isCalendarReadOnly = !(event.calendar?.allowsContentModifications ?? false)
         let organizer = event.organizer.map(EventParticipant.init)
@@ -28,7 +28,9 @@ extension CalendarEvent {
             organizer: organizer,
             attendees: attendees,
             userStatus: .currentUserStatus(organizer: organizer, attendees: attendees),
-            origin: CalendarOrigin(event.calendar)
+            origin: CalendarOrigin(event.calendar),
+            isBirthday: event.calendar?.type == .birthday
+                || birthdayCalendars.contains(event.calendar?.calendarIdentifier ?? "")
         )
     }
 }
