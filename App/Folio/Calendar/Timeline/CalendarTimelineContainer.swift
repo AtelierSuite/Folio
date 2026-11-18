@@ -9,7 +9,9 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @Environment(\.platformCapabilities) private var capabilities
     @Environment(\.accessibilityReduceMotion) var reduceMotion
     @AppStorage(DragSettings.snapMinutesKey) var snapMinutes = DragSettings.defaultSnapMinutes
-    @AppStorage(WeatherNightSettings.shadesNightKey) var shadesNight = true
+    @AppStorage(WeatherTimelineSettings.shadesNightKey) var shadesNight = true
+    @AppStorage(WeatherTimelineSettings.showsHourlyForecastKey) var showsHourlyForecast = true
+    @AppStorage(WeatherTimelineSettings.showsRainAlertsKey) var showsRainAlerts = true
     @AppStorage(EnergyLevelSettings.isShownKey) var showsEnergyLevel = false
     @AppStorage(EnergyLevelSettings.bleedsUnderEventsKey) var energyLevelBleedsUnderEvents = true
     @AppStorage(SecondaryTimeZoneSettings.isEnabledKey, store: AppGroup.userDefaults)
@@ -80,6 +82,8 @@ struct CalendarTimelineContainer<Accessory: View>: View {
                     capabilities: capabilities,
                     weather: weather,
                     shadesNight: shadesNight,
+                    showsHourlyForecast: showsHourlyForecast,
+                    showsRainAlerts: showsRainAlerts,
                     showsEnergyLevel: showsEnergyLevel,
                     energyLevelBleedsUnderEvents: energyLevelBleedsUnderEvents
                 ).layers(for: strip.days)
