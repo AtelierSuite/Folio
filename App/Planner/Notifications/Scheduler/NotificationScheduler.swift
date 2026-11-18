@@ -118,7 +118,7 @@ public final class NotificationScheduler {
         let plan = isEnabled && authorization.allowsScheduling
             ? await plan(after: now, budget: budget)
             : .empty
-        let alarms = await replanAlarms(plan.alarms)
+        let alarms = await replanAlarms(plan.alarms, liveSources: plan.liveAlarmSources)
         let notifications = plan.notifications(adding: alarms.fallbacks, budget: budget)
         let diff = NotificationPlanDiff(planned: notifications, pendingIdentifiers: pendingIdentifiers)
         await center.removePending(withIdentifiers: diff.identifiersToRemove)

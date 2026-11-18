@@ -71,6 +71,10 @@ final class FakeAlarmClient: AlarmSchedulingClient {
         state.withLock { Array($0.scheduled.keys) }
     }
 
+    func heldIdentifiers() async -> [UUID] {
+        state.withLock { Array($0.snoozing) }
+    }
+
     func schedule(_ request: AlarmRequest) async throws {
         try state.withLock { state in
             guard state.scheduled.count < state.limit else { throw FakeAlarmError.limitReached }

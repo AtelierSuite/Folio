@@ -8,7 +8,8 @@ extension WakeUpAlarm {
             title: formatter.wakeUpTitle(for: self),
             tint: nil,
             item: NotificationItem(kind: .event, reference: event.reference, fireDate: fireDate),
-            secondaryAction: .snooze(WakeUpAlarmPlanner.snoozeDuration)
+            secondaryAction: .snooze(WakeUpAlarmPlanner.snoozeDuration),
+            source: source
         )
     }
 }
