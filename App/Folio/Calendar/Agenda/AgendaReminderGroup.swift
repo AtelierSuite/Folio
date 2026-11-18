@@ -28,7 +28,7 @@ struct AgendaReminderGroup: View {
             }
         }
         .overlay {
-            shape.strokeBorder(.separator, lineWidth: 2 / displayScale)
+            shape.strokeBorder(.separator, lineWidth: 1 / displayScale)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
