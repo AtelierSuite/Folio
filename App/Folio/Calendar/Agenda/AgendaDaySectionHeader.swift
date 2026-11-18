@@ -19,6 +19,16 @@ struct AgendaDaySectionHeader: View {
                     .lineLimit(1)
             }
         }
+        .font(.subheadline.weight(.semibold))
+        .textCase(nil)
+        .padding(.horizontal, 16)
+        .padding(.top, 14)
+        .padding(.bottom, 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.background)
+        .overlay(alignment: .bottom) {
+            AgendaRowDivider()
+        }
     }
 
     private var dateStyle: AnyShapeStyle {
