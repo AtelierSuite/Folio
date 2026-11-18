@@ -362,7 +362,7 @@ func ladybugArtwork() -> some View {
     let spots: [(CGPoint, CGFloat)] = [(CGPoint(x: -14, y: -8), 6.5), (CGPoint(x: -13, y: 13), 5)]
     let wingGradient = LinearGradient(colors: [hex(0xFF6B5E), hex(0xE5312A)].map { Color(nsColor: $0) },
                                       startPoint: .top, endPoint: .bottom)
-    let openAngle: CGFloat = 9
+    let openAngle: CGFloat = 14
     let spotCenters = [-1, 1].flatMap { (side: CGFloat) in
         spots.map { offset, radius in
             let transform = ladybugWing(center: bodyCenter, radius: bodyRadius, side: side, angle: openAngle)
