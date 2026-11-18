@@ -58,60 +58,31 @@ enum SettingsCategory: String, CaseIterable, Identifiable {
         }
     }
 
-    var systemImage: String {
+    var icon: ImageResource {
         switch self {
-        case .general: "gearshape.fill"
-        case .accounts: "person.crop.circle.fill"
-        case .calendars: "calendar"
-        case .reminders: "list.bullet"
-        case .alarms: "alarm.waves.left.and.right.fill"
-        case .workWeek: "briefcase.fill"
-        case .flexTime: "clock.arrow.circlepath"
-        case .notes: "note.text"
-        case .notifications: "bell.badge.fill"
-        case .eventNotifications: "calendar.day.timeline.leading"
-        case .reminderNotifications: "checklist"
-        case .wakeUpAlarm: "alarm.fill"
-        case .travel: "car.fill"
-        case .countdowns: "timer"
-        case .focusLevel: "bolt.fill"
-        case .workouts: "figure.run"
-        case .sleep: "bed.double.fill"
-        case .medications: "pills.fill"
-        case .weather: "cloud.sun.fill"
-        case .search: "magnifyingglass"
-        case .advanced: "ellipsis"
+        case .general: .settingsGeneral
+        case .accounts: .settingsAccounts
+        case .calendars: .settingsCalendars
+        case .reminders: .settingsReminders
+        case .alarms: .settingsAlarms
+        case .workWeek: .settingsWorkWeek
+        case .flexTime: .settingsFlexTime
+        case .notes: .settingsNotes
+        case .notifications: .settingsNotifications
+        case .eventNotifications: .settingsEventNotifications
+        case .reminderNotifications: .settingsReminderNotifications
+        case .wakeUpAlarm: .settingsWakeUpAlarm
+        case .travel: .settingsTravel
+        case .countdowns: .settingsCountdowns
+        case .focusLevel: .settingsFocusLevel
+        case .workouts: .settingsWorkouts
+        case .sleep: .settingsSleep
+        case .medications: .settingsMedications
+        case .weather: .settingsWeather
+        case .search: .settingsSearch
+        case .advanced: .settingsAdvanced
         #if DEBUG
-        case .debug: "ladybug.fill"
-        #endif
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .general: .gray
-        case .accounts: .blue
-        case .calendars: .red
-        case .reminders: .orange
-        case .alarms: .red
-        case .workWeek: .brown
-        case .flexTime: .mint
-        case .notes: .yellow
-        case .notifications: .pink
-        case .eventNotifications: .red
-        case .reminderNotifications: .purple
-        case .wakeUpAlarm: .orange
-        case .travel: .blue
-        case .countdowns: .green
-        case .focusLevel: .orange
-        case .workouts: Color(.lime)
-        case .sleep: .indigo
-        case .medications: .teal
-        case .weather: .cyan
-        case .search: .gray
-        case .advanced: .gray
-        #if DEBUG
-        case .debug: .green
+        case .debug: .settingsDebug
         #endif
         }
     }
