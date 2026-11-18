@@ -330,11 +330,17 @@ def tsubame():
 
 
 def arashi():
-    """Storm: a hard-struck marimba and glockenspiel calling a rising figure, again and again."""
-    loop = Loop(1.2)
-    for take, (start, pitch) in enumerate(((0.0, "E6"), (0.16, "E6"), (0.32, "A6"))):
-        loop.track.play(MARIMBA, start, pitch, 0.9, velocity=127, take=take)
-        loop.track.play(GLOCKENSPIEL, start, pitch, 0.55, hold=0.2, release=0.08)
+    """Storm: a hard-struck marimba and glockenspiel trading calls in A minor. The rising call comes twice: first
+    answered by a run falling back to E, then by one climbing to C and landing on A, over a low marimba pulse."""
+    loop = Loop(2.88)
+    step = 0.12
+    melody = ((0, "E6"), (1, "E6"), (2, "A6"), (4, "G6"), (5, "E6"), (6, "C6"), (7, "D6"), (8, "E6"),
+              (12, "E6"), (13, "E6"), (14, "A6"), (16, "B6"), (17, "C7"), (18, "B6"), (19, "G6"), (20, "A6"))
+    for take, (position, pitch) in enumerate(melody):
+        loop.track.play(MARIMBA, position * step, pitch, 0.9, velocity=127, take=take)
+        loop.track.play(GLOCKENSPIEL, position * step, pitch, 0.5, hold=0.2, release=0.08)
+    for take, (position, pitch) in enumerate(((0, "A3"), (6, "A3"), (12, "E3"), (18, "E3"))):
+        loop.track.play(MARIMBA, position * step, pitch, 0.6, velocity=110, take=take)
     return loop.render(SMALL_ROOM, mix=0.25, brightness=16000, release=0.05)
 
 
