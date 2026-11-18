@@ -18,8 +18,6 @@ struct NotificationSettingsView: View {
                 ))
                 .disabled(permissionCenter.isBlocked(.notifications))
                 .accessibilityIdentifier("NotificationsEnabledToggle")
-            } footer: {
-                Text(String(localized: "Enabled.Footer", table: "Notifications"))
             }
             SnoozeDurationsSection()
         }
