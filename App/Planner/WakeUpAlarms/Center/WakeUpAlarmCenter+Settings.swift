@@ -72,6 +72,12 @@ extension WakeUpAlarmCenter {
         await replan()
     }
 
+    public func setSnoozeMinutes(_ minutes: Int?) async {
+        snoozeMinutes = minutes
+        settings.snoozeMinutes = minutes
+        await replan()
+    }
+
     public func reloadSettings() async {
         leadMinutes = settings.leadMinutes
         earliestMinutes = settings.earliestMinutes
@@ -80,6 +86,7 @@ extension WakeUpAlarmCenter {
         addsTravelTime = settings.addsTravelTime
         transport = settings.transport
         sound = settings.sound
+        snoozeMinutes = settings.snoozeMinutes
         updateLocationMonitoring()
         await replan()
     }

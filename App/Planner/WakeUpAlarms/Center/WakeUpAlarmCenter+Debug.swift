@@ -6,7 +6,7 @@ extension WakeUpAlarmCenter {
     public func ringNextAlarmSoon(after delay: TimeInterval = 10) async {
         guard let event = upcomingAlarms.first?.event else { return }
         let alarm = WakeUpAlarm(event: event, fireDate: clock().addingTimeInterval(delay))
-        try? await alarmClient.schedule(alarm.request(formatter: formatter, sound: sound))
+        try? await alarmClient.schedule(alarm.request(formatter: formatter, sound: sound, snoozeMinutes: snoozeMinutes))
     }
 }
 #endif
