@@ -109,15 +109,14 @@ final class NotificationStyleTests: XCTestCase {
 
     @MainActor
     private func chooseStyle(_ title: String, in app: XCUIApplication) {
-        let row = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "NotificationStyle.")).firstMatch
-        guard row.waitForExistence(timeout: 5) else {
-            attachScreenshot(named: "MissingRow")
+        let option = app.buttons.matching(NSPredicate(
+            format: "identifier BEGINSWITH %@ AND label == %@", "NotificationStyle.Option.", title
+        )).firstMatch
+        guard option.waitForExistence(timeout: 5) else {
+            attachScreenshot(named: "MissingOption")
             XCTFail(app.debugDescription)
             return
         }
-        row.tap()
-        let option = app.buttons[title]
-        XCTAssertTrue(option.waitForExistence(timeout: 5))
         option.tap()
     }
 

@@ -11,6 +11,8 @@ struct CalendarNotificationDetailView: View {
             Section {
                 NotificationStyleCalendarRow(calendar: calendar, style: $style)
                 NotificationSoundPicker(kind: calendar.kind, calendar: calendar, player: player)
+            } header: {
+                Text(String(localized: "Row.Title", table: "NotificationStyles"))
             }
             if calendar.kind == .event {
                 Section {

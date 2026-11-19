@@ -7,13 +7,11 @@ struct NotificationStyleCalendarRow: View {
     @Binding var style: NotificationAlertStyle
 
     var body: some View {
-        NotificationStylePicker(selection: style, inheritedStyle: nil) { newValue in
-            guard let newValue else { return }
+        NotificationStyleGallery(selection: style) { newValue in
             style = newValue
             await scheduler.setDefaultStyle(newValue, forCalendar: calendar.id)
-        } label: {
-            Text(String(localized: "Row.Title", table: "NotificationStyles"))
         }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("NotificationStyle.\(calendar.title)")
     }
 }
