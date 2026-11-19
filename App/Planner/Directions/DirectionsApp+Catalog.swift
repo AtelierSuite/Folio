@@ -2,7 +2,7 @@ import Foundation
 
 public extension DirectionsApp {
     static let all: [DirectionsApp] = [
-        .appleMaps, .googleMaps
+        .appleMaps, .googleMaps, .yahooMap
     ]
 
     static func app(id: String) -> DirectionsApp? {
