@@ -24,17 +24,13 @@ struct NotificationStyleIllustration: View {
         switch style {
         case .standard:
             VStack {
-                banner
                 Spacer()
+                banner
             }
         case .timeSensitive:
             VStack {
+                Spacer()
                 timeSensitiveBanner
-                Spacer()
-                Image(systemName: "moon.fill")
-                    .font(.system(size: 18))
-                    .opacity(0.5)
-                Spacer()
             }
         case .alarm:
             VStack(spacing: 5) {
