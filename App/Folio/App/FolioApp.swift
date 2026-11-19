@@ -132,6 +132,7 @@ struct FolioApp: App {
                 .environment(flexTime)
                 .environment(medicationStore)
                 .refreshesMedications(medicationStore)
+                .refreshesDirectionsApp()
                 .notificationReplanTriggers(notificationScheduler)
                 .replansNotificationsOnLinkedNoteChanges(notificationScheduler, library: notesLibrary)
                 .opensNotesFromSpotlight(library: notesLibrary, navigator: noteNavigator)
