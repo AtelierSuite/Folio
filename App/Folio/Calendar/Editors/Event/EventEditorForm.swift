@@ -9,11 +9,13 @@ struct EventEditorForm: View {
     @Binding var leaveAlert: EventLocationAlertChoice
     let reference: CalendarItemReference?
     let calendars: [PlannerCalendar]
+    let focusesTitle: Bool
 
     var body: some View {
         Form {
             Section {
                 TextField(String(localized: "Field.Title", table: "EventEditor"), text: $draft.title)
+                    .focusedOnAppear(focusesTitle)
                 EventLocationRow(location: $draft.location)
             }
             EventLeaveAlertSection(choice: $leaveAlert, reference: reference, hasLocation: draft.location != nil)

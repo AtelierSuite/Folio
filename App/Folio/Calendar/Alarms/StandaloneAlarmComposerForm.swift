@@ -13,6 +13,7 @@ struct StandaloneAlarmComposerForm: View {
                     prompt: Text(String(localized: "Composer.LabelPlaceholder", table: "StandaloneAlarms"))
                 )
                 .accessibilityIdentifier("StandaloneAlarmComposer.Label")
+                .focusedOnAppear()
             }
             Section {
                 DatePicker(
