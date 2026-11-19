@@ -8,7 +8,7 @@ struct SleepBlockView: View {
     var body: some View {
         Rectangle()
             .fill(Color.indigo.opacity(isAsleep ? 0.09 : 0.04))
-            .overlay(alignment: .leading) {
+            .overlay(alignment: .trailing) {
                 Rectangle()
                     .fill(Color.indigo.opacity(isAsleep ? 0.35 : 0.15))
                     .frame(width: 3)

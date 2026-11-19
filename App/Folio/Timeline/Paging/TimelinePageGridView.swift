@@ -11,8 +11,10 @@ struct TimelinePageGridView: View {
     var onSelectEntry: ((TimelineEntry) -> Void)?
 
     var body: some View {
-        let context = TimelineLayerContext(days: layout.days, hourHeight: hourHeight)
         let minimumCardHeight = metrics.minimumCardHeight(hourHeight: hourHeight)
+        let context = TimelineLayerContext(
+            days: layout.days, hourHeight: hourHeight, cardSlots: cardSlots(minimumCardHeight: minimumCardHeight)
+        )
         ZStack(alignment: .topLeading) {
             TimelineHourGridView(dayCount: layout.days.count, hourHeight: hourHeight)
                 .timelineCreationTap(days: layout.days, hourHeight: hourHeight)
@@ -33,5 +35,14 @@ struct TimelinePageGridView: View {
             TimelineDragPreviewView(days: layout.days, hourHeight: hourHeight, minimumCardHeight: minimumCardHeight)
         }
         .frame(height: hourHeight * 24)
+    }
+
+    private func cardSlots(minimumCardHeight: CGFloat) -> [TimelineSlot] {
+        let minimumHours = hourHeight > 0 ? Double(minimumCardHeight / hourHeight) : 0
+        return layout.timedPlacements.map { placement in
+            var slot = TimelineSlot(placement)
+            slot.endHour = max(slot.endHour, slot.startHour + minimumHours)
+            return slot
+        }
     }
 }
