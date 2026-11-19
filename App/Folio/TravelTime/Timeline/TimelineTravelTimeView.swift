@@ -1,7 +1,8 @@
 import Planner
 import SwiftUI
 
-/// A band just above each upcoming event card, as tall as the trip there from the current location.
+/// A band just above each upcoming event card, as tall as the trip there
+/// from the previous event or the current location.
 struct TimelineTravelTimeView: View {
     @Environment(\.travelEstimates) private var estimates
     let layout: TimelineLayout

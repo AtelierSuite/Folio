@@ -28,6 +28,7 @@ struct TravelTimeStoreTests {
             locator: locator,
             resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
             estimator: estimator,
+            planner: TravelTimePlanner(calendar: Fixtures.calendar),
             now: { ArrivalFixtures.now }
         )
         return Harness(store: store, locator: locator, estimator: estimator)
@@ -98,5 +99,33 @@ struct TravelTimeStoreTests {
         )
         #expect(moved.id == event.id)
         #expect(await store.estimates(for: [moved])[moved.id]?.travelTime == 600)
+    }
+
+    @Test func startsFromThePreviousPlacedEventOnTheSameDay() async throws {
+        let harness = try makeStore()
+        let cafe = ArrivalFixtures.coordinate(5)
+        let gym = ArrivalFixtures.coordinate(9)
+        let breakfast = ArrivalFixtures.event("Breakfast", start: ArrivalFixtures.hours(-1), coordinate: cafe)
+        let holiday = ArrivalFixtures.event("Holiday", start: ArrivalFixtures.hours(1), coordinate: gym, isAllDay: true)
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        let estimates = await harness.store.estimates(for: [lunch, holiday, breakfast])
+        #expect(estimates[lunch.id] != nil)
+        #expect(harness.estimator.origins == [cafe])
+        #expect(harness.locator.requestCount == 0)
+    }
+
+    @Test func startsFromTheCurrentLocationForTheFirstPlacedEventOfTheDay() async throws {
+        let harness = try makeStore()
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        let dinner = ArrivalFixtures.event(
+            "Dinner", start: ArrivalFixtures.hours(9), coordinate: ArrivalFixtures.coordinate(7)
+        )
+        let placeless = ArrivalFixtures.event("Call", start: ArrivalFixtures.hours(1), coordinate: nil)
+        let tomorrow = ArrivalFixtures.event(
+            "Tomorrow", start: ArrivalFixtures.hours(20), coordinate: ArrivalFixtures.coordinate(3)
+        )
+        let estimates = await harness.store.estimates(for: [placeless, lunch, dinner, tomorrow])
+        #expect(estimates.count == 3)
+        #expect(harness.estimator.origins == [LeaveFixtures.home, ArrivalFixtures.office, LeaveFixtures.home])
     }
 }

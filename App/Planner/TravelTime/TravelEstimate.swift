@@ -1,6 +1,6 @@
 import Foundation
 
-/// How long it takes to reach an event from the user's current location.
+/// How long it takes to reach an event from the previous event's place that day, or from the user's current location.
 public struct TravelEstimate: Sendable, Hashable, Identifiable {
     public let eventID: String
     public let eventStart: Date
