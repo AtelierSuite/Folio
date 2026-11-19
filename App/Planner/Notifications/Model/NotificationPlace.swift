@@ -18,21 +18,8 @@ public struct NotificationPlace: Sendable, Hashable {
     }
 
     public var directionsURL: URL? {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "maps.apple.com"
-        components.path = "/"
-        var queryItems: [URLQueryItem] = []
-        if let coordinate {
-            queryItems.append(URLQueryItem(name: "daddr", value: "\(coordinate.latitude),\(coordinate.longitude)"))
-            if let name {
-                queryItems.append(URLQueryItem(name: "q", value: name))
-            }
-        } else if let name {
-            queryItems.append(URLQueryItem(name: "daddr", value: name))
-        }
-        components.queryItems = queryItems
-        return components.url
+        guard let destination = DirectionsDestination(name: name, coordinate: coordinate) else { return nil }
+        return DirectionsApp.appleMaps.url(for: DirectionsRequest(destination: destination), isInstalled: true)
     }
 
     var fingerprint: [String] {

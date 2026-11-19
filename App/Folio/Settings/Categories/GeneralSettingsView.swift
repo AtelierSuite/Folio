@@ -13,6 +13,7 @@ struct GeneralSettingsView: View {
             if capabilities.supports(.menuBarExtra) {
                 MenuBarSettingsSection()
             }
+            DefaultAppsSettingsSection()
         }
         .settingsCategoryStyle(.general)
     }
