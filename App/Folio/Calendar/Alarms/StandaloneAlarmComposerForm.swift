@@ -3,6 +3,7 @@ import SwiftUI
 struct StandaloneAlarmComposerForm: View {
     @Binding var fireDate: Date
     @Binding var label: String
+    @Binding var snoozeMinutes: Int?
 
     var body: some View {
         Form {
@@ -22,6 +23,8 @@ struct StandaloneAlarmComposerForm: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
                 .accessibilityIdentifier("StandaloneAlarmComposer.Time")
+                AlarmSnoozeOverridePicker(minutes: $snoozeMinutes)
+                    .accessibilityIdentifier("StandaloneAlarmComposer.Snooze")
             } footer: {
                 Text(String(localized: "Composer.Footer", table: "StandaloneAlarms"))
             }

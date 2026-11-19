@@ -40,7 +40,7 @@ public final class StandaloneAlarmCenter {
         authorization = await alarmClient.authorization()
     }
 
-    public func add(at fireDate: Date, label: String) async -> StandaloneAlarmAddOutcome {
+    public func add(at fireDate: Date, label: String, snoozeMinutes: Int? = nil) async -> StandaloneAlarmAddOutcome {
         guard isSupported else { return .failed }
         guard fireDate > clock() else { return .pastDate }
         if await alarmClient.authorization() == .notDetermined {
@@ -49,13 +49,23 @@ public final class StandaloneAlarmCenter {
         authorization = await alarmClient.authorization()
         guard authorization.allowsScheduling else { return .denied }
         let wholeMinute = (fireDate.timeIntervalSinceReferenceDate / 60).rounded(.down) * 60
-        let alarm = StandaloneAlarm(fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute), label: label)
+        let alarm = StandaloneAlarm(
+            fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute), label: label, snoozeMinutes: snoozeMinutes
+        )
         storage.alarms.append(alarm)
         let failed = await replan()
         guard failed.contains(alarm.id) else { return .scheduled }
         storage.alarms.removeAll { $0.id == alarm.id }
         await replan()
         return .failed
+    }
+
+    public func setSnoozeMinutes(_ minutes: Int?, for alarm: StandaloneAlarm) async {
+        var stored = storage.alarms
+        guard let index = stored.firstIndex(where: { $0.id == alarm.id }) else { return }
+        stored[index].snoozeMinutes = minutes
+        storage.alarms = stored
+        await replan()
     }
 
     public func remove(_ alarm: StandaloneAlarm) async {

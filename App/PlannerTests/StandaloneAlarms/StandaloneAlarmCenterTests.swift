@@ -36,6 +36,26 @@ struct StandaloneAlarmCenterTests {
         #expect(center.alarms.map(\.fireDate) == [wakeTime])
     }
 
+    @Test func anAlarmCanSnoozeForItsOwnTime() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(alarms: alarms)
+        _ = await center.add(at: wakeTime, label: "Gym", snoozeMinutes: 3)
+        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(3 * 60)])
+    }
+
+    @Test func changingAnAlarmsSnoozeReschedulesIt() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(alarms: alarms)
+        _ = await center.add(at: wakeTime, label: "Gym")
+        let alarm = try #require(center.alarms.first)
+        await center.setSnoozeMinutes(15, for: alarm)
+        #expect(alarms.scheduledCount == 1)
+        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(15 * 60)])
+        #expect(center.alarms.map(\.snoozeMinutes) == [15])
+        await center.setSnoozeMinutes(nil, for: try #require(center.alarms.first))
+        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(AlarmSnoozeSettings().duration)])
+    }
+
     @Test func anEmptyLabelFallsBackToADefaultTitle() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(alarms: alarms)

@@ -8,4 +8,10 @@ public enum AlarmSecondaryAction: Sendable, Hashable, Codable {
     public static var snooze: AlarmSecondaryAction {
         .snooze(AlarmSnoozeSettings().duration)
     }
+
+    /// `nil` minutes falls back to the Snooze Time setting.
+    public static func snooze(minutes: Int?) -> AlarmSecondaryAction {
+        guard let minutes else { return snooze }
+        return .snooze(TimeInterval(AlarmSnoozeSettings.clamped(minutes) * 60))
+    }
 }

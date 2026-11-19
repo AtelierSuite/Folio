@@ -20,7 +20,7 @@ public struct AlarmSnoozeSettings: @unchecked Sendable {
         TimeInterval(minutes * 60)
     }
 
-    private static func clamped(_ minutes: Int) -> Int {
+    public static func clamped(_ minutes: Int) -> Int {
         min(max(minutes, choices.first ?? 1), choices.last ?? 30)
     }
 }

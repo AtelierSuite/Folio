@@ -17,6 +17,11 @@ struct StandaloneAlarmMarkerView: View {
                 .allowsHitTesting(false)
             Menu {
                 Section(alarm.title) {
+                    AlarmSnoozeOverridePicker(minutes: Binding(
+                        get: { alarm.snoozeMinutes },
+                        set: { newValue in Task { await center.setSnoozeMinutes(newValue, for: alarm) } }
+                    ))
+                    .pickerStyle(.menu)
                     Button(
                         String(localized: "Marker.Delete", table: "StandaloneAlarms"),
                         systemImage: "trash",
