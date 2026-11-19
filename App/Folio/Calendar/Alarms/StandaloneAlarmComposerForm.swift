@@ -6,6 +6,8 @@ struct StandaloneAlarmComposerForm: View {
     @Binding var label: String
     @Binding var snoozeMinutes: Int?
     @Binding var sound: AlarmSound
+    /// Shown only when editing an alarm that's already set.
+    let delete: (() -> Void)?
 
     var body: some View {
         Form {
@@ -34,6 +36,17 @@ struct StandaloneAlarmComposerForm: View {
                 )
             } footer: {
                 Text(String(localized: "Composer.Footer", table: "StandaloneAlarms"))
+            }
+            if let delete {
+                Section {
+                    Button(
+                        String(localized: "Marker.Delete", table: "StandaloneAlarms"),
+                        role: .destructive,
+                        action: delete
+                    )
+                    .frame(maxWidth: .infinity)
+                    .accessibilityIdentifier("StandaloneAlarmEditor.Delete")
+                }
             }
         }
         .formStyle(.grouped)

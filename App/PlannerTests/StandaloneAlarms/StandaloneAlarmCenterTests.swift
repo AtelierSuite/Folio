@@ -43,19 +43,6 @@ struct StandaloneAlarmCenterTests {
         #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(3 * 60)])
     }
 
-    @Test func changingAnAlarmsSnoozeReschedulesIt() async throws {
-        let alarms = FakeAlarmClient()
-        let center = try makeCenter(alarms: alarms)
-        _ = await center.add(at: wakeTime, label: "Gym")
-        let alarm = try #require(center.alarms.first)
-        await center.setSnoozeMinutes(15, for: alarm)
-        #expect(alarms.scheduledCount == 1)
-        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(15 * 60)])
-        #expect(center.alarms.map(\.snoozeMinutes) == [15])
-        await center.setSnoozeMinutes(nil, for: try #require(center.alarms.first))
-        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(AlarmSnoozeSettings().duration)])
-    }
-
     @Test func anAlarmRingsWithItsChosenSound() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(alarms: alarms)
@@ -63,20 +50,36 @@ struct StandaloneAlarmCenterTests {
         #expect(alarms.scheduledAlarms.map(\.sound) == [.hibari])
     }
 
-    @Test func changingAnAlarmsSoundReplacesTheScheduledAlarm() async throws {
+    @Test func editingAnAlarmReplacesTheScheduledAlarm() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(alarms: alarms)
-        _ = await center.add(at: wakeTime, label: "Gym", snoozeMinutes: 5)
+        _ = await center.add(at: wakeTime, label: "Gym")
         let original = try #require(center.alarms.first)
-        await center.setSound(.kaminari, for: original)
-        let replaced = try #require(center.alarms.first)
+        let later = wakeTime.addingTimeInterval(1800)
+        let outcome = await center.update(original, at: later, label: "Run", snoozeMinutes: 5, sound: .kaminari)
+        #expect(outcome == .scheduled)
+        let edited = try #require(center.alarms.first)
         #expect(center.alarms.count == 1)
-        #expect(replaced.id != original.id)
-        #expect(replaced.label == "Gym")
-        #expect(replaced.snoozeMinutes == 5)
+        #expect(edited.id != original.id)
         #expect(alarms.scheduledCount == 1)
-        #expect(alarms.scheduledAlarms.map(\.id) == [replaced.id])
-        #expect(alarms.scheduledAlarms.map(\.sound) == [.kaminari])
+        let scheduled = try #require(alarms.scheduledAlarms.first)
+        #expect(scheduled.id == edited.id)
+        #expect(scheduled.fireDate == later)
+        #expect(scheduled.title == "Run")
+        #expect(scheduled.secondaryAction == .snooze(5 * 60))
+        #expect(scheduled.sound == .kaminari)
+    }
+
+    @Test func editingToAPastTimeKeepsTheOriginal() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(alarms: alarms)
+        _ = await center.add(at: wakeTime, label: "Gym")
+        let original = try #require(center.alarms.first)
+        let past = clock.now.addingTimeInterval(-60)
+        let outcome = await center.update(original, at: past, label: "Gym", snoozeMinutes: nil, sound: .system)
+        #expect(outcome == .pastDate)
+        #expect(center.alarms == [original])
+        #expect(alarms.scheduledAlarms.map(\.id) == [original.id])
     }
 
     @Test func anEmptyLabelFallsBackToADefaultTitle() async throws {

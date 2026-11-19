@@ -5,8 +5,8 @@ public struct StandaloneAlarm: Sendable, Hashable, Codable, Identifiable {
     public let id: UUID
     public let fireDate: Date
     public let label: String
-    /// `nil` follows the Snooze Time setting.
-    public var snoozeMinutes: Int?
+    /// `nil` follows the Default Snooze Time setting.
+    public let snoozeMinutes: Int?
     public let sound: AlarmSound
 
     public init(
@@ -17,11 +17,6 @@ public struct StandaloneAlarm: Sendable, Hashable, Codable, Identifiable {
         self.label = label
         self.snoozeMinutes = snoozeMinutes
         self.sound = sound
-    }
-
-    /// AlarmKit can't change a scheduled alarm's sound, so the new sound comes with a new identifier.
-    func replacingSound(with sound: AlarmSound) -> StandaloneAlarm {
-        StandaloneAlarm(fireDate: fireDate, label: label, snoozeMinutes: snoozeMinutes, sound: sound)
     }
 
     public var title: String {
