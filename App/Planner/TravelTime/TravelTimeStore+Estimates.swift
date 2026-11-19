@@ -14,24 +14,62 @@ extension TravelTimeStore {
         let date: Date
     }
 
-    /// Travel times from the current location to the upcoming events in `events`,
-    /// keyed by event ID. Recent estimates from about the same place are reused.
+    /// Travel times to the upcoming events in `events`, keyed by event ID. Each trip starts at the
+    /// previous timed event with a place that day, or at the chosen starting point when there is none.
+    /// Recent estimates from about the same place are reused.
     public func estimates(for events: [CalendarEvent]) async -> [String: TravelEstimate] {
         let date = now()
         let candidates = planner.candidates(in: events, now: date)
-        guard isEnabled, !candidates.isEmpty, let locator, locator.authorizationStatus == .granted,
-              let origin = await locator.currentCoordinate() else { return [:] }
+        guard isEnabled, !candidates.isEmpty, let locator, locator.authorizationStatus == .granted else { return [:] }
         let transport = transport
+        var hasLookedUpStartingPoint = false
+        var startingPoint: PlannerCoordinate?
         var estimates: [String: TravelEstimate] = [:]
         for event in candidates {
             guard !Task.isCancelled else { break }
-            guard let travelTime = await travelTime(to: event, from: origin, by: transport, now: date),
+            var origin = await previousEventOrigin(before: event, in: events)
+            if origin == nil {
+                if !hasLookedUpStartingPoint {
+                    startingPoint = await firstEventStartingPoint(locator: locator)
+                    hasLookedUpStartingPoint = true
+                }
+                origin = startingPoint
+            }
+            guard let origin,
+                  let travelTime = await travelTime(to: event, from: origin, by: transport, now: date),
                   planner.isShowable(travelTime) else { continue }
             estimates[event.id] = TravelEstimate(
                 eventID: event.id, eventStart: event.startDate, travelTime: travelTime, transport: transport
             )
         }
         return estimates
+    }
+
+    private func firstEventStartingPoint(locator: any CurrentLocating) async -> PlannerCoordinate? {
+        if firstEventOrigin == .specificLocation, let startingLocation,
+           let coordinate = await coordinate(for: startingLocation) {
+            return coordinate
+        }
+        return await locator.currentCoordinate()
+    }
+
+    private func coordinate(for location: EventLocation) async -> PlannerCoordinate? {
+        if let resolved = resolvedStartingLocations[location] {
+            return resolved
+        }
+        let coordinate = await resolver.coordinate(for: location)
+        if let coordinate {
+            resolvedStartingLocations[location] = coordinate
+        }
+        return coordinate
+    }
+
+    private func previousEventOrigin(
+        before event: CalendarEvent,
+        in events: [CalendarEvent]
+    ) async -> PlannerCoordinate? {
+        guard let previous = planner.previousPlacedEvent(before: event, in: events) else { return nil }
+        return await resolver.coordinate(for: previous)
     }
 
     private func travelTime(

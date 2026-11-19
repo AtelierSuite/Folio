@@ -14,6 +14,7 @@ struct TravelTimeSettingsSection: View {
                     get: { travelTime.transport },
                     set: { travelTime.setTransport($0) }
                 ), accessibilityIdentifier: "TravelTimeTransportPicker")
+                TravelOriginPicker()
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "TravelTime"))

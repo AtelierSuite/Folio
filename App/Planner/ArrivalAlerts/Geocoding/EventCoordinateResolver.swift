@@ -30,6 +30,13 @@ public struct EventCoordinateResolver: Sendable {
         }
     }
 
+    public func coordinate(for location: EventLocation) async -> PlannerCoordinate? {
+        if let coordinate = location.coordinate {
+            return PlannerCoordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        }
+        return try? await geocoder.coordinate(for: location.text.replacingOccurrences(of: "\n", with: ", "))
+    }
+
     static func query(for event: CalendarEvent) -> String? {
         let parts = (event.location ?? "")
             .split(separator: "\n")

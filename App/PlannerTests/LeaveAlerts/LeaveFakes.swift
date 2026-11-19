@@ -5,6 +5,11 @@ import Synchronization
 final class FakeTravelTimeEstimator: TravelTimeEstimating {
     private let travelTime: Mutex<TimeInterval?>
     private let isFailing = Mutex(false)
+    private let recordedOrigins = Mutex<[PlannerCoordinate]>([])
+
+    var origins: [PlannerCoordinate] {
+        recordedOrigins.withLock { $0 }
+    }
 
     init(travelTime: TimeInterval?) {
         self.travelTime = Mutex(travelTime)
@@ -27,6 +32,7 @@ final class FakeTravelTimeEstimator: TravelTimeEstimating {
         if isFailing.withLock({ $0 }) {
             throw FakeTravelTimeError.unreachable
         }
+        recordedOrigins.withLock { $0.append(origin) }
         return travelTime.withLock { $0 }
     }
 }
