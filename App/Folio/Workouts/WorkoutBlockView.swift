@@ -6,7 +6,7 @@ struct WorkoutBlockView: View {
     var body: some View {
         Rectangle()
             .fill(Color(.lime).opacity(0.1))
-            .overlay(alignment: .leading) {
+            .overlay(alignment: .trailing) {
                 Rectangle()
                     .fill(Color(.lime).opacity(0.45))
                     .frame(width: 3)
