@@ -3,8 +3,7 @@ import SwiftUI
 
 private enum DirectionsAppIconMetrics {
     static let side: CGFloat = 24
-    static let trailingGap: CGFloat = 8
-    static let canvasSize = CGSize(width: side + trailingGap, height: side)
+    static let canvasSize = CGSize(width: side, height: side)
     static let iconRect = CGRect(x: 0, y: 0, width: side, height: side)
     /// The share of the side that iOS rounds app icons by.
     static let cornerRadius = side * 0.2237
@@ -31,7 +30,7 @@ private enum DirectionsAppIconMetrics {
 import UIKit
 
 extension Image {
-    /// Menu pickers show the image at its own size with no gap before the title, so the shape and gap are drawn in.
+    /// Menu pickers show the image at its own size and don't round it, so the shape is drawn in.
     init(directionsAppIcon app: DirectionsApp) {
         guard let artwork = UIImage(named: DirectionsAppIconMetrics.assetName(for: app)) else {
             self.init(systemName: "map")
@@ -52,7 +51,7 @@ extension Image {
 import AppKit
 
 extension Image {
-    /// Menu pickers show the image at its own size with no gap before the title, so the shape and gap are drawn in.
+    /// Menu pickers show the image at its own size and don't round it, so the shape is drawn in.
     init(directionsAppIcon app: DirectionsApp) {
         guard let artwork = NSImage(named: DirectionsAppIconMetrics.assetName(for: app)) else {
             self.init(systemName: "map")
