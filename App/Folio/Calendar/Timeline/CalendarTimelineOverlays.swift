@@ -6,6 +6,8 @@ struct CalendarTimelineOverlays {
     let capabilities: PlatformCapabilities
     var weather: WeatherSnapshot = .empty
     var shadesNight = true
+    var showsHourlyForecast = true
+    var showsRainAlerts = true
     var showsEnergyLevel = false
     var energyLevelBleedsUnderEvents = true
 
@@ -33,6 +35,8 @@ struct CalendarTimelineOverlays {
     private func weatherLayers(for days: TimelineDays) -> [TimelineLayer] {
         guard capabilities.supports(.weather), weather.hasWeather else { return [] }
         let night: [TimelineLayer] = shadesNight ? [.weatherNight(weather)] : []
-        return night + [.weatherBand(weather), .rainHighlights(weather.rainHighlights)]
+        let band: [TimelineLayer] = showsHourlyForecast ? [.weatherBand(weather)] : []
+        let rain: [TimelineLayer] = showsRainAlerts ? [.rainHighlights(weather.rainHighlights)] : []
+        return night + band + rain
     }
 }
