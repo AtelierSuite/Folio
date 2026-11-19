@@ -2,7 +2,7 @@ import Foundation
 
 public extension DirectionsApp {
     static let all: [DirectionsApp] = [
-        .appleMaps, .googleMaps, .yahooMap, .yahooCarNavi, .kakaoMap, .naverMap
+        .appleMaps, .googleMaps, .yahooMap, .yahooCarNavi, .kakaoMap, .naverMap, .baiduMaps
     ]
 
     /// Some apps need to be told who opened them.
