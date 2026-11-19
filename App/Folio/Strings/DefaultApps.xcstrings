@@ -7,61 +7,61 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple Maps"
+            "value": "Maps"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple マップ"
+            "value": "マップ"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple 地图"
+            "value": "地图"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple 地圖"
+            "value": "地圖"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple 지도"
+            "value": "지도"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plans d’Apple"
+            "value": "Plans"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple Karten"
+            "value": "Karten"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mappe di Apple"
+            "value": "Mappe"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apple Kaarten"
+            "value": "Kaarten"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bản đồ Apple"
+            "value": "Bản đồ"
           }
         }
       }
@@ -143,25 +143,25 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google マップ"
+            "value": "Google Maps"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google 地图"
+            "value": "Google Maps"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google 地圖"
+            "value": "Google Maps"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Google 지도"
+            "value": "Google Maps"
           }
         },
         "fr": {
