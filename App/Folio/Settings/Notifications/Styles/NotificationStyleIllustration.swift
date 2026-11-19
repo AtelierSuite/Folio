@@ -70,6 +70,7 @@ struct NotificationStyleIllustration: View {
             Circle()
                 .frame(width: 9, height: 9)
         }
+        .opacity(0.45)
     }
 
     private var bottomButton: some View {
