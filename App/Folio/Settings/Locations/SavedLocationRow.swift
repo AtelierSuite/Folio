@@ -11,12 +11,18 @@ struct SavedLocationRow: View {
         Button {
             isEditing = true
         } label: {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(saved.name)
-                    .foregroundStyle(.primary)
-                Text(saved.summary)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(saved.name)
+                        .foregroundStyle(.primary)
+                    Text(saved.summary)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                if let coordinate = saved.location.coordinate {
+                    EventLocationMiniMap(coordinate: coordinate)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
