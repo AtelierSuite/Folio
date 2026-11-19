@@ -5,14 +5,22 @@ struct WorkoutTimelineLayerView: View {
     @Environment(WorkoutStore.self) private var store
     let context: TimelineLayerContext
     @State private var workouts: [Workout] = []
+    @State private var width: CGFloat = 0
+    @ScaledMetric(relativeTo: .caption2) private var labelHeight: CGFloat = 18
+    @ScaledMetric(relativeTo: .caption2) private var minimumLabelWidth: CGFloat = 26
 
     var body: some View {
         TimelineSlotLayout(dayCount: context.days.count, hourHeight: context.hourHeight) {
             ForEach(blocks) { block in
-                WorkoutBlockView(activity: block.activity, showsLabel: block.isFirst)
+                WorkoutBlockView()
                     .timelineSlot(TimelineSlot(block.segment))
             }
+            ForEach(labels) { label in
+                WorkoutBlockLabel(activity: label.activity)
+                    .timelineSlot(label.slot)
+            }
         }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
         .allowsHitTesting(false)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
@@ -25,10 +33,24 @@ struct WorkoutTimelineLayerView: View {
     private var blocks: [WorkoutBlock] {
         workouts.flatMap { workout in
             context.days.segments(from: workout.interval.start, to: workout.interval.end)
-                .enumerated()
-                .map { index, segment in
-                    WorkoutBlock(activity: workout.activity, isFirst: index == 0, segment: segment)
-                }
+                .map { WorkoutBlock(activity: workout.activity, segment: $0) }
+        }
+    }
+
+    /// Each workout is labelled once, in the first spot where the label won't run under an event card.
+    private var labels: [WorkoutLabel] {
+        let dayWidth = width / CGFloat(max(context.days.count, 1))
+        guard dayWidth > 0, context.hourHeight > 0 else { return [] }
+        let heightHours = Double(labelHeight / context.hourHeight)
+        let minimumWidthFraction = Double(minimumLabelWidth / dayWidth)
+        return workouts.compactMap { workout in
+            let segments = context.days.segments(from: workout.interval.start, to: workout.interval.end)
+            let slot = segments.lazy.compactMap { segment in
+                context.clearLabelSlot(
+                    in: segment, heightHours: heightHours, minimumWidthFraction: minimumWidthFraction
+                )
+            }.first
+            return slot.map { WorkoutLabel(id: workout.id, activity: workout.activity, slot: $0) }
         }
     }
 
@@ -61,8 +83,13 @@ struct WorkoutTimelineLayerView: View {
 
 private struct WorkoutBlock: Identifiable {
     let activity: WorkoutActivity
-    let isFirst: Bool
     let segment: TimelineDaySegment
 
     var id: TimelineDaySegment { segment }
+}
+
+private struct WorkoutLabel: Identifiable {
+    let id: UUID
+    let activity: WorkoutActivity
+    let slot: TimelineSlot
 }

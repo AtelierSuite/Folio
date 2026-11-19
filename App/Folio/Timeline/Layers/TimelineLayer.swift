@@ -7,6 +7,8 @@ struct TimelineLayerContext {
     /// How much of today's column is on screen, from 0 to 1. Only hour label layers get a live value,
     /// so layers there can fade as today scrolls away; elsewhere it stays at 1.
     var todayOnScreen = 1.0
+    /// Where the timed cards sit, so layers below them can keep their labels clear.
+    var cardSlots: [TimelineSlot] = []
 }
 
 /// Extra content drawn on the timeline (reminders, weather, sleep, a second time zone)
