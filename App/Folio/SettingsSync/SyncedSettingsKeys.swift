@@ -48,6 +48,8 @@ enum SyncedSettingsKeys {
 
     private static let travelKeys = [
         TravelTimeSettings.transportKey,
+        TravelTimeSettings.firstEventOriginKey,
+        TravelTimeSettings.startingLocationKey,
         LeaveAlertSettings.transportKey,
         LeaveAlertSettings.ringsAsAlarmKey,
         LeaveAlertSettings.alarmSoundKey

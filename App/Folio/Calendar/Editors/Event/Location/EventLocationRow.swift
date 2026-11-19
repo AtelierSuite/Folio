@@ -4,6 +4,7 @@ import SwiftUI
 struct EventLocationRow: View {
     @Binding var location: EventLocation?
     var offersSavedLocations = true
+    var placeholder = String(localized: "Field.Location", table: "EventEditor")
     @State private var isSearching = false
 
     var body: some View {
@@ -12,7 +13,7 @@ struct EventLocationRow: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(location?.title ?? String(localized: "Field.Location", table: "EventEditor"))
+                    Text(location?.title ?? placeholder)
                         .foregroundStyle(location == nil ? .secondary : .primary)
                     if let address = location?.address {
                         Text(address)

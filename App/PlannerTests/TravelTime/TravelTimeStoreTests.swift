@@ -15,7 +15,8 @@ struct TravelTimeStoreTests {
         status: PermissionStatus = .granted,
         origin: PlannerCoordinate? = LeaveFixtures.home,
         travelTime: TimeInterval? = 1500,
-        transport: TravelTransport = .walking
+        transport: TravelTransport = .walking,
+        geocoder: FakeGeocoder = FakeGeocoder()
     ) throws -> Harness {
         let defaults = try #require(UserDefaults(suiteName: "TravelTimeStoreTests.\(UUID().uuidString)"))
         let settings = TravelTimeSettings(defaults: defaults)
@@ -26,7 +27,7 @@ struct TravelTimeStoreTests {
         let store = TravelTimeStore(
             settings: settings,
             locator: locator,
-            resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
+            resolver: EventCoordinateResolver(geocoder: geocoder, cache: InMemoryGeocodeCache()),
             estimator: estimator,
             planner: TravelTimePlanner(calendar: Fixtures.calendar),
             now: { ArrivalFixtures.now }
@@ -127,5 +128,49 @@ struct TravelTimeStoreTests {
         let estimates = await harness.store.estimates(for: [placeless, lunch, dinner, tomorrow])
         #expect(estimates.count == 3)
         #expect(harness.estimator.origins == [LeaveFixtures.home, ArrivalFixtures.office, LeaveFixtures.home])
+    }
+
+    @Test func startsTheFirstEventFromTheChosenLocation() async throws {
+        let harness = try makeStore()
+        let station = ArrivalFixtures.coordinate(4)
+        harness.store.setFirstEventOrigin(.specificLocation)
+        harness.store.setStartingLocation(EventLocation(
+            title: "Station", coordinate: EventCoordinate(latitude: station.latitude, longitude: station.longitude)
+        ))
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        #expect(await harness.store.estimates(for: [lunch])[lunch.id] != nil)
+        #expect(harness.estimator.origins == [station])
+        #expect(harness.locator.requestCount == 0)
+    }
+
+    @Test func geocodesAChosenLocationWithoutACoordinate() async throws {
+        let station = ArrivalFixtures.coordinate(4)
+        let harness = try makeStore(geocoder: FakeGeocoder(results: ["Station, 1 Main St": station]))
+        harness.store.setFirstEventOrigin(.specificLocation)
+        harness.store.setStartingLocation(EventLocation(title: "Station", address: "1 Main St"))
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        _ = await harness.store.estimates(for: [lunch])
+        #expect(harness.estimator.origins == [station])
+    }
+
+    @Test func usesTheCurrentLocationUntilALocationIsChosen() async throws {
+        let harness = try makeStore()
+        harness.store.setFirstEventOrigin(.specificLocation)
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        _ = await harness.store.estimates(for: [lunch])
+        #expect(harness.estimator.origins == [LeaveFixtures.home])
+    }
+
+    @Test func keepsTheChosenLocationWhileStartingFromTheCurrentLocation() async throws {
+        let harness = try makeStore()
+        harness.store.setFirstEventOrigin(.specificLocation)
+        harness.store.setStartingLocation(EventLocation(
+            title: "Station", coordinate: EventCoordinate(latitude: 35, longitude: 139)
+        ))
+        harness.store.setFirstEventOrigin(.currentLocation)
+        let lunch = ArrivalFixtures.event("Lunch", start: ArrivalFixtures.hours(3))
+        _ = await harness.store.estimates(for: [lunch])
+        #expect(harness.estimator.origins == [LeaveFixtures.home])
+        #expect(harness.store.startingLocation?.title == "Station")
     }
 }

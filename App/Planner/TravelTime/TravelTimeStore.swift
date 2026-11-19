@@ -6,6 +6,8 @@ import Observation
 public final class TravelTimeStore {
     public private(set) var isEnabled: Bool
     public private(set) var transport: TravelTransport
+    public private(set) var firstEventOrigin: TravelOrigin
+    public private(set) var startingLocation: EventLocation?
     /// Bumped whenever a setting changes what views should show, so they reload.
     public private(set) var revision = 0
 
@@ -16,6 +18,7 @@ public final class TravelTimeStore {
     @ObservationIgnored let planner: TravelTimePlanner
     @ObservationIgnored let now: () -> Date
     @ObservationIgnored var cachedEstimates: [CachedEstimateKey: CachedEstimate] = [:]
+    @ObservationIgnored var resolvedStartingLocations: [EventLocation: PlannerCoordinate] = [:]
     @ObservationIgnored let estimateLifetime: TimeInterval = 10 * 60
     @ObservationIgnored let originTolerance: Double = 500
 
@@ -35,6 +38,8 @@ public final class TravelTimeStore {
         self.now = now
         isEnabled = settings.isEnabled
         transport = settings.transport
+        firstEventOrigin = settings.firstEventOrigin
+        startingLocation = settings.startingLocation
     }
 
     public func setEnabled(_ isEnabled: Bool) {
@@ -49,6 +54,18 @@ public final class TravelTimeStore {
         revision += 1
     }
 
+    public func setFirstEventOrigin(_ firstEventOrigin: TravelOrigin) {
+        settings.firstEventOrigin = firstEventOrigin
+        self.firstEventOrigin = firstEventOrigin
+        revision += 1
+    }
+
+    public func setStartingLocation(_ startingLocation: EventLocation?) {
+        settings.startingLocation = startingLocation
+        self.startingLocation = startingLocation
+        revision += 1
+    }
+
     public func locationAuthorizationDidChange() {
         revision += 1
     }
@@ -56,6 +73,8 @@ public final class TravelTimeStore {
     public func reloadSettings() {
         isEnabled = settings.isEnabled
         transport = settings.transport
+        firstEventOrigin = settings.firstEventOrigin
+        startingLocation = settings.startingLocation
         revision += 1
     }
 

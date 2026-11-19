@@ -66,67 +66,262 @@
         }
       }
     },
+    "Origin.CurrentLocation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktueller Standort"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current Location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position actuelle"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posizione attuale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在地"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 위치"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huidige locatie"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vị trí hiện tại"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前位置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目前位置"
+          }
+        }
+      }
+    },
+    "Origin.SpecificLocation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestimmter Ort"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specific Location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lieu précis"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luogo specifico"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定した場所"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지정한 위치"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specifieke locatie"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vị trí cụ thể"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定位置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定位置"
+          }
+        }
+      }
+    },
+    "Settings.FirstEventOrigin" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erster Termin startet von"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Event Starts From"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Départ du premier événement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partenza del primo evento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初の予定の出発地"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 일정 출발지"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eerste item start vanaf"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sự kiện đầu tiên bắt đầu từ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一个日程的出发地"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "第一個活動的出發地"
+          }
+        }
+      }
+    },
     "Settings.Footer" : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeigt direkt über jedem Termin im Kalender, wie lange du von deinem Standort zu anstehenden Terminen mit Ort brauchst."
+            "value" : "Zeigt direkt über jedem Termin im Kalender, wie lange du zu anstehenden Terminen mit Ort brauchst. Jede Fahrt beginnt beim vorherigen Termin mit Ort an diesem Tag, die erste an dem Ort, den du auswählst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Shows how long it takes to get from where you are to upcoming events that have a location, just above each event in the calendar."
+            "value" : "Shows how long it takes to get to upcoming events that have a location, just above each event in the calendar. Each trip starts from the previous event with a location that day, and the first one starts from the place you choose."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Indique le temps nécessaire pour vous rendre de l’endroit où vous êtes aux prochains événements qui ont un lieu, juste au-dessus de chaque événement dans le calendrier."
+            "value" : "Indique le temps nécessaire pour vous rendre aux prochains événements qui ont un lieu, juste au-dessus de chaque événement dans le calendrier. Chaque trajet part de l’événement précédent avec un lieu ce jour-là, et le premier part du lieu que vous choisissez."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostra quanto tempo serve per arrivare da dove ti trovi ai prossimi eventi con un luogo, appena sopra ogni evento nel calendario."
+            "value" : "Mostra quanto tempo serve per arrivare ai prossimi eventi con un luogo, appena sopra ogni evento nel calendario. Ogni tragitto parte dall’evento precedente con un luogo di quel giorno e il primo parte dal luogo che scegli."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "現在地から場所が設定された今後の予定までの移動時間を、カレンダーの各予定のすぐ上に表示します。"
+            "value" : "場所が設定された今後の予定までの移動時間を、カレンダーの各予定のすぐ上に表示します。移動はその日の場所が設定された前の予定から始まり、最初の予定は選択した場所から始まります。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "현재 위치에서 장소가 지정된 다가오는 일정까지 걸리는 시간을 캘린더의 각 일정 바로 위에 표시합니다."
+            "value" : "장소가 지정된 다가오는 일정까지 걸리는 시간을 캘린더의 각 일정 바로 위에 표시합니다. 각 이동은 그날 장소가 지정된 이전 일정에서 출발하며, 첫 일정은 선택한 위치에서 출발합니다."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toont direct boven elk agenda-item hoelang je erover doet om van je huidige locatie naar komende items met een locatie te gaan."
+            "value" : "Toont direct boven elk agenda-item hoelang je erover doet om naar komende items met een locatie te gaan. Elke rit start bij het vorige item met een locatie die dag, en de eerste start vanaf de plek die je kiest."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hiển thị thời gian để đi từ vị trí hiện tại của bạn đến các sự kiện sắp tới có địa điểm, ngay phía trên mỗi sự kiện trong lịch."
+            "value" : "Hiển thị thời gian để đi đến các sự kiện sắp tới có địa điểm, ngay phía trên mỗi sự kiện trong lịch. Mỗi chuyến đi bắt đầu từ sự kiện có địa điểm trước đó trong ngày, và chuyến đầu tiên bắt đầu từ nơi bạn chọn."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在日历中每个日程的上方，显示从你当前所在位置前往即将开始且设有地点的日程所需的时间。"
+            "value" : "在日历中每个日程的上方，显示前往即将开始且设有地点的日程所需的时间。每段行程从当天上一个设有地点的日程出发，第一个日程则从你选择的位置出发。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在行事曆中每個活動的上方，顯示從你目前所在位置前往即將開始且設有地點的活動所需的時間。"
+            "value" : "在行事曆中每個活動的上方，顯示前往即將開始且設有地點的活動所需的時間。每段行程從當天上一個設有地點的活動出發，第一個活動則從你選擇的位置出發。"
           }
         }
       }
@@ -192,6 +387,71 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "交通時間"
+          }
+        }
+      }
+    },
+    "Settings.StartingLocation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ort auswählen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Location"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un lieu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli un luogo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所を選択"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치 선택"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies een locatie"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn vị trí"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择位置"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇位置"
           }
         }
       }
