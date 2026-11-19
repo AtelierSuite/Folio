@@ -22,6 +22,15 @@ struct StandaloneAlarmMarkerView: View {
                         set: { newValue in Task { await center.setSnoozeMinutes(newValue, for: alarm) } }
                     ))
                     .pickerStyle(.menu)
+                    Picker(String(localized: "Row.Sound", table: "AlarmSounds"), selection: Binding(
+                        get: { alarm.sound },
+                        set: { newValue in Task { await center.setSound(newValue, for: alarm) } }
+                    )) {
+                        ForEach(AlarmSound.allCases) { sound in
+                            Text(sound.title).tag(sound)
+                        }
+                    }
+                    .pickerStyle(.menu)
                     Button(
                         String(localized: "Marker.Delete", table: "StandaloneAlarms"),
                         systemImage: "trash",

@@ -56,6 +56,29 @@ struct StandaloneAlarmCenterTests {
         #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(AlarmSnoozeSettings().duration)])
     }
 
+    @Test func anAlarmRingsWithItsChosenSound() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(alarms: alarms)
+        _ = await center.add(at: wakeTime, label: "Gym", sound: .hibari)
+        #expect(alarms.scheduledAlarms.map(\.sound) == [.hibari])
+    }
+
+    @Test func changingAnAlarmsSoundReplacesTheScheduledAlarm() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(alarms: alarms)
+        _ = await center.add(at: wakeTime, label: "Gym", snoozeMinutes: 5)
+        let original = try #require(center.alarms.first)
+        await center.setSound(.kaminari, for: original)
+        let replaced = try #require(center.alarms.first)
+        #expect(center.alarms.count == 1)
+        #expect(replaced.id != original.id)
+        #expect(replaced.label == "Gym")
+        #expect(replaced.snoozeMinutes == 5)
+        #expect(alarms.scheduledCount == 1)
+        #expect(alarms.scheduledAlarms.map(\.id) == [replaced.id])
+        #expect(alarms.scheduledAlarms.map(\.sound) == [.kaminari])
+    }
+
     @Test func anEmptyLabelFallsBackToADefaultTitle() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(alarms: alarms)

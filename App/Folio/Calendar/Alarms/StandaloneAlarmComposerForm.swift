@@ -1,9 +1,11 @@
+import Planner
 import SwiftUI
 
 struct StandaloneAlarmComposerForm: View {
     @Binding var fireDate: Date
     @Binding var label: String
     @Binding var snoozeMinutes: Int?
+    @Binding var sound: AlarmSound
 
     var body: some View {
         Form {
@@ -25,6 +27,11 @@ struct StandaloneAlarmComposerForm: View {
                 .accessibilityIdentifier("StandaloneAlarmComposer.Time")
                 AlarmSnoozeOverridePicker(minutes: $snoozeMinutes)
                     .accessibilityIdentifier("StandaloneAlarmComposer.Snooze")
+                AlarmSoundPicker(
+                    selection: sound,
+                    select: { sound = $0 },
+                    accessibilityIdentifier: "StandaloneAlarmComposer.Sound"
+                )
             } footer: {
                 Text(String(localized: "Composer.Footer", table: "StandaloneAlarms"))
             }

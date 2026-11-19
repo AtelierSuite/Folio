@@ -7,6 +7,7 @@ struct StandaloneAlarmComposerView: View {
     @State private var fireDate: Date
     @State private var label = ""
     @State private var snoozeMinutes: Int?
+    @State private var sound = AlarmSound.system
     @State private var isSaving = false
     @State private var failure: StandaloneAlarmComposerFailure?
 
@@ -41,8 +42,10 @@ struct StandaloneAlarmComposerView: View {
         if center.authorization == .denied {
             PermissionBlockedView(kind: .alarms, requestable: [])
         } else {
-            StandaloneAlarmComposerForm(fireDate: $fireDate, label: $label, snoozeMinutes: $snoozeMinutes)
-                .disabled(isSaving)
+            StandaloneAlarmComposerForm(
+                fireDate: $fireDate, label: $label, snoozeMinutes: $snoozeMinutes, sound: $sound
+            )
+            .disabled(isSaving)
         }
     }
 
@@ -67,7 +70,7 @@ struct StandaloneAlarmComposerView: View {
     private func save() async {
         isSaving = true
         defer { isSaving = false }
-        switch await center.add(at: fireDate, label: label, snoozeMinutes: snoozeMinutes) {
+        switch await center.add(at: fireDate, label: label, snoozeMinutes: snoozeMinutes, sound: sound) {
         case .scheduled: dismiss()
         case .denied: break
         case .pastDate: failure = .pastDate

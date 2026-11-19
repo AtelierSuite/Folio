@@ -40,7 +40,9 @@ public final class StandaloneAlarmCenter {
         authorization = await alarmClient.authorization()
     }
 
-    public func add(at fireDate: Date, label: String, snoozeMinutes: Int? = nil) async -> StandaloneAlarmAddOutcome {
+    public func add(
+        at fireDate: Date, label: String, snoozeMinutes: Int? = nil, sound: AlarmSound = .system
+    ) async -> StandaloneAlarmAddOutcome {
         guard isSupported else { return .failed }
         guard fireDate > clock() else { return .pastDate }
         if await alarmClient.authorization() == .notDetermined {
@@ -50,7 +52,10 @@ public final class StandaloneAlarmCenter {
         guard authorization.allowsScheduling else { return .denied }
         let wholeMinute = (fireDate.timeIntervalSinceReferenceDate / 60).rounded(.down) * 60
         let alarm = StandaloneAlarm(
-            fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute), label: label, snoozeMinutes: snoozeMinutes
+            fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute),
+            label: label,
+            snoozeMinutes: snoozeMinutes,
+            sound: sound
         )
         storage.alarms.append(alarm)
         let failed = await replan()
@@ -64,6 +69,14 @@ public final class StandaloneAlarmCenter {
         var stored = storage.alarms
         guard let index = stored.firstIndex(where: { $0.id == alarm.id }) else { return }
         stored[index].snoozeMinutes = minutes
+        storage.alarms = stored
+        await replan()
+    }
+
+    public func setSound(_ sound: AlarmSound, for alarm: StandaloneAlarm) async {
+        var stored = storage.alarms
+        guard let index = stored.firstIndex(where: { $0.id == alarm.id }), stored[index].sound != sound else { return }
+        stored[index] = stored[index].replacingSound(with: sound)
         storage.alarms = stored
         await replan()
     }
