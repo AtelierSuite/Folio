@@ -23,14 +23,16 @@ struct NotificationStyleIllustration: View {
     private var screen: some View {
         switch style {
         case .standard:
-            VStack {
+            VStack(spacing: 5) {
                 Spacer()
                 banner
+                lockScreenButtons
             }
         case .timeSensitive:
-            VStack {
+            VStack(spacing: 5) {
                 Spacer()
                 timeSensitiveBanner
+                lockScreenButtons
             }
         case .alarm:
             VStack(spacing: 5) {
@@ -58,6 +60,16 @@ struct NotificationStyleIllustration: View {
                 .frame(height: 14)
         }
         .clipShape(.rect(cornerRadius: 4, style: .continuous))
+    }
+
+    private var lockScreenButtons: some View {
+        HStack {
+            Circle()
+                .frame(width: 9, height: 9)
+            Spacer()
+            Circle()
+                .frame(width: 9, height: 9)
+        }
     }
 
     private var bottomButton: some View {
