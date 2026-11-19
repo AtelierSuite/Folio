@@ -40,7 +40,7 @@ struct StandaloneAlarmComposerForm: View {
             if let delete {
                 Section {
                     Button(
-                        String(localized: "Marker.Delete", table: "StandaloneAlarms"),
+                        String(localized: "Editor.Delete", table: "StandaloneAlarms"),
                         role: .destructive,
                         action: delete
                     )
