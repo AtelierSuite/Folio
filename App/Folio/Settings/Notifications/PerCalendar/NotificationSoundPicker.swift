@@ -8,23 +8,35 @@ struct NotificationSoundPicker: View {
     let player: NotificationSoundPreviewPlayer
 
     var body: some View {
-        Picker(selection: Binding(get: { selectedSound }, set: select)) {
-            if calendar != nil {
-                Text(NotificationSound.inheritedTitle(defaultSound))
-                    .tag(NotificationSound?.none)
-            }
-            ForEach(NotificationSound.choices(for: kind)) { sound in
-                Text(sound.title)
-                    .tag(NotificationSound?.some(sound))
-            }
-        } label: {
-            if calendar == nil {
-                Text(String(localized: "Row.DefaultSound", table: "NotificationSounds"))
-            } else {
-                Text(String(localized: "Row.Sound", table: "NotificationSounds"))
-            }
-        }
+        SoundPickerRow(
+            title: title,
+            options: options,
+            selection: Binding(get: { selectedSound }, set: select),
+            player: player,
+            preview: { sound in player.play(sound ?? defaultSound) }
+        )
         .accessibilityIdentifier(accessibilityIdentifier)
+    }
+
+    private var title: String {
+        calendar == nil
+            ? String(localized: "Row.DefaultSound", table: "NotificationSounds")
+            : String(localized: "Row.Sound", table: "NotificationSounds")
+    }
+
+    private var options: [SoundPickerOption<NotificationSound?>] {
+        var options: [SoundPickerOption<NotificationSound?>] = []
+        if calendar != nil {
+            options.append(SoundPickerOption(
+                sound: nil,
+                title: NotificationSound.inheritedTitle(defaultSound),
+                isPreviewable: defaultSound.isPreviewable
+            ))
+        }
+        options += NotificationSound.choices(for: kind).map { sound in
+            SoundPickerOption(sound: sound, title: sound.title, isPreviewable: sound.isPreviewable)
+        }
+        return options
     }
 
     private var defaultSound: NotificationSound {
@@ -48,7 +60,6 @@ struct NotificationSoundPicker: View {
     }
 
     private func select(_ sound: NotificationSound?) {
-        player.play(sound ?? defaultSound)
         Task {
             if let calendar {
                 await scheduler.setSound(sound, forCalendar: calendar.id)

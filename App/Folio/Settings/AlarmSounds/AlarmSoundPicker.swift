@@ -8,20 +8,15 @@ struct AlarmSoundPicker: View {
     @State private var player = AlarmSoundPreviewPlayer()
 
     var body: some View {
-        Picker(String(localized: "Row.Sound", table: "AlarmSounds"), selection: Binding(
-            get: { selection },
-            set: { sound in
-                player.play(sound)
-                select(sound)
-            }
-        )) {
-            ForEach(AlarmSound.allCases) { sound in
-                Text(sound.title).tag(sound)
-            }
-        }
+        SoundPickerRow(
+            title: String(localized: "Row.Sound", table: "AlarmSounds"),
+            options: AlarmSound.allCases.map { sound in
+                SoundPickerOption(sound: sound, title: sound.title, isPreviewable: sound.isPreviewable)
+            },
+            selection: Binding(get: { selection }, set: { sound in select(sound) }),
+            player: player,
+            preview: player.play
+        )
         .accessibilityIdentifier(accessibilityIdentifier)
-        .onDisappear {
-            player.stop()
-        }
     }
 }
