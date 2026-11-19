@@ -88,7 +88,8 @@ struct EventEditorView: View {
                         arrivalAlert: $arrivalAlert,
                         leaveAlert: $leaveAlert,
                         reference: editedEvent?.reference,
-                        calendars: store.writableEventCalendars
+                        calendars: store.writableEventCalendars,
+                        focusesTitle: editedEvent == nil
                     )
                 }
             }
