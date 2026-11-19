@@ -1,12 +1,13 @@
 import Planner
 import SwiftUI
 
-/// A line across the day at the alarm's time, with a badge that offers to delete it.
+/// A line across the day at the alarm's time, with a badge that opens the alarm to edit or delete it.
 struct StandaloneAlarmMarkerView: View {
     static let height: CGFloat = 20
 
     @Environment(StandaloneAlarmCenter.self) private var center
     let alarm: StandaloneAlarm
+    @State private var isEditing = false
 
     var body: some View {
         ZStack(alignment: .trailing) {
@@ -15,18 +16,26 @@ struct StandaloneAlarmMarkerView: View {
                 .frame(height: 1.5)
                 .frame(maxWidth: .infinity)
                 .allowsHitTesting(false)
-            Menu {
-                Section(alarm.title) {
-                    Button(
-                        String(localized: "Marker.Delete", table: "StandaloneAlarms"),
-                        systemImage: "trash",
-                        role: .destructive
-                    ) {
-                        Task { await center.remove(alarm) }
-                    }
-                }
+            Button {
+                isEditing = true
             } label: {
                 StandaloneAlarmBadge(time: time)
+            }
+            .buttonStyle(.plain)
+            .contextMenu {
+                Button(String(localized: "Marker.Edit", table: "StandaloneAlarms"), systemImage: "pencil") {
+                    isEditing = true
+                }
+                Button(
+                    String(localized: "Marker.Delete", table: "StandaloneAlarms"),
+                    systemImage: "trash",
+                    role: .destructive
+                ) {
+                    Task { await center.remove(alarm) }
+                }
+            }
+            .sheet(isPresented: $isEditing) {
+                StandaloneAlarmComposerView(editing: alarm)
             }
             .accessibilityLabel(String(
                 format: String(localized: "Marker.Accessibility", table: "StandaloneAlarms"), alarm.title, time

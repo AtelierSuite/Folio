@@ -1,6 +1,6 @@
 import Foundation
 
-public enum StandaloneAlarmAddOutcome: Sendable, Equatable {
+public enum StandaloneAlarmSaveOutcome: Sendable, Equatable {
     case scheduled
     case denied
     case pastDate

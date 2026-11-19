@@ -5,11 +5,18 @@ public struct StandaloneAlarm: Sendable, Hashable, Codable, Identifiable {
     public let id: UUID
     public let fireDate: Date
     public let label: String
+    /// `nil` follows the Default Snooze Time setting.
+    public let snoozeMinutes: Int?
+    public let sound: AlarmSound
 
-    public init(id: UUID = UUID(), fireDate: Date, label: String) {
+    public init(
+        id: UUID = UUID(), fireDate: Date, label: String, snoozeMinutes: Int? = nil, sound: AlarmSound = .system
+    ) {
         self.id = id
         self.fireDate = fireDate
         self.label = label
+        self.snoozeMinutes = snoozeMinutes
+        self.sound = sound
     }
 
     public var title: String {
@@ -25,7 +32,8 @@ public struct StandaloneAlarm: Sendable, Hashable, Codable, Identifiable {
             title: title,
             tint: nil,
             item: nil,
-            secondaryAction: .snooze
+            secondaryAction: .snooze(minutes: snoozeMinutes),
+            sound: sound
         )
     }
 }

@@ -40,7 +40,22 @@ public final class StandaloneAlarmCenter {
         authorization = await alarmClient.authorization()
     }
 
-    public func add(at fireDate: Date, label: String) async -> StandaloneAlarmAddOutcome {
+    public func add(
+        at fireDate: Date, label: String, snoozeMinutes: Int? = nil, sound: AlarmSound = .system
+    ) async -> StandaloneAlarmSaveOutcome {
+        await save(replacing: nil, at: fireDate, label: label, snoozeMinutes: snoozeMinutes, sound: sound)
+    }
+
+    /// AlarmKit can't change a scheduled alarm, so the edited alarm takes the original's place under a new identifier.
+    public func update(
+        _ alarm: StandaloneAlarm, at fireDate: Date, label: String, snoozeMinutes: Int?, sound: AlarmSound
+    ) async -> StandaloneAlarmSaveOutcome {
+        await save(replacing: alarm, at: fireDate, label: label, snoozeMinutes: snoozeMinutes, sound: sound)
+    }
+
+    private func save(
+        replacing original: StandaloneAlarm?, at fireDate: Date, label: String, snoozeMinutes: Int?, sound: AlarmSound
+    ) async -> StandaloneAlarmSaveOutcome {
         guard isSupported else { return .failed }
         guard fireDate > clock() else { return .pastDate }
         if await alarmClient.authorization() == .notDetermined {
@@ -49,11 +64,17 @@ public final class StandaloneAlarmCenter {
         authorization = await alarmClient.authorization()
         guard authorization.allowsScheduling else { return .denied }
         let wholeMinute = (fireDate.timeIntervalSinceReferenceDate / 60).rounded(.down) * 60
-        let alarm = StandaloneAlarm(fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute), label: label)
-        storage.alarms.append(alarm)
+        let alarm = StandaloneAlarm(
+            fireDate: Date(timeIntervalSinceReferenceDate: wholeMinute),
+            label: label,
+            snoozeMinutes: snoozeMinutes,
+            sound: sound
+        )
+        let previous = storage.alarms
+        storage.alarms = previous.filter { $0.id != original?.id } + [alarm]
         let failed = await replan()
         guard failed.contains(alarm.id) else { return .scheduled }
-        storage.alarms.removeAll { $0.id == alarm.id }
+        storage.alarms = previous
         await replan()
         return .failed
     }

@@ -1,67 +1,197 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Snooze.Default": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default (%@)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルト（%@）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认（%@）"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預設（%@）"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기본값(%@)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par défaut (%@)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard (%@)"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Predefinita (%@)"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standaard (%@)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mặc định (%@)"
+          }
+        }
+      }
+    },
+    "Snooze.DefaultTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default Snooze Time"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デフォルトのスヌーズの間隔"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认稍后提醒时长"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預設稍後提醒時長"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기본 다시 알림 간격"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée de répétition par défaut"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard-Schlummerdauer"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata posticipo predefinita"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standaardsluimertijd"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian báo lại mặc định"
+          }
+        }
+      }
+    },
     "Snooze.Footer": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "How long an alarm waits before ringing again after you tap Snooze. Applies to event, reminder, wake-up and calendar alarms."
+            "value": "How long an alarm waits before ringing again after you tap Snooze. Event and reminder alarms use this time; wake-up and calendar alarms use it unless you choose their own."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "スヌーズをタップしてからアラームが再び鳴るまでの時間です。イベント、リマインダー、起床、カレンダーのアラームに適用されます。"
+            "value": "スヌーズをタップしてからアラームが再び鳴るまでの時間です。イベントとリマインダーのアラームはこの時間を使います。起床アラームとカレンダーのアラームは、個別に設定しない限りこの時間を使います。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "轻点“稍后提醒”后闹钟再次响起前等待的时间。适用于日程、提醒事项、起床和日历闹钟。"
+            "value": "轻点“稍后提醒”后闹钟再次响起前等待的时间。日程和提醒事项闹钟使用此时间；起床闹钟和日历闹钟除非单独设定，否则也使用此时间。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "點一下「稍後提醒」後鬧鐘再次響起前等待的時間。適用於行程、提醒事項、起床和行事曆鬧鐘。"
+            "value": "點一下「稍後提醒」後鬧鐘再次響起前等待的時間。行程和提醒事項鬧鐘使用此時間；起床鬧鐘和行事曆鬧鐘除非個別設定，否則也使用此時間。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "다시 알림을 탭한 후 알람이 다시 울릴 때까지의 시간입니다. 이벤트, 미리 알림, 기상 및 캘린더 알람에 적용됩니다."
+            "value": "다시 알림을 탭한 후 알람이 다시 울리기까지 기다리는 시간입니다. 이벤트 및 미리 알림 알람은 이 시간을 사용하며, 기상 알람과 캘린더 알람은 따로 설정하지 않으면 이 시간을 사용합니다."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Délai avant qu’une alarme ne sonne à nouveau après avoir touché Répéter. S’applique aux alarmes d’évènements, de rappels, de réveil et du calendrier."
+            "value": "Temps d’attente avant que l’alarme ne sonne à nouveau après avoir touché Répéter. Les alarmes d’événements et de rappels utilisent cette durée ; les alarmes de réveil et du calendrier l’utilisent sauf si vous leur en choisissez une."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wie lange ein Wecker nach dem Tippen auf „Schlummern“ wartet, bevor er erneut klingelt. Gilt für Ereignis-, Erinnerungs-, Aufwach- und Kalenderwecker."
+            "value": "Wie lange ein Wecker nach dem Tippen auf „Schlummern“ wartet, bevor er erneut klingelt. Termin- und Erinnerungswecker verwenden diese Dauer; Aufwach- und Kalenderwecker auch, sofern du keine eigene auswählst."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quanto attende una sveglia prima di suonare di nuovo dopo aver toccato Posticipa. Vale per le sveglie di eventi, promemoria, risveglio e calendario."
+            "value": "Quanto attende una sveglia prima di suonare di nuovo dopo aver toccato Posticipa. Le sveglie di eventi e promemoria usano questa durata; le sveglie del risveglio e del calendario la usano a meno che tu non ne scelga una propria."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoelang een wekker wacht voordat hij opnieuw afgaat nadat je op Sluimer tikt. Geldt voor wekkers van activiteiten, herinneringen, wakker worden en de agenda."
+            "value": "Hoelang een wekker wacht voordat hij opnieuw afgaat nadat je op Sluimer tikt. Wekkers voor activiteiten en herinneringen gebruiken deze tijd; wek- en agendawekkers ook, tenzij je er een eigen tijd voor kiest."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thời gian chờ trước khi báo thức đổ chuông lại sau khi bạn chạm vào Báo lại. Áp dụng cho báo thức sự kiện, lời nhắc, thức dậy và lịch."
+            "value": "Thời gian báo thức chờ trước khi đổ chuông lại sau khi bạn chạm vào Báo lại. Báo thức sự kiện và lời nhắc dùng thời gian này; báo thức thức dậy và báo thức lịch cũng dùng thời gian này trừ khi bạn chọn riêng."
           }
         }
       }

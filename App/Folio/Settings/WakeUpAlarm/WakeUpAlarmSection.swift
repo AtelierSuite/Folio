@@ -26,6 +26,7 @@ struct WakeUpAlarmSection: View {
                     select: { sound in Task { await wakeUpAlarms.setSound(sound) } },
                     accessibilityIdentifier: "WakeUpAlarmSoundPicker"
                 )
+                WakeUpSnoozePicker()
             }
         } header: {
             Text(String(localized: "Section", table: "WakeUpAlarms"))

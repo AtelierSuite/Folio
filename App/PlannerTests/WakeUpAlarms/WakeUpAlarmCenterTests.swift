@@ -63,6 +63,16 @@ struct WakeUpAlarmCenterTests {
         #expect(center.sound == .kaminari)
     }
 
+    @Test func changingTheSnoozeReschedulesWithTheNewSnooze() async throws {
+        let alarms = FakeAlarmClient()
+        let center = try makeCenter(events: [standup], alarms: alarms)
+        await center.setEnabled(true)
+        await center.setSnoozeMinutes(4)
+        #expect(alarms.scheduledCount == 1)
+        #expect(alarms.scheduledAlarms.map(\.secondaryAction) == [.snooze(4 * 60)])
+        #expect(center.snoozeMinutes == 4)
+    }
+
     @Test func changingTheLeadTimeReschedulesAndDisablingCancels() async throws {
         let alarms = FakeAlarmClient()
         let center = try makeCenter(events: [standup], alarms: alarms)

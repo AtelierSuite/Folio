@@ -14,6 +14,8 @@ public final class WakeUpAlarmCenter {
     public internal(set) var addsTravelTime: Bool
     public internal(set) var transport: TravelTransport
     public internal(set) var sound: AlarmSound
+    /// `nil` follows the Snooze Time setting.
+    public internal(set) var snoozeMinutes: Int?
     public internal(set) var locationAuthorization: ArrivalAuthorization = .notDetermined
     /// Runs work started by a location change, which may have woken the app in the background.
     @ObservationIgnored public var performBackgroundWork: @MainActor (@escaping @MainActor () async -> Void) -> Void
@@ -84,6 +86,7 @@ public final class WakeUpAlarmCenter {
         addsTravelTime = settings.addsTravelTime
         transport = settings.transport
         sound = settings.sound
+        snoozeMinutes = settings.snoozeMinutes
         attachLocationMonitor()
     }
 
@@ -141,7 +144,7 @@ public final class WakeUpAlarmCenter {
                 alarmPlanner.alarms(for: events, after: lookBackStart, travelTimes: travelTimes).map(\.source)
             )
         }
-        let requests = alarms.map { $0.request(formatter: formatter, sound: sound) }
+        let requests = alarms.map { $0.request(formatter: formatter, sound: sound, snoozeMinutes: snoozeMinutes) }
         let outcome = await AlarmSynchronizer(client: alarmClient, ledger: ledger)
             .synchronize(requests, liveSources: liveSources)
         let failed = Set(outcome.failed.map(\.id))

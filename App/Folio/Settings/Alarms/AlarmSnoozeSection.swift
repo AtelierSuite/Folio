@@ -9,7 +9,7 @@ struct AlarmSnoozeSection: View {
 
     var body: some View {
         Section {
-            Picker(String(localized: "Snooze.Time", table: "Alarms"), selection: $minutes) {
+            Picker(String(localized: "Snooze.DefaultTime", table: "Alarms"), selection: $minutes) {
                 ForEach(AlarmSnoozeSettings.choices, id: \.self) { choice in
                     Text(NotificationSnoozeDurations.title(forMinutes: choice)).tag(choice)
                 }
