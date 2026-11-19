@@ -9,7 +9,12 @@ struct DefaultAppsSettingsSection: View {
         Section {
             Picker(String(localized: "Settings.Maps", table: "DefaultApps"), selection: mapsApp) {
                 ForEach(mapsApps) { app in
-                    Text(app.title).tag(app)
+                    Label {
+                        Text(app.title)
+                    } icon: {
+                        Image(directionsAppIcon: app)
+                    }
+                    .tag(app)
                 }
             }
             .accessibilityIdentifier("DefaultMapsAppPicker")
