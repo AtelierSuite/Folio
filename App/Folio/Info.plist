@@ -24,6 +24,7 @@
 		<string>comgooglemaps</string>
 		<string>yjcarnavi</string>
 		<string>kakaomap</string>
+		<string>nmap</string>
 	</array>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus.</string>
