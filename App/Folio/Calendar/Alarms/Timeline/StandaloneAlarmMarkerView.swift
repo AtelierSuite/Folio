@@ -1,7 +1,7 @@
 import Planner
 import SwiftUI
 
-/// A line across the day at the alarm's time, with a badge that opens the alarm to edit or delete it.
+/// A line across the day at the alarm's time, with a badge that opens the alarm to edit it.
 struct StandaloneAlarmMarkerView: View {
     static let height: CGFloat = 20
 
@@ -23,9 +23,6 @@ struct StandaloneAlarmMarkerView: View {
             }
             .buttonStyle(.plain)
             .contextMenu {
-                Button(String(localized: "Marker.Edit", table: "StandaloneAlarms"), systemImage: "pencil") {
-                    isEditing = true
-                }
                 Button(
                     String(localized: "Marker.Delete", table: "StandaloneAlarms"),
                     systemImage: "trash",
