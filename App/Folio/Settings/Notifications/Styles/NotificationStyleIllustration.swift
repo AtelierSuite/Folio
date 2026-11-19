@@ -54,11 +54,14 @@ struct NotificationStyleIllustration: View {
     }
 
     private var timeSensitiveBanner: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Capsule()
-                .frame(width: 22, height: 4)
-            banner
+        VStack(spacing: 0) {
+            Rectangle()
+                .opacity(0.45)
+                .frame(height: 7)
+            Rectangle()
+                .frame(height: 14)
         }
+        .clipShape(.rect(cornerRadius: 4, style: .continuous))
     }
 
     private var bottomButton: some View {
