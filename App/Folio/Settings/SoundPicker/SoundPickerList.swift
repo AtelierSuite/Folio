@@ -15,7 +15,7 @@ struct SoundPickerList<Sound: Hashable>: View {
                         title: option.title,
                         isSelected: option.sound == selection,
                         isPreviewable: option.isPreviewable,
-                        isPlaying: player.isPlaying && previewedSound == option.sound,
+                        playback: previewedSound == option.sound ? player.playback : nil,
                         select: { selection = option.sound },
                         togglePreview: { togglePreview(of: option.sound) }
                     )
@@ -29,7 +29,7 @@ struct SoundPickerList<Sound: Hashable>: View {
     }
 
     private func togglePreview(of sound: Sound) {
-        if player.isPlaying && previewedSound == sound {
+        if player.playback != nil && previewedSound == sound {
             player.stop()
         } else {
             previewedSound = sound

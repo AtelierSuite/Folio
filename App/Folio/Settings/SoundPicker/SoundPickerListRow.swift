@@ -4,7 +4,7 @@ struct SoundPickerListRow: View {
     let title: String
     let isSelected: Bool
     let isPreviewable: Bool
-    let isPlaying: Bool
+    let playback: DateInterval?
     let select: () -> Void
     let togglePreview: () -> Void
 
@@ -25,23 +25,8 @@ struct SoundPickerListRow: View {
             .accessibilityAddTraits(isSelected ? .isSelected : [])
             .accessibilityIdentifier("SoundOption.\(title)")
             if isPreviewable {
-                Button(action: togglePreview) {
-                    Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
-                        .font(.title2)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.tint)
-                        .contentTransition(.symbolEffect(.replace))
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(previewLabel)
-                .accessibilityIdentifier("SoundPreview.\(title)")
+                SoundPreviewButton(title: title, playback: playback, action: togglePreview)
             }
         }
-    }
-
-    private var previewLabel: String {
-        isPlaying
-            ? String(localized: "Preview.Stop \(title)", table: "SoundPicker")
-            : String(localized: "Preview.Play \(title)", table: "SoundPicker")
     }
 }

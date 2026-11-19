@@ -4,7 +4,7 @@ import Planner
 
 @Observable
 final class NotificationSoundPreviewPlayer: SoundPreviewing {
-    private(set) var isPlaying = false
+    private(set) var playback: DateInterval?
     @ObservationIgnored private var player: AVAudioPlayer?
     @ObservationIgnored private var finishTask: Task<Void, Never>?
 
@@ -13,7 +13,7 @@ final class NotificationSoundPreviewPlayer: SoundPreviewing {
         guard let url = sound.bundleURL, let player = try? AVAudioPlayer(contentsOf: url) else { return }
         self.player = player
         player.play()
-        isPlaying = true
+        playback = DateInterval(start: .now, duration: player.duration)
         finishTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(player.duration))
             guard !Task.isCancelled else { return }
@@ -26,7 +26,7 @@ final class NotificationSoundPreviewPlayer: SoundPreviewing {
         finishTask = nil
         player?.stop()
         player = nil
-        isPlaying = false
+        playback = nil
     }
 }
 

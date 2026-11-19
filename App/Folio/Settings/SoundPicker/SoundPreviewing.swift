@@ -1,4 +1,6 @@
+import Foundation
+
 protocol SoundPreviewing: AnyObject {
-    var isPlaying: Bool { get }
+    var playback: DateInterval? { get }
     func stop()
 }
