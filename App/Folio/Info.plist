@@ -19,6 +19,10 @@
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+	</array>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Folio uses alarms to alert you to events and reminders you set to the Alarm style, even in Silent mode or a Focus.</string>
 	<key>NSUbiquitousContainers</key>
