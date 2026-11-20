@@ -13,13 +13,8 @@ struct OnboardingFinalBadge: View {
     var body: some View {
         let diameter = state == .current ? Metrics.currentDiameter : Metrics.diameter
         ZStack {
-            if state == .current {
-                OnboardingFinalCurrentRing()
-                    .frame(width: diameter + 16, height: diameter + 16)
-                    .transition(.scale.combined(with: .opacity))
-            }
             symbol(diameter: diameter)
-                .foregroundStyle(.white.opacity(state == .upcoming ? 0.8 : 1))
+                .foregroundStyle(symbolStyle)
                 .frame(width: diameter, height: diameter)
                 .glassEffect(glass, in: .circle)
         }
@@ -40,10 +35,18 @@ struct OnboardingFinalBadge: View {
         }
     }
 
+    private var symbolStyle: Color {
+        switch state {
+        case .upcoming: .white.opacity(0.8)
+        case .current: OnboardingFinalPalette.tint(for: step)
+        case .completed: .white
+        }
+    }
+
     private var glass: Glass {
         switch state {
         case .upcoming: .regular
-        case .current: .regular.tint(OnboardingFinalPalette.tint(for: step).opacity(0.85))
+        case .current: .regular.tint(.white)
         case .completed: .regular.tint(OnboardingFinalPalette.tint(for: step).opacity(0.6))
         }
     }
@@ -56,13 +59,5 @@ struct OnboardingFinalBadge: View {
         static let diameter: CGFloat = 32
         static let currentDiameter: CGFloat = 44
         #endif
-    }
-}
-
-private struct OnboardingFinalCurrentRing: View {
-    var body: some View {
-        Circle()
-            .strokeBorder(.white.opacity(0.9), lineWidth: 2)
-            .shadow(color: .white.opacity(0.8), radius: 5)
     }
 }
