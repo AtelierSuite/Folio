@@ -66,8 +66,7 @@ struct OnboardingContent: View {
     }
 
     private var button: some View {
-        OnboardingButton(context: displayedContext)
-            .disabled(stage.isTransitioning)
+        OnboardingButton(context: context)
     }
 
     private func transition() async {

@@ -7,7 +7,6 @@ struct OnboardingStage: Equatable {
     var lineIndex: Int?
     var highlightedIndex: Int?
     var declinedSteps: Set<OnboardingSetupStep> = []
-    var isTransitioning = false
 
     static func settled(
         at step: OnboardingStep,
@@ -36,7 +35,6 @@ struct OnboardingStage: Equatable {
             stage.wrappedValue = settled(at: step, index: index, declinedSteps: declinedSteps)
             return
         }
-        stage.wrappedValue.isTransitioning = true
         withAnimation(.easeOut(duration: 0.3)) { stage.wrappedValue.isTextHidden = true }
         try? await Task.sleep(for: .seconds(0.3))
         withAnimation(.spring(duration: 0.5, bounce: 0.4)) {
@@ -52,6 +50,5 @@ struct OnboardingStage: Equatable {
             stage.wrappedValue.displayedStep = step
             stage.wrappedValue.isTextHidden = false
         }
-        stage.wrappedValue.isTransitioning = false
     }
 }
