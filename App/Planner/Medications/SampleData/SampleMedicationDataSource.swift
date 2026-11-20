@@ -39,6 +39,8 @@ public struct SampleMedicationDataSource: MedicationDataSource {
 
     public func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}
 
+    public func stopObservingChanges() {}
+
     private func record(
         _ medication: Medication,
         day: Date,

@@ -13,7 +13,8 @@ public final class SleepStore {
     @ObservationIgnored private let preferences: SleepPreferences
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var cachedSamples: [DateInterval: [SleepSample]] = [:]
-    @ObservationIgnored private var isObserving = false
+    @ObservationIgnored private(set) var isObserving = false
+    @ObservationIgnored private let observedChanges = CoalescedRefresh()
     private static let cacheLimit = 12
 
     public init(
@@ -42,9 +43,7 @@ public final class SleepStore {
         guard isAvailable else { return }
         preferences.showsOnTimeline = isShown
         isShownOnTimeline = isShown
-        if isShown {
-            startObservingChanges()
-        }
+        updateObservation()
         invalidate()
     }
 
@@ -56,9 +55,7 @@ public final class SleepStore {
         guard isAvailable else { return }
         preferences.informsFlexTime = informsFlexTime
         self.informsFlexTime = informsFlexTime
-        if informsFlexTime {
-            startObservingChanges()
-        }
+        updateObservation()
         invalidate()
     }
 
@@ -88,8 +85,14 @@ public final class SleepStore {
         guard isRead, !isObserving, let source else { return }
         isObserving = true
         source.startObservingChanges { [weak self] in
-            await self?.refreshLastNight()
+            await self?.handleObservedChange()
         }
+    }
+
+    public func stopObservingChanges() {
+        guard isObserving, let source else { return }
+        isObserving = false
+        source.stopObservingChanges()
     }
 
     public func invalidate() {
@@ -97,9 +100,38 @@ public final class SleepStore {
         revision += 1
     }
 
-    func refreshLastNight() async {
-        invalidate()
-        _ = await lastNight()
+    func handleObservedChange() async {
+        await observedChanges.run { [weak self] in
+            await self?.reloadCachedSamples()
+        }
+    }
+
+    private func updateObservation() {
+        if isRead {
+            startObservingChanges()
+        } else {
+            stopObservingChanges()
+        }
+    }
+
+    /// Re-reads what's been read so far, and only bumps `revision` when it changed, so a Health sync
+    /// writing many samples doesn't reload the timeline for each one. A failed read, such as while
+    /// the device is locked, keeps what's cached.
+    private func reloadCachedSamples() async {
+        guard isRead, let source else { return }
+        var intervals = Set(cachedSamples.keys)
+        intervals.insert(SleepWindow.fetchInterval(covering: SleepWindow.lastNight(now: now(), calendar: .current)))
+        var hasChanged = false
+        for interval in intervals {
+            guard let samples = try? await source.samples(in: interval) else { continue }
+            if let cached = cachedSamples[interval], cached != samples {
+                hasChanged = true
+            }
+            cachedSamples[interval] = samples
+        }
+        if hasChanged {
+            revision += 1
+        }
     }
 
     private func samples(in interval: DateInterval) async -> [SleepSample] {
