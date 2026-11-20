@@ -40,7 +40,7 @@ struct NoteEditingSessionTests {
         await Task.yield()
         session.text = "First and second"
         await session.flush()
-        await firstSave.value
+        _ = await firstSave.value
 
         #expect(session.conflictedCopyURL == nil)
         #expect(session.text == "First and second")
@@ -62,5 +62,32 @@ struct NoteEditingSessionTests {
         #expect(session.text == "Typed more")
         #expect(!session.hasUnsavedChanges)
         #expect(try savedText(of: session) == "Typed more")
+    }
+
+    @Test func aFailedSaveKeepsTheEditorAndTextUntilARetrySucceeds() async throws {
+        let session = try await makeSession()
+        let folderURL = session.url.deletingLastPathComponent()
+        try setPermissions(0o555, of: folderURL)
+        defer { try? setPermissions(0o755, of: folderURL) }
+
+        session.text = "Kept"
+        let savedWhileReadOnly = await session.flush()
+
+        #expect(!savedWhileReadOnly)
+        #expect(session.state == .ready)
+        #expect(session.saveFailureMessage != nil)
+        #expect(session.text == "Kept")
+        #expect(session.hasUnsavedChanges)
+
+        try setPermissions(0o755, of: folderURL)
+        let savedAfterRetry = await session.flush()
+
+        #expect(savedAfterRetry)
+        #expect(session.saveFailureMessage == nil)
+        #expect(try savedText(of: session) == "Kept")
+    }
+
+    private func setPermissions(_ permissions: Int, of url: URL) throws {
+        try FileManager.default.setAttributes([.posixPermissions: permissions], ofItemAtPath: url.path)
     }
 }

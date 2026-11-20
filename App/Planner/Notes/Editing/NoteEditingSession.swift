@@ -14,6 +14,7 @@ public final class NoteEditingSession {
     public let focusesEditorOnOpen: Bool
     public private(set) var state = State.loading
     public private(set) var savedNote: Note?
+    public private(set) var saveFailureMessage: String?
     public var conflictedCopyURL: URL?
     public var text = "" {
         didSet {
@@ -29,6 +30,7 @@ public final class NoteEditingSession {
     @ObservationIgnored private var latestSave: Task<Void, Never>?
     @ObservationIgnored private var saveGeneration = 0
     @ObservationIgnored private var isClosed = false
+    @ObservationIgnored private var failedSaveAttempts = 0
 
     public init(
         url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false, saveDelay: Duration = .seconds(1)
@@ -57,10 +59,18 @@ public final class NoteEditingSession {
         }
     }
 
-    public func flush() async {
+    @discardableResult
+    public func flush() async -> Bool {
         saveTask?.cancel()
         saveTask = nil
         await enqueueSave().value
+        return !hasUnsavedChanges
+    }
+
+    public func retrySave() {
+        Task {
+            await flush()
+        }
     }
 
     public func didMove(to newURL: URL) {
@@ -89,13 +99,13 @@ public final class NoteEditingSession {
         }
     }
 
-    private func scheduleSave() {
+    private func scheduleSave(after delay: Duration? = nil) {
         guard state == .ready, !isClosed else {
             return
         }
         saveTask?.cancel()
-        saveTask = Task { [weak self, saveDelay] in
-            try? await Task.sleep(for: saveDelay)
+        saveTask = Task { [weak self, delay = delay ?? saveDelay] in
+            try? await Task.sleep(for: delay)
             guard !Task.isCancelled, let self else {
                 return
             }
@@ -132,9 +142,17 @@ public final class NoteEditingSession {
                 apply(current)
                 conflictedCopyURL = copyURL
             }
+            failedSaveAttempts = 0
+            saveFailureMessage = nil
         } catch {
-            state = .failed(error.localizedDescription)
+            failedSaveAttempts += 1
+            saveFailureMessage = error.localizedDescription
+            scheduleSave(after: retryDelay)
         }
+    }
+
+    private var retryDelay: Duration {
+        .seconds(min(60, 1 << min(failedSaveAttempts, 6)))
     }
 
     private func apply(_ note: Note) {
