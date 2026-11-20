@@ -17,12 +17,13 @@ struct OnboardingFinalTimelineGeometry {
         verticalInset + CGFloat(hour) * rowHeight + rowHeight / 2
     }
 
-    func eventFrame(_ event: OnboardingFinalEvent) -> CGRect {
+    func eventFrame(_ event: OnboardingFinalEvent, isSharingRow: Bool) -> CGRect {
         let minY = yPosition(event.start)
+        let fraction = isSharingRow ? OnboardingFinalEvent.sharedWidthFraction : OnboardingFinalEvent.fullWidthFraction
         return CGRect(
             x: contentMinX + 6,
             y: minY,
-            width: contentWidth * event.widthFraction,
+            width: (contentWidth - 6) * fraction,
             height: yPosition(event.end) - minY
         )
     }
@@ -43,22 +44,26 @@ struct OnboardingFinalEvent: Identifiable {
     let id: Int
     let start: Double
     let end: Double
-    let widthFraction: Double
     let color: Color
 
     static let samples: [OnboardingFinalEvent] = [
-        OnboardingFinalEvent(id: 0, start: 1.9, end: 2.95, widthFraction: 0.56, color: .blue),
-        OnboardingFinalEvent(id: 1, start: 3.75, end: 5.0, widthFraction: 0.5, color: .purple),
-        OnboardingFinalEvent(id: 2, start: 5.6, end: 6.75, widthFraction: 0.56, color: .green)
+        OnboardingFinalEvent(id: 0, start: 1.9, end: 2.95, color: .blue),
+        OnboardingFinalEvent(id: 1, start: 3.75, end: 5.0, color: .purple),
+        OnboardingFinalEvent(id: 2, start: 5.6, end: 6.75, color: .green)
     ]
 
     static let alertedIndex = 1
+    static let sharedWidthFraction = 0.6
+    static let fullWidthFraction = 1.0
 }
 
 enum OnboardingFinalLayerState: Equatable {
     case hidden
     case current
     case completed
+    case declined
+
+    var isShown: Bool { self == .current || self == .completed }
 
     var tintOpacity: Double { self == .current ? 0.6 : 0.3 }
     var contentOpacity: Double { self == .current ? 1 : 0.7 }

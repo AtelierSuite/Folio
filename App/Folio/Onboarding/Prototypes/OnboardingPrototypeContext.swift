@@ -5,6 +5,7 @@ struct OnboardingPrototypeContext {
     let plannedSteps: [OnboardingSetupStep]
     let features: [OnboardingFeature]
     let advance: () -> Void
+    var declinedSteps: Set<OnboardingSetupStep> = []
 
     var currentSetupStep: OnboardingSetupStep? {
         if case .setup(let setupStep) = step { setupStep } else { nil }

@@ -4,6 +4,7 @@ enum OnboardingFinalBadgeState {
     case upcoming
     case current
     case completed
+    case declined
 }
 
 struct OnboardingFinalBadge: View {
@@ -24,8 +25,8 @@ struct OnboardingFinalBadge: View {
 
     @ViewBuilder
     private func symbol(diameter: CGFloat) -> some View {
-        if state == .completed {
-            Image(systemName: "checkmark")
+        if state == .completed || state == .declined {
+            Image(systemName: state == .completed ? "checkmark" : "xmark")
                 .font(.system(size: diameter * 0.4, weight: .heavy))
                 .transition(.scale(scale: 0.1).combined(with: .opacity))
         } else {
@@ -40,6 +41,7 @@ struct OnboardingFinalBadge: View {
         case .upcoming: .white.opacity(0.8)
         case .current: OnboardingFinalPalette.tint(for: step)
         case .completed: .white
+        case .declined: .white.opacity(0.75)
         }
     }
 
@@ -48,6 +50,7 @@ struct OnboardingFinalBadge: View {
         case .upcoming: .regular
         case .current: .regular.tint(.white)
         case .completed: .regular.tint(OnboardingFinalPalette.tint(for: step).opacity(0.6))
+        case .declined: .regular
         }
     }
 

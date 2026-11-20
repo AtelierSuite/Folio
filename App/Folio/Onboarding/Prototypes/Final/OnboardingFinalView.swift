@@ -45,7 +45,8 @@ struct OnboardingFinalView: View {
             step: stage.displayedStep,
             plannedSteps: context.plannedSteps,
             features: context.features,
-            advance: context.advance
+            advance: context.advance,
+            declinedSteps: stage.declinedSteps
         )
     }
 
@@ -73,6 +74,7 @@ struct OnboardingFinalView: View {
             $stage,
             to: context.step,
             index: context.currentIndex,
+            declinedSteps: context.declinedSteps,
             reducesMotion: reducesMotion
         )
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OnboardingFinalTimeline: View {
-    @State private var nowHour = OnboardingFinalTimelineGrid.restingNowHour
+    @State private var nowHour = OnboardingFinalNowLine.restingHour
     let context: OnboardingPrototypeContext
 
     var body: some View {
@@ -12,16 +12,30 @@ struct OnboardingFinalTimeline: View {
                 verticalInset: Metrics.verticalInset
             )
             ZStack(alignment: .topLeading) {
-                OnboardingFinalTimelineGrid(geometry: geometry, nowHour: nowHour)
+                OnboardingFinalTimelineGrid(geometry: geometry)
                 layer(.calendar, width: proxy.size.width) {
-                    OnboardingFinalEventsLayer(geometry: geometry, source: $1, state: $0)
+                    OnboardingFinalEventsLayer(
+                        geometry: geometry,
+                        source: $1,
+                        state: $0,
+                        isSharingRow: state(for: .reminders).isShown
+                    )
                 }
                 layer(.reminders, width: proxy.size.width) {
-                    OnboardingFinalRemindersLayer(geometry: geometry, source: $1, state: $0)
+                    OnboardingFinalRemindersLayer(
+                        geometry: geometry,
+                        source: $1,
+                        state: $0,
+                        isSharingRow: state(for: .calendar).isShown
+                    )
                 }
                 layer(.weather, width: proxy.size.width) {
                     OnboardingFinalWeatherLayer(geometry: geometry, source: $1, state: $0)
                 }
+                layer(.alarms, width: proxy.size.width) {
+                    OnboardingFinalAlarmsLayer(geometry: geometry, source: $1, state: $0)
+                }
+                OnboardingFinalNowLine(geometry: geometry, hour: nowHour)
                 layer(.alerts, width: proxy.size.width) {
                     OnboardingFinalAlertsLayer(geometry: geometry, source: $1, state: $0, nowHour: $nowHour)
                 }
@@ -56,7 +70,8 @@ struct OnboardingFinalTimeline: View {
     private func state(for setupStep: OnboardingSetupStep) -> OnboardingFinalLayerState {
         guard context.plannedSteps.contains(setupStep) else { return .hidden }
         if context.currentSetupStep == setupStep { return .current }
-        return context.completedSteps.contains(setupStep) ? .completed : .hidden
+        guard context.completedSteps.contains(setupStep) else { return .hidden }
+        return context.declinedSteps.contains(setupStep) ? .declined : .completed
     }
 
     private var shape: RoundedRectangle {

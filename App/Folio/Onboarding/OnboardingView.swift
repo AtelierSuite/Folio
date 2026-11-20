@@ -25,8 +25,14 @@ struct OnboardingView: View {
             step: step,
             plannedSteps: step == .welcome ? pendingSteps : plannedSteps,
             features: OnboardingFeature.offered(by: capabilities).filter { !prototype.excludedFeatures.contains($0) },
-            advance: advanceFromCurrentStep
+            advance: advanceFromCurrentStep,
+            declinedSteps: declinedSteps
         )
+    }
+
+    private var declinedSteps: Set<OnboardingSetupStep> {
+        guard case .setup(let current) = step, let index = plannedSteps.firstIndex(of: current) else { return [] }
+        return Set(plannedSteps.prefix(index).filter { !setup.isGranted($0) })
     }
 
     private var pendingSteps: [OnboardingSetupStep] {

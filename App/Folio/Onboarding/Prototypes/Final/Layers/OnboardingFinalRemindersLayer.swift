@@ -7,6 +7,7 @@ struct OnboardingFinalRemindersLayer: View {
     let geometry: OnboardingFinalTimelineGeometry
     let source: CGPoint
     let state: OnboardingFinalLayerState
+    let isSharingRow: Bool
 
     private static let checkedIndex = 1
 
@@ -20,12 +21,14 @@ struct OnboardingFinalRemindersLayer: View {
                 }
             }
         }
-        .task {
-            await OnboardingFinalLaunchSequence.play(
+        .task(id: state == .declined) {
+            await OnboardingFinalLaunchSequence.follow(
+                state,
                 count: events.count,
-                into: $sequence,
+                sequence: $sequence,
                 reducesMotion: reducesMotion
             )
+            guard state != .declined, !isChecked else { return }
             guard !reducesMotion else {
                 isChecked = true
                 return
@@ -36,11 +39,12 @@ struct OnboardingFinalRemindersLayer: View {
     }
 
     private func chip(for event: OnboardingFinalEvent, isLanded: Bool) -> some View {
-        let eventFrame = geometry.eventFrame(event)
+        let eventFrame = geometry.eventFrame(event, isSharingRow: isSharingRow)
+        let minX = isSharingRow ? geometry.remindersMinX : geometry.contentMinX + 6
         let restingFrame = CGRect(
-            x: geometry.remindersMinX,
+            x: minX,
             y: eventFrame.minY + 4,
-            width: geometry.contentMaxX - geometry.remindersMinX,
+            width: geometry.contentMaxX - minX,
             height: 28
         )
         return OnboardingFinalReminderPiece(
@@ -83,7 +87,6 @@ private struct OnboardingFinalReminderPiece: View {
         .onboardingFinalReveal(isLanded, opacity: state.contentOpacity)
         .clipShape(shape)
         .glassEffect(.regular.tint(Color.teal.opacity(state.tintOpacity)), in: shape)
-        .scaleEffect(isChecked ? 0.96 : 1)
         .animation(.easeInOut(duration: 0.6), value: state)
     }
 }

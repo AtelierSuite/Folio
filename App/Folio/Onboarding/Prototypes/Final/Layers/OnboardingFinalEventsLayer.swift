@@ -6,6 +6,7 @@ struct OnboardingFinalEventsLayer: View {
     let geometry: OnboardingFinalTimelineGeometry
     let source: CGPoint
     let state: OnboardingFinalLayerState
+    let isSharingRow: Bool
 
     var body: some View {
         let events = OnboardingFinalEvent.samples
@@ -16,16 +17,17 @@ struct OnboardingFinalEventsLayer: View {
                     OnboardingFinalEventPiece(event: event, isLanded: sequence.isLanded(rank), state: state)
                         .onboardingFinalFlight(
                             from: OnboardingFinalTimelineGeometry.seedFrame(at: source),
-                            to: geometry.eventFrame(event),
+                            to: geometry.eventFrame(event, isSharingRow: isSharingRow),
                             isLanded: sequence.isLanded(rank)
                         )
                 }
             }
         }
-        .task {
-            await OnboardingFinalLaunchSequence.play(
+        .task(id: state == .declined) {
+            await OnboardingFinalLaunchSequence.follow(
+                state,
                 count: events.count,
-                into: $sequence,
+                sequence: $sequence,
                 reducesMotion: reducesMotion
             )
         }

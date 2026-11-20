@@ -22,6 +22,28 @@ struct OnboardingFinalLaunchSequence {
             try? await Task.sleep(for: .milliseconds(170))
         }
     }
+
+    static func retract(_ sequence: Binding<OnboardingFinalLaunchSequence>, reducesMotion: Bool) async {
+        guard sequence.wrappedValue.launchedCount > 0 else { return }
+        if !reducesMotion {
+            withAnimation(.smooth(duration: 0.7)) { sequence.wrappedValue.landedCount = 0 }
+            try? await Task.sleep(for: .seconds(0.7))
+        }
+        sequence.wrappedValue = OnboardingFinalLaunchSequence()
+    }
+
+    static func follow(
+        _ state: OnboardingFinalLayerState,
+        count: Int,
+        sequence: Binding<OnboardingFinalLaunchSequence>,
+        reducesMotion: Bool
+    ) async {
+        if state == .declined {
+            await retract(sequence, reducesMotion: reducesMotion)
+        } else if sequence.wrappedValue.launchedCount == 0 {
+            await play(count: count, into: sequence, reducesMotion: reducesMotion)
+        }
+    }
 }
 
 extension View {

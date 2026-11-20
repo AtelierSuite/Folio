@@ -22,10 +22,11 @@ struct OnboardingFinalWeatherLayer: View {
                 }
             }
         }
-        .task {
-            await OnboardingFinalLaunchSequence.play(
+        .task(id: state == .declined) {
+            await OnboardingFinalLaunchSequence.follow(
+                state,
                 count: Self.symbols.count,
-                into: $sequence,
+                sequence: $sequence,
                 reducesMotion: reducesMotion
             )
         }

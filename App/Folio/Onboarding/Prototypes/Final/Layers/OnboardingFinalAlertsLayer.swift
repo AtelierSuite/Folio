@@ -2,8 +2,7 @@ import SwiftUI
 
 struct OnboardingFinalAlertsLayer: View {
     @Environment(\.accessibilityReduceMotion) private var reducesMotion
-    @State private var isBannerLaunched = false
-    @State private var isBannerLanded = false
+    @State private var isBannerShown = false
     let geometry: OnboardingFinalTimelineGeometry
     let source: CGPoint
     let state: OnboardingFinalLayerState
@@ -13,13 +12,13 @@ struct OnboardingFinalAlertsLayer: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            if isBannerLaunched {
-                OnboardingFinalAlertBanner(isLanded: isBannerLanded)
-                    .onboardingFinalFlight(
-                        from: OnboardingFinalTimelineGeometry.seedFrame(at: source),
-                        to: CGRect(x: 12, y: 10, width: geometry.size.width - 24, height: Self.bannerHeight),
-                        isLanded: isBannerLanded
+            if isBannerShown {
+                OnboardingFinalAlertBanner()
+                    .onboardingFinalPlaced(
+                        in: CGRect(x: 12, y: 10, width: geometry.size.width - 24, height: Self.bannerHeight)
                     )
+                    .transition(.offset(y: -14).combined(with: .opacity))
+                    .glassEffectTransition(.materialize)
             }
         }
         .task(id: state) { await playAlerts() }
@@ -31,28 +30,22 @@ struct OnboardingFinalAlertsLayer: View {
 
     private func playAlerts() async {
         guard state == .current else {
-            withAnimation(.smooth(duration: 0.5)) { isBannerLanded = false }
-            try? await Task.sleep(for: .seconds(0.5))
-            isBannerLaunched = false
+            withAnimation(.easeIn(duration: 0.35)) { isBannerShown = false }
             return
         }
         guard !reducesMotion else {
             nowHour = alertHour
-            isBannerLaunched = true
-            isBannerLanded = true
+            isBannerShown = true
             return
         }
         try? await Task.sleep(for: .seconds(0.5))
         withAnimation(.easeInOut(duration: 2.4)) { nowHour = alertHour }
         try? await Task.sleep(for: .seconds(2.4))
-        isBannerLaunched = true
-        try? await Task.sleep(for: .milliseconds(40))
-        withAnimation(.smooth(duration: 0.8, extraBounce: 0.12)) { isBannerLanded = true }
+        withAnimation(.easeOut(duration: 0.7)) { isBannerShown = true }
     }
 }
 
 private struct OnboardingFinalAlertBanner: View {
-    let isLanded: Bool
 
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: 18)
@@ -73,7 +66,6 @@ private struct OnboardingFinalAlertBanner: View {
         }
         .padding(.horizontal, 11)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onboardingFinalReveal(isLanded, opacity: 1)
         .clipShape(shape)
         .glassEffect(.regular.tint(.white.opacity(0.2)), in: shape)
     }

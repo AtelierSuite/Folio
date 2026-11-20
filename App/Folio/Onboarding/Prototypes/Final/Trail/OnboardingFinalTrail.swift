@@ -26,7 +26,9 @@ struct OnboardingFinalTrail: View {
     }
 
     private func state(at index: Int) -> OnboardingFinalBadgeState {
-        if index < stage.completedCount { return .completed }
+        if index < stage.completedCount {
+            return stage.declinedSteps.contains(steps[index]) ? .declined : .completed
+        }
         return index == stage.highlightedIndex ? .current : .upcoming
     }
 
