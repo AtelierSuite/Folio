@@ -30,7 +30,11 @@ extension NotesView {
         guard session?.url != url else {
             return
         }
-        await session?.flush()
+        if let session, await !session.flush() {
+            unsavedNoteDestination = UnsavedNoteDestination(url: url)
+            selection = session.url
+            return
+        }
         guard let url else {
             session = nil
             return
@@ -38,6 +42,12 @@ extension NotesView {
         let newSession = NoteEditingSession(url: url, library: library, focusesEditorOnOpen: url == createdNoteURL)
         session = newSession
         await newSession.load()
+    }
+
+    func discardUnsavedNote(_ destination: UnsavedNoteDestination) {
+        session?.close()
+        session = nil
+        selection = destination.url
     }
 
     func createNote() {

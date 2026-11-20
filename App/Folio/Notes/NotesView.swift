@@ -11,6 +11,7 @@ struct NotesView: View {
     @State var createdNoteURL: URL?
     @State var isShowingRecentlyDeleted = false
     @State var errorMessage: String?
+    @State var unsavedNoteDestination: UnsavedNoteDestination?
     @State private var openingTask: Task<Void, Never>?
 
     var body: some View {
@@ -30,6 +31,7 @@ struct NotesView: View {
         }
         .renameNoteAlert(url: $renamingURL, onRename: rename)
         .notesErrorAlert(message: $errorMessage)
+        .unsavedNoteAlert(destination: $unsavedNoteDestination, onDiscard: discardUnsavedNote)
         .task {
             await library.start()
         }
