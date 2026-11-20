@@ -3,8 +3,11 @@ import Foundation
 public struct NotificationPlanner: Sendable {
     public static let pendingLimit = 64
     public static let defaultReservedSlots = 4
+    public static let defaultDependentSlots = MedicationReminder.limit + LeaveAlert.notificationLimit
+    static let dependentIdentifierPrefixes = [MedicationReminder.identifierPrefix, LeaveAlert.identifierPrefix]
 
     public var reservedSlots: Int
+    public var dependentSlots: Int
     public var formatter: NotificationContentFormatter
     public var styleResolver: @Sendable (NotificationCandidate) -> NotificationAlertStyle
     public var allDayAlertMinutes: @Sendable (String) -> Int?
@@ -14,6 +17,7 @@ public struct NotificationPlanner: Sendable {
 
     public init(
         reservedSlots: Int = defaultReservedSlots,
+        dependentSlots: Int = defaultDependentSlots,
         formatter: NotificationContentFormatter = NotificationContentFormatter(),
         styleResolver: @escaping @Sendable (NotificationCandidate) -> NotificationAlertStyle = { _ in .standard },
         allDayAlertMinutes: @escaping @Sendable (String) -> Int? = { _ in nil },
@@ -22,6 +26,7 @@ public struct NotificationPlanner: Sendable {
         birthdayAlarms: @escaping @Sendable () -> [CalendarAlarm] = { [] }
     ) {
         self.reservedSlots = reservedSlots
+        self.dependentSlots = dependentSlots
         self.formatter = formatter
         self.styleResolver = styleResolver
         self.allDayAlertMinutes = allDayAlertMinutes
@@ -30,9 +35,18 @@ public struct NotificationPlanner: Sendable {
         self.birthdayAlarms = birthdayAlarms
     }
 
+    /// Medication reminders and leave alerts are scheduled after this plan, so their slots are held back
+    /// up front and their pending requests aren't counted again as foreign.
+    public func budget(pendingIdentifiers: [String]) -> Int {
+        budget(foreignPendingCount: pendingIdentifiers.count { identifier in
+            !NotificationIdentifier.isOwned(identifier)
+                && !Self.dependentIdentifierPrefixes.contains { identifier.hasPrefix($0) }
+        })
+    }
+
     public func budget(foreignPendingCount: Int) -> Int {
         let limit = Self.pendingLimit
-        return max(0, min(limit - reservedSlots, limit - foreignPendingCount))
+        return max(0, min(limit - reservedSlots, limit - foreignPendingCount) - dependentSlots)
     }
 
     public func plan(

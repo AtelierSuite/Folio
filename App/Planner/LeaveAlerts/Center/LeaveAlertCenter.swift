@@ -119,9 +119,11 @@ public final class LeaveAlertCenter {
             plan = await plannedAlerts(from: origin, now: now)
         }
         let alerts = plan.alerts
-        let notifiedAlerts = await replanAlarms(for: alerts, now: now)
-        let desired = Set(notifiedAlerts.map(\.id))
         let pending = await scheduler.pendingIdentifiers()
+        let notifiedAlerts = plan.cappedNotifications(
+            await replanAlarms(for: alerts, now: now), pendingIdentifiers: pending
+        )
+        let desired = Set(notifiedAlerts.map(\.id))
         await scheduler.removePending(withIdentifiers: pending.filter {
             !desired.contains($0) && !plan.keepsPendingAlert(withIdentifier: $0)
         })

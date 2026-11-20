@@ -16,7 +16,8 @@ struct NotificationPlannerTests {
         let budget = planner.budget(foreignPendingCount: 0)
         let plan = planner.plan(events: events, reminders: reminders, after: now, budget: budget)
 
-        #expect(budget == NotificationPlanner.pendingLimit - NotificationPlanner.defaultReservedSlots)
+        #expect(budget == NotificationPlanner.pendingLimit - NotificationPlanner.defaultReservedSlots
+            - NotificationPlanner.defaultDependentSlots)
         #expect(plan.count == budget)
         #expect(plan.map(\.fireDate) == plan.map(\.fireDate).sorted())
         let everything = planner.plan(events: events, reminders: reminders, after: now, budget: .max)
@@ -25,16 +26,32 @@ struct NotificationPlannerTests {
         #expect(plan.last?.fireDate ?? .distantFuture < everything[budget].fireDate)
     }
 
-    @Test func budgetLeavesRoomForReservedAndForeignRequests() {
-        #expect(planner.budget(foreignPendingCount: 0) == 60)
-        #expect(planner.budget(foreignPendingCount: 4) == 60)
-        #expect(planner.budget(foreignPendingCount: 10) == 54)
-        #expect(planner.budget(foreignPendingCount: 64) == 0)
+    @Test func budgetLeavesRoomForReservedDependentAndForeignRequests() {
+        #expect(NotificationPlanner.defaultDependentSlots == 20)
+        #expect(planner.budget(foreignPendingCount: 0) == 40)
+        #expect(planner.budget(foreignPendingCount: 4) == 40)
+        #expect(planner.budget(foreignPendingCount: 10) == 34)
+        #expect(planner.budget(foreignPendingCount: 44) == 0)
         #expect(planner.budget(foreignPendingCount: 80) == 0)
-        #expect(NotificationFixtures.planner(reservedSlots: 0).budget(foreignPendingCount: 0) == 64)
+        #expect(NotificationFixtures.planner(reservedSlots: 0, dependentSlots: 0).budget(foreignPendingCount: 0) == 64)
+        let dependent = NotificationPlanner.defaultDependentSlots
         for foreign in 0...80 {
-            #expect(planner.budget(foreignPendingCount: foreign) + foreign <= max(64, foreign))
+            #expect(planner.budget(foreignPendingCount: foreign) + foreign + dependent <= max(64, foreign + dependent))
         }
+    }
+
+    @Test func fullBudgetLeavesRoomForMedicationRemindersAddedAfterwards() {
+        let budget = planner.budget(pendingIdentifiers: [])
+        let medicationReminders = (0..<MedicationReminder.limit).map { "\(MedicationReminder.identifierPrefix)\($0)" }
+        let leaveAlerts = (0..<LeaveAlert.notificationLimit).map { "\(LeaveAlert.identifierPrefix)\($0)" }
+
+        #expect(budget + medicationReminders.count + leaveAlerts.count + NotificationPlanner.defaultReservedSlots <= 64)
+        #expect(planner.budget(pendingIdentifiers: medicationReminders) == budget)
+        #expect(planner.budget(pendingIdentifiers: medicationReminders + leaveAlerts) == budget)
+        let owned = (0..<budget).map { "\(NotificationIdentifier.prefix)\($0)" }
+        #expect(planner.budget(pendingIdentifiers: owned + medicationReminders) == budget)
+        #expect(planner.budget(pendingIdentifiers: medicationReminders + ["other.app.1", "other.app.2"]) == budget)
+        #expect(planner.budget(pendingIdentifiers: medicationReminders + (0..<10).map { "other.\($0)" }) == budget - 6)
     }
 
     @Test func ordersEventsAndRemindersBySoonestFireDate() {

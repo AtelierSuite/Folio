@@ -114,7 +114,7 @@ public final class NotificationScheduler {
         alarmAuthorization = await alarmClient.authorization()
         let pendingIdentifiers = await center.pendingIdentifiers()
         let foreignCount = pendingIdentifiers.count(where: { !NotificationIdentifier.isOwned($0) })
-        let budget = planner.budget(foreignPendingCount: foreignCount)
+        let budget = planner.budget(pendingIdentifiers: pendingIdentifiers)
         let now = clock()
         await dismissEndedNotifications(at: now)
         let plan = isEnabled && authorization.allowsScheduling
