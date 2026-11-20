@@ -15,6 +15,14 @@ enum OnboardingPrototype: Int, CaseIterable {
 
     static let defaultsKey = "Onboarding.Prototype"
 
+    var excludedSteps: Set<OnboardingSetupStep> {
+        self == .finalConcept ? [.sleep] : []
+    }
+
+    var excludedFeatures: Set<OnboardingFeature> {
+        self == .finalConcept ? [.sleep] : []
+    }
+
     static var selected: OnboardingPrototype {
         OnboardingPrototype(rawValue: UserDefaults.standard.integer(forKey: defaultsKey)) ?? .finalConcept
     }

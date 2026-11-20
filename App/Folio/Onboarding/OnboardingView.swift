@@ -10,10 +10,11 @@ struct OnboardingView: View {
     @State private var step: OnboardingStep = .welcome
     @State private var plannedSteps: [OnboardingSetupStep] = []
     @State private var remainingSteps: [OnboardingSetupStep] = []
+    private let prototype = OnboardingPrototype.selected
     let onFinish: () -> Void
 
     var body: some View {
-        OnboardingPrototypeView(prototype: .selected, context: context)
+        OnboardingPrototypeView(prototype: prototype, context: context)
             #if !os(macOS)
             .presentationDragIndicator(.hidden)
             #endif
@@ -22,10 +23,14 @@ struct OnboardingView: View {
     private var context: OnboardingPrototypeContext {
         OnboardingPrototypeContext(
             step: step,
-            plannedSteps: step == .welcome ? setup.pendingSteps : plannedSteps,
-            features: OnboardingFeature.offered(by: capabilities),
+            plannedSteps: step == .welcome ? pendingSteps : plannedSteps,
+            features: OnboardingFeature.offered(by: capabilities).filter { !prototype.excludedFeatures.contains($0) },
             advance: advanceFromCurrentStep
         )
+    }
+
+    private var pendingSteps: [OnboardingSetupStep] {
+        setup.pendingSteps.filter { !prototype.excludedSteps.contains($0) }
     }
 
     private var setup: OnboardingSetup {
@@ -41,7 +46,7 @@ struct OnboardingView: View {
     private func advanceFromCurrentStep() {
         switch step {
         case .welcome:
-            plannedSteps = setup.pendingSteps
+            plannedSteps = pendingSteps
             remainingSteps = plannedSteps
             advance()
         case .setup(let setupStep):
