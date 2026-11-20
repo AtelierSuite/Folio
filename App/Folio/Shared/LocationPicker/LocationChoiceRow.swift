@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct EventLocationChoiceRow: View {
+struct LocationChoiceRow: View {
     let title: String
     let subtitle: String
     let systemImage: String
@@ -22,6 +22,7 @@ struct EventLocationChoiceRow: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

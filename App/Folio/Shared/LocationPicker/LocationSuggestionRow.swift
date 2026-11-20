@@ -1,14 +1,14 @@
 import Planner
 import SwiftUI
 
-struct EventLocationSuggestionRow: View {
+struct LocationSuggestionRow: View {
     let suggestion: LocationSearchSuggestion
     let search: LocationSearch
     let action: () -> Void
     @State private var kind = LocationKind.place
 
     var body: some View {
-        EventLocationChoiceRow(
+        LocationChoiceRow(
             title: suggestion.title,
             subtitle: suggestion.subtitle,
             systemImage: kind.systemImage,

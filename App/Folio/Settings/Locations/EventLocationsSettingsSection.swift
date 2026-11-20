@@ -20,7 +20,7 @@ struct EventLocationsSettingsSection: View {
                 .accessibilityIdentifier("DefaultLocationButton")
             }
             .sheet(isPresented: $isChoosingDefault) {
-                EventLocationSearchView(location: $defaultLocation)
+                LocationPickerSheet(location: $defaultLocation)
             }
             ForEach(savedLocations) { saved in
                 SavedLocationRow(saved: saved, onSave: update, onDelete: delete)
