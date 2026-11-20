@@ -1,39 +1,50 @@
 import SwiftUI
 
 struct OnboardingCalendarGraphic: View {
-    private static let highlights: [Int: (order: Int, color: Color)] = [
-        1: (0, .red), 6: (1, .blue), 8: (2, .green), 11: (3, .orange)
+    private static let events: [(slot: OnboardingTimelineSlot, color: Color)] = [
+        (OnboardingTimelineSlot(start: 0.15, duration: 0.9), .red),
+        (OnboardingTimelineSlot(start: 1.25, duration: 1.25, laneCount: 2), .blue),
+        (OnboardingTimelineSlot(start: 1.5, duration: 1.4, lane: 1, laneCount: 2), .green),
+        (OnboardingTimelineSlot(start: 3.05, duration: 0.85), .orange)
     ]
+    private static let nowHour = 2.2
 
     var body: some View {
-        OnboardingSequencePlayer(count: Self.highlights.count) { shownCount in
-            VStack(spacing: 0) {
-                LinearGradient(colors: [.pink, .red], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .frame(height: 34)
-                Grid(horizontalSpacing: 12, verticalSpacing: 12) {
-                    ForEach(0..<3, id: \.self) { row in
-                        GridRow {
-                            ForEach(0..<4, id: \.self) { column in
-                                dot(at: row * 4 + column, shownCount: shownCount)
-                            }
-                        }
+        OnboardingGraphicCard(tint: .red) {
+            OnboardingSequencePlayer(count: Self.events.count + 1) { shownCount in
+                OnboardingTimeline { metrics in
+                    ForEach(Array(Self.events.enumerated()), id: \.offset) { index, event in
+                        OnboardingEventBlock(color: event.color)
+                            .onboardingPopIn(index < shownCount)
+                            .onboardingPlaced(in: metrics.frame(for: event.slot))
                     }
+                    OnboardingNowLine(isShown: shownCount > Self.events.count)
+                        .frame(width: metrics.size.width - OnboardingTimelineMetrics.gutter + 6)
+                        .offset(
+                            x: OnboardingTimelineMetrics.gutter - 6,
+                            y: metrics.y(at: Self.nowHour) - OnboardingNowLine.dotSize / 2
+                        )
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(width: 144, height: 144)
-            .background(.background)
-            .clipShape(.rect(cornerRadius: 28))
-            .shadow(color: .black.opacity(0.12), radius: 8, y: 3)
         }
     }
+}
 
-    private func dot(at index: Int, shownCount: Int) -> some View {
-        let highlight = Self.highlights[index]
-        let isLit = highlight.map { $0.order < shownCount } ?? false
-        return Circle()
-            .fill(isLit ? AnyShapeStyle(highlight?.color ?? .red) : AnyShapeStyle(.quaternary))
-            .frame(width: 16, height: 16)
-            .scaleEffect(isLit ? 1.25 : 1)
+private struct OnboardingNowLine: View {
+    static let dotSize: CGFloat = 10
+    let isShown: Bool
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Circle()
+                .fill(.red)
+                .frame(width: Self.dotSize, height: Self.dotSize)
+                .scaleEffect(isShown ? 1 : 0)
+            Rectangle()
+                .fill(.red)
+                .frame(height: 2)
+                .scaleEffect(x: isShown ? 1 : 0, anchor: .leading)
+        }
+        .frame(height: Self.dotSize)
     }
 }

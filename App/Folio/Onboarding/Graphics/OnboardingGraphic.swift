@@ -13,7 +13,6 @@ struct OnboardingGraphic: View {
             case .sleep: OnboardingSleepGraphic()
             }
         }
-        .frame(width: 170, height: 150, alignment: .leading)
         .accessibilityHidden(true)
     }
 }
