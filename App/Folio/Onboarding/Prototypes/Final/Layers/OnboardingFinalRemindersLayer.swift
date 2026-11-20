@@ -53,6 +53,7 @@ private struct OnboardingFinalReminderPiece: View {
     let state: OnboardingFinalLayerState
 
     var body: some View {
+        let shape = RoundedRectangle(cornerRadius: 8)
         HStack(spacing: 6) {
             Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: 14, weight: .semibold))
@@ -71,8 +72,8 @@ private struct OnboardingFinalReminderPiece: View {
         .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .opacity(isRevealed ? state.contentOpacity : 0)
-        .clipShape(.capsule)
-        .glassEffect(.regular.tint(Color.teal.opacity(state.tintOpacity)), in: .capsule)
+        .clipShape(shape)
+        .glassEffect(.regular.tint(Color.teal.opacity(state.tintOpacity)), in: shape)
         .scaleEffect(isChecked ? 0.96 : 1)
         .animation(.easeInOut(duration: 0.6), value: state)
     }
