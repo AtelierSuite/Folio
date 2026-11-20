@@ -128,6 +128,79 @@ struct MedicationStoreTests {
         #expect(reminders.reminders.isEmpty)
     }
 
+    @Test func turningEverythingOffStopsObserving() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin])
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        await store.setSendsReminders(true)
+        #expect(source.isObserving)
+        await store.setShownOnTimeline(false)
+        #expect(source.isObserving)
+        await store.setSendsReminders(false)
+        #expect(!source.isObserving)
+        #expect(!store.isObserving)
+        await store.setShownOnTimeline(true)
+        #expect(source.isObserving)
+    }
+
+    @Test func unchangedDosesKeepTheRevision() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        let span = DateInterval(start: date(day: 13, hour: 0), end: date(day: 15, hour: 0))
+        _ = await store.doses(in: span)
+        let revision = store.revision
+
+        await source.simulateChange()
+
+        #expect(store.revision == revision)
+    }
+
+    @Test func aNewDoseBumpsTheRevision() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        let span = DateInterval(start: date(day: 13, hour: 0), end: date(day: 15, hour: 0))
+        _ = await store.doses(in: span)
+        let revision = store.revision
+
+        source.records += [MedicationDoseRecord(
+            medication: Self.vitamin,
+            scheduledDate: date(day: 13, hour: 11),
+            loggedDate: date(day: 13, hour: 11),
+            status: .skipped
+        )]
+        await source.simulateChange()
+
+        #expect(store.revision > revision)
+    }
+
+    @Test func unreadableHealthAfterAChangeKeepsTheRevision() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        _ = await store.doses(in: DateInterval(start: date(day: 13, hour: 0), end: date(day: 15, hour: 0)))
+        let revision = store.revision
+
+        source.failsReads = true
+        await source.simulateChange()
+
+        #expect(store.revision == revision)
+    }
+
+    @Test func observedChangesUpdateReminders() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let reminders = FakeMedicationReminders()
+        let store = makeStore(source: source, reminders: reminders)
+        await store.setSendsReminders(true)
+        #expect(!reminders.reminders.isEmpty)
+
+        source.medications = []
+        await source.simulateChange()
+
+        #expect(reminders.reminders.isEmpty)
+    }
+
     @Test func remindersStayWithinTheirLimit() {
         let start = date(day: 13, hour: 0)
         let doses = (0..<40).map {

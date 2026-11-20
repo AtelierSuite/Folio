@@ -13,7 +13,11 @@ public final class MedicationStore {
     @ObservationIgnored private let reminders: any MedicationReminderScheduling
     @ObservationIgnored private let forecast: MedicationDoseForecast
     @ObservationIgnored private let now: @Sendable () -> Date
-    @ObservationIgnored private var isObserving = false
+    @ObservationIgnored private(set) var isObserving = false
+    @ObservationIgnored private let observedChanges = CoalescedRefresh()
+    @ObservationIgnored private var readMedications: [Medication]?
+    @ObservationIgnored private var readDoses: [DateInterval: [MedicationDose]] = [:]
+    private static let readDosesLimit = 12
     @ObservationIgnored public var allowsReminders: @MainActor () -> Bool = { true }
 
     public init(
@@ -50,7 +54,7 @@ public final class MedicationStore {
         guard isAvailable else { return }
         preferences.showsOnTimeline = isShown
         isShownOnTimeline = isShown
-        startObservingChanges()
+        updateObservation()
         await refresh()
     }
 
@@ -58,27 +62,75 @@ public final class MedicationStore {
         guard isAvailable else { return }
         preferences.sendsReminders = sends
         sendsReminders = sends
-        startObservingChanges()
+        updateObservation()
         await refresh()
     }
 
     public func scheduledMedications() async -> [Medication] {
         guard isActive, let source else { return [] }
-        let medications = (try? await source.scheduledMedications()) ?? []
+        guard let medications = try? await source.scheduledMedications() else { return [] }
+        readMedications = medications
         return medications.sorted { $0.name < $1.name }
     }
 
     public func doses(in span: DateInterval) async -> [MedicationDose] {
-        guard isAvailable, isShownOnTimeline else { return [] }
-        return (try? await loadDoses(in: span)) ?? []
+        guard isAvailable, isShownOnTimeline, let doses = try? await loadDoses(in: span) else { return [] }
+        if readDoses.count >= Self.readDosesLimit {
+            readDoses.removeAll()
+        }
+        readDoses[span] = doses
+        return doses
     }
 
     public func startObservingChanges() {
         guard isActive, !isObserving, let source else { return }
         isObserving = true
         source.startObservingChanges { [weak self] in
-            await self?.refresh()
+            await self?.handleObservedChange()
         }
+    }
+
+    public func stopObservingChanges() {
+        guard isObserving, let source else { return }
+        isObserving = false
+        source.stopObservingChanges()
+    }
+
+    func handleObservedChange() async {
+        await observedChanges.run { [weak self] in
+            await self?.reloadAfterChange()
+        }
+    }
+
+    private func updateObservation() {
+        if isActive {
+            startObservingChanges()
+        } else {
+            stopObservingChanges()
+        }
+    }
+
+    /// Re-reads what's been shown so far and only bumps `revision` when it changed, so a Health sync
+    /// doesn't reload the timeline for every dose written. A failed read, such as while the device
+    /// is locked, counts as no change.
+    private func reloadAfterChange() async {
+        guard isActive, let source else { return }
+        var hasChanged = false
+        if let previous = readMedications, let medications = try? await source.scheduledMedications() {
+            hasChanged = Set(previous) != Set(medications)
+            readMedications = medications
+        }
+        if isShownOnTimeline {
+            for (span, previous) in readDoses {
+                guard let doses = try? await loadDoses(in: span) else { continue }
+                hasChanged = hasChanged || doses != previous
+                readDoses[span] = doses
+            }
+        }
+        if hasChanged {
+            revision += 1
+        }
+        await updateReminders()
     }
 
     public func refresh() async {

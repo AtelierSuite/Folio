@@ -7,6 +7,7 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
     private var storedRecords: [MedicationDoseRecord]
     private var storedFailsReads = false
     private var storedRequestCount = 0
+    private var storedOnChange: (@Sendable () async -> Void)?
 
     init(medications: [Medication] = [], records: [MedicationDoseRecord] = []) {
         storedMedications = medications
@@ -23,7 +24,13 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
         set { lock.withLock { storedMedications = newValue } }
     }
 
+    var records: [MedicationDoseRecord] {
+        get { lock.withLock { storedRecords } }
+        set { lock.withLock { storedRecords = newValue } }
+    }
+
     var requestCount: Int { lock.withLock { storedRequestCount } }
+    var isObserving: Bool { lock.withLock { storedOnChange != nil } }
 
     func requestAuthorization() async throws {
         lock.withLock { storedRequestCount += 1 }
@@ -43,7 +50,18 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
         }
     }
 
-    func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}
+    func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {
+        lock.withLock { storedOnChange = onChange }
+    }
+
+    func stopObservingChanges() {
+        lock.withLock { storedOnChange = nil }
+    }
+
+    func simulateChange() async {
+        let onChange = lock.withLock { storedOnChange }
+        await onChange?()
+    }
 }
 
 final class FakeMedicationReminders: MedicationReminderScheduling, @unchecked Sendable {

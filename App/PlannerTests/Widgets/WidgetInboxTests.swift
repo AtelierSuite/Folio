@@ -86,6 +86,7 @@ struct WidgetMedicationReaderTests {
         }
 
         func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}
+        func stopObservingChanges() {}
     }
 
     private let vitamin = Medication(id: "vitamin", name: "Vitamin D")
