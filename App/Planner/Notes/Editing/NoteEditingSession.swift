@@ -1,21 +1,21 @@
 import Foundation
 import Observation
-import Planner
 
+@MainActor
 @Observable
-final class NoteEditingSession {
-    enum State: Equatable {
+public final class NoteEditingSession {
+    public enum State: Equatable {
         case loading
         case ready
         case failed(String)
     }
 
-    private(set) var url: URL
-    let focusesEditorOnOpen: Bool
-    private(set) var state = State.loading
-    private(set) var savedNote: Note?
-    var conflictedCopyURL: URL?
-    var text = "" {
+    public private(set) var url: URL
+    public let focusesEditorOnOpen: Bool
+    public private(set) var state = State.loading
+    public private(set) var savedNote: Note?
+    public var conflictedCopyURL: URL?
+    public var text = "" {
         didSet {
             if text != oldValue {
                 scheduleSave()
@@ -27,21 +27,21 @@ final class NoteEditingSession {
     @ObservationIgnored private var saveTask: Task<Void, Never>?
     @ObservationIgnored private var isClosed = false
 
-    init(url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false) {
+    public init(url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false) {
         self.url = url
         self.focusesEditorOnOpen = focusesEditorOnOpen
         self.library = library
     }
 
-    var title: String {
+    public var title: String {
         url.deletingPathExtension().lastPathComponent
     }
 
-    var hasUnsavedChanges: Bool {
+    public var hasUnsavedChanges: Bool {
         savedNote.map { $0.text != text } ?? false
     }
 
-    func load() async {
+    public func load() async {
         state = .loading
         do {
             apply(try await library.read(url))
@@ -51,25 +51,25 @@ final class NoteEditingSession {
         }
     }
 
-    func flush() async {
+    public func flush() async {
         saveTask?.cancel()
         saveTask = nil
         await save()
     }
 
-    func didMove(to newURL: URL) {
+    public func didMove(to newURL: URL) {
         url = newURL
         if let savedNote {
             self.savedNote = Note(url: newURL, modifiedDate: savedNote.modifiedDate, text: savedNote.text)
         }
     }
 
-    func close() {
+    public func close() {
         isClosed = true
         saveTask?.cancel()
     }
 
-    func reloadIfChangedElsewhere(in files: [NoteFile]) {
+    public func reloadIfChangedElsewhere(in files: [NoteFile]) {
         guard state == .ready, !hasUnsavedChanges, saveTask == nil,
               let savedNote,
               let file = files.first(where: { $0.url == url }),
