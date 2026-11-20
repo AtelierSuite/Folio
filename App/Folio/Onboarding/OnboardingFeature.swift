@@ -31,6 +31,12 @@ enum OnboardingFeature: String, CaseIterable, Identifiable {
         self == .sleep ? .sleep : nil
     }
 
+    static func offered(by capabilities: PlatformCapabilities) -> [OnboardingFeature] {
+        allCases.filter { feature in
+            feature.requiredPlatformFeature.map(capabilities.supports) ?? true
+        }
+    }
+
     var title: String {
         localized("Title")
     }

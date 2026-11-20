@@ -1,8 +1,7 @@
-import Planner
 import SwiftUI
 
 struct OnboardingWelcomePage: View {
-    @Environment(\.platformCapabilities) private var capabilities
+    let features: [OnboardingFeature]
     let onContinue: () -> Void
 
     var body: some View {
@@ -20,12 +19,6 @@ struct OnboardingWelcomePage: View {
                         .onboardingEntrance(delay: 0.4 + Double(index) * 0.1)
                 }
             }
-        }
-    }
-
-    private var features: [OnboardingFeature] {
-        OnboardingFeature.allCases.filter { feature in
-            feature.requiredPlatformFeature.map(capabilities.supports) ?? true
         }
     }
 

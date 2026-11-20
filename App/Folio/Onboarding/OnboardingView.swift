@@ -8,36 +8,24 @@ struct OnboardingView: View {
     @Environment(SleepStore.self) private var sleep
     @Environment(\.platformCapabilities) private var capabilities
     @State private var step: OnboardingStep = .welcome
+    @State private var plannedSteps: [OnboardingSetupStep] = []
     @State private var remainingSteps: [OnboardingSetupStep] = []
     let onFinish: () -> Void
 
     var body: some View {
-        Group {
-            switch step {
-            case .welcome:
-                OnboardingWelcomePage {
-                    remainingSteps = setup.pendingSteps
-                    advance()
-                }
-                .transition(.move(edge: .leading).combined(with: .opacity))
-            case .setup(let setupStep):
-                OnboardingSetupPage(step: setupStep) {
-                    Task {
-                        await setup.setUp(setupStep)
-                        advance()
-                    }
-                }
-                .id(setupStep)
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .leading).combined(with: .opacity)
-                ))
-            }
-        }
-        .animation(.smooth(duration: 0.45), value: step)
-        #if !os(macOS)
-        .presentationDragIndicator(.hidden)
-        #endif
+        OnboardingPrototypeView(prototype: .selected, context: context)
+            #if !os(macOS)
+            .presentationDragIndicator(.hidden)
+            #endif
+    }
+
+    private var context: OnboardingPrototypeContext {
+        OnboardingPrototypeContext(
+            step: step,
+            plannedSteps: step == .welcome ? setup.pendingSteps : plannedSteps,
+            features: OnboardingFeature.offered(by: capabilities),
+            advance: advanceFromCurrentStep
+        )
     }
 
     private var setup: OnboardingSetup {
@@ -48,6 +36,20 @@ struct OnboardingView: View {
             sleep: sleep,
             capabilities: capabilities
         )
+    }
+
+    private func advanceFromCurrentStep() {
+        switch step {
+        case .welcome:
+            plannedSteps = setup.pendingSteps
+            remainingSteps = plannedSteps
+            advance()
+        case .setup(let setupStep):
+            Task {
+                await setup.setUp(setupStep)
+                advance()
+            }
+        }
     }
 
     private func advance() {
