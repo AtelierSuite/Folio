@@ -13,7 +13,9 @@ struct MenuChoiceToggles<Choice: Hashable & Identifiable>: View {
                 Label(title(choice), systemImage: systemImage(choice))
             }
         }
+        #if os(iOS)
         .menuActionDismissBehavior(.disabled)
+        #endif
     }
 
     private func isSelected(_ choice: Choice) -> Binding<Bool> {
