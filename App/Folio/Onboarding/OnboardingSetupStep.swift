@@ -5,6 +5,7 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
     case calendar
     case reminders
     case alerts
+    case alarms
     case weather
     case sleep
 
@@ -15,6 +16,7 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
         case .calendar: .calendar
         case .reminders: .reminders
         case .alerts: .notifications
+        case .alarms: .alarms
         case .weather: .location
         case .sleep: .health
         }

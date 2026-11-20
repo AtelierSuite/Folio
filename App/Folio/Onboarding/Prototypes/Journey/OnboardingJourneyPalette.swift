@@ -5,7 +5,7 @@ enum OnboardingJourneyPalette {
         switch step {
         case .calendar: "calendar"
         case .reminders: "checklist"
-        case .alerts: "bell.fill"
+        case .alerts, .alarms: "bell.fill"
         case .weather: "cloud.sun.fill"
         case .sleep: "bed.double.fill"
         }
@@ -19,7 +19,7 @@ enum OnboardingJourneyPalette {
         switch step {
         case .calendar: [.pink, .red]
         case .reminders: [.mint, .green]
-        case .alerts: [.yellow, .orange]
+        case .alerts, .alarms: [.yellow, .orange]
         case .weather: [.cyan, .blue]
         case .sleep: [.purple, .indigo]
         }

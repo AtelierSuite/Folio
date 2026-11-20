@@ -651,6 +651,136 @@
         }
       }
     },
+    "Setup.Alarms.Description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kann vor wichtigen Terminen und zur Weckzeit einen Wecker klingeln lassen, auch im Stumm-Modus. Erlaube Wecker, um sie auf diesem Gerät zu aktivieren."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio can sound an alarm before important events and when it's time to wake up, even in Silent mode. Allow alarms to turn them on for this device."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio peut faire sonner une alarme avant vos événements importants et à l'heure du réveil, même en mode silencieux. Autorisez les alarmes pour les activer sur cet appareil."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio può far suonare una sveglia prima degli eventi importanti e all'ora del risveglio, anche in modalità silenziosa. Consenti le sveglie per attivarle su questo dispositivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folioは、大切な予定の前や起きる時間にアラームを鳴らせます。消音モードでも鳴ります。このデバイスでアラームをオンにするには、アラームを許可してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio는 중요한 일정 전과 일어날 시간에 알람을 울릴 수 있으며, 무음 모드에서도 울립니다. 이 기기에서 알람을 켜려면 알람을 허용하세요."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio kan een wekker laten afgaan vóór belangrijke afspraken en wanneer het tijd is om op te staan, zelfs in de stille modus. Sta wekkers toe om ze op dit apparaat aan te zetten."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio có thể đổ chuông báo thức trước các sự kiện quan trọng và khi đến giờ thức dậy, kể cả ở chế độ im lặng. Hãy cho phép báo thức để bật chúng trên thiết bị này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在重要日程前和起床时间响起闹钟，即使在静音模式下也会响。要在此设备上开启闹钟，请允许闹钟。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folio 可以在重要行程前和起床時間響起鬧鐘，即使在靜音模式下也會響。若要在此裝置上開啟鬧鐘，請允許鬧鐘。"
+          }
+        }
+      }
+    },
+    "Setup.Alarms.Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wecker stellen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Alarms"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Régler des alarmes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imposta sveglie"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラームを設定"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알람 설정"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wekkers zetten"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt báo thức"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置闹钟"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定鬧鐘"
+          }
+        }
+      }
+    },
     "Setup.Alerts.Description": {
       "extractionState": "manual",
       "localizations": {

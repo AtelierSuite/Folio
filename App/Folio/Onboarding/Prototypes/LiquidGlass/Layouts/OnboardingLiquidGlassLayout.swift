@@ -16,7 +16,7 @@ struct OnboardingLiquidGlassLayout {
         case .welcome: welcomePieces
         case .setup(.calendar): calendarPieces
         case .setup(.reminders): reminderPieces
-        case .setup(.alerts): alertPieces
+        case .setup(.alerts), .setup(.alarms): alertPieces
         case .setup(.weather): weatherPieces
         case .setup(.sleep): sleepPieces
         }

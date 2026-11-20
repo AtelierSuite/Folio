@@ -8,7 +8,7 @@ struct OnboardingColorFieldsHero: View {
         case .welcome: OnboardingColorFieldsWelcomeHero(features: context.features)
         case .setup(.calendar): OnboardingColorFieldsCalendarHero()
         case .setup(.reminders): OnboardingColorFieldsRemindersHero()
-        case .setup(.alerts): OnboardingColorFieldsAlertsHero()
+        case .setup(.alerts), .setup(.alarms): OnboardingColorFieldsAlertsHero()
         case .setup(.weather): OnboardingColorFieldsWeatherHero()
         case .setup(.sleep): OnboardingColorFieldsSleepHero()
         }

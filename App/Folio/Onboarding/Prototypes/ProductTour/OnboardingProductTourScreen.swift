@@ -25,7 +25,7 @@ struct OnboardingProductTourScreen: View {
         case .welcome: OnboardingProductTourBootDemo()
         case .setup(.calendar): OnboardingProductTourCalendarDemo()
         case .setup(.reminders): OnboardingProductTourRemindersDemo()
-        case .setup(.alerts): OnboardingProductTourAlertsDemo()
+        case .setup(.alerts), .setup(.alarms): OnboardingProductTourAlertsDemo()
         case .setup(.weather): OnboardingProductTourWeatherDemo()
         case .setup(.sleep): OnboardingProductTourSleepDemo()
         }

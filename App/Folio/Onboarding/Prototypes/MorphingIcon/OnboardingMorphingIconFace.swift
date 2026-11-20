@@ -31,7 +31,7 @@ struct OnboardingMorphingIconFace: Equatable {
             self.init(symbol: "checklist", colors: [
                 Color(red: 0.38, green: 0.86, blue: 0.62), Color(red: 0.08, green: 0.58, blue: 0.44)
             ])
-        case .alerts:
+        case .alerts, .alarms:
             self.init(symbol: "bell.badge.fill", colors: [
                 Color(red: 1.0, green: 0.72, blue: 0.26), Color(red: 0.95, green: 0.36, blue: 0.15)
             ])

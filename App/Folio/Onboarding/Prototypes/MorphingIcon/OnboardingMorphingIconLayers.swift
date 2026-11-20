@@ -18,7 +18,7 @@ struct OnboardingMorphingIconBackLayer: View {
                 OnboardingMorphingIconCalendarTrack(unit: unit)
             case .setup(.reminders):
                 OnboardingMorphingIconReminderRing(beat: beat, unit: unit)
-            case .setup(.alerts):
+            case .setup(.alerts), .setup(.alarms):
                 OnboardingMorphingIconAlertBurst(beat: beat, unit: unit)
             case .setup(.weather):
                 OnboardingMorphingIconWeatherSky(unit: unit)

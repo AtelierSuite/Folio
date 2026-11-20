@@ -30,7 +30,7 @@ struct OnboardingFolioPagesPage: View {
             OnboardingFolioPagesCalendarSketch(ink: ink)
         case .setup(.reminders):
             OnboardingFolioPagesRemindersSketch(ink: ink)
-        case .setup(.alerts):
+        case .setup(.alerts), .setup(.alarms):
             OnboardingFolioPagesAlertsSketch(ink: ink)
         case .setup(.weather):
             OnboardingFolioPagesWeatherSketch(ink: ink)

@@ -15,7 +15,7 @@ struct OnboardingMorphingIconRhythm {
         case .setup(.reminders):
             firstDelay = .seconds(0.7)
             interval = .seconds(0.55)
-        case .setup(.alerts):
+        case .setup(.alerts), .setup(.alarms):
             firstDelay = .seconds(0.8)
             interval = .seconds(3.6)
         default:

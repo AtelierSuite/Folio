@@ -73,7 +73,7 @@ struct OnboardingMorphingIconStage: View {
             beat += 1
             delay = rhythm.interval
             switch step {
-            case .setup(.alerts): shakeCount += 1
+            case .setup(.alerts), .setup(.alarms): shakeCount += 1
             case .setup(.reminders) where rhythm.checksCircle(atBeat: beat): bounceCount += 1
             default: break
             }

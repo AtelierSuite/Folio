@@ -8,7 +8,7 @@ struct OnboardingGraphic: View {
             switch step {
             case .calendar: OnboardingCalendarGraphic()
             case .reminders: OnboardingRemindersGraphic()
-            case .alerts: OnboardingAlertsGraphic()
+            case .alerts, .alarms: OnboardingAlertsGraphic()
             case .weather: OnboardingWeatherGraphic()
             case .sleep: OnboardingSleepGraphic()
             }

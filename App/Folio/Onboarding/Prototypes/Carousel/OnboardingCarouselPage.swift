@@ -16,7 +16,7 @@ enum OnboardingCarouselPage: Hashable, Identifiable {
         case .welcome: [.accentColor, .accentColor]
         case .setup(.calendar): [.pink, .red]
         case .setup(.reminders): [.yellow, .orange]
-        case .setup(.alerts): [.orange, .red]
+        case .setup(.alerts), .setup(.alarms): [.orange, .red]
         case .setup(.weather): [.cyan, .blue]
         case .setup(.sleep): [.purple, .indigo]
         }

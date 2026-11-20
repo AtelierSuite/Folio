@@ -15,7 +15,7 @@ struct OnboardingSetup {
 
     func setUp(_ step: OnboardingSetupStep) async {
         switch step {
-        case .calendar, .reminders:
+        case .calendar, .reminders, .alarms:
             await permissions.request(step.permission)
         case .alerts:
             await scheduler.setEnabled(true)
@@ -35,9 +35,13 @@ struct OnboardingSetup {
         return step != .sleep || (capabilities.supports(.sleep) && sleep.isAvailable)
     }
 
+    func isGranted(_ step: OnboardingSetupStep) -> Bool {
+        permissions.status(of: step.permission) == .granted
+    }
+
     private func isSetUp(_ step: OnboardingSetupStep) -> Bool {
         switch step {
-        case .calendar, .reminders: permissions.status(of: step.permission) == .granted
+        case .calendar, .reminders, .alarms: isGranted(step)
         case .alerts: scheduler.isEnabled
         case .weather: weather.isEnabled
         case .sleep: sleep.isShownOnTimeline

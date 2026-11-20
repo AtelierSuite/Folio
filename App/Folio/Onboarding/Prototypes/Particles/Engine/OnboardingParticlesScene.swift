@@ -53,7 +53,7 @@ extension OnboardingParticlesScene {
                       Phase(formation: ticking[2], duration: 0.9),
                       Phase(formation: ticking[3], duration: 2.6)]
             loopStart = 0
-        case .alerts:
+        case .alerts, .alarms:
             phases = [Phase(formation: OnboardingParticlesAlertsFormations.gathered, duration: 1.1),
                       Phase(formation: OnboardingParticlesAlertsFormations.ringing, duration: .infinity)]
         case .weather:

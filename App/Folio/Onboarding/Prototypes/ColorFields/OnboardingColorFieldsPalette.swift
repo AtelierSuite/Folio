@@ -15,7 +15,7 @@ struct OnboardingColorFieldsPalette: Equatable {
         case .setup(.reminders):
             base = Color(red: 0.98, green: 0.52, blue: 0.10)
             partner = Color(red: 0.96, green: 0.34, blue: 0.16)
-        case .setup(.alerts):
+        case .setup(.alerts), .setup(.alarms):
             base = Color(red: 0.98, green: 0.40, blue: 0.42)
             partner = Color(red: 0.90, green: 0.26, blue: 0.56)
         case .setup(.weather):

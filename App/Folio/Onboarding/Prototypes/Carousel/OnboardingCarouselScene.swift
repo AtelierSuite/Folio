@@ -23,7 +23,7 @@ struct OnboardingCarouselScene: View {
         case .welcome: OnboardingCarouselWelcomeScene(features: features, isActive: isActive)
         case .setup(.calendar): OnboardingCarouselCalendarScene(isActive: isActive)
         case .setup(.reminders): OnboardingCarouselRemindersScene(isActive: isActive)
-        case .setup(.alerts): OnboardingCarouselAlertsScene(isActive: isActive)
+        case .setup(.alerts), .setup(.alarms): OnboardingCarouselAlertsScene(isActive: isActive)
         case .setup(.weather): OnboardingCarouselWeatherScene(isActive: isActive)
         case .setup(.sleep): OnboardingCarouselSleepScene(isActive: isActive)
         }

@@ -48,7 +48,7 @@ struct OnboardingProductTourStage: View {
         case .welcome: .accentColor
         case .setup(.calendar): .red
         case .setup(.reminders): .orange
-        case .setup(.alerts): .pink
+        case .setup(.alerts), .setup(.alarms): .pink
         case .setup(.weather): .blue
         case .setup(.sleep): .indigo
         }

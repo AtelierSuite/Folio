@@ -30,7 +30,7 @@ struct OnboardingJourneyHero: View {
         switch step {
         case .calendar: OnboardingJourneyCalendarHero()
         case .reminders: OnboardingJourneyRemindersHero()
-        case .alerts: OnboardingJourneyAlertsHero()
+        case .alerts, .alarms: OnboardingJourneyAlertsHero()
         case .weather: OnboardingJourneyWeatherHero()
         case .sleep: OnboardingJourneySleepHero()
         }

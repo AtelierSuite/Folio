@@ -51,7 +51,7 @@ extension OnboardingSetupStep {
         switch self {
         case .calendar: "calendar"
         case .reminders: "checklist"
-        case .alerts: "bell.fill"
+        case .alerts, .alarms: "bell.fill"
         case .weather: "cloud.sun.fill"
         case .sleep: "moon.fill"
         }
@@ -61,7 +61,7 @@ extension OnboardingSetupStep {
         switch self {
         case .calendar: .blue
         case .reminders: .orange
-        case .alerts: .red
+        case .alerts, .alarms: .red
         case .weather: .cyan
         case .sleep: .indigo
         }
