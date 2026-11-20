@@ -23,5 +23,7 @@ public struct SampleSleepDataSource: SleepDataSource {
     }
 
     public func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}
+
+    public func stopObservingChanges() {}
 }
 #endif

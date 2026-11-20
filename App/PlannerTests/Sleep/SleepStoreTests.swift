@@ -116,6 +116,53 @@ struct SleepStoreTests {
         #expect(source.isObserving)
     }
 
+    @Test func turningOffStopsObserving() {
+        let source = FakeSleepDataSource()
+        let store = makeStore(source: source)
+        store.startObservingChanges()
+        store.setShownOnTimeline(false)
+        #expect(!source.isObserving)
+        store.setShownOnTimeline(true)
+        #expect(source.isObserving)
+    }
+
+    @Test func keepsObservingWhileFlexTimeReadsSleep() {
+        let source = FakeSleepDataSource()
+        let store = makeStore(source: source)
+        store.setInformsFlexTime(true)
+        store.setShownOnTimeline(false)
+        #expect(source.isObserving)
+        store.setInformsFlexTime(false)
+        #expect(!source.isObserving)
+        #expect(!store.isObserving)
+    }
+
+    @Test func unchangedSleepKeepsTheRevision() async {
+        let source = FakeSleepDataSource(samples: lastNightSamples)
+        let store = makeStore(source: source)
+        store.startObservingChanges()
+        _ = await store.sessions(in: night)
+        let revision = store.revision
+
+        await source.simulateChange()
+
+        #expect(store.revision == revision)
+    }
+
+    @Test func failedReadsAfterAChangeKeepTheCache() async {
+        let source = FakeSleepDataSource(samples: lastNightSamples)
+        let store = makeStore(source: source)
+        store.startObservingChanges()
+        #expect(await store.sessions(in: night).count == 1)
+        let revision = store.revision
+
+        source.failsReads = true
+        await source.simulateChange()
+
+        #expect(store.revision == revision)
+        #expect(await store.sessions(in: night).count == 1)
+    }
+
     @Test func preferredSourceChangesTheMerge() async {
         let samples = [
             Fixture.sample(.core, Fixture.time(0), Fixture.time(4), Fixture.watch),

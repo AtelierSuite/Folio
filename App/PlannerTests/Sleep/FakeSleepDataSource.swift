@@ -54,6 +54,10 @@ final class FakeSleepDataSource: SleepDataSource, @unchecked Sendable {
         lock.withLock { storedOnChange = onChange }
     }
 
+    func stopObservingChanges() {
+        lock.withLock { storedOnChange = nil }
+    }
+
     func simulateChange() async {
         let onChange = lock.withLock { storedOnChange }
         await onChange?()

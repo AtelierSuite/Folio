@@ -14,4 +14,6 @@ public protocol SleepDataSource: Sendable {
     /// Calls `onChange` whenever new sleep is saved, including in the background, and awaits it
     /// before telling the system the update was handled.
     func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void)
+    /// Stops the observer and background delivery started by `startObservingChanges`.
+    func stopObservingChanges()
 }
