@@ -67,7 +67,7 @@ struct TimelineDayHeaderLabel: View {
     let calendar: Calendar
     /// When set, the selected day gets the filled number instead of today, which keeps its colour.
     var isSelected: Bool?
-    @ScaledMetric(relativeTo: .title3) private var selectorDiameter: CGFloat = 38
+    @ScaledMetric(relativeTo: .title3) private var selectorDiameter: CGFloat = 42
 
     private var isToday: Bool {
         calendar.isDateInToday(day.start)
