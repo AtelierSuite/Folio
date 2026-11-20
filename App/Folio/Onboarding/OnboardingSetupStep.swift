@@ -7,7 +7,6 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
     case alerts
     case alarms
     case weather
-    case sleep
 
     var id: String { rawValue }
 
@@ -18,7 +17,6 @@ enum OnboardingSetupStep: String, CaseIterable, Identifiable {
         case .alerts: .notifications
         case .alarms: .alarms
         case .weather: .location
-        case .sleep: .health
         }
     }
 

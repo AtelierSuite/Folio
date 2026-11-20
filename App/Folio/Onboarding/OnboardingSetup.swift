@@ -6,8 +6,6 @@ struct OnboardingSetup {
     let permissions: PermissionCenter
     let scheduler: NotificationScheduler
     let weather: WeatherStore
-    let sleep: SleepStore
-    let capabilities: PlatformCapabilities
 
     var pendingSteps: [OnboardingSetupStep] {
         OnboardingSetupStep.allCases.filter { isOffered($0) && !isSetUp($0) }
@@ -24,15 +22,11 @@ struct OnboardingSetup {
             weather.setEnabled(true)
             await permissions.request(.location)
             weather.locationAuthorizationDidChange()
-        case .sleep:
-            guard await permissions.allowsTurningOn(true, needing: .health) else { return }
-            sleep.setShownOnTimeline(true)
         }
     }
 
     private func isOffered(_ step: OnboardingSetupStep) -> Bool {
-        guard permissions.isAvailable(step.permission) else { return false }
-        return step != .sleep || (capabilities.supports(.sleep) && sleep.isAvailable)
+        permissions.isAvailable(step.permission)
     }
 
     func isGranted(_ step: OnboardingSetupStep) -> Bool {
@@ -44,7 +38,6 @@ struct OnboardingSetup {
         case .calendar, .reminders, .alarms: isGranted(step)
         case .alerts: scheduler.isEnabled
         case .weather: weather.isEnabled
-        case .sleep: sleep.isShownOnTimeline
         }
     }
 }

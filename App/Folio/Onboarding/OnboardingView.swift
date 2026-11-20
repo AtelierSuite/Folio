@@ -5,26 +5,23 @@ struct OnboardingView: View {
     @Environment(PermissionCenter.self) private var permissions
     @Environment(NotificationScheduler.self) private var scheduler
     @Environment(WeatherStore.self) private var weather
-    @Environment(SleepStore.self) private var sleep
-    @Environment(\.platformCapabilities) private var capabilities
     @State private var step: OnboardingStep = .welcome
     @State private var plannedSteps: [OnboardingSetupStep] = []
     @State private var remainingSteps: [OnboardingSetupStep] = []
-    private let prototype = OnboardingPrototype.selected
     let onFinish: () -> Void
 
     var body: some View {
-        OnboardingPrototypeView(prototype: prototype, context: context)
+        OnboardingContent(context: context)
             #if !os(macOS)
             .presentationDragIndicator(.hidden)
             #endif
     }
 
-    private var context: OnboardingPrototypeContext {
-        OnboardingPrototypeContext(
+    private var context: OnboardingContext {
+        OnboardingContext(
             step: step,
             plannedSteps: step == .welcome ? pendingSteps : plannedSteps,
-            features: OnboardingFeature.offered(by: capabilities).filter { !prototype.excludedFeatures.contains($0) },
+            features: OnboardingFeature.allCases,
             advance: advanceFromCurrentStep,
             declinedSteps: declinedSteps
         )
@@ -36,16 +33,14 @@ struct OnboardingView: View {
     }
 
     private var pendingSteps: [OnboardingSetupStep] {
-        setup.pendingSteps.filter { !prototype.excludedSteps.contains($0) }
+        setup.pendingSteps
     }
 
     private var setup: OnboardingSetup {
         OnboardingSetup(
             permissions: permissions,
             scheduler: scheduler,
-            weather: weather,
-            sleep: sleep,
-            capabilities: capabilities
+            weather: weather
         )
     }
 
