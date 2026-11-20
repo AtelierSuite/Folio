@@ -12,6 +12,7 @@ struct OnboardingSetupPage: View {
         ) {
             OnboardingGraphic(step: step)
                 .id(step)
+                .onboardingEntrance()
             VStack(alignment: .leading, spacing: 8) {
                 Text(step.title)
                     .font(.largeTitle)
@@ -22,6 +23,7 @@ struct OnboardingSetupPage: View {
                     .foregroundStyle(.secondary)
             }
             .fixedSize(horizontal: false, vertical: true)
+            .onboardingEntrance(delay: 0.12)
         }
     }
 }

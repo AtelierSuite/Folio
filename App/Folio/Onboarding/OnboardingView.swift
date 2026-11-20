@@ -19,6 +19,7 @@ struct OnboardingView: View {
                     remainingSteps = setup.pendingSteps
                     advance()
                 }
+                .transition(.move(edge: .leading).combined(with: .opacity))
             case .setup(let setupStep):
                 OnboardingSetupPage(step: setupStep) {
                     Task {
@@ -27,9 +28,13 @@ struct OnboardingView: View {
                     }
                 }
                 .id(setupStep)
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing).combined(with: .opacity),
+                    removal: .move(edge: .leading).combined(with: .opacity)
+                ))
             }
         }
-        .animation(.default, value: step)
+        .animation(.smooth(duration: 0.45), value: step)
         #if !os(macOS)
         .presentationDragIndicator(.hidden)
         #endif
