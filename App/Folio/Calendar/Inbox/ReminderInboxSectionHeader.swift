@@ -7,7 +7,6 @@ struct ReminderInboxSectionHeader: View {
     var body: some View {
         if let list {
             Text(list.title)
-                .foregroundStyle(list.color.color)
         }
     }
 }
