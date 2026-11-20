@@ -67,8 +67,14 @@ struct ReminderInboxView: View {
                 description: Text(String(localized: "Inbox.Empty.Description", table: "Reminders"))
             )
         } else {
-            List(reminders) { reminder in
-                AgendaReminderRow(reminder: reminder) { openedReminder = reminder }
+            List(ReminderInbox.sections(from: reminders, lists: store.reminderLists)) { section in
+                Section {
+                    ForEach(section.reminders) { reminder in
+                        AgendaReminderRow(reminder: reminder) { openedReminder = reminder }
+                    }
+                } header: {
+                    ReminderInboxSectionHeader(list: section.list)
+                }
             }
         }
     }
