@@ -7,7 +7,7 @@ extension NotesLibrary {
 
     public func save(_ text: String, over note: Note) async throws -> NoteSaveResult {
         let result = try await requireStore().save(text, over: note)
-        await refresh()
+        scheduleRefresh()
         return result
     }
 

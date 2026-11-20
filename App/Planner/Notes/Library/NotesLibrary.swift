@@ -177,7 +177,7 @@ public final class NotesLibrary {
         }
     }
 
-    private func scheduleRefresh() {
+    func scheduleRefresh() {
         refreshTask?.cancel()
         refreshTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(300))

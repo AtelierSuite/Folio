@@ -1,21 +1,21 @@
 import Foundation
 import Observation
-import Planner
 
+@MainActor
 @Observable
-final class NoteEditingSession {
-    enum State: Equatable {
+public final class NoteEditingSession {
+    public enum State: Equatable {
         case loading
         case ready
         case failed(String)
     }
 
-    private(set) var url: URL
-    let focusesEditorOnOpen: Bool
-    private(set) var state = State.loading
-    private(set) var savedNote: Note?
-    var conflictedCopyURL: URL?
-    var text = "" {
+    public private(set) var url: URL
+    public let focusesEditorOnOpen: Bool
+    public private(set) var state = State.loading
+    public private(set) var savedNote: Note?
+    public var conflictedCopyURL: URL?
+    public var text = "" {
         didSet {
             if text != oldValue {
                 scheduleSave()
@@ -24,24 +24,30 @@ final class NoteEditingSession {
     }
 
     @ObservationIgnored private let library: NotesLibrary
+    @ObservationIgnored private let saveDelay: Duration
     @ObservationIgnored private var saveTask: Task<Void, Never>?
+    @ObservationIgnored private var latestSave: Task<Void, Never>?
+    @ObservationIgnored private var saveGeneration = 0
     @ObservationIgnored private var isClosed = false
 
-    init(url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false) {
+    public init(
+        url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false, saveDelay: Duration = .seconds(1)
+    ) {
         self.url = url
         self.focusesEditorOnOpen = focusesEditorOnOpen
         self.library = library
+        self.saveDelay = saveDelay
     }
 
-    var title: String {
+    public var title: String {
         url.deletingPathExtension().lastPathComponent
     }
 
-    var hasUnsavedChanges: Bool {
+    public var hasUnsavedChanges: Bool {
         savedNote.map { $0.text != text } ?? false
     }
 
-    func load() async {
+    public func load() async {
         state = .loading
         do {
             apply(try await library.read(url))
@@ -51,26 +57,26 @@ final class NoteEditingSession {
         }
     }
 
-    func flush() async {
+    public func flush() async {
         saveTask?.cancel()
         saveTask = nil
-        await save()
+        await enqueueSave().value
     }
 
-    func didMove(to newURL: URL) {
+    public func didMove(to newURL: URL) {
         url = newURL
         if let savedNote {
             self.savedNote = Note(url: newURL, modifiedDate: savedNote.modifiedDate, text: savedNote.text)
         }
     }
 
-    func close() {
+    public func close() {
         isClosed = true
         saveTask?.cancel()
     }
 
-    func reloadIfChangedElsewhere(in files: [NoteFile]) {
-        guard state == .ready, !hasUnsavedChanges, saveTask == nil,
+    public func reloadIfChangedElsewhere(in files: [NoteFile]) {
+        guard state == .ready, !hasUnsavedChanges, saveTask == nil, latestSave == nil,
               let savedNote,
               let file = files.first(where: { $0.url == url }),
               file.modifiedDate.timeIntervalSince(savedNote.modifiedDate) > 1 else {
@@ -88,14 +94,30 @@ final class NoteEditingSession {
             return
         }
         saveTask?.cancel()
-        saveTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(1))
-            guard !Task.isCancelled else {
+        saveTask = Task { [weak self, saveDelay] in
+            try? await Task.sleep(for: saveDelay)
+            guard !Task.isCancelled, let self else {
                 return
             }
-            await self?.save()
-            self?.saveTask = nil
+            saveTask = nil
+            await enqueueSave().value
         }
+    }
+
+    /// Each save waits for the one before it, so it starts from the note that save left on disk.
+    private func enqueueSave() -> Task<Void, Never> {
+        saveGeneration += 1
+        let generation = saveGeneration
+        let previousSave = latestSave
+        let task = Task { [weak self] in
+            await previousSave?.value
+            await self?.save()
+            if self?.saveGeneration == generation {
+                self?.latestSave = nil
+            }
+        }
+        latestSave = task
+        return task
     }
 
     private func save() async {
