@@ -2,6 +2,7 @@ import Foundation
 
 public struct LeaveAlert: Sendable, Hashable, Identifiable {
     public static let identifierPrefix = "folio.leave."
+    public static let notificationLimit = 8
 
     public let event: CalendarEvent
     public let destination: PlannerCoordinate

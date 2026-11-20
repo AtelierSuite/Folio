@@ -84,6 +84,15 @@ struct LeaveAlertCenterTests {
         #expect(harness.scheduler.pendingAlerts.count == 1)
     }
 
+    @Test func capsPendingAlertsAtTheNotificationLimitKeepingTheSoonest() async throws {
+        let events = (0..<10).map { ArrivalFixtures.event("Event \($0)", start: ArrivalFixtures.hours(Double($0) + 1)) }
+        let harness = try makeHarness(events: events)
+        await harness.center.replan()
+        #expect(harness.scheduler.pendingAlerts.count == LeaveAlert.notificationLimit)
+        #expect(Set(harness.scheduler.pendingAlerts.map(\.event.title))
+            == Set(events.prefix(LeaveAlert.notificationLimit).map(\.title)))
+    }
+
     @Test func reschedulesWhenTheTravelTimeChanges() async throws {
         let harness = try makeHarness(events: [ArrivalFixtures.event("Dentist", start: ArrivalFixtures.hours(2))])
         await harness.center.replan()
