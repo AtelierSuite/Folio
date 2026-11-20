@@ -8,8 +8,11 @@ enum NotificationFixtures {
         NotificationContentFormatter(calendar: Fixtures.calendar, locale: Locale(identifier: "en_GB"))
     }()
 
-    static func planner(reservedSlots: Int = NotificationPlanner.defaultReservedSlots) -> NotificationPlanner {
-        NotificationPlanner(reservedSlots: reservedSlots, formatter: formatter)
+    static func planner(
+        reservedSlots: Int = NotificationPlanner.defaultReservedSlots,
+        dependentSlots: Int = NotificationPlanner.defaultDependentSlots
+    ) -> NotificationPlanner {
+        NotificationPlanner(reservedSlots: reservedSlots, dependentSlots: dependentSlots, formatter: formatter)
     }
 
     static func event(

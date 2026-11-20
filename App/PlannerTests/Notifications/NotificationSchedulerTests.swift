@@ -92,7 +92,7 @@ struct NotificationSchedulerTests {
             defaults: try makeDefaults()
         )
         await scheduler.replan()
-        #expect(center.pendingCount == 60)
+        #expect(center.pendingCount == 40)
         #expect(center.maximumPendingCount <= 64)
         #expect(center.pendingNotifications.first?.content.title == "reminder-0")
         #expect(scheduler.lastReport?.nextFireDate == NotificationFixtures.hours(0.5))
@@ -105,10 +105,21 @@ struct NotificationSchedulerTests {
             source: FakeCalendarDataSource(events: events(200)), center: center, defaults: try makeDefaults()
         )
         await scheduler.replan()
-        #expect(center.pendingCount == 64)
-        #expect(center.pendingNotifications.count == 54)
-        #expect(center.maximumPendingCount == 64)
-        #expect(scheduler.lastReport?.pendingCount == 64)
+        #expect(center.pendingCount == 44)
+        #expect(center.pendingNotifications.count == 34)
+        #expect(center.maximumPendingCount == 44)
+        #expect(scheduler.lastReport?.pendingCount == 44)
+    }
+
+    @Test func pendingMedicationRemindersAreNotCountedTwice() async throws {
+        let medications = (0..<MedicationReminder.limit).map { "\(MedicationReminder.identifierPrefix)\($0)" }
+        let center = FakeNotificationCenter(foreignIdentifiers: medications)
+        let scheduler = makeScheduler(
+            source: FakeCalendarDataSource(events: events(200)), center: center, defaults: try makeDefaults()
+        )
+        await scheduler.replan()
+        #expect(center.pendingNotifications.count == 40)
+        #expect(center.pendingCount + LeaveAlert.notificationLimit + NotificationPlanner.defaultReservedSlots <= 64)
     }
 
     @Test func replanningAppliesOnlyTheDiff() async throws {
