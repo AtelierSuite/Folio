@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct OnboardingFinalTimeline: View {
+    @State private var nowHour = OnboardingFinalTimelineGrid.restingNowHour
     let context: OnboardingPrototypeContext
 
     var body: some View {
@@ -11,15 +12,18 @@ struct OnboardingFinalTimeline: View {
                 verticalInset: Metrics.verticalInset
             )
             ZStack(alignment: .topLeading) {
-                OnboardingFinalTimelineGrid(geometry: geometry)
-                GlassEffectContainer(spacing: Metrics.glassSpacing) {
-                    ZStack(alignment: .topLeading) {
-                        layer(.calendar) { OnboardingFinalEventsLayer(geometry: geometry, state: $0) }
-                        layer(.reminders) { OnboardingFinalRemindersLayer(geometry: geometry, state: $0) }
-                        layer(.weather) { OnboardingFinalWeatherLayer(geometry: geometry, state: $0) }
-                        layer(.alerts) { OnboardingFinalAlertsLayer(geometry: geometry, state: $0) }
-                    }
-                    .frame(width: proxy.size.width, height: proxy.size.height, alignment: .topLeading)
+                OnboardingFinalTimelineGrid(geometry: geometry, nowHour: nowHour)
+                layer(.calendar, width: proxy.size.width) {
+                    OnboardingFinalEventsLayer(geometry: geometry, source: $1, state: $0)
+                }
+                layer(.reminders, width: proxy.size.width) {
+                    OnboardingFinalRemindersLayer(geometry: geometry, source: $1, state: $0)
+                }
+                layer(.weather, width: proxy.size.width) {
+                    OnboardingFinalWeatherLayer(geometry: geometry, source: $1, state: $0)
+                }
+                layer(.alerts, width: proxy.size.width) {
+                    OnboardingFinalAlertsLayer(geometry: geometry, source: $1, state: $0, nowHour: $nowHour)
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height, alignment: .topLeading)
@@ -28,18 +32,23 @@ struct OnboardingFinalTimeline: View {
         .animation(.spring(duration: 0.7, bounce: 0.2), value: context.step == .welcome)
         .background(shape.fill(.white.opacity(0.12)))
         .overlay(shape.strokeBorder(.white.opacity(0.3), lineWidth: 1))
-        .clipShape(shape)
         .accessibilityHidden(true)
     }
 
     @ViewBuilder
     private func layer(
         _ setupStep: OnboardingSetupStep,
-        @ViewBuilder content: (OnboardingFinalLayerState) -> some View
+        width: CGFloat,
+        @ViewBuilder content: (OnboardingFinalLayerState, CGPoint) -> some View
     ) -> some View {
         let state = state(for: setupStep)
         if state != .hidden {
-            content(state)
+            let source = OnboardingFinalTrailLayout.badgeCenter(
+                for: setupStep,
+                in: context.plannedSteps,
+                width: width
+            ) ?? CGPoint(x: width / 2, y: 0)
+            content(state, source)
                 .transition(.identity)
         }
     }
@@ -68,6 +77,5 @@ struct OnboardingFinalTimeline: View {
         static let gutterWidth: CGFloat = 52
         static let verticalInset: CGFloat = 10
         #endif
-        static let glassSpacing: CGFloat = 12
     }
 }

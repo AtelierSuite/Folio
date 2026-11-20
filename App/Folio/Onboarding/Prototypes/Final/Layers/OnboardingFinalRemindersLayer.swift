@@ -2,54 +2,63 @@ import SwiftUI
 
 struct OnboardingFinalRemindersLayer: View {
     @Environment(\.accessibilityReduceMotion) private var reducesMotion
-    @State private var hasBudded = false
+    @State private var sequence = OnboardingFinalLaunchSequence()
     @State private var isChecked = false
     let geometry: OnboardingFinalTimelineGeometry
+    let source: CGPoint
     let state: OnboardingFinalLayerState
 
     private static let checkedIndex = 1
 
     var body: some View {
+        let events = OnboardingFinalEvent.samples
         ZStack(alignment: .topLeading) {
-            ForEach(OnboardingFinalEvent.samples) { event in
-                chip(for: event)
+            ForEach(events) { event in
+                let rank = events.count - 1 - event.id
+                if sequence.isLaunched(rank) {
+                    chip(for: event, isLanded: sequence.isLanded(rank))
+                }
             }
         }
         .task {
+            await OnboardingFinalLaunchSequence.play(
+                count: events.count,
+                into: $sequence,
+                reducesMotion: reducesMotion
+            )
             guard !reducesMotion else {
-                hasBudded = true
                 isChecked = true
                 return
             }
-            hasBudded = true
-            try? await Task.sleep(for: .seconds(1.7))
+            try? await Task.sleep(for: .seconds(1))
             withAnimation(.spring(duration: 0.45, bounce: 0.4)) { isChecked = true }
         }
     }
 
-    private func chip(for event: OnboardingFinalEvent) -> some View {
+    private func chip(for event: OnboardingFinalEvent, isLanded: Bool) -> some View {
         let eventFrame = geometry.eventFrame(event)
-        let chipY = eventFrame.minY + 4
-        let budFrame = CGRect(x: eventFrame.maxX - 34, y: chipY, width: 30, height: 28)
         let restingFrame = CGRect(
             x: geometry.remindersMinX,
-            y: chipY,
+            y: eventFrame.minY + 4,
             width: geometry.contentMaxX - geometry.remindersMinX,
             height: 28
         )
-        let checked = isChecked && event.id == Self.checkedIndex
-        return OnboardingFinalReminderPiece(isChecked: checked, isRevealed: hasBudded, state: state)
-            .onboardingFinalPlaced(in: hasBudded ? restingFrame : budFrame)
-            .animation(
-                reducesMotion ? nil : .spring(duration: 0.8, bounce: 0.35).delay(0.3 + Double(event.id) * 0.2),
-                value: hasBudded
-            )
+        return OnboardingFinalReminderPiece(
+            isChecked: isChecked && event.id == Self.checkedIndex,
+            isLanded: isLanded,
+            state: state
+        )
+        .onboardingFinalFlight(
+            from: OnboardingFinalTimelineGeometry.seedFrame(at: source),
+            to: restingFrame,
+            isLanded: isLanded
+        )
     }
 }
 
 private struct OnboardingFinalReminderPiece: View {
     let isChecked: Bool
-    let isRevealed: Bool
+    let isLanded: Bool
     let state: OnboardingFinalLayerState
 
     var body: some View {
@@ -71,7 +80,7 @@ private struct OnboardingFinalReminderPiece: View {
         .foregroundStyle(.white)
         .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .opacity(isRevealed ? state.contentOpacity : 0)
+        .onboardingFinalReveal(isLanded, opacity: state.contentOpacity)
         .clipShape(shape)
         .glassEffect(.regular.tint(Color.teal.opacity(state.tintOpacity)), in: shape)
         .scaleEffect(isChecked ? 0.96 : 1)

@@ -27,8 +27,15 @@ struct OnboardingFinalTimelineGeometry {
         )
     }
 
-    var seedFrame: CGRect {
-        CGRect(x: contentMinX + contentWidth / 2 - 18, y: verticalInset, width: 36, height: 22)
+    static let seedDiameter: CGFloat = 30
+
+    static func seedFrame(at center: CGPoint) -> CGRect {
+        CGRect(
+            x: center.x - seedDiameter / 2,
+            y: center.y - seedDiameter / 2,
+            width: seedDiameter,
+            height: seedDiameter
+        )
     }
 }
 

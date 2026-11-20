@@ -2,8 +2,9 @@ import SwiftUI
 
 struct OnboardingFinalWeatherLayer: View {
     @Environment(\.accessibilityReduceMotion) private var reducesMotion
-    @State private var hasDripped = false
+    @State private var sequence = OnboardingFinalLaunchSequence()
     let geometry: OnboardingFinalTimelineGeometry
+    let source: CGPoint
     let state: OnboardingFinalLayerState
 
     private static let symbols = [
@@ -15,23 +16,38 @@ struct OnboardingFinalWeatherLayer: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             ForEach(Array(Self.symbols.enumerated()), id: \.offset) { hour, symbol in
-                let restingY = geometry.yPosition(Double(hour)) - Self.diameter / 2
-                Image(systemName: symbol)
-                    .symbolRenderingMode(.multicolor)
-                    .font(.system(size: 12))
-                    .opacity(hasDripped ? state.contentOpacity : 0)
-                    .frame(width: Self.diameter, height: Self.diameter)
-                    .glassEffect(.regular.tint(Color.cyan.opacity(state.tintOpacity * 0.5)), in: .circle)
-                    .offset(
-                        x: geometry.gutterWidth - Self.diameter - 4,
-                        y: hasDripped ? restingY : geometry.verticalInset
-                    )
-                    .animation(
-                        reducesMotion ? nil : .spring(duration: 0.75, bounce: 0.3).delay(0.3 + Double(hour) * 0.11),
-                        value: hasDripped
-                    )
+                let rank = Self.symbols.count - 1 - hour
+                if sequence.isLaunched(rank) {
+                    pill(symbol: symbol, hour: hour, isLanded: sequence.isLanded(rank))
+                }
             }
         }
-        .onAppear { hasDripped = true }
+        .task {
+            await OnboardingFinalLaunchSequence.play(
+                count: Self.symbols.count,
+                into: $sequence,
+                reducesMotion: reducesMotion
+            )
+        }
+    }
+
+    private func pill(symbol: String, hour: Int, isLanded: Bool) -> some View {
+        let restingFrame = CGRect(
+            x: geometry.gutterWidth - Self.diameter - 4,
+            y: geometry.yPosition(Double(hour)) - Self.diameter / 2,
+            width: Self.diameter,
+            height: Self.diameter
+        )
+        return Image(systemName: symbol)
+            .symbolRenderingMode(.multicolor)
+            .font(.system(size: 12))
+            .onboardingFinalReveal(isLanded, opacity: state.contentOpacity)
+            .frame(width: Self.diameter, height: Self.diameter)
+            .glassEffect(.regular.tint(Color.cyan.opacity(state.tintOpacity * 0.5)), in: .circle)
+            .onboardingFinalFlight(
+                from: OnboardingFinalTimelineGeometry.seedFrame(at: source),
+                to: restingFrame,
+                isLanded: isLanded
+            )
     }
 }

@@ -2,30 +2,39 @@ import SwiftUI
 
 struct OnboardingFinalEventsLayer: View {
     @Environment(\.accessibilityReduceMotion) private var reducesMotion
-    @State private var hasLanded = false
+    @State private var sequence = OnboardingFinalLaunchSequence()
     let geometry: OnboardingFinalTimelineGeometry
+    let source: CGPoint
     let state: OnboardingFinalLayerState
 
     var body: some View {
+        let events = OnboardingFinalEvent.samples
         ZStack(alignment: .topLeading) {
-            ForEach(OnboardingFinalEvent.samples) { event in
-                OnboardingFinalEventPiece(event: event, isRevealed: hasLanded, state: state)
-                    .onboardingFinalPlaced(in: hasLanded ? geometry.eventFrame(event) : geometry.seedFrame)
-                    .animation(
-                        reducesMotion
-                            ? nil
-                            : .spring(duration: 0.85, bounce: 0.3).delay(0.35 + Double(event.id) * 0.22),
-                        value: hasLanded
-                    )
+            ForEach(events) { event in
+                let rank = events.count - 1 - event.id
+                if sequence.isLaunched(rank) {
+                    OnboardingFinalEventPiece(event: event, isLanded: sequence.isLanded(rank), state: state)
+                        .onboardingFinalFlight(
+                            from: OnboardingFinalTimelineGeometry.seedFrame(at: source),
+                            to: geometry.eventFrame(event),
+                            isLanded: sequence.isLanded(rank)
+                        )
+                }
             }
         }
-        .onAppear { hasLanded = true }
+        .task {
+            await OnboardingFinalLaunchSequence.play(
+                count: events.count,
+                into: $sequence,
+                reducesMotion: reducesMotion
+            )
+        }
     }
 }
 
 struct OnboardingFinalEventPiece: View {
     let event: OnboardingFinalEvent
-    let isRevealed: Bool
+    let isLanded: Bool
     let state: OnboardingFinalLayerState
 
     var body: some View {
@@ -44,17 +53,9 @@ struct OnboardingFinalEventPiece: View {
             .padding(.top, 9)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .opacity(isRevealed ? state.contentOpacity : 0)
+        .onboardingFinalReveal(isLanded, opacity: state.contentOpacity)
         .clipShape(shape)
         .glassEffect(.regular.tint(event.color.opacity(state.tintOpacity)), in: shape)
         .animation(.easeInOut(duration: 0.6), value: state)
-    }
-}
-
-extension View {
-    func onboardingFinalPlaced(in frame: CGRect) -> some View {
-        self
-            .frame(width: frame.width, height: frame.height)
-            .offset(x: frame.minX, y: frame.minY)
     }
 }
