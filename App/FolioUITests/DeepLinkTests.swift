@@ -30,6 +30,13 @@ final class DeepLinkTests: XCTestCase {
     }
 
     @MainActor
+    func testReonboardLinkShowsOnboardingAgain() throws {
+        let app = launchApp()
+        try open("folio://reonboard", in: app)
+        XCTAssertTrue(app.staticTexts["OnboardingTitle"].waitForExistence(timeout: 10))
+    }
+
+    @MainActor
     private func launchApp() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "-FolioSkipOnboarding"]

@@ -13,6 +13,11 @@ struct OnboardingPresenter: ViewModifier {
                 OnboardingView(onFinish: finish)
                     .interactiveDismissDisabled()
             }
+            .onOpenURL { url in
+                if OnboardingDeepLink.isReonboard(url) {
+                    isPresented = true
+                }
+            }
     }
 
     private func finish() {
