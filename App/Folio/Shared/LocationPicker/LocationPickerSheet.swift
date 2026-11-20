@@ -21,6 +21,7 @@ struct LocationPickerSheet<Header: View>: View {
     @State private var search = LocationSearch()
     @State private var isResolving = false
     @State private var savedLocations = EventLocationSettings().savedLocations
+    @FocusState private var isSearchFocused: Bool
 
     private var trimmedQuery: String {
         search.query.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -99,6 +100,7 @@ struct LocationPickerSheet<Header: View>: View {
                 }
             }
             .searchable(text: $search.query, placement: .automatic, prompt: prompt)
+            .searchFocused($isSearchFocused)
             .navigationTitle(title)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
@@ -117,6 +119,9 @@ struct LocationPickerSheet<Header: View>: View {
         #endif
         .onAppear {
             search.query = selection?.title ?? ""
+        }
+        .task {
+            isSearchFocused = true
         }
     }
 
