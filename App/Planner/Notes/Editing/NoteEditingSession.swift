@@ -24,13 +24,19 @@ public final class NoteEditingSession {
     }
 
     @ObservationIgnored private let library: NotesLibrary
+    @ObservationIgnored private let saveDelay: Duration
     @ObservationIgnored private var saveTask: Task<Void, Never>?
+    @ObservationIgnored private var latestSave: Task<Void, Never>?
+    @ObservationIgnored private var saveGeneration = 0
     @ObservationIgnored private var isClosed = false
 
-    public init(url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false) {
+    public init(
+        url: URL, library: NotesLibrary, focusesEditorOnOpen: Bool = false, saveDelay: Duration = .seconds(1)
+    ) {
         self.url = url
         self.focusesEditorOnOpen = focusesEditorOnOpen
         self.library = library
+        self.saveDelay = saveDelay
     }
 
     public var title: String {
@@ -54,7 +60,7 @@ public final class NoteEditingSession {
     public func flush() async {
         saveTask?.cancel()
         saveTask = nil
-        await save()
+        await enqueueSave().value
     }
 
     public func didMove(to newURL: URL) {
@@ -70,7 +76,7 @@ public final class NoteEditingSession {
     }
 
     public func reloadIfChangedElsewhere(in files: [NoteFile]) {
-        guard state == .ready, !hasUnsavedChanges, saveTask == nil,
+        guard state == .ready, !hasUnsavedChanges, saveTask == nil, latestSave == nil,
               let savedNote,
               let file = files.first(where: { $0.url == url }),
               file.modifiedDate.timeIntervalSince(savedNote.modifiedDate) > 1 else {
@@ -88,14 +94,30 @@ public final class NoteEditingSession {
             return
         }
         saveTask?.cancel()
-        saveTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(1))
-            guard !Task.isCancelled else {
+        saveTask = Task { [weak self, saveDelay] in
+            try? await Task.sleep(for: saveDelay)
+            guard !Task.isCancelled, let self else {
                 return
             }
-            await self?.save()
-            self?.saveTask = nil
+            saveTask = nil
+            await enqueueSave().value
         }
+    }
+
+    /// Each save waits for the one before it, so it starts from the note that save left on disk.
+    private func enqueueSave() -> Task<Void, Never> {
+        saveGeneration += 1
+        let generation = saveGeneration
+        let previousSave = latestSave
+        let task = Task { [weak self] in
+            await previousSave?.value
+            await self?.save()
+            if self?.saveGeneration == generation {
+                self?.latestSave = nil
+            }
+        }
+        latestSave = task
+        return task
     }
 
     private func save() async {
