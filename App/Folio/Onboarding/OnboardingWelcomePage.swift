@@ -11,10 +11,13 @@ struct OnboardingWelcomePage: View {
             buttonIdentifier: "OnboardingGetStarted",
             action: onContinue
         ) {
+            OnboardingFeatureFan(features: features)
             OnboardingHeader()
+                .onboardingEntrance(delay: 0.25)
             VStack(alignment: .leading, spacing: Metrics.rowSpacing) {
-                ForEach(features) { feature in
+                ForEach(Array(features.enumerated()), id: \.element) { index, feature in
                     OnboardingFeatureRow(feature: feature)
+                        .onboardingEntrance(delay: 0.4 + Double(index) * 0.1)
                 }
             }
         }
