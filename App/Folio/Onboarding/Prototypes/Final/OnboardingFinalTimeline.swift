@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OnboardingFinalTimeline: View {
-    @State private var nowHour = OnboardingFinalNowLine.restingHour
+    @State private var nowHour = OnboardingFinalNowLineSlot.restingHour
     let context: OnboardingPrototypeContext
 
     var body: some View {
@@ -35,7 +35,7 @@ struct OnboardingFinalTimeline: View {
                 layer(.alarms, width: proxy.size.width) {
                     OnboardingFinalAlarmsLayer(geometry: geometry, source: $1, state: $0)
                 }
-                OnboardingFinalNowLine(geometry: geometry, hour: nowHour)
+                OnboardingFinalNowLineSlot(geometry: geometry, hour: nowHour)
                 layer(.alerts, width: proxy.size.width) {
                     OnboardingFinalAlertsLayer(geometry: geometry, source: $1, state: $0, nowHour: $nowHour)
                 }

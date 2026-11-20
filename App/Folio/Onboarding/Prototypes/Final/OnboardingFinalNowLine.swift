@@ -1,24 +1,60 @@
 import SwiftUI
 
-struct OnboardingFinalNowLine: View {
-    @Environment(\.accessibilityReduceMotion) private var reducesMotion
-    @State private var isDrawn = false
+struct OnboardingFinalNowLineSlot: View {
     let geometry: OnboardingFinalTimelineGeometry
     let hour: Double
 
     static let restingHour = 3.3
 
     var body: some View {
+        Color.clear
+            .frame(width: geometry.contentMaxX - geometry.contentMinX + 4, height: OnboardingFinalNowLine.height)
+            .anchorPreference(key: OnboardingFinalNowLineKey.self, value: .bounds) { $0 }
+            .padding(.leading, geometry.contentMinX - 4)
+            .padding(.top, geometry.yPosition(hour) - OnboardingFinalNowLine.height / 2)
+            .allowsHitTesting(false)
+    }
+}
+
+struct OnboardingFinalNowLine: View {
+    @Environment(\.accessibilityReduceMotion) private var reducesMotion
+    @State private var isDrawn = false
+    let frame: CGRect
+
+    static let height: CGFloat = 9
+
+    var body: some View {
         HStack(spacing: 0) {
-            Circle().fill(.white).frame(width: 9, height: 9)
+            Circle().fill(.white).frame(width: Self.height, height: Self.height)
             Rectangle().fill(.white).frame(height: 2)
         }
         .shadow(color: .white.opacity(0.7), radius: 3)
-        .frame(width: geometry.size.width - geometry.contentMinX + 4)
+        .frame(width: frame.width, height: frame.height)
         .scaleEffect(x: isDrawn ? 1 : 0, anchor: .leading)
-        .offset(x: geometry.contentMinX - 4, y: geometry.yPosition(hour) - 4.5)
+        .offset(x: frame.minX, y: frame.minY)
         .animation(reducesMotion ? nil : .easeOut(duration: 0.8).delay(0.75), value: isDrawn)
         .allowsHitTesting(false)
+        .accessibilityHidden(true)
         .onAppear { isDrawn = true }
+    }
+}
+
+nonisolated struct OnboardingFinalNowLineKey: PreferenceKey {
+    static let defaultValue: Anchor<CGRect>? = nil
+
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
+    }
+}
+
+extension View {
+    func onboardingFinalNowLineOverlay() -> some View {
+        overlayPreferenceValue(OnboardingFinalNowLineKey.self) { anchor in
+            GeometryReader { proxy in
+                if let anchor {
+                    OnboardingFinalNowLine(frame: proxy[anchor])
+                }
+            }
+        }
     }
 }

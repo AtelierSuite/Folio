@@ -58,6 +58,7 @@ struct OnboardingFinalView: View {
                     OnboardingFinalTimeline(context: displayedContext)
                 }
             }
+            .onboardingFinalNowLineOverlay()
             OnboardingFinalText(context: displayedContext)
                 .opacity(stage.isTextHidden ? 0 : 1)
                 .padding(.top, Metrics.textSpacing)
