@@ -114,6 +114,26 @@ struct EventCountdownManagerTests {
         #expect(manager.isCountingDown(event))
     }
 
+    @Test func endFinishedEndsOnlyCountdownsPastTheirFinishDate() async throws {
+        let manager = makeManager()
+        let dinner = Fixtures.countdownEvent(local: "dinner", start: start)
+        let later = Fixtures.countdownEvent(local: "later", start: start.addingTimeInterval(3 * 3600))
+        try manager.start(dinner, at: now)
+        try manager.start(later, at: start.addingTimeInterval(3600))
+        let finishDate = try #require(manager.running.first { $0.belongs(to: dinner) }?.state.finishDate)
+        await manager.endFinished(at: finishDate.addingTimeInterval(1))
+        #expect(!manager.isCountingDown(dinner))
+        #expect(manager.isCountingDown(later))
+    }
+
+    @Test func endFinishedKeepsUpcomingCountdowns() async throws {
+        let manager = makeManager()
+        let event = Fixtures.countdownEvent(local: "dinner", start: start)
+        try manager.start(event, at: now)
+        await manager.endFinished(at: now)
+        #expect(manager.isCountingDown(event))
+    }
+
     @Test func startNextCountdownPicksTheSoonestEvent() async throws {
         let manager = makeManager()
         source.events = [

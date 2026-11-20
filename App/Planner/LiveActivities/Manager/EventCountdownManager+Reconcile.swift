@@ -27,6 +27,17 @@ extension EventCountdownManager {
         refresh(applying: updatedStates)
     }
 
+    /// Ends countdowns past their finish date without a calendar lookup, for when the app is
+    /// about to be suspended and its finish timer will stop firing.
+    public func endFinished(at now: Date = .now) async {
+        for change in reconciler.endingFinished(controller.runningCountdowns, at: now) {
+            if case .end(let id) = change {
+                await controller.end(id: id)
+            }
+        }
+        refresh()
+    }
+
     /// For Siri and Shortcuts: counts down to the next event the window allows.
     @discardableResult
     public func startNextCountdown(at now: Date = .now) async throws -> CalendarEvent {

@@ -162,7 +162,7 @@ struct FolioApp: App {
         #if os(macOS)
         .defaultSize(width: 1100, height: 760)
         #endif
-        .notificationRefreshTask(notificationScheduler)
+        .notificationRefreshTask(notificationScheduler, countdowns: countdowns)
         .commands {
             if PlatformCapabilities.current.supports(.calendarViewMenuCommands) {
                 CalendarViewCommands()

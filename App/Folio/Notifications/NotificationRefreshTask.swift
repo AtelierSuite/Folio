@@ -15,10 +15,14 @@ nonisolated enum NotificationRefreshTask {
 }
 
 extension Scene {
-    func notificationRefreshTask(_ scheduler: NotificationScheduler) -> some Scene {
+    func notificationRefreshTask(
+        _ scheduler: NotificationScheduler,
+        countdowns: EventCountdownManager
+    ) -> some Scene {
         backgroundTask(.appRefresh(NotificationRefreshTask.identifier)) {
             NotificationRefreshTask.schedule()
             await scheduler.replan()
+            await countdowns.reconcile()
         }
     }
 }
@@ -27,7 +31,10 @@ import Planner
 import SwiftUI
 
 extension Scene {
-    func notificationRefreshTask(_ scheduler: NotificationScheduler) -> some Scene {
+    func notificationRefreshTask(
+        _ scheduler: NotificationScheduler,
+        countdowns: EventCountdownManager
+    ) -> some Scene {
         self
     }
 }
