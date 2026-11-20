@@ -24,7 +24,7 @@ struct CalendarKindLabel: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            GradientCircleIcon(systemImage: symbolName, color: calendar.color.color)
+            GradientCircleIcon(systemImage: symbolName, color: calendar.color.color, glyphScale: 0.55)
                 .accessibilityLabel(calendar.kind.accountKindName)
             VStack(alignment: .leading, spacing: 2) {
                 Text(calendar.title)
