@@ -397,61 +397,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio fragt erst nach Zugriff auf Kalender, Erinnerungen und andere Daten, wenn du eine Funktion, die ihn braucht, zum ersten Mal verwendest."
+            "value": "Folio fragt immer, bevor es deine Kalender, Erinnerungen oder andere Daten verwendet, und du kannst jederzeit in den Einstellungen ändern, worauf es zugreifen darf."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio asks for access to your calendars, reminders and other data only when you first use a feature that needs it."
+            "value": "Folio asks before it uses your calendars, reminders or other data, and you can change what it can access at any time in Settings."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio demande l’accès à vos calendriers, rappels et autres données uniquement lorsque vous utilisez pour la première fois une fonction qui en a besoin."
+            "value": "Folio vous demande toujours avant d’utiliser vos calendriers, rappels ou autres données, et vous pouvez modifier ce à quoi il a accès à tout moment dans Réglages."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio chiede l’accesso a calendari, promemoria e altri dati solo quando usi per la prima volta una funzione che lo richiede."
+            "value": "Folio chiede sempre prima di usare calendari, promemoria o altri dati, e puoi cambiare in qualsiasi momento in Impostazioni a cosa può accedere."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioがカレンダーやリマインダーなどへのアクセスを求めるのは、それが必要な機能を初めて使うときだけです。"
+            "value": "Folioは、カレンダーやリマインダーなどのデータを使う前に必ず確認します。アクセスできる項目は、いつでも設定で変更できます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio는 캘린더, 미리 알림 및 기타 데이터에 대한 접근이 필요한 기능을 처음 사용할 때만 접근을 요청합니다."
+            "value": "Folio는 캘린더, 미리 알림 및 기타 데이터를 사용하기 전에 항상 먼저 묻습니다. 접근할 수 있는 항목은 언제든지 설정에서 변경할 수 있습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio vraagt pas toegang tot je agenda's, herinneringen en andere gegevens wanneer je voor het eerst een functie gebruikt die dat nodig heeft."
+            "value": "Folio vraagt het altijd voordat het je agenda's, herinneringen of andere gegevens gebruikt, en je kunt op elk moment in Instellingen wijzigen waartoe het toegang heeft."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio chỉ xin quyền truy cập lịch, lời nhắc và dữ liệu khác khi bạn dùng lần đầu một tính năng cần đến chúng."
+            "value": "Folio luôn hỏi trước khi dùng lịch, lời nhắc hoặc dữ liệu khác của bạn, và bạn có thể thay đổi những gì Folio được truy cập bất cứ lúc nào trong Cài đặt."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 仅在你首次使用需要访问日历、提醒事项或其他数据的功能时才会请求访问。"
+            "value": "Folio 在使用你的日历、提醒事项或其他数据前都会先征得你的同意，你也可以随时在设置中更改它能访问的内容。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 僅在你首次使用需要取用行事曆、提醒事項或其他資料的功能時才會要求取用。"
+            "value": "Folio 在使用你的行事曆、提醒事項或其他資料前都會先徵求你的同意，你也可以隨時在設定中更改它能取用的內容。"
           }
         }
       }
