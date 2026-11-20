@@ -11,10 +11,11 @@ enum OnboardingPrototype: Int, CaseIterable {
     case productTour
     case journey
     case morphingIcon
+    case finalConcept
 
     static let defaultsKey = "Onboarding.Prototype"
 
     static var selected: OnboardingPrototype {
-        OnboardingPrototype(rawValue: UserDefaults.standard.integer(forKey: defaultsKey)) ?? .timelineCards
+        OnboardingPrototype(rawValue: UserDefaults.standard.integer(forKey: defaultsKey)) ?? .finalConcept
     }
 }

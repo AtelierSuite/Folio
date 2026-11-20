@@ -1,0 +1,68 @@
+import SwiftUI
+
+enum OnboardingFinalBadgeState {
+    case upcoming
+    case current
+    case completed
+}
+
+struct OnboardingFinalBadge: View {
+    let step: OnboardingSetupStep
+    let state: OnboardingFinalBadgeState
+
+    var body: some View {
+        let diameter = state == .current ? Metrics.currentDiameter : Metrics.diameter
+        ZStack {
+            if state == .current {
+                OnboardingFinalCurrentRing()
+                    .frame(width: diameter + 16, height: diameter + 16)
+                    .transition(.scale.combined(with: .opacity))
+            }
+            symbol(diameter: diameter)
+                .foregroundStyle(.white.opacity(state == .upcoming ? 0.8 : 1))
+                .frame(width: diameter, height: diameter)
+                .glassEffect(glass, in: .circle)
+        }
+        .frame(width: Metrics.currentDiameter + 16, height: Metrics.currentDiameter + 16)
+        .animation(.spring(duration: 0.55, bounce: 0.45), value: state)
+    }
+
+    @ViewBuilder
+    private func symbol(diameter: CGFloat) -> some View {
+        if state == .completed {
+            Image(systemName: "checkmark")
+                .font(.system(size: diameter * 0.4, weight: .heavy))
+                .transition(.scale(scale: 0.1).combined(with: .opacity))
+        } else {
+            Image(systemName: OnboardingFinalPalette.symbol(for: step))
+                .font(.system(size: diameter * 0.42, weight: .semibold))
+                .transition(.scale(scale: 0.6).combined(with: .opacity))
+        }
+    }
+
+    private var glass: Glass {
+        switch state {
+        case .upcoming: .regular
+        case .current: .regular.tint(OnboardingFinalPalette.tint(for: step).opacity(0.85))
+        case .completed: .regular.tint(OnboardingFinalPalette.tint(for: step).opacity(0.6))
+        }
+    }
+
+    private enum Metrics {
+        #if os(macOS)
+        static let diameter: CGFloat = 28
+        static let currentDiameter: CGFloat = 38
+        #else
+        static let diameter: CGFloat = 32
+        static let currentDiameter: CGFloat = 44
+        #endif
+    }
+}
+
+private struct OnboardingFinalCurrentRing: View {
+    var body: some View {
+        Circle()
+            .strokeBorder(.white.opacity(0.9), lineWidth: 2)
+            .shadow(color: .white.opacity(0.8), radius: 5)
+    }
+}

@@ -16,6 +16,7 @@ struct OnboardingPrototypeView: View {
         case .productTour: OnboardingProductTourView(context: context)
         case .journey: OnboardingJourneyView(context: context)
         case .morphingIcon: OnboardingMorphingIconView(context: context)
+        case .finalConcept: OnboardingFinalView(context: context)
         }
     }
 }
