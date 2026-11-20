@@ -8,7 +8,7 @@ struct OnboardingFinalNowLineSlot: View {
 
     var body: some View {
         Color.clear
-            .frame(width: geometry.contentMaxX - geometry.contentMinX + 4, height: OnboardingFinalNowLine.height)
+            .frame(width: geometry.size.width - geometry.contentMinX + 4, height: OnboardingFinalNowLine.height)
             .anchorPreference(key: OnboardingFinalNowLineKey.self, value: .bounds) { $0 }
             .padding(.leading, geometry.contentMinX - 4)
             .padding(.top, geometry.yPosition(hour) - OnboardingFinalNowLine.height / 2)
