@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct EventLocationChoiceRow: View {
+struct LocationChoiceRow: View {
     let title: String
     let subtitle: String
     let systemImage: String

@@ -30,7 +30,7 @@ struct EventLocationRow: View {
         }
         .buttonStyle(.plain)
         .sheet(isPresented: $isSearching) {
-            EventLocationSearchView(location: $location, offersSavedLocations: offersSavedLocations)
+            LocationPickerSheet(location: $location, offersSavedLocations: offersSavedLocations)
         }
     }
 }

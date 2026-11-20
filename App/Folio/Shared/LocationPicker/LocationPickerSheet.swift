@@ -1,9 +1,22 @@
 import Planner
 import SwiftUI
 
-struct EventLocationSearchView: View {
-    @Binding var location: EventLocation?
+/// The sheet every location choice in the app goes through: saved locations, MapKit search,
+/// and optionally free text or removal, with room for options of its own above the results.
+struct LocationPickerSheet<Header: View>: View {
+    var title = String(localized: "Field.Location", table: "EventEditor")
+    var prompt = String(localized: "Location.SearchPrompt", table: "EventEditor")
+    /// Prefills the search and decides whether removal is offered.
+    var selection: EventLocation?
     var offersSavedLocations = true
+    /// Offers the typed text as a location of its own.
+    var allowsText = true
+    var allowsRemoval = true
+    /// Leaves out anything without a coordinate, for choices that need a place on the map.
+    var requiresCoordinate = false
+    let choose: (EventLocation?) -> Void
+    @ViewBuilder var header: () -> Header
+
     @Environment(\.dismiss) private var dismiss
     @State private var search = LocationSearch()
     @State private var isResolving = false
@@ -13,50 +26,61 @@ struct EventLocationSearchView: View {
         search.query.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    private var isUntouched: Bool {
+        trimmedQuery.isEmpty || trimmedQuery == selection?.title
+    }
+
     private var matchingSavedLocations: [SavedLocation] {
         guard offersSavedLocations else { return [] }
-        let isUntouched = trimmedQuery.isEmpty || trimmedQuery == location?.title
-        return isUntouched ? savedLocations : savedLocations.filter { $0.matches(trimmedQuery) }
+        let usable = requiresCoordinate ? savedLocations.filter { $0.location.coordinate != nil } : savedLocations
+        return isUntouched ? usable : usable.filter { $0.matches(trimmedQuery) }
+    }
+
+    private var showsHeader: Bool {
+        Header.self != EmptyView.self && trimmedQuery.isEmpty
     }
 
     private var isAwaitingQuery: Bool {
-        trimmedQuery.isEmpty && matchingSavedLocations.isEmpty
+        trimmedQuery.isEmpty && matchingSavedLocations.isEmpty && !showsHeader
     }
 
     private var hasNoResults: Bool {
-        !trimmedQuery.isEmpty && search.suggestions.isEmpty && !search.isSearching
+        !trimmedQuery.isEmpty && search.suggestions.isEmpty && !search.isSearching && matchingSavedLocations.isEmpty
     }
 
     var body: some View {
         NavigationStack {
             List {
+                if showsHeader {
+                    header()
+                }
                 if !matchingSavedLocations.isEmpty {
                     Section(String(localized: "Saved.Header", table: "Locations")) {
                         ForEach(matchingSavedLocations) { saved in
-                            EventLocationChoiceRow(
+                            LocationChoiceRow(
                                 title: saved.name,
                                 subtitle: saved.summary,
                                 systemImage: "star.fill",
                                 color: .orange
                             ) {
-                                choose(saved.location)
+                                finish(with: saved.location)
                             }
                         }
                     }
                 }
-                if !trimmedQuery.isEmpty {
+                if allowsText && !trimmedQuery.isEmpty {
                     Button(String(localized: "Location.UseText \(trimmedQuery)", table: "EventEditor")) {
-                        choose(EventLocation(title: trimmedQuery))
+                        finish(with: EventLocation(title: trimmedQuery))
                     }
                 }
                 ForEach(search.suggestions) { suggestion in
-                    EventLocationSuggestionRow(suggestion: suggestion, search: search) {
+                    LocationSuggestionRow(suggestion: suggestion, search: search) {
                         Task { await resolve(suggestion) }
                     }
                 }
-                if location != nil {
+                if allowsRemoval && selection != nil {
                     Button(String(localized: "Location.Remove", table: "EventEditor"), role: .destructive) {
-                        choose(nil)
+                        finish(with: nil)
                     }
                 }
             }
@@ -74,12 +98,8 @@ struct EventLocationSearchView: View {
                     ContentUnavailableView.search(text: trimmedQuery)
                 }
             }
-            .searchable(
-                text: $search.query,
-                placement: .automatic,
-                prompt: String(localized: "Location.SearchPrompt", table: "EventEditor")
-            )
-            .navigationTitle(String(localized: "Field.Location", table: "EventEditor"))
+            .searchable(text: $search.query, placement: .automatic, prompt: prompt)
+            .navigationTitle(title)
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
@@ -96,7 +116,7 @@ struct EventLocationSearchView: View {
         .frame(minWidth: 420, minHeight: 480)
         #endif
         .onAppear {
-            search.query = location?.title ?? ""
+            search.query = selection?.title ?? ""
         }
     }
 
@@ -104,11 +124,22 @@ struct EventLocationSearchView: View {
         isResolving = true
         defer { isResolving = false }
         let resolved = try? await search.location(for: suggestion)
-        choose(resolved ?? EventLocation(title: suggestion.title, address: suggestion.subtitle))
+        if requiresCoordinate && resolved?.coordinate == nil { return }
+        finish(with: resolved ?? EventLocation(title: suggestion.title, address: suggestion.subtitle))
     }
 
-    private func choose(_ newLocation: EventLocation?) {
-        location = newLocation
+    private func finish(with location: EventLocation?) {
+        choose(location)
         dismiss()
+    }
+}
+
+extension LocationPickerSheet where Header == EmptyView {
+    init(location: Binding<EventLocation?>, offersSavedLocations: Bool = true) {
+        self.init(selection: location.wrappedValue, offersSavedLocations: offersSavedLocations) {
+            location.wrappedValue = $0
+        } header: {
+            EmptyView()
+        }
     }
 }
