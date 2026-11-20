@@ -11,15 +11,34 @@ struct CalendarMoreMenu: View {
 
     var body: some View {
         Menu(String(localized: "Toolbar.More", table: "Calendar"), systemImage: "ellipsis") {
-            CalendarViewModePicker(mode: $mode)
-                .pickerStyle(.inline)
+            Section {
+                MenuChoiceToggles(
+                    choices: CalendarViewMode.allCases, selection: $mode, title: \.title, systemImage: \.systemImage
+                )
+            }
             if mode == .multiDay {
-                MultiDayCountPicker(dayCount: $dayCount)
-                    .pickerStyle(.menu)
+                Menu {
+                    MenuChoiceToggles(
+                        choices: MultiDayCount.allCases, selection: $dayCount,
+                        title: \.title, systemImage: \.systemImage
+                    )
+                } label: {
+                    Label(String(localized: "DayCount.Picker", table: "Day"), systemImage: dayCount.systemImage)
+                    Text(dayCount.title)
+                }
             }
             if mode.hasWeekLayouts {
-                CalendarWeekLayoutPicker(layout: $weekLayout)
-                    .pickerStyle(.menu)
+                Menu {
+                    MenuChoiceToggles(
+                        choices: CalendarWeekLayout.allCases, selection: $weekLayout,
+                        title: \.title, systemImage: \.systemImage
+                    )
+                } label: {
+                    Label(
+                        String(localized: "WeekLayout.Picker", table: "Calendar"), systemImage: weekLayout.systemImage
+                    )
+                    Text(weekLayout.title)
+                }
             }
             Section {
                 ReminderInboxButton(isShowingInbox: $isShowingInbox)

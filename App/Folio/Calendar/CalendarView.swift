@@ -65,8 +65,15 @@ struct CalendarView: View {
         }
     }
 
-    @ViewBuilder
+    /// Swapping the mode's view straight under the toolbar rebuilds it, which closes an open More menu.
     private var content: some View {
+        ZStack {
+            modeContent
+        }
+    }
+
+    @ViewBuilder
+    private var modeContent: some View {
         switch mode {
         case .list: AgendaView()
         case .day: CalendarDayView()
