@@ -72,14 +72,8 @@ private struct OnboardingFinalReminderPiece: View {
                 .font(.system(size: 14, weight: .semibold))
                 .contentTransition(.symbolEffect(.replace))
             Capsule()
-                .fill(.white.opacity(isChecked ? 0.4 : 0.9))
+                .fill(.white.opacity(isChecked ? 0.5 : 0.9))
                 .frame(height: 5)
-                .overlay {
-                    Capsule()
-                        .fill(.white)
-                        .frame(height: 1.5)
-                        .scaleEffect(x: isChecked ? 1 : 0, anchor: .leading)
-                }
         }
         .foregroundStyle(.white)
         .padding(.horizontal, 8)
