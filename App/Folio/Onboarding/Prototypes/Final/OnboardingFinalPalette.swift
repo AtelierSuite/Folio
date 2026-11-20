@@ -28,10 +28,6 @@ enum OnboardingFinalPalette {
         ]
     }
 
-    static func buttonLabelColor(for step: OnboardingStep, deepened: Bool) -> Color {
-        base(for: step).mix(with: .black, by: deepened ? 0.38 : 0.12)
-    }
-
     private static func base(for step: OnboardingStep) -> Color {
         switch step {
         case .welcome: .accentColor
