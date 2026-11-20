@@ -37,6 +37,7 @@ extension NotesView {
         }
         let newSession = NoteEditingSession(url: url, library: library, focusesEditorOnOpen: url == createdNoteURL)
         session = newSession
+        OpenNoteSessions.shared.track(newSession)
         await newSession.load()
     }
 

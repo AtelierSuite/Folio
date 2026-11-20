@@ -66,9 +66,7 @@ struct NotesView: View {
                     await library.refresh()
                 }
             } else {
-                Task {
-                    await session?.flush()
-                }
+                OpenNoteSessions.shared.flushBeforeSuspension()
             }
         }
     }

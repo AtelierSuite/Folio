@@ -31,6 +31,7 @@ struct FolioApp: App {
     @State private var undoToastHosts = UndoToastHosts()
     @State private var countdowns: EventCountdownManager
     #if os(macOS)
+    @NSApplicationDelegateAdaptor private var appDelegate: FolioAppDelegate
     @State private var menuBarAgenda = MenuBarAgenda()
     #endif
 
