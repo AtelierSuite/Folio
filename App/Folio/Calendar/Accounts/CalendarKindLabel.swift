@@ -24,8 +24,13 @@ struct CalendarKindLabel: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            GradientCircleIcon(systemImage: symbolName, color: calendar.color.color, glyphScale: 0.55)
-                .accessibilityLabel(calendar.kind.accountKindName)
+            GradientCircleIcon(
+                systemImage: symbolName,
+                color: calendar.color.color,
+                glyphScale: isBirthdayCalendar ? BirthdayStyle.circleGlyphScale : 0.55,
+                glyphOffset: isBirthdayCalendar ? BirthdayStyle.circleGlyphOffset : .zero
+            )
+            .accessibilityLabel(calendar.kind.accountKindName)
             VStack(alignment: .leading, spacing: 2) {
                 Text(calendar.title)
                 if let subtitle {
@@ -38,8 +43,12 @@ struct CalendarKindLabel: View {
         .accessibilityElement(children: .combine)
     }
 
-    private var symbolName: String {
+    private var isBirthdayCalendar: Bool {
         store.isBirthdayCalendar(calendar)
+    }
+
+    private var symbolName: String {
+        isBirthdayCalendar
             ? BirthdayStyle.symbolName
             : calendar.kind.accountSymbolName
     }
