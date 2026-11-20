@@ -43,6 +43,11 @@ struct NoteSessionView: View {
             ProgressView(String(localized: "Detail.Loading", table: "Notes"))
         case .ready:
             NoteEditorView(text: $session.text, noteURL: session.url, focusesOnAppear: session.focusesEditorOnOpen)
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    if let message = session.saveFailureMessage {
+                        NoteSaveFailedBanner(message: message, onRetry: session.retrySave)
+                    }
+                }
         case .failed(let message):
             ContentUnavailableView(
                 String(localized: "Detail.LoadFailed.Title", table: "Notes"),
