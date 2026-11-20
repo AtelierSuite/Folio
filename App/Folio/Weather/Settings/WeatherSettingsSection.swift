@@ -7,6 +7,7 @@ struct WeatherSettingsSection: View {
     @AppStorage(WeatherTimelineSettings.shadesNightKey) private var shadesNight = true
     @AppStorage(WeatherTimelineSettings.showsHourlyForecastKey) private var showsHourlyForecast = true
     @AppStorage(WeatherTimelineSettings.showsRainAlertsKey) private var showsRainAlerts = true
+    @State private var isChoosingLocation = false
 
     var body: some View {
         Section {
@@ -21,14 +22,15 @@ struct WeatherSettingsSection: View {
             ))
                 .accessibilityIdentifier("WeatherToggle")
             if weather.isEnabled {
-                SettingsSheetRow(
-                    title: String(localized: "Settings.Location", table: "Weather"),
-                    value: WeatherLocationLabel.text(for: weather),
-                    sheetTitle: String(localized: "Location.Title", table: "Weather")
-                ) {
-                    WeatherLocationView()
+                LabeledContent(String(localized: "Settings.Location", table: "Weather")) {
+                    Button(WeatherLocationLabel.text(for: weather)) {
+                        isChoosingLocation = true
+                    }
                 }
                 .accessibilityIdentifier("WeatherLocationLink")
+                .sheet(isPresented: $isChoosingLocation) {
+                    WeatherLocationPicker()
+                }
             }
         } header: {
             Text(String(localized: "Settings.Header", table: "Weather"))
