@@ -26,12 +26,14 @@ struct OnboardingFinalAlertsLayer: View {
     }
 
     private var alertHour: Double {
-        OnboardingFinalEvent.samples[OnboardingFinalEvent.alertedIndex].start - 0.4
+        OnboardingFinalEvent.samples[OnboardingFinalEvent.alertedIndex].start
     }
 
     private func playAlerts() async {
         guard state == .current else {
-            await settle()
+            withAnimation(.smooth(duration: 0.5)) { isBannerLanded = false }
+            try? await Task.sleep(for: .seconds(0.5))
+            isBannerLaunched = false
             return
         }
         guard !reducesMotion else {
@@ -40,34 +42,12 @@ struct OnboardingFinalAlertsLayer: View {
             isBannerLanded = true
             return
         }
-        do {
-            try await Task.sleep(for: .seconds(0.6))
-            while !Task.isCancelled {
-                withAnimation(.smooth(duration: 1.1)) { nowHour = 1.2 }
-                try await Task.sleep(for: .seconds(1.2))
-                withAnimation(.smooth(duration: 1.3)) { nowHour = alertHour }
-                try await Task.sleep(for: .seconds(1.3))
-                isBannerLaunched = true
-                try await Task.sleep(for: .milliseconds(40))
-                withAnimation(.smooth(duration: 0.8, extraBounce: 0.12)) { isBannerLanded = true }
-                try await Task.sleep(for: .seconds(2.6))
-                withAnimation(.smooth(duration: 0.7)) { isBannerLanded = false }
-                try await Task.sleep(for: .seconds(0.7))
-                isBannerLaunched = false
-                try await Task.sleep(for: .seconds(0.6))
-            }
-        } catch {
-            await settle()
-        }
-    }
-
-    private func settle() async {
-        withAnimation(.smooth(duration: 0.5)) {
-            isBannerLanded = false
-            nowHour = OnboardingFinalTimelineGrid.restingNowHour
-        }
         try? await Task.sleep(for: .seconds(0.5))
-        isBannerLaunched = false
+        withAnimation(.easeInOut(duration: 2.4)) { nowHour = alertHour }
+        try? await Task.sleep(for: .seconds(2.4))
+        isBannerLaunched = true
+        try? await Task.sleep(for: .milliseconds(40))
+        withAnimation(.smooth(duration: 0.8, extraBounce: 0.12)) { isBannerLanded = true }
     }
 }
 
