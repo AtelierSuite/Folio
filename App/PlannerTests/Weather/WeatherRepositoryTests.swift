@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 @testable import Planner
 
@@ -11,8 +12,15 @@ struct WeatherRepositoryTests {
         directory: TemporaryDirectory,
         now: Date
     ) -> WeatherRepository {
-        let clock = Clock(now)
-        return WeatherRepository(provider: provider, cache: WeatherCache(directory: directory.url), now: { clock.now })
+        makeRepository(provider: provider, directory: directory, clock: Clock(now))
+    }
+
+    private func makeRepository(
+        provider: CountingWeatherProvider,
+        directory: TemporaryDirectory,
+        clock: Clock
+    ) -> WeatherRepository {
+        WeatherRepository(provider: provider, cache: WeatherCache(directory: directory.url), now: { clock.now })
     }
 
     @Test func consecutiveDaysAreFetchedInOneRequest() async throws {
@@ -90,6 +98,42 @@ struct WeatherRepositoryTests {
         #expect(weather[days[0].start]?.daily != nil)
     }
 
+    @Test func failuresBackOffBeforeAskingAgain() async throws {
+        let provider = CountingWeatherProvider()
+        provider.fails = true
+        let directory = try TemporaryDirectory()
+        let clock = Clock(Fixtures.date(2026, 10, 29, hour: 9))
+        let repository = makeRepository(provider: provider, directory: directory, clock: clock)
+        let days = WeatherFixtures.days(from: Fixtures.date(2026, 10, 29), count: 2)
+        _ = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        _ = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        #expect(provider.requests.count == 1)
+        clock.advance(by: 121)
+        _ = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        #expect(provider.requests.count == 2)
+        clock.advance(by: 121)
+        _ = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        #expect(provider.requests.count == 2)
+        provider.fails = false
+        clock.advance(by: 120)
+        let weather = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        #expect(provider.requests.count == 3)
+        #expect(weather[days[0].start]?.daily != nil)
+    }
+
+    @Test func fetchedDaysAreServedFromMemory() async throws {
+        let provider = CountingWeatherProvider()
+        let directory = try TemporaryDirectory()
+        let now = Fixtures.date(2026, 10, 29, hour: 9)
+        let repository = makeRepository(provider: provider, directory: directory, now: now)
+        let days = WeatherFixtures.days(from: Fixtures.date(2026, 10, 29), count: 2)
+        _ = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        try FileManager.default.removeItem(at: directory.url)
+        let weather = await repository.days(days, at: location, detail: .daily, calendar: calendar)
+        #expect(provider.requests.count == 1)
+        #expect(weather[days[1].start]?.daily != nil)
+    }
+
     @Test func dailyForecastMatchesTheNearestMidnight() {
         let dayStart = Fixtures.date(2026, 10, 29)
         let forecast = WeatherForecast(daily: [
@@ -108,10 +152,18 @@ struct WeatherRepositoryTests {
 }
 
 private final class Clock: Sendable {
-    let now: Date
+    private let current: Mutex<Date>
 
     init(_ now: Date) {
-        self.now = now
+        current = Mutex(now)
+    }
+
+    var now: Date {
+        current.withLock { $0 }
+    }
+
+    func advance(by interval: TimeInterval) {
+        current.withLock { $0 = $0.addingTimeInterval(interval) }
     }
 }
 
