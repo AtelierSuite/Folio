@@ -28,7 +28,7 @@ final class NotificationViewController: UIViewController, UNNotificationContentE
     ) {
         let userInfo = response.notification.request.content.userInfo
         guard response.actionIdentifier == NotificationAction.directions.identifier,
-              let url = NotificationUserInfo.place(from: userInfo)?.directionsURL,
+              let url = NotificationUserInfo.place(from: userInfo)?.directionsURL(),
               let extensionContext else {
             completion(.dismissAndForwardAction)
             return

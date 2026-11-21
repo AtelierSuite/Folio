@@ -8,16 +8,25 @@ struct EventActionHelpersTests {
     @Test func directionsPreferTheCoordinate() throws {
         let url = try #require(EventDirections.url(for: event(
             location: "Apple Park", coordinate: PlannerCoordinate(latitude: 37.3349, longitude: -122.009)
-        )))
+        ), settings: DirectionsFixtures.settings()))
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         #expect(url.host() == "maps.apple.com")
         #expect(items.contains(URLQueryItem(name: "daddr", value: "37.3349,-122.009")))
     }
 
     @Test func directionsFallBackToTheAddress() throws {
-        let url = try #require(EventDirections.url(for: event(location: "1-1 Marunouchi, Tokyo")))
+        let url = try #require(EventDirections.url(
+            for: event(location: "1-1 Marunouchi, Tokyo"), settings: DirectionsFixtures.settings()
+        ))
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         #expect(items == [URLQueryItem(name: "daddr", value: "1-1 Marunouchi, Tokyo")])
+    }
+
+    @Test func directionsOpenTheChosenApp() throws {
+        let settings = DirectionsFixtures.settings()
+        settings.app = .googleMaps
+        let url = EventDirections.url(for: event(location: "1-1 Marunouchi, Tokyo"), settings: settings)
+        #expect(url?.host() == "www.google.com")
     }
 
     @Test func noDirectionsWithoutAPlace() {
