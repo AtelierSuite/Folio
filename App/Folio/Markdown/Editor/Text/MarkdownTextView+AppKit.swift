@@ -1,5 +1,6 @@
 #if os(macOS)
 import AppKit
+import Planner
 import SwiftUI
 
 extension MarkdownTextView: NSViewRepresentable {
@@ -25,6 +26,9 @@ extension MarkdownTextView: NSViewRepresentable {
         }
         textView.onToggleTask = { [weak coordinator = context.coordinator] range in
             coordinator?.toggleTask(markerRange: range)
+        }
+        textView.onImageWidthChange = { [weak coordinator = context.coordinator] in
+            coordinator?.loadImages()
         }
         let scrollView = NSScrollView()
         scrollView.drawsBackground = false
@@ -53,16 +57,26 @@ final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
     var onFocusChange: ((Bool) -> Void)?
     var onToggleTask: ((NSRange) -> Void)?
     var onPasteImage: ((MarkdownPastedImage) -> Void)?
+    var onImageWidthChange: (() -> Void)?
     var listDecorations: [MarkdownListDecoration] = []
     var decorationViews: [NSView] = []
     private let textUndoManager = UndoManager()
 
     override func setFrameSize(_ newSize: NSSize) {
         let sizeChanged = newSize != frame.size
+        let widthChanged = newSize.width != frame.width
         super.setFrameSize(newSize)
         if sizeChanged {
             layoutListDecorations()
         }
+        if widthChanged {
+            onImageWidthChange?()
+        }
+    }
+
+    override func viewDidChangeBackingProperties() {
+        super.viewDidChangeBackingProperties()
+        onImageWidthChange?()
     }
 
     func showListDecorations(_ decorations: [MarkdownListDecoration]) {
@@ -128,6 +142,13 @@ final class MarkdownNSTextView: NSTextView, MarkdownTextHost {
 
     var markdownUndoManager: UndoManager {
         textUndoManager
+    }
+
+    var markdownImagePixelWidth: Int {
+        guard frame.width > 0, let textContainer else { return 0 }
+        let scale = window?.backingScaleFactor ?? NSScreen.main?.backingScaleFactor ?? 2
+        let width = textContainer.size.width - textContainer.lineFragmentPadding * 2
+        return MarkdownThumbnailSize.pixelWidth(forPointWidth: width, scale: scale)
     }
 
     func prepareForProgrammaticEdit() {

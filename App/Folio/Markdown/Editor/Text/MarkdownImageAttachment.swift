@@ -10,6 +10,7 @@ import AppKit
 nonisolated final class MarkdownImageAttachment: NSTextAttachment {
     let markdown: String
     let url: URL
+    var requestedPixelWidth = 0
 
     init(markdown: String, url: URL) {
         self.markdown = markdown
@@ -20,6 +21,7 @@ nonisolated final class MarkdownImageAttachment: NSTextAttachment {
     func reuseImage(of other: MarkdownImageAttachment?) {
         guard let other, other.image != nil else { return }
         image = other.image
+        requestedPixelWidth = other.requestedPixelWidth
     }
 
     required init?(coder: NSCoder) {

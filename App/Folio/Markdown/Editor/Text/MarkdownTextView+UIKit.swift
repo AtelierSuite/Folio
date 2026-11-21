@@ -1,4 +1,5 @@
 #if os(iOS)
+import Planner
 import SwiftUI
 import UIKit
 
@@ -17,6 +18,9 @@ extension MarkdownTextView: UIViewRepresentable {
         textView.typingAttributes = MarkdownTextStyler.baseAttributes
         textView.onToggleTask = { [weak coordinator = context.coordinator] range in
             coordinator?.toggleTask(markerRange: range)
+        }
+        textView.onImageWidthChange = { [weak coordinator = context.coordinator] in
+            coordinator?.loadImages()
         }
         context.coordinator.attach(textView)
         if focusesOnAppear {
@@ -41,6 +45,7 @@ final class MarkdownUITextView: UITextView, MarkdownTextHost {
     private let textUndoManager = UndoManager()
     var onToggleTask: ((NSRange) -> Void)?
     var onPasteImage: ((MarkdownPastedImage) -> Void)?
+    var onImageWidthChange: (() -> Void)?
     var listDecorations: [MarkdownListDecoration] = []
     var decorationViews: [UIView] = []
     private var decoratedSize = CGSize.zero
@@ -49,6 +54,9 @@ final class MarkdownUITextView: UITextView, MarkdownTextHost {
         super.layoutSubviews()
         let size = CGSize(width: bounds.width, height: contentSize.height)
         if size != decoratedSize {
+            if size.width != decoratedSize.width {
+                onImageWidthChange?()
+            }
             decoratedSize = size
             layoutListDecorations()
         }
@@ -90,6 +98,12 @@ final class MarkdownUITextView: UITextView, MarkdownTextHost {
 
     var markdownUndoManager: UndoManager {
         textUndoManager
+    }
+
+    var markdownImagePixelWidth: Int {
+        guard bounds.width > 0 else { return 0 }
+        let width = textContainer.size.width - textContainer.lineFragmentPadding * 2
+        return MarkdownThumbnailSize.pixelWidth(forPointWidth: width, scale: traitCollection.displayScale)
     }
 
     func prepareForProgrammaticEdit() {}

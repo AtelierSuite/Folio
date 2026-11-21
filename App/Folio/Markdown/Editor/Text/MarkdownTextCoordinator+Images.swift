@@ -15,10 +15,11 @@ extension MarkdownTextCoordinator {
         return MarkdownAttributedText.attributedString(fromMarkdown: markdown, baseURL: baseURL, reusing: images)
     }
 
+    /// Waits until the editor has a width, and loads again at a higher resolution when it grows.
     func loadImages() {
-        for attachment in imageAttachments()
-        where attachment.image == nil && imageLoads[ObjectIdentifier(attachment)] == nil {
-            loadImage(into: attachment)
+        guard let pixelWidth = host?.markdownImagePixelWidth, pixelWidth > 0 else { return }
+        for attachment in imageAttachments() where attachment.requestedPixelWidth < pixelWidth {
+            loadImage(into: attachment, pixelWidth: pixelWidth)
         }
     }
 
@@ -34,15 +35,20 @@ extension MarkdownTextCoordinator {
             .compactMap { $0.1 as? MarkdownImageAttachment }
     }
 
-    private func loadImage(into attachment: MarkdownImageAttachment) {
+    private func loadImage(into attachment: MarkdownImageAttachment, pixelWidth: Int) {
         let key = ObjectIdentifier(attachment)
         let url = attachment.url
+        attachment.requestedPixelWidth = pixelWidth
+        imageLoads[key]?.cancel()
         imageLoads[key] = Task { [weak self] in
-            let image = await MarkdownImageLoader.image(at: url)
+            let decoded = await MarkdownImageLoader.image(at: url, pixelWidth: pixelWidth)
             guard !Task.isCancelled, let self else { return }
             imageLoads[key] = nil
-            guard let image else { return }
-            attachment.image = image
+            guard let decoded else { return }
+            attachment.image = decoded.image
+            if decoded.isFullSize {
+                attachment.requestedPixelWidth = .max
+            }
             imageDidLoad(attachment)
         }
     }
