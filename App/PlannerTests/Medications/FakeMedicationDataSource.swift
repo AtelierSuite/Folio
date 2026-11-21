@@ -72,20 +72,34 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
 final class FakeMedicationReminders: MedicationReminderScheduling, @unchecked Sendable {
     private let lock = NSLock()
     private var storedReminders: [String: MedicationReminder] = [:]
+    private var storedCalls: [String] = []
 
     var reminders: [MedicationReminder] {
         lock.withLock { storedReminders.values.sorted { $0.date < $1.date } }
     }
 
+    var calls: [String] { lock.withLock { storedCalls } }
+
     func pendingIdentifiers() async -> [String] {
-        lock.withLock { Array(storedReminders.keys) }
+        let identifiers = lock.withLock {
+            storedCalls.append("pending")
+            return Array(storedReminders.keys)
+        }
+        try? await Task.sleep(for: .milliseconds(5))
+        return identifiers
     }
 
     func add(_ reminder: MedicationReminder) async throws {
-        lock.withLock { storedReminders[reminder.id] = reminder }
+        lock.withLock {
+            storedCalls.append("add")
+            storedReminders[reminder.id] = reminder
+        }
     }
 
     func remove(identifiers: [String]) async {
-        lock.withLock { identifiers.forEach { storedReminders[$0] = nil } }
+        lock.withLock {
+            storedCalls.append("remove")
+            identifiers.forEach { storedReminders[$0] = nil }
+        }
     }
 }

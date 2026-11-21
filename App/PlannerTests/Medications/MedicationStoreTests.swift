@@ -227,6 +227,24 @@ struct MedicationStoreTests {
         #expect(source.readCount == reads + 1)
     }
 
+    @Test func overlappingReminderUpdatesRunOneAtATime() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let reminders = FakeMedicationReminders()
+        let store = makeStore(source: source, reminders: reminders)
+        await store.setSendsReminders(true)
+        await store.setSendsReminders(false)
+        let firstCall = reminders.calls.count
+        await withTaskGroup { group in
+            group.addTask { await store.setSendsReminders(true) }
+            group.addTask { await store.updateReminders() }
+            group.addTask { await source.simulateChange() }
+        }
+        let calls = Array(reminders.calls[firstCall...])
+        let interleaved = zip(calls, calls.dropFirst()).contains { $0 == "pending" && $1 == "pending" }
+        #expect(!interleaved)
+        #expect(calls.filter { $0 == "add" }.count == reminders.reminders.count)
+    }
+
     @Test func remindersStayWithinTheirLimit() {
         let start = date(day: 13, hour: 0)
         let doses = (0..<40).map {

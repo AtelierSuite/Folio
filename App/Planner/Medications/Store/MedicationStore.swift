@@ -18,6 +18,7 @@ public final class MedicationStore {
     @ObservationIgnored private var readMedications: [Medication]?
     @ObservationIgnored private let readDoses = SharedReadCache<DateInterval, [MedicationDose]>(limit: 12)
     @ObservationIgnored private var history: (revision: Int, read: Task<MedicationHistory, any Error>)?
+    @ObservationIgnored private let reminderUpdates = CoalescedRefresh()
     @ObservationIgnored public var allowsReminders: @MainActor () -> Bool = { true }
 
     public init(
@@ -136,7 +137,15 @@ public final class MedicationStore {
         await updateReminders()
     }
 
+    /// Runs one update at a time, so the observer and the scene-active refresh can't both read the
+    /// pending reminders before either adds or removes any.
     public func updateReminders() async {
+        await reminderUpdates.run { [weak self] in
+            await self?.replaceReminders()
+        }
+    }
+
+    private func replaceReminders() async {
         guard isAvailable else { return }
         let planned: [MedicationReminder]
         if sendsReminders && allowsReminders() {
