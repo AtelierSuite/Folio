@@ -8,7 +8,7 @@ struct UndoConversionTests {
 
     @Test func convertingAnEventCreatesAReminderAndDeletesTheEventOnceTheToastExpires() async throws {
         let lunch = UndoTestContext.event("Lunch")
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.convertEvent(lunch, toReminderIn: "list-1")
 
         #expect(context.coordinator.toast?.action == .convert(.event))
@@ -22,7 +22,7 @@ struct UndoConversionTests {
 
     @Test func undoingAnEventConversionRemovesTheReminderAndRedoMakesItAgain() async throws {
         let lunch = UndoTestContext.event("Lunch")
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.convertEvent(lunch, toReminderIn: "list-1")
 
         await context.undo()
@@ -35,7 +35,7 @@ struct UndoConversionTests {
 
     @Test func convertingARepeatingEventConvertsTheWholeSeries() async throws {
         let series = UndoTestContext.series("Standup", days: 27...29)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.convertEvent(try #require(series.last), toReminderIn: "list-1")
 
         #expect(context.source.storedReminders.map(\.recurrence?.frequency) == [.daily])
@@ -44,7 +44,7 @@ struct UndoConversionTests {
     }
 
     @Test func convertingAReminderCreatesAnEventAndDeletesTheReminderOnceTheToastExpires() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         try await context.coordinator.convertReminder(groceries, toEventIn: "work")
 
         #expect(context.coordinator.toast?.action == .convert(.reminder))
@@ -57,7 +57,7 @@ struct UndoConversionTests {
     }
 
     @Test func undoingAReminderConversionRemovesTheEvent() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         try await context.coordinator.convertReminder(groceries, toEventIn: "work")
 
         await context.undo()

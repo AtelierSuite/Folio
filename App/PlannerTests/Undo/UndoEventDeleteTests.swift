@@ -7,7 +7,7 @@ struct UndoEventDeleteTests {
     private let lunchAndGym = [UndoTestContext.event("Lunch"), UndoTestContext.event("Gym", hour: 18)]
 
     @Test func deleteHidesTheEventWithoutDeletingIt() async throws {
-        let context = try UndoTestContext(events: lunchAndGym)
+        let context = try await UndoTestContext(events: lunchAndGym)
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
 
         #expect(await context.visibleEventTitles() == ["Gym"])
@@ -18,7 +18,7 @@ struct UndoEventDeleteTests {
     }
 
     @Test func toastExpiryDeletesTheEvent() async throws {
-        let context = try UndoTestContext(events: [UndoTestContext.event("Lunch")])
+        let context = try await UndoTestContext(events: [UndoTestContext.event("Lunch")])
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
         context.coordinator.expireToast()
         await context.coordinator.settle()
@@ -31,7 +31,9 @@ struct UndoEventDeleteTests {
     }
 
     @Test func toastTimerDeletesTheEventAfterItsDuration() async throws {
-        let context = try UndoTestContext(events: [UndoTestContext.event("Lunch")], toastDuration: .milliseconds(50))
+        let context = try await UndoTestContext(
+            events: [UndoTestContext.event("Lunch")], toastDuration: .milliseconds(50)
+        )
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
         #expect(!context.source.currentEvents.isEmpty)
 
@@ -46,7 +48,7 @@ struct UndoEventDeleteTests {
     @Test func assistiveTechnologiesKeepTheToastUpLonger() async throws {
         let source = UndoTestContext.makeSource()
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
-        let store = UndoTestContext.makeStore(source: source, defaults: defaults)
+        let store = await UndoTestContext.makeStore(source: source, defaults: defaults)
         let coordinator = UndoCoordinator(
             store: store, toastDuration: .milliseconds(20), assistiveToastDuration: .seconds(60)
         )
@@ -60,7 +62,7 @@ struct UndoEventDeleteTests {
 
     @Test func undoWithinTheWindowKeepsTheSameEvent() async throws {
         let lunch = UndoTestContext.event("Lunch")
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.deleteEvent(lunch)
         context.coordinator.undoToast()
         await context.coordinator.settle()
@@ -73,7 +75,7 @@ struct UndoEventDeleteTests {
     }
 
     @Test func backgroundingCommitsTheDelete() async throws {
-        let context = try UndoTestContext(events: [UndoTestContext.event("Lunch")])
+        let context = try await UndoTestContext(events: [UndoTestContext.event("Lunch")])
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
         await context.coordinator.commitPending()
 
@@ -82,7 +84,7 @@ struct UndoEventDeleteTests {
     }
 
     @Test func theNextActionCommitsThePreviousDelete() async throws {
-        let context = try UndoTestContext(events: lunchAndGym)
+        let context = try await UndoTestContext(events: lunchAndGym)
         try await context.coordinator.deleteEvent(UndoTestContext.event("Lunch"))
         try await context.coordinator.deleteEvent(UndoTestContext.event("Gym", hour: 18))
 
@@ -94,13 +96,13 @@ struct UndoEventDeleteTests {
     @Test func quittingWithinTheWindowDeletesNothing() async throws {
         let source = UndoTestContext.makeSource()
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
-        var store: CalendarStore? = UndoTestContext.makeStore(source: source, defaults: defaults)
+        var store: CalendarStore? = await UndoTestContext.makeStore(source: source, defaults: defaults)
         var coordinator: UndoCoordinator? = UndoCoordinator(store: try #require(store))
         try await coordinator?.deleteEvent(UndoTestContext.event("Lunch"))
         coordinator = nil
         store = nil
 
-        let relaunchedStore = UndoTestContext.makeStore(source: source, defaults: defaults)
+        let relaunchedStore = await UndoTestContext.makeStore(source: source, defaults: defaults)
         let week = DateInterval(start: Fixtures.date(2026, 10, 25), end: Fixtures.date(2026, 11, 1))
         #expect(await relaunchedStore.events(in: week).map(\.title) == ["Lunch"])
         #expect(source.eventWriteCalls.isEmpty)
@@ -108,7 +110,7 @@ struct UndoEventDeleteTests {
 
     @Test func deletingFutureOccurrencesHidesOnlyThoseOccurrences() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.deleteEvent(series[2], span: .futureEvents)
 
         let visibleDays = await context.store.events(in: context.week).map {
@@ -122,7 +124,7 @@ struct UndoEventDeleteTests {
 
     @Test func undoManagerUndoesAndRedoesADelete() async throws {
         let lunch = UndoTestContext.event("Lunch")
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.deleteEvent(lunch)
         #expect(context.undoManager.undoActionName == UndoAction.delete(.event).actionName)
 
@@ -144,7 +146,7 @@ struct UndoEventDeleteTests {
 
     @Test func toastUndoGoesThroughTheUndoManagerSoRedoWorksLater() async throws {
         let lunch = UndoTestContext.event("Lunch")
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.deleteEvent(lunch)
         context.coordinator.undoToast()
         await context.coordinator.settle()
@@ -156,7 +158,7 @@ struct UndoEventDeleteTests {
     }
 
     @Test func readOnlyEventsAreNotDeleted() async throws {
-        let context = try UndoTestContext()
+        let context = try await UndoTestContext()
         let event = CalendarEvent(
             reference: Fixtures.reference(), calendarIdentifier: "work", title: "Holiday",
             startDate: Fixtures.date(2026, 10, 29), endDate: Fixtures.date(2026, 10, 30), isReadOnly: true
@@ -170,7 +172,7 @@ struct UndoEventDeleteTests {
     @Test func searchSkipsResultsWaitingToBeDeleted() async throws {
         let lunch = UndoTestContext.event("Lunch")
         let gym = UndoTestContext.event("Gym", hour: 18)
-        let context = try UndoTestContext(events: [lunch, gym])
+        let context = try await UndoTestContext(events: [lunch, gym])
         try await context.coordinator.deleteEvent(lunch)
 
         #expect(context.store.isPendingRemoval(SearchDocument(event: lunch)))

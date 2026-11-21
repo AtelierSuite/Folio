@@ -17,7 +17,7 @@ public struct ReminderIntentActions {
     }
 
     public func createReminder(_ request: NewReminderRequest) async throws -> ReminderItem {
-        try requireAccess()
+        try await prepareStore()
         guard let listIdentifier = request.listIdentifier ?? store.defaultReminderListIdentifier else {
             throw PlannerIntentError.noWritableReminderList
         }
@@ -61,7 +61,7 @@ public struct ReminderIntentActions {
     }
 
     public func reminder(for entity: ReminderEntity) async throws -> ReminderItem {
-        try requireAccess()
+        try await prepareStore()
         let candidates = await currentReminders()
         if let exact = candidates.first(where: { $0.reference.localIdentifier == entity.reference.localIdentifier }) {
             return exact
@@ -78,7 +78,8 @@ public struct ReminderIntentActions {
         return await store.source.reminders(completedIn: recent)
     }
 
-    private func requireAccess() throws {
+    private func prepareStore() async throws {
         guard store.reminderAuthorization.allowsReading else { throw PlannerIntentError.noReminderAccess }
+        await store.loadCalendarsIfNeeded()
     }
 }

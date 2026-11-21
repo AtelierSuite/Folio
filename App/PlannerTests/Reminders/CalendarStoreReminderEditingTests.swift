@@ -16,15 +16,15 @@ struct CalendarStoreReminderEditingTests {
         isReadOnly: true
     )
 
-    private func makeStore(source: FakeCalendarDataSource) throws -> CalendarStore {
+    private func makeStore(source: FakeCalendarDataSource) async throws -> CalendarStore {
         let defaults = try #require(UserDefaults(suiteName: "ReminderEditingTests.\(UUID().uuidString)"))
-        return CalendarStore(
+        return await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             reminderSettings: ReminderSettings(defaults: defaults),
             now: { Fixtures.date(2026, 10, 29, hour: 12) }
-        )
+        ).loaded()
     }
 
     private func makeSource(reminders: [ReminderItem] = []) -> FakeCalendarDataSource {
@@ -34,8 +34,8 @@ struct CalendarStoreReminderEditingTests {
         )
     }
 
-    @Test func newDraftUsesFirstWritableList() throws {
-        let store = try makeStore(source: makeSource())
+    @Test func newDraftUsesFirstWritableList() async throws {
+        let store = try await makeStore(source: makeSource())
         #expect(store.writableReminderLists.map(\.id) == ["list-1"])
         let draft = store.newReminderDraft(dueOn: today.start)
         #expect(draft.listIdentifier == "list-1")
@@ -45,7 +45,7 @@ struct CalendarStoreReminderEditingTests {
 
     @Test func createdReminderAppearsAfterReload() async throws {
         let source = makeSource()
-        let store = try makeStore(source: source)
+        let store = try await makeStore(source: source)
         _ = await store.reminders(in: today)
         let draft = ReminderDraft(
             title: " Buy milk ",
@@ -67,7 +67,7 @@ struct CalendarStoreReminderEditingTests {
     @Test func updateWritesNormalizedDraft() async throws {
         let reminder = Fixtures.reminder(local: "milk", due: Fixtures.date(2026, 10, 29, hour: 12))
         let source = makeSource(reminders: [reminder])
-        let store = try makeStore(source: source)
+        let store = try await makeStore(source: source)
         var draft = ReminderDraft(reminder)
         draft.title = "Oat milk"
         draft.dueDate = nil
@@ -84,7 +84,7 @@ struct CalendarStoreReminderEditingTests {
     @Test func deleteRemovesReminder() async throws {
         let reminder = Fixtures.reminder(local: "milk", due: Fixtures.date(2026, 10, 29, hour: 12))
         let source = makeSource(reminders: [reminder])
-        let store = try makeStore(source: source)
+        let store = try await makeStore(source: source)
         try await store.deleteReminder(reminder)
         #expect(source.storedReminders.isEmpty)
         #expect(await store.reminders(in: today).isEmpty)
@@ -98,7 +98,7 @@ struct CalendarStoreReminderEditingTests {
             isReadOnly: true
         )
         let source = makeSource(reminders: [readOnly])
-        let store = try makeStore(source: source)
+        let store = try await makeStore(source: source)
         await #expect(throws: ReminderEditingError.readOnly) {
             try await store.updateReminder(readOnly, with: ReminderDraft(title: "New", listIdentifier: "list-1"))
         }
@@ -112,7 +112,7 @@ struct CalendarStoreReminderEditingTests {
     }
 
     @Test func invalidDraftsAreRejected() async throws {
-        let store = try makeStore(source: makeSource())
+        let store = try await makeStore(source: makeSource())
         await #expect(throws: ReminderEditingError.invalidDraft) {
             try await store.createReminder(ReminderDraft(title: " ", listIdentifier: "list-1"))
         }

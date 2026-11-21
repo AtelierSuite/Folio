@@ -15,13 +15,13 @@ struct CalendarStoreReminderListCreationTests {
         isReadOnly: true
     )
 
-    private func makeStore(source: FakeCalendarDataSource) throws -> CalendarStore {
+    private func makeStore(source: FakeCalendarDataSource) async throws -> CalendarStore {
         let defaults = try #require(UserDefaults(suiteName: "ReminderListCreationTests.\(UUID().uuidString)"))
-        return CalendarStore(
+        return await CalendarStore(
             source: source,
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             reminderSettings: ReminderSettings(defaults: defaults)
-        )
+        ).loaded()
     }
 
     private func makeSource() -> FakeCalendarDataSource {
@@ -32,14 +32,14 @@ struct CalendarStoreReminderListCreationTests {
         ])
     }
 
-    @Test func offersOnlyAccountsWithWritableLists() throws {
-        let store = try makeStore(source: makeSource())
+    @Test func offersOnlyAccountsWithWritableLists() async throws {
+        let store = try await makeStore(source: makeSource())
         #expect(store.reminderListAccounts == [ReminderListAccount(id: "source", title: "On My iPhone")])
         #expect(store.defaultReminderListAccountIdentifier == "source")
     }
 
     @Test func createdListAppearsWithTrimmedTitle() async throws {
-        let store = try makeStore(source: makeSource())
+        let store = try await makeStore(source: makeSource())
         let color = ReminderListPalette.colors[2]
         let draft = ReminderListDraft(title: "  Groceries ", color: color, accountIdentifier: "source")
         let list = try await store.createReminderList(draft)
@@ -49,7 +49,7 @@ struct CalendarStoreReminderListCreationTests {
     }
 
     @Test func rejectsBlankTitlesAndReadOnlyAccounts() async throws {
-        let store = try makeStore(source: makeSource())
+        let store = try await makeStore(source: makeSource())
         await #expect(throws: ReminderEditingError.invalidDraft) {
             try await store.createReminderList(ReminderListDraft(title: "  ", accountIdentifier: "source"))
         }

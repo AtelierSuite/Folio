@@ -151,6 +151,7 @@ struct FolioApp: App {
                     await noteLinkMaintenance.checkLinkedEvents()
                 }
                 .task {
+                    await calendarStore.loadCalendarsIfNeeded()
                     calendarStore.startObservingChanges()
                     systemTime.startObserving {
                         await calendarStore.reloadAfterSystemTimeChange()

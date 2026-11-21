@@ -32,6 +32,8 @@ public final class CalendarStore {
     @ObservationIgnored private var changeObservation: Task<Void, Never>?
     @ObservationIgnored var ownChangeNoticeDeadline: ContinuousClock.Instant?
     @ObservationIgnored var storeChangeReload: Task<Void, Never>?
+    @ObservationIgnored private var hasLoadedCalendars = false
+    @ObservationIgnored private var calendarLoadGeneration = 0
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
@@ -57,7 +59,11 @@ public final class CalendarStore {
         hidesDeclinedEvents = visibilityStorage.hidesDeclinedEvents
         chosenEventCalendarIdentifier = visibilityStorage.defaultEventCalendarIdentifier
         chosenReminderListIdentifier = visibilityStorage.defaultReminderListIdentifier
-        reloadCalendars()
+    }
+
+    public func loadCalendarsIfNeeded() async {
+        guard !hasLoadedCalendars else { return }
+        await reloadCalendars()
     }
 
     public func startObservingChanges() {
@@ -84,7 +90,7 @@ public final class CalendarStore {
 
     func handleExternalChange() async {
         refreshAuthorization()
-        reloadCalendars()
+        await reloadCalendars()
         if let visibleInterval {
             await repository.reload(visible: visibleInterval)
         } else {
@@ -98,12 +104,24 @@ public final class CalendarStore {
         reminderAuthorization = source.authorizationStatus(for: .reminder)
     }
 
-    func reloadCalendars() {
-        eventCalendars = Self.sorted(source.calendars(for: .event))
-        reminderLists = Self.sorted(source.calendars(for: .reminder))
+    func reloadCalendars() async {
+        hasLoadedCalendars = true
+        calendarLoadGeneration += 1
+        let generation = calendarLoadGeneration
+        let calendars = await Self.fetchCalendars(from: source)
+        guard generation == calendarLoadGeneration else { return }
+        eventCalendars = calendars.events
+        reminderLists = calendars.reminders
     }
 
-    private static func sorted(_ calendars: [PlannerCalendar]) -> [PlannerCalendar] {
+    @concurrent
+    nonisolated private static func fetchCalendars(
+        from source: any CalendarDataSource
+    ) async -> (events: [PlannerCalendar], reminders: [PlannerCalendar]) {
+        (sorted(source.calendars(for: .event)), sorted(source.calendars(for: .reminder)))
+    }
+
+    nonisolated private static func sorted(_ calendars: [PlannerCalendar]) -> [PlannerCalendar] {
         calendars.sorted {
             ($0.sourceTitle.localizedLowercase, $0.title.localizedLowercase)
                 < ($1.sourceTitle.localizedLowercase, $1.title.localizedLowercase)

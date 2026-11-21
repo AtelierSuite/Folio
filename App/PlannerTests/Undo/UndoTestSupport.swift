@@ -16,7 +16,7 @@ struct UndoTestContext {
         reminders: [ReminderItem] = [],
         library: NotesLibrary? = nil,
         toastDuration: Duration = .seconds(60)
-    ) throws {
+    ) async throws {
         source = FakeCalendarDataSource(
             events: events,
             reminders: reminders,
@@ -27,13 +27,13 @@ struct UndoTestContext {
         }
         let defaults = try #require(UserDefaults(suiteName: "UndoTests.\(UUID().uuidString)"))
         let today = week.start
-        store = CalendarStore(
+        store = await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             reminderSettings: ReminderSettings(defaults: defaults),
             now: { today }
-        )
+        ).loaded()
         coordinator = UndoCoordinator(
             store: store, library: library, toastDuration: toastDuration, assistiveToastDuration: toastDuration
         )
@@ -85,8 +85,8 @@ struct UndoTestContext {
         FakeCalendarDataSource(events: [event("Lunch")], calendars: [Fixtures.plannerCalendar("work")])
     }
 
-    static func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) -> CalendarStore {
-        CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
+    static func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) async -> CalendarStore {
+        await CalendarStore(source: source, visibilityStorage: CalendarVisibilityStorage(defaults: defaults)).loaded()
     }
 
     var deleteCalls: [FakeEventWriting.Call] {

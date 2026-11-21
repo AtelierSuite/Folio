@@ -15,7 +15,7 @@ struct UndoNoteTests {
             to: .customFolder, folderURL: try directory.makeSubdirectory("Vault"), migratingNotes: false
         )
         let note = try await library.createNote(titled: "Plan", text: "Ship undo")
-        let context = try UndoTestContext(library: library)
+        let context = try await UndoTestContext(library: library)
 
         try await context.coordinator.moveNoteToTrash(note.url)
         #expect(library.notes.isEmpty)

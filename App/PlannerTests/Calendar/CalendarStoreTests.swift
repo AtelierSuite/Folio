@@ -6,12 +6,12 @@ import Testing
 struct CalendarStoreTests {
     private let today = DateInterval(start: Fixtures.date(2026, 10, 29), end: Fixtures.date(2026, 10, 30))
 
-    private func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) -> CalendarStore {
-        CalendarStore(
+    private func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) async -> CalendarStore {
+        await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
-        )
+        ).loaded()
     }
 
     private func makeDefaults() throws -> UserDefaults {
@@ -33,13 +33,13 @@ struct CalendarStoreTests {
             calendars: [work, Fixtures.plannerCalendar("home")]
         )
         let defaults = try makeDefaults()
-        let store = makeStore(source: source, defaults: defaults)
+        let store = await makeStore(source: source, defaults: defaults)
         #expect(store.eventCalendars.map(\.id) == ["home", "work"])
 
         store.setVisible(false, for: work)
         #expect(!store.isVisible(work))
         #expect(await store.events(in: today).map(\.title) == ["gym"])
-        #expect(makeStore(source: source, defaults: defaults).hiddenCalendarIdentifiers == ["work"])
+        #expect(await makeStore(source: source, defaults: defaults).hiddenCalendarIdentifiers == ["work"])
 
         store.setVisible(true, for: work)
         #expect(await store.events(in: today).count == 2)
@@ -49,7 +49,7 @@ struct CalendarStoreTests {
         let source = FakeCalendarDataSource(events: [
             Fixtures.event(local: "old", start: Fixtures.date(2026, 10, 29, hour: 9))
         ])
-        let store = makeStore(source: source, defaults: try makeDefaults())
+        let store = await makeStore(source: source, defaults: try makeDefaults())
         store.startObservingChanges()
         defer { store.stopObservingChanges() }
         _ = await store.events(in: today)
@@ -66,7 +66,7 @@ struct CalendarStoreTests {
     @Test func completingReminderWritesThroughSource() async throws {
         let reminder = Fixtures.reminder(local: "milk", due: Fixtures.date(2026, 10, 29, hour: 12))
         let source = FakeCalendarDataSource(reminders: [reminder])
-        let store = makeStore(source: source, defaults: try makeDefaults())
+        let store = await makeStore(source: source, defaults: try makeDefaults())
         try await store.setCompleted(true, for: reminder)
         #expect(source.completedReminderIdentifiers == ["milk": true])
         #expect(store.contentRevision == 1)

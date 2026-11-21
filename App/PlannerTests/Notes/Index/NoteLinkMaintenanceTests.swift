@@ -23,7 +23,9 @@ struct NoteLinkMaintenanceTests {
             to: .customFolder, folderURL: try directory.makeSubdirectory("Vault"), migratingNotes: false
         )
         source = FakeCalendarDataSource(events: [event], calendars: [Fixtures.plannerCalendar("calendar-1")])
-        store = CalendarStore(source: source, visibilityStorage: try IntentTestSupport.visibilityStorage())
+        store = await CalendarStore(
+            source: source, visibilityStorage: try IntentTestSupport.visibilityStorage()
+        ).loaded()
         maintenance = NoteLinkMaintenance(library: library, calendarStore: store)
     }
 
@@ -59,7 +61,7 @@ struct NoteLinkMaintenanceTests {
         let url = try await library.createNote(for: event)
         source.replaceEvents([])
         source.state.withLock { $0.calendars = [] }
-        store.reloadCalendars()
+        await store.reloadCalendars()
         let now = Date.now
         await maintenance.checkLinkedEvents(now: now)
         await maintenance.checkLinkedEvents(now: now.addingTimeInterval(NoteLinkMaintenance.missingEventGrace + 1))

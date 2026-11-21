@@ -14,7 +14,7 @@ struct UndoEventEditTests {
 
     @Test func simpleEditsSaveImmediatelyAndUndoSavesTheOldValues() async throws {
         let lunch = UndoTestContext.event("Lunch", hour: 12)
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.updateEvent(lunch, with: moved(lunch, hours: 1, title: "Late lunch"))
 
         #expect(context.source.currentEvents.map(\.title) == ["Late lunch"])
@@ -30,7 +30,7 @@ struct UndoEventEditTests {
 
     @Test func redoWorksLongAfterTheToastIsGone() async throws {
         let lunch = UndoTestContext.event("Lunch", hour: 12)
-        let context = try UndoTestContext(events: [lunch])
+        let context = try await UndoTestContext(events: [lunch])
         try await context.coordinator.updateEvent(lunch, with: moved(lunch, hours: 2), action: .move(.event))
         context.coordinator.expireToast()
         #expect(context.undoManager.undoActionName == UndoAction.move(.event).actionName)
@@ -46,7 +46,7 @@ struct UndoEventEditTests {
 
     @Test func futureEventsEditsAreHeldAndPreviewedUntilTheToastExpires() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.updateEvent(
             series[2], with: moved(series[2], hours: 1, title: "Sync"), span: .futureEvents
         )
@@ -66,7 +66,7 @@ struct UndoEventEditTests {
 
     @Test func undoingAHeldEditWritesNothing() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.updateEvent(
             series[2], with: moved(series[2], hours: 1, title: "Sync"), span: .futureEvents
         )
@@ -79,7 +79,7 @@ struct UndoEventEditTests {
 
     @Test func futureEventsFromTheFirstOccurrenceSavesTheSeriesAtOnce() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.updateEvent(
             series[0], with: moved(series[0], hours: 0, title: "Sync"), span: .futureEvents
         )
@@ -93,7 +93,7 @@ struct UndoEventEditTests {
 
     @Test func allEventsEditsSaveTheSeriesAndUndoRestoresIt() async throws {
         let series = UndoTestContext.series("Standup", days: 26...30)
-        let context = try UndoTestContext(events: series)
+        let context = try await UndoTestContext(events: series)
         try await context.coordinator.updateEvent(series[3], with: moved(series[3], hours: 1), span: .allEvents)
 
         let hours = context.source.currentEvents.map { Fixtures.calendar.component(.hour, from: $0.startDate) }
@@ -106,7 +106,7 @@ struct UndoEventEditTests {
     @Test func editingCommitsAStagedDeleteFirst() async throws {
         let lunch = UndoTestContext.event("Lunch", hour: 12)
         let gym = UndoTestContext.event("Gym", hour: 18)
-        let context = try UndoTestContext(events: [lunch, gym])
+        let context = try await UndoTestContext(events: [lunch, gym])
         try await context.coordinator.deleteEvent(gym)
         try await context.coordinator.updateEvent(lunch, with: moved(lunch, hours: 1))
 
