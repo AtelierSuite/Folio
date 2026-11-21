@@ -70,7 +70,6 @@ private struct OnboardingFeatureRow: View {
             Image(systemName: feature.systemImage)
                 .font(.system(size: Metrics.symbolSize, weight: .semibold))
                 .frame(width: Metrics.iconSize, height: Metrics.iconSize)
-                .glassEffect(.regular.tint(.white.opacity(0.12)), in: .circle)
             VStack(alignment: .leading, spacing: 3) {
                 Text(feature.title)
                     .fontWeight(.bold)
@@ -86,10 +85,10 @@ private struct OnboardingFeatureRow: View {
 
     private enum Metrics {
         #if os(macOS)
-        static let symbolSize: CGFloat = 16
+        static let symbolSize: CGFloat = 23
         static let iconSize: CGFloat = 36
         #else
-        static let symbolSize: CGFloat = 20
+        static let symbolSize: CGFloat = 30
         static let iconSize: CGFloat = 46
         #endif
     }
