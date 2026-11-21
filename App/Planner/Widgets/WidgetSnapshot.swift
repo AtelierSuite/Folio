@@ -11,6 +11,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
     public var alarmDates: [Date]
     /// Today's doses still waiting on the user, read from Health for this snapshot and never stored.
     public var medicationDoses: [MedicationDose]
+    public var couldNotReadMedications = false
     public var leaveByPlan: LeaveByPlan?
     public var leaveByStatus: LeaveByStatus
     /// The chance of rain in the hour of the planned departure.

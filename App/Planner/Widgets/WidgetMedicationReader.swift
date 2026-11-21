@@ -1,7 +1,7 @@
 import Foundation
 
 /// Reads today's open doses straight from Health for a widget, keeping them in memory like the app does.
-/// Health can't be read while the device is locked, and then there is simply nothing to show.
+/// Health can't be read while the device is locked, and then the doses are `nil` so the widget can try again soon.
 public struct WidgetMedicationReader: Sendable {
     private let source: (any MedicationDataSource)?
     private let capabilities: PlatformCapabilities?
@@ -19,7 +19,7 @@ public struct WidgetMedicationReader: Sendable {
 
     /// Every dose today that isn't marked taken or skipped. Doses later today are included so the timeline
     /// can bring them in when they come due.
-    public func dosesAwaitingAction(at now: Date) async -> [MedicationDose] {
+    public func dosesAwaitingAction(at now: Date) async -> [MedicationDose]? {
         guard let source, await supportsMedications,
               let day = calendar.dateInterval(of: .day, for: now) else { return [] }
         let forecast = MedicationDoseForecast(calendar: calendar)
@@ -36,7 +36,7 @@ public struct WidgetMedicationReader: Sendable {
                 .filter { !loggedIdentifiers.contains($0.id) }
             return (expected + logged.filter { $0.status == .notLogged }).sorted { $0.date < $1.date }
         } catch {
-            return []
+            return nil
         }
     }
 
