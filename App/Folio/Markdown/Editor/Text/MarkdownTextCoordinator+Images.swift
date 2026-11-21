@@ -9,7 +9,7 @@ extension MarkdownTextCoordinator {
     /// Images already decoded in the editor are carried over, so reloading a note doesn't decode them again.
     func attributedString(fromMarkdown markdown: String) -> NSAttributedString {
         var images: [URL: MarkdownImageAttachment] = [:]
-        for attachment in imageAttachments() where attachment.image != nil {
+        for attachment in imageAttachments() where attachment.hasImage {
             images[attachment.url] = attachment
         }
         return MarkdownAttributedText.attributedString(fromMarkdown: markdown, baseURL: baseURL, reusing: images)
@@ -45,7 +45,7 @@ extension MarkdownTextCoordinator {
             guard !Task.isCancelled, let self else { return }
             imageLoads[key] = nil
             guard let decoded else { return }
-            attachment.image = decoded.image
+            attachment.show(decoded.image)
             if decoded.isFullSize {
                 attachment.requestedPixelWidth = .max
             }
