@@ -42,6 +42,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State private var weather = WeatherSnapshot.empty
     @State private var travelEstimates: [String: TravelEstimate] = [:]
     @State var zoom: TimelineZoomController
+    @State var loadedRevision: Int?
 
     init(
         unit: TimelineStrip.Unit,
@@ -138,9 +139,10 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         openedReminder = remindersByEntryIdentifier[entry.id]
     }
 
-    func load() async {
+    private func load() async {
         guard let span = strip.days.span else { return }
         let calendar = strip.calendar
+        let revision = store.contentRevision
         async let events = store.events(in: span)
         async let reminders = store.reminders(in: span, calendar: calendar)
         async let doses = medicationStore.doses(in: span)
@@ -148,14 +150,20 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
         let medicationMarkers = await MedicationDoseMarker.markers(for: doses)
         guard !Task.isCancelled else { return }
+        let days = strip.days
+        let contents = await TimelineLayoutEngine(days: days).contents(
+            events: shownEvents,
+            otherEntries: shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
+                + medicationMarkers.map { $0.timelineEntry(in: calendar.timeZone) }
+        )
+        guard !Task.isCancelled, days == strip.days else { return }
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
         medicationMarkersByEntryIdentifier = Dictionary(uniqueKeysWithValues: medicationMarkers.map { ($0.id, $0) })
         self.events = shownEvents
-        entries = EventDuplicateDetector(calendar: calendar).groups(in: shownEvents).map(TimelineEntry.init(group:))
-            + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
-            + medicationMarkers.map { $0.timelineEntry(in: calendar.timeZone) }
-        relayout()
+        entries = contents.entries
+        stripLayout = contents.layout
+        loadedRevision = revision
     }
 
     func relayout() {

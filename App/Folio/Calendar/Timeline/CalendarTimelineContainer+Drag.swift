@@ -29,16 +29,25 @@ extension CalendarTimelineContainer {
     }
 
     private func drop(_ session: TimelineDragSession) async {
-        if let source = dragSource, let proposal = session.proposal {
-            dropHandler.spanDialogAnchor = CGRect(origin: drag.globalPointer, size: .zero)
-            await dropHandler.move(
-                source, to: savedInterval(for: source, droppedOn: proposal), hasDueTime: true,
-                store: store, undoCoordinator: undoCoordinator
-            )
-            await load()
+        defer {
+            dragSource = nil
+            drag.finish()
         }
-        dragSource = nil
-        drag.finish()
+        guard let source = dragSource, let proposal = session.proposal else { return }
+        dropHandler.spanDialogAnchor = CGRect(origin: drag.globalPointer, size: .zero)
+        await dropHandler.move(
+            source, to: savedInterval(for: source, droppedOn: proposal), hasDueTime: true,
+            store: store, undoCoordinator: undoCoordinator
+        )
+        await waitForLayout(of: store.contentRevision)
+    }
+
+    /// Keeps the preview up until the save's reload is laid out, so the card doesn't jump back first.
+    private func waitForLayout(of revision: Int) async {
+        let deadline = ContinuousClock.now + .seconds(1)
+        while (loadedRevision ?? .min) < revision, ContinuousClock.now < deadline {
+            try? await Task.sleep(for: .milliseconds(16))
+        }
     }
 
     /// Events on a Flex Time day are drawn later than they are saved.
@@ -66,7 +75,7 @@ struct TimelineDropHandlingModifier: ViewModifier {
                 guard newHour != nil else { return nil }
                 return oldHour == nil ? .impact(weight: .medium) : .impact(weight: .light)
             }
-            .onChange(of: drag.session?.entry.id) { _, identifier in
+            .onChange(of: drag.draggedEntryID) { _, identifier in
                 if identifier != nil, let entry = drag.session?.entry { onLift(entry) }
             }
             .onChange(of: drag.session?.isDropping) { _, isDropping in

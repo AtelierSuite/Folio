@@ -10,6 +10,8 @@ final class TimelineDragController {
     static let coordinateSpace = NamedCoordinateSpace.named("TimelineDrag")
 
     private(set) var session: TimelineDragSession?
+    /// Changes only when a drag starts or ends, so views that just dim the dragged card skip every snap step.
+    private(set) var draggedEntryID: String?
     private(set) var autoScrollSpeed: CGFloat = 0
     private(set) var edgeDirection: CalendarPageDirection?
 
@@ -44,7 +46,7 @@ final class TimelineDragController {
     }
 
     var isActive: Bool {
-        session != nil
+        draggedEntryID != nil
     }
 
     /// A card's button also sees the end of a drag as a tap, so selection waits for the drag to settle.
@@ -121,6 +123,7 @@ final class TimelineDragController {
     func finish() {
         guard session != nil else { return }
         session = nil
+        draggedEntryID = nil
         lastEndDate = .now
         setAutoScrollSpeed(0)
         setEdgeDirection(nil)
@@ -131,6 +134,7 @@ final class TimelineDragController {
         startPointer = location
         hasEnteredGrid = false
         session = TimelineDragSession(entry: entry, operation: operation)
+        draggedEntryID = entry.id
         refresh()
     }
 
