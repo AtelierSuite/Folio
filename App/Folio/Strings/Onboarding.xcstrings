@@ -397,61 +397,61 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio fragt erst nach Zugriff auf Kalender, Erinnerungen und andere Daten, wenn du eine Funktion, die ihn braucht, zum ersten Mal verwendest."
+            "value": "Folio fragt, bevor es deine Daten verwendet, und du kannst den Zugriff jederzeit in den Einstellungen ändern."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio asks for access to your calendars, reminders and other data only when you first use a feature that needs it."
+            "value": "Folio asks before using your data, and you can change its access anytime in Settings."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio demande l’accès à vos calendriers, rappels et autres données uniquement lorsque vous utilisez pour la première fois une fonction qui en a besoin."
+            "value": "Folio vous demande avant d’utiliser vos données, et vous pouvez modifier son accès à tout moment dans Réglages."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio chiede l’accesso a calendari, promemoria e altri dati solo quando usi per la prima volta una funzione che lo richiede."
+            "value": "Folio chiede prima di usare i tuoi dati e puoi cambiarne l’accesso in qualsiasi momento in Impostazioni."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folioがカレンダーやリマインダーなどへのアクセスを求めるのは、それが必要な機能を初めて使うときだけです。"
+            "value": "Folioはデータを使う前に必ず確認します。アクセスはいつでも設定で変更できます。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio는 캘린더, 미리 알림 및 기타 데이터에 대한 접근이 필요한 기능을 처음 사용할 때만 접근을 요청합니다."
+            "value": "Folio는 데이터를 사용하기 전에 먼저 묻고, 접근 권한은 언제든지 설정에서 변경할 수 있습니다."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio vraagt pas toegang tot je agenda's, herinneringen en andere gegevens wanneer je voor het eerst een functie gebruikt die dat nodig heeft."
+            "value": "Folio vraagt het voordat het je gegevens gebruikt, en je kunt de toegang altijd wijzigen in Instellingen."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio chỉ xin quyền truy cập lịch, lời nhắc và dữ liệu khác khi bạn dùng lần đầu một tính năng cần đến chúng."
+            "value": "Folio luôn hỏi trước khi dùng dữ liệu của bạn, và bạn có thể đổi quyền truy cập bất cứ lúc nào trong Cài đặt."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 仅在你首次使用需要访问日历、提醒事项或其他数据的功能时才会请求访问。"
+            "value": "Folio 使用你的数据前会先征得同意，你可以随时在设置中更改访问权限。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folio 僅在你首次使用需要取用行事曆、提醒事項或其他資料的功能時才會要求取用。"
+            "value": "Folio 使用你的資料前會先徵求同意，你可以隨時在設定中更改取用權限。"
           }
         }
       }
@@ -521,132 +521,132 @@
         }
       }
     },
-    "Feature.Sleep.Description": {
+    "Setup.Alarms.Description": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zeige Schlaf aus der Health-App in deinem Kalender neben deinen Plänen an. Aktiviere es in den Einstellungen."
+            "value": "Folio kann vor wichtigen Terminen und zur Weckzeit einen Wecker klingeln lassen, auch im Stumm-Modus. Erlaube Wecker, um sie auf diesem Gerät zu aktivieren."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Show sleep from the Health app on your calendar, next to your plans. Turn it on in Settings."
+            "value": "Folio can sound an alarm before important events and when it's time to wake up, even in Silent mode. Allow alarms to turn them on for this device."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Affichez le sommeil de l’app Santé dans votre calendrier, à côté de vos projets. Activez-le dans Réglages."
+            "value": "Folio peut faire sonner une alarme avant vos événements importants et à l'heure du réveil, même en mode silencieux. Autorisez les alarmes pour les activer sur cet appareil."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mostra il sonno dell’app Salute nel calendario, accanto ai tuoi piani. Attivalo in Impostazioni."
+            "value": "Folio può far suonare una sveglia prima degli eventi importanti e all'ora del risveglio, anche in modalità silenziosa. Consenti le sveglie per attivarle su questo dispositivo."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ヘルスケアの睡眠を、予定と並べてカレンダーに表示できます。設定でオンにしてください。"
+            "value": "Folioは、大切な予定の前や起きる時間にアラームを鳴らせます。消音モードでも鳴ります。このデバイスでアラームをオンにするには、アラームを許可してください。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "건강 앱의 수면을 일정 옆에 캘린더로 표시할 수 있습니다. 설정에서 켜세요."
+            "value": "Folio는 중요한 일정 전과 일어날 시간에 알람을 울릴 수 있으며, 무음 모드에서도 울립니다. 이 기기에서 알람을 켜려면 알람을 허용하세요."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toon slaap uit de Gezondheid-app in je agenda, naast je planning. Zet het aan in Instellingen."
+            "value": "Folio kan een wekker laten afgaan vóór belangrijke afspraken en wanneer het tijd is om op te staan, zelfs in de stille modus. Sta wekkers toe om ze op dit apparaat aan te zetten."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hiển thị giấc ngủ từ ứng dụng Sức khỏe trên lịch, ngay cạnh kế hoạch của bạn. Bật tính năng này trong Cài đặt."
+            "value": "Folio có thể đổ chuông báo thức trước các sự kiện quan trọng và khi đến giờ thức dậy, kể cả ở chế độ im lặng. Hãy cho phép báo thức để bật chúng trên thiết bị này."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "在日历上将“健康”中的睡眠与你的计划并排显示。可在设置中打开。"
+            "value": "Folio 可以在重要日程前和起床时间响起闹钟，即使在静音模式下也会响。要在此设备上开启闹钟，请允许闹钟。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "在行事曆上將「健康」中的睡眠與你的計畫並列顯示。可在設定中開啟。"
+            "value": "Folio 可以在重要行程前和起床時間響起鬧鐘，即使在靜音模式下也會響。若要在此裝置上開啟鬧鐘，請允許鬧鐘。"
           }
         }
       }
     },
-    "Feature.Sleep.Title": {
+    "Setup.Alarms.Title": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Behalte deinen Schlaf im Blick"
+            "value": "Wecker stellen"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "See How You Slept"
+            "value": "Set Alarms"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voyez votre sommeil"
+            "value": "Régler des alarmes"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tieni d’occhio il sonno"
+            "value": "Imposta sveglie"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "睡眠もひと目で"
+            "value": "アラームを設定"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "수면도 한눈에"
+            "value": "알람 설정"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zie hoe je hebt geslapen"
+            "value": "Wekkers zetten"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xem giấc ngủ của bạn"
+            "value": "Đặt báo thức"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "查看睡眠情况"
+            "value": "设置闹钟"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "查看睡眠狀況"
+            "value": "設定鬧鐘"
           }
         }
       }
@@ -1037,136 +1037,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "掌握提醒事項"
-          }
-        }
-      }
-    },
-    "Setup.Sleep.Description": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio kann deinen Schlaf aus der Health-App neben deinen Plänen anzeigen. Erlaube den Zugriff auf Health, um ihn in deinem Kalender zu sehen."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio can show your sleep from the Health app next to your plans. Allow access to Health to see it on your calendar."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio peut afficher votre sommeil depuis l’app Santé à côté de vos projets. Autorisez l’accès à Santé pour le voir sur votre calendrier."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio può mostrare il sonno dall’app Salute accanto ai tuoi programmi. Consenti l’accesso a Salute per vederlo sul calendario."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folioでは、ヘルスケアAppの睡眠データを予定と並べて表示できます。カレンダーに表示するには、ヘルスケアへのアクセスを許可してください。"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio는 건강 앱의 수면 데이터를 계획과 나란히 표시할 수 있습니다. 캘린더에서 보려면 건강 접근을 허용하세요."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio kan je slaap uit de Gezondheid-app naast je plannen tonen. Sta toegang tot Gezondheid toe om die in je agenda te zien."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio có thể hiển thị giấc ngủ từ ứng dụng Sức khỏe bên cạnh các kế hoạch của bạn. Hãy cho phép truy cập Sức khỏe để xem trên lịch."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 可以将“健康”App 中的睡眠数据与你的计划并排显示。若要在日历上查看，请允许访问“健康”。"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Folio 可以將「健康」App 中的睡眠資料與你的計畫並排顯示。若要在行事曆上查看，請允許取用「健康」。"
-          }
-        }
-      }
-    },
-    "Setup.Sleep.Title": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Behalte deinen Schlaf im Blick"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "See How You Slept"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voyez votre sommeil"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tieni d’occhio il sonno"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "睡眠もひと目で"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "수면도 한눈에"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zie hoe je hebt geslapen"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Xem giấc ngủ của bạn"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "查看睡眠情况"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "查看睡眠狀況"
           }
         }
       }

@@ -15,8 +15,6 @@ struct SleepSettingsSection: View {
                 }
             } header: {
                 Text(String(localized: "Settings.Header", table: "Sleep"))
-            } footer: {
-                Text(String(localized: "Settings.Footer", table: "Sleep"))
             }
         }
     }

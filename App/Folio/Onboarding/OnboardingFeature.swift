@@ -1,9 +1,7 @@
-import Planner
-import SwiftUI
+import Foundation
 
 enum OnboardingFeature: String, CaseIterable, Identifiable {
     case calendar
-    case sleep
     case notes
     case privacy
 
@@ -12,23 +10,9 @@ enum OnboardingFeature: String, CaseIterable, Identifiable {
     var systemImage: String {
         switch self {
         case .calendar: "calendar.day.timeline.left"
-        case .sleep: "bed.double.fill"
         case .notes: "note.text"
         case .privacy: "hand.raised.fill"
         }
-    }
-
-    var gradientColors: [Color] {
-        switch self {
-        case .calendar: [.pink, .red]
-        case .sleep: [.teal, .indigo]
-        case .notes: [.yellow, .orange]
-        case .privacy: [.cyan, .blue]
-        }
-    }
-
-    var requiredPlatformFeature: PlatformFeature? {
-        self == .sleep ? .sleep : nil
     }
 
     var title: String {
