@@ -21,7 +21,7 @@ extension CalendarStore {
         if isCompleted {
             await reminderNotifications.dismissNotifications(for: reminder.reference)
         }
-        await handleExternalChange()
+        await reloadAfterOwnChange()
     }
 
     public func setOverdueReminderPolicy(_ policy: OverdueReminderPolicy) {

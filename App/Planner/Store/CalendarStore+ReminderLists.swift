@@ -35,7 +35,7 @@ extension CalendarStore {
             throw ReminderEditingError.accountNotFound
         }
         let identifier = try await source.createReminderList(draft)
-        await handleExternalChange()
+        await reloadAfterOwnChange()
         guard let list = reminderLists.first(where: { $0.id == identifier }) else {
             throw ReminderEditingError.listNotFound
         }

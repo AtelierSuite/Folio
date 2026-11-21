@@ -42,7 +42,7 @@ extension CalendarStore {
     public func createEvent(_ draft: EventDraft) async throws -> CalendarItemReference {
         try validate(draft)
         let reference = try await source.createEvent(draft)
-        await handleExternalChange()
+        await reloadAfterOwnChange()
         return reference
     }
 
@@ -68,7 +68,7 @@ extension CalendarStore {
             let occurrenceSpan: EventEditSpan = event.isRecurring ? span : .thisEvent
             reference = try await source.updateEvent(event.reference, with: draft, span: occurrenceSpan)
         }
-        await handleExternalChange()
+        await reloadAfterOwnChange()
         return reference
     }
 
@@ -80,7 +80,7 @@ extension CalendarStore {
         } else {
             try await source.deleteEvent(event.reference, span: event.isRecurring ? span : .thisEvent)
         }
-        await handleExternalChange()
+        await reloadAfterOwnChange()
     }
 
     func saveEvent(
@@ -89,7 +89,7 @@ extension CalendarStore {
         span: EventEditSpan
     ) async throws -> CalendarItemReference {
         let savedReference = try await source.updateEvent(reference, with: draft, span: span)
-        await handleExternalChange()
+        await reloadAfterOwnChange()
         return savedReference
     }
 

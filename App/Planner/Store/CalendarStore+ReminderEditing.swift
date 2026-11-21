@@ -24,7 +24,7 @@ extension CalendarStore {
     public func createReminder(_ draft: ReminderDraft) async throws -> String {
         try validate(draft)
         let identifier = try await source.createReminder(draft.normalized())
-        await handleExternalChange()
+        await reloadAfterOwnChange()
         return identifier
     }
 
@@ -32,18 +32,18 @@ extension CalendarStore {
         guard !reminder.isReadOnly else { throw ReminderEditingError.readOnly }
         try validate(draft)
         try await source.updateReminder(identifier: reminder.reference.localIdentifier, with: draft.normalized())
-        await handleExternalChange()
+        await reloadAfterOwnChange()
     }
 
     public func deleteReminder(_ reminder: ReminderItem) async throws {
         guard !reminder.isReadOnly else { throw ReminderEditingError.readOnly }
         try await source.deleteReminder(identifier: reminder.reference.localIdentifier)
-        await handleExternalChange()
+        await reloadAfterOwnChange()
     }
 
     func saveReminder(identifier: String, with draft: ReminderDraft) async throws {
         try await source.updateReminder(identifier: identifier, with: draft.normalized())
-        await handleExternalChange()
+        await reloadAfterOwnChange()
     }
 
     private func validate(_ draft: ReminderDraft) throws {
