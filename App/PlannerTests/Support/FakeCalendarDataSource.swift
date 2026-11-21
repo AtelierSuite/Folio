@@ -9,6 +9,9 @@ final class FakeCalendarDataSource: CalendarDataSource {
         var calendars: [PlannerCalendar] = []
         var eventFetchIntervals: [DateInterval] = []
         var reminderFetchCount = 0
+        var incompleteReminderFetchCount = 0
+        var completedReminderFetchIntervals: [DateInterval] = []
+        var fetchDelay: Duration?
         var completedReminderIdentifiers: [String: Bool] = [:]
         var changeContinuation: AsyncStream<Void>.Continuation?
         var authorization: [CalendarItemKind: CalendarAuthorizationStatus] = [:]
@@ -63,7 +66,8 @@ final class FakeCalendarDataSource: CalendarDataSource {
     }
 
     @concurrent func events(in interval: DateInterval) async -> [CalendarEvent] {
-        state.withLock { state in
+        await waitForFetchDelay()
+        return state.withLock { state in
             state.eventFetchIntervals.append(interval)
             return state.events.filter { $0.overlaps(interval) }
         }

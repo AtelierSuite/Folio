@@ -3,20 +3,31 @@ import EventKit
 extension EventKitDataSource {
     @concurrent
     public func reminders(completedIn interval: DateInterval) async -> [ReminderItem] {
+        async let incomplete = incompleteReminders()
+        async let completed = completedReminders(in: interval)
+        return await incomplete + completed
+    }
+
+    @concurrent
+    public func incompleteReminders() async -> [ReminderItem] {
         guard authorizationStatus(for: .reminder).allowsReading else { return [] }
-        let incomplete = eventStore.predicateForIncompleteReminders(
+        let predicate = eventStore.predicateForIncompleteReminders(
             withDueDateStarting: nil,
             ending: nil,
             calendars: nil
         )
-        let completed = eventStore.predicateForCompletedReminders(
+        return await fetchReminders(matching: predicate)
+    }
+
+    @concurrent
+    public func completedReminders(in interval: DateInterval) async -> [ReminderItem] {
+        guard authorizationStatus(for: .reminder).allowsReading else { return [] }
+        let predicate = eventStore.predicateForCompletedReminders(
             withCompletionDateStarting: interval.start,
             ending: interval.end,
             calendars: nil
         )
-        async let incompleteReminders = fetchReminders(matching: incomplete)
-        async let completedReminders = fetchReminders(matching: completed)
-        return await incompleteReminders + completedReminders
+        return await fetchReminders(matching: predicate)
     }
 
     public func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws {

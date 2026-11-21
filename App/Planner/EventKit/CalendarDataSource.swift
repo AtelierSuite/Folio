@@ -15,6 +15,8 @@ public protocol CalendarDataSource: EventWritingDataSource {
     func createReminderList(_ draft: ReminderListDraft) async throws -> String
     /// Whether the event still exists in any calendar, hidden ones included, or `nil` when it can't be told.
     @concurrent func containsEvent(matching reference: CalendarItemReference) async -> Bool?
+    @concurrent func incompleteReminders() async -> [ReminderItem]
+    @concurrent func completedReminders(in interval: DateInterval) async -> [ReminderItem]
 }
 
 extension CalendarDataSource {
