@@ -4,11 +4,13 @@ import Foundation
 /// missing or stale, one request per run of consecutive days.
 public actor WeatherRepository {
     private let provider: any WeatherProvider
-    private let cache: WeatherCache
-    private let policy: WeatherCachePolicy
+    let cache: WeatherCache
+    let policy: WeatherCachePolicy
     private let now: @Sendable () -> Date
     private var inFlight: [RequestKey: Task<[Date: WeatherDay]?, Never>] = [:]
     private var attribution: WeatherAttribution?
+    private var backoff = WeatherFailureBackoff()
+    var memory: [MemoryKey: WeatherCacheEntry] = [:]
 
     public init(
         provider: any WeatherProvider,
@@ -37,7 +39,7 @@ public actor WeatherRepository {
                 result[day.start] = WeatherDay(dayStart: day.start, daily: nil, hourly: [])
                 continue
             }
-            if let entry = cache.entry(for: location, dayStart: day.start, calendar: calendar), entry.covers(detail) {
+            if let entry = cachedEntry(for: location, day: day, detail: detail, now: now, calendar: calendar) {
                 if policy.isFresh(entry, dayEnd: day.end, now: now) {
                     result[day.start] = entry.day
                     continue
@@ -48,7 +50,11 @@ public actor WeatherRepository {
         }
         let maximumDays = detail == .dailyAndHourly ? policy.maximumHourlyDaysPerRequest : Int.max
         for batch in WeatherRequestBatches.batches(for: missing, maximumDays: maximumDays) {
-            let fetched = await fetch(batch, at: location, detail: detail, calendar: calendar, now: now)
+            let fetched: [Date: WeatherDay]? = if backoff.allowsFetch(at: location, now: now) {
+                await fetch(batch, at: location, detail: detail, calendar: calendar, now: now)
+            } else {
+                nil
+            }
             for day in batch {
                 result[day.start] = fetched?[day.start]
                     ?? stale[day.start]
@@ -99,6 +105,12 @@ public actor WeatherRepository {
         inFlight[key] = task
         let days = await task.value
         inFlight[key] = nil
+        if let days {
+            backoff.recordSuccess(at: location)
+            remember(days.values, at: location, fetchedAt: now, includesHourly: detail == .dailyAndHourly)
+        } else {
+            backoff.recordFailure(at: location, now: now)
+        }
         return days
     }
 
