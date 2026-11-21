@@ -7,6 +7,7 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
     private var storedRecords: [MedicationDoseRecord]
     private var storedFailsReads = false
     private var storedRequestCount = 0
+    private var storedReadCount = 0
     private var storedOnChange: (@Sendable () async -> Void)?
 
     init(medications: [Medication] = [], records: [MedicationDoseRecord] = []) {
@@ -30,6 +31,7 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
     }
 
     var requestCount: Int { lock.withLock { storedRequestCount } }
+    var readCount: Int { lock.withLock { storedReadCount } }
     var isObserving: Bool { lock.withLock { storedOnChange != nil } }
 
     func requestAuthorization() async throws {
@@ -43,10 +45,13 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
         }
     }
 
-    func doseRecords(in interval: DateInterval) async throws -> [MedicationDoseRecord] {
-        try lock.withLock {
+    func records(loggedIn intervals: [DateInterval]) async throws -> MedicationRecords {
+        try await Task.sleep(for: .milliseconds(5))
+        return try lock.withLock {
+            storedReadCount += 1
             if storedFailsReads { throw CocoaError(.fileReadNoPermission) }
-            return storedRecords.filter { interval.contains($0.loggedDate) }
+            let doseRecords = storedRecords.filter { record in intervals.contains { $0.contains(record.loggedDate) } }
+            return MedicationRecords(medications: storedMedications, doseRecords: doseRecords)
         }
     }
 
@@ -67,20 +72,34 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
 final class FakeMedicationReminders: MedicationReminderScheduling, @unchecked Sendable {
     private let lock = NSLock()
     private var storedReminders: [String: MedicationReminder] = [:]
+    private var storedCalls: [String] = []
 
     var reminders: [MedicationReminder] {
         lock.withLock { storedReminders.values.sorted { $0.date < $1.date } }
     }
 
+    var calls: [String] { lock.withLock { storedCalls } }
+
     func pendingIdentifiers() async -> [String] {
-        lock.withLock { Array(storedReminders.keys) }
+        let identifiers = lock.withLock {
+            storedCalls.append("pending")
+            return Array(storedReminders.keys)
+        }
+        try? await Task.sleep(for: .milliseconds(5))
+        return identifiers
     }
 
     func add(_ reminder: MedicationReminder) async throws {
-        lock.withLock { storedReminders[reminder.id] = reminder }
+        lock.withLock {
+            storedCalls.append("add")
+            storedReminders[reminder.id] = reminder
+        }
     }
 
     func remove(identifiers: [String]) async {
-        lock.withLock { identifiers.forEach { storedReminders[$0] = nil } }
+        lock.withLock {
+            storedCalls.append("remove")
+            identifiers.forEach { storedReminders[$0] = nil }
+        }
     }
 }

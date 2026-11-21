@@ -16,8 +16,9 @@ public final class MedicationStore {
     @ObservationIgnored private(set) var isObserving = false
     @ObservationIgnored private let observedChanges = CoalescedRefresh()
     @ObservationIgnored private var readMedications: [Medication]?
-    @ObservationIgnored private var readDoses: [DateInterval: [MedicationDose]] = [:]
-    private static let readDosesLimit = 12
+    @ObservationIgnored private let readDoses = SharedReadCache<DateInterval, [MedicationDose]>(limit: 12)
+    @ObservationIgnored private var history: (revision: Int, read: Task<MedicationHistory, any Error>)?
+    @ObservationIgnored private let reminderUpdates = CoalescedRefresh()
     @ObservationIgnored public var allowsReminders: @MainActor () -> Bool = { true }
 
     public init(
@@ -75,10 +76,7 @@ public final class MedicationStore {
 
     public func doses(in span: DateInterval) async -> [MedicationDose] {
         guard isAvailable, isShownOnTimeline, let doses = try? await loadDoses(in: span) else { return [] }
-        if readDoses.count >= Self.readDosesLimit {
-            readDoses.removeAll()
-        }
-        readDoses[span] = doses
+        readDoses.store(doses, for: span)
         return doses
     }
 
@@ -115,16 +113,17 @@ public final class MedicationStore {
     /// is locked, counts as no change.
     private func reloadAfterChange() async {
         guard isActive, let source else { return }
+        history = nil
         var hasChanged = false
         if let previous = readMedications, let medications = try? await source.scheduledMedications() {
             hasChanged = Set(previous) != Set(medications)
             readMedications = medications
         }
         if isShownOnTimeline {
-            for (span, previous) in readDoses {
+            for span in readDoses.keys {
                 guard let doses = try? await loadDoses(in: span) else { continue }
-                hasChanged = hasChanged || doses != previous
-                readDoses[span] = doses
+                hasChanged = hasChanged || doses != readDoses[span]
+                readDoses.store(doses, for: span)
             }
         }
         if hasChanged {
@@ -138,7 +137,15 @@ public final class MedicationStore {
         await updateReminders()
     }
 
+    /// Runs one update at a time, so the observer and the scene-active refresh can't both read the
+    /// pending reminders before either adds or removes any.
     public func updateReminders() async {
+        await reminderUpdates.run { [weak self] in
+            await self?.replaceReminders()
+        }
+    }
+
+    private func replaceReminders() async {
         guard isAvailable else { return }
         let planned: [MedicationReminder]
         if sendsReminders && allowsReminders() {
@@ -161,22 +168,51 @@ public final class MedicationStore {
     private func loadDoses(in span: DateInterval) async throws -> [MedicationDose] {
         guard let source else { return [] }
         let date = now()
-        let medications = Set(try await source.scheduledMedications())
-        let logged = try await source.doseRecords(in: Self.fetchInterval(covering: span))
-        let history = try await source.doseRecords(in: forecast.historyInterval(endingAt: date))
+        let history = try await currentHistory()
+        let fetchInterval = Self.fetchInterval(covering: span)
+        let logged = fetchInterval.start >= history.interval.start
+            ? history.records.doseRecords(loggedIn: fetchInterval)
+            : try await source.records(loggedIn: [fetchInterval]).doseRecords
+        let medications = Set(history.records.medications)
         let scheduled = { (dose: MedicationDose) in medications.contains(dose.medication) }
         let past = MedicationDose.latest(from: logged).filter { span.contains($0.date) && scheduled($0) }
         let loggedIdentifiers = Set(past.map(\.id))
         let upcoming = forecast.doses(
-            from: MedicationDose.latest(from: history).filter(scheduled),
+            from: MedicationDose.latest(from: history.records.doseRecords).filter(scheduled),
             in: span,
             after: date
         )
         return (past + upcoming.filter { !loggedIdentifiers.contains($0.id) }).sorted { $0.date < $1.date }
     }
 
+    /// Read once per `revision` and shared by every load until it changes. A failed read isn't kept.
+    private func currentHistory() async throws -> MedicationHistory {
+        if let history, history.revision == revision {
+            return try await history.read.value
+        }
+        guard let source else { throw CancellationError() }
+        let interval = forecast.historyInterval(endingAt: now())
+        let read = Task {
+            MedicationHistory(interval: interval, records: try await source.records(loggedIn: [interval]))
+        }
+        history = (revision, read)
+        do {
+            return try await read.value
+        } catch {
+            if history?.read == read {
+                history = nil
+            }
+            throw error
+        }
+    }
+
     /// Doses are stored by when they were logged, which can be a day away from when they were due.
     private static func fetchInterval(covering span: DateInterval) -> DateInterval {
         DateInterval(start: span.start.addingTimeInterval(-86_400), end: span.end.addingTimeInterval(86_400))
     }
+}
+
+private struct MedicationHistory: Sendable {
+    let interval: DateInterval
+    let records: MedicationRecords
 }

@@ -12,4 +12,20 @@ public enum SleepWindow {
     public static func fetchInterval(covering span: DateInterval, margin: TimeInterval = 18 * 3600) -> DateInterval {
         DateInterval(start: span.start.addingTimeInterval(-margin), end: span.end.addingTimeInterval(margin))
     }
+
+    private static let blockDuration: TimeInterval = 7 * 86_400
+
+    /// Sleep is read in fixed weeks, so neighbouring pages share reads instead of each asking for its own span.
+    static func blocks(covering interval: DateInterval) -> ClosedRange<Int> {
+        let first = Int((interval.start.timeIntervalSinceReferenceDate / blockDuration).rounded(.down))
+        let last = Int((interval.end.timeIntervalSinceReferenceDate / blockDuration).rounded(.up)) - 1
+        return first...max(first, last)
+    }
+
+    static func interval(ofBlock block: Int) -> DateInterval {
+        DateInterval(
+            start: Date(timeIntervalSinceReferenceDate: Double(block) * blockDuration),
+            duration: blockDuration
+        )
+    }
 }
