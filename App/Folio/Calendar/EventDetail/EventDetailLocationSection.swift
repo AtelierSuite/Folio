@@ -38,7 +38,7 @@ struct EventDetailLocationSection: View {
                 .allowsHitTesting(false)
                 .overlay {
                     Button {
-                        openInMaps(at: center)
+                        open(DirectionsSettings().placeURL(for:))
                     } label: {
                         Color.clear
                             .contentShape(.rect)
@@ -50,25 +50,29 @@ struct EventDetailLocationSection: View {
                 .listRowInsets(EdgeInsets())
                 #endif
             }
+            if destination != nil {
+                Button {
+                    open { DirectionsSettings().url(for: DirectionsRequest(destination: $0)) }
+                } label: {
+                    Label(
+                        String(localized: "Event.Location.Directions", table: "Calendar"),
+                        systemImage: "arrow.triangle.turn.up.right.diamond"
+                    )
+                }
+                .accessibilityIdentifier("EventLocationDirectionsButton")
+            }
         }
     }
 
-    private func openInMaps(at center: CLLocationCoordinate2D) {
-        let settings = DirectionsSettings()
-        if settings.app != .appleMaps,
-           let destination = DirectionsDestination(
-               name: location.title,
-               coordinate: PlannerCoordinate(latitude: center.latitude, longitude: center.longitude)
-           ),
-           let url = settings.url(for: DirectionsRequest(destination: destination)) {
-            openURL(url)
-            return
-        }
-        let mapItem = MKMapItem(
-            location: CLLocation(latitude: center.latitude, longitude: center.longitude),
-            address: nil
+    private var destination: DirectionsDestination? {
+        DirectionsDestination(
+            name: location.title,
+            coordinate: location.coordinate.map { PlannerCoordinate(latitude: $0.latitude, longitude: $0.longitude) }
         )
-        mapItem.name = location.title
-        mapItem.openInMaps()
+    }
+
+    private func open(_ link: (DirectionsDestination) -> URL?) {
+        guard let url = destination.flatMap(link) else { return }
+        openURL(url)
     }
 }
