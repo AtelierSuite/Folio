@@ -19,6 +19,7 @@ extension EventKitDataSource {
         return await incompleteReminders + completedReminders
     }
 
+    @concurrent
     public func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws {
         guard let reminder = eventStore.calendarItem(withIdentifier: reminderIdentifier) as? EKReminder else {
             throw CalendarDataSourceError.itemNotFound

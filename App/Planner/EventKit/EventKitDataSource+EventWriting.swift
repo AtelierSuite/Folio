@@ -5,10 +5,12 @@ extension EventKitDataSource {
         eventStore.defaultCalendarForNewEvents?.calendarIdentifier
     }
 
+    @concurrent
     public func eventDraft(for reference: CalendarItemReference) async throws -> EventDraft {
         EventDraft(try event(for: reference))
     }
 
+    @concurrent
     public func firstOccurrence(of reference: CalendarItemReference) async throws -> CalendarEvent {
         guard let event = eventStore.calendarItem(withIdentifier: reference.localIdentifier) as? EKEvent else {
             throw CalendarDataSourceError.itemNotFound
@@ -16,6 +18,7 @@ extension EventKitDataSource {
         return CalendarEvent(event)
     }
 
+    @concurrent
     public func createEvent(_ draft: EventDraft) async throws -> CalendarItemReference {
         guard eventStore.calendar(withIdentifier: draft.calendarIdentifier) != nil else {
             throw EventEditingError.noWritableCalendar
@@ -26,6 +29,7 @@ extension EventKitDataSource {
         return CalendarItemReference(event)
     }
 
+    @concurrent
     public func updateEvent(
         _ reference: CalendarItemReference,
         with draft: EventDraft,
@@ -37,6 +41,7 @@ extension EventKitDataSource {
         return CalendarItemReference(event)
     }
 
+    @concurrent
     public func deleteEvent(_ reference: CalendarItemReference, span: EventEditSpan) async throws {
         try eventStore.discard(try event(for: reference), span: span.eventKitSpan)
     }

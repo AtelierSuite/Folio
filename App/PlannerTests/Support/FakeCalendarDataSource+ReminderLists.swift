@@ -3,7 +3,7 @@ import Synchronization
 @testable import Planner
 
 extension FakeCalendarDataSource {
-    func createReminderList(_ draft: ReminderListDraft) async throws -> String {
+    @concurrent func createReminderList(_ draft: ReminderListDraft) async throws -> String {
         let identifier = "list-\(UUID().uuidString)"
         state.withLock { state in
             let accountTitle = state.calendars.first { $0.sourceIdentifier == draft.accountIdentifier }?.sourceTitle

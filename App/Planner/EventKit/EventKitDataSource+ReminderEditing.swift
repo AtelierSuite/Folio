@@ -6,6 +6,7 @@ extension EventKitDataSource {
         return eventStore.defaultCalendarForNewReminders()?.calendarIdentifier
     }
 
+    @concurrent
     public func createReminder(_ draft: ReminderDraft) async throws -> String {
         let reminder = EKReminder(eventStore: eventStore)
         try apply(draft.normalized(), to: reminder, isNew: true)
@@ -13,12 +14,14 @@ extension EventKitDataSource {
         return reminder.calendarItemIdentifier
     }
 
+    @concurrent
     public func updateReminder(identifier: String, with draft: ReminderDraft) async throws {
         let reminder = try existingReminder(withIdentifier: identifier)
         try apply(draft.normalized(), to: reminder, isNew: false)
         try eventStore.persist(reminder)
     }
 
+    @concurrent
     public func deleteReminder(identifier: String) async throws {
         let reminder = try existingReminder(withIdentifier: identifier)
         guard reminder.calendar?.allowsContentModifications ?? false else {

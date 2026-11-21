@@ -76,7 +76,7 @@ final class FakeCalendarDataSource: CalendarDataSource {
         }
     }
 
-    func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws {
+    @concurrent func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws {
         state.withLock { $0.completedReminderIdentifiers[reminderIdentifier] = isCompleted }
     }
 

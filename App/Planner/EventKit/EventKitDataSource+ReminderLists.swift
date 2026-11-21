@@ -1,6 +1,7 @@
 import EventKit
 
 extension EventKitDataSource {
+    @concurrent
     public func createReminderList(_ draft: ReminderListDraft) async throws -> String {
         guard draft.isValid else { throw ReminderEditingError.invalidDraft }
         guard let source = eventStore.source(withIdentifier: draft.accountIdentifier) else {
