@@ -5,6 +5,8 @@ import SwiftUI
 struct EventDetailLocationSection: View {
     let location: EventLocation
 
+    @Environment(\.openURL) private var openURL
+
     var body: some View {
         Section {
             Label {
@@ -52,6 +54,16 @@ struct EventDetailLocationSection: View {
     }
 
     private func openInMaps(at center: CLLocationCoordinate2D) {
+        let settings = DirectionsSettings()
+        if settings.app != .appleMaps,
+           let destination = DirectionsDestination(
+               name: location.title,
+               coordinate: PlannerCoordinate(latitude: center.latitude, longitude: center.longitude)
+           ),
+           let url = settings.url(for: DirectionsRequest(destination: destination)) {
+            openURL(url)
+            return
+        }
         let mapItem = MKMapItem(
             location: CLLocation(latitude: center.latitude, longitude: center.longitude),
             address: nil
