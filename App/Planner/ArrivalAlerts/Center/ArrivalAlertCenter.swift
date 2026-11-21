@@ -30,6 +30,9 @@ public final class ArrivalAlertCenter {
     @ObservationIgnored let leaveAlertSettings: LeaveAlertSettings
     @ObservationIgnored let estimator: any TravelTimeEstimating
     @ObservationIgnored public var onLeaveByChange: (@MainActor () -> Void)?
+    /// Wraps each arrival, which may have relaunched the app with only a few seconds of background time.
+    @ObservationIgnored public var performBackgroundWork: @MainActor (@MainActor () async -> Void) async -> Void
+        = { work in await work() }
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false

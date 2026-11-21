@@ -7,7 +7,8 @@ extension ArrivalAlertCenter {
         let arrivals = regionMonitor.arrivals()
         arrivalObservation = Task { [weak self] in
             for await arrival in arrivals {
-                await self?.handle(arrival)
+                guard let self else { return }
+                await performBackgroundWork { await self.handle(arrival) }
             }
         }
     }
