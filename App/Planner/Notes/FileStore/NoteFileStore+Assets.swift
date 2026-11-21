@@ -7,7 +7,7 @@ extension NoteFileStore {
         try ensureDirectoryExists(assetsURL)
         let safeName = NoteFileNaming.sanitizedTitle(fileName)
         let assetURL = NoteFileNaming.uniqueURL(for: assetsURL.appending(path: safeName.isEmpty ? "asset" : safeName))
-        try FileCoordination.write(at: assetURL, options: .forReplacing) { coordinatedURL in
+        try await FileCoordination.write(at: assetURL, options: .forReplacing) { coordinatedURL in
             try data.write(to: coordinatedURL, options: .withoutOverwriting)
         }
         return assetLinkPath(for: assetURL.lastPathComponent, from: noteURL)

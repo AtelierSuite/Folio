@@ -13,7 +13,7 @@ extension NoteFileStore {
             throw CocoaError(.fileNoSuchFile)
         }
         let destination = NoteFileNaming.uniqueURL(for: trashURL.appending(path: relativePath))
-        try FileCoordination.move(from: url, to: destination)
+        try await FileCoordination.move(from: url, to: destination)
         return destination
     }
 
@@ -24,7 +24,7 @@ extension NoteFileStore {
             throw NotesStorageError.notInTrash
         }
         let destination = NoteFileNaming.uniqueURL(for: rootURL.appending(path: relativePath))
-        try FileCoordination.move(from: trashedURL, to: destination)
+        try await FileCoordination.move(from: trashedURL, to: destination)
         return destination
     }
 
@@ -35,7 +35,7 @@ extension NoteFileStore {
         }
         let existingURL = FileManager.default.fileExists(atPath: trashedURL.path(percentEncoded: false))
             ? trashedURL : NoteFileNaming.placeholderURL(for: trashedURL)
-        try FileCoordination.delete(at: existingURL)
+        try await FileCoordination.delete(at: existingURL)
     }
 
     @concurrent
@@ -43,6 +43,6 @@ extension NoteFileStore {
         guard FileManager.default.fileExists(atPath: trashURL.path(percentEncoded: false)) else {
             return
         }
-        try FileCoordination.delete(at: trashURL)
+        try await FileCoordination.delete(at: trashURL)
     }
 }

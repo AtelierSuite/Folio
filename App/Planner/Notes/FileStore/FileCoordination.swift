@@ -1,6 +1,8 @@
 import Foundation
 
 enum FileCoordination {
+    /// For code that can't suspend, such as nested inside another coordination's accessor; async code uses the
+    /// forms in `FileCoordination+Async` so waiting on iCloud doesn't hold a thread.
     static func read<Value>(
         at url: URL,
         options: NSFileCoordinator.ReadingOptions = [],
@@ -29,51 +31,6 @@ enum FileCoordination {
             result = Result { try accessor(coordinatedURL) }
         }
         return try unwrap(result, coordinationError)
-    }
-
-    static func copy(from sourceURL: URL, to destinationURL: URL) throws {
-        var result: Result<Void, Error>?
-        var coordinationError: NSError?
-        NSFileCoordinator(filePresenter: nil).coordinate(
-            readingItemAt: sourceURL, options: [],
-            writingItemAt: destinationURL, options: .forReplacing,
-            error: &coordinationError
-        ) { coordinatedSourceURL, coordinatedDestinationURL in
-            result = Result {
-                try FileManager.default.createDirectory(
-                    at: coordinatedDestinationURL.deletingLastPathComponent(), withIntermediateDirectories: true
-                )
-                try FileManager.default.copyItem(at: coordinatedSourceURL, to: coordinatedDestinationURL)
-            }
-        }
-        try unwrap(result, coordinationError)
-    }
-
-    static func move(from sourceURL: URL, to destinationURL: URL) throws {
-        var result: Result<Void, Error>?
-        var coordinationError: NSError?
-        let coordinator = NSFileCoordinator(filePresenter: nil)
-        coordinator.coordinate(
-            writingItemAt: sourceURL, options: .forMoving,
-            writingItemAt: destinationURL, options: .forReplacing,
-            error: &coordinationError
-        ) { coordinatedSourceURL, coordinatedDestinationURL in
-            result = Result {
-                try FileManager.default.createDirectory(
-                    at: coordinatedDestinationURL.deletingLastPathComponent(), withIntermediateDirectories: true
-                )
-                coordinator.item(at: coordinatedSourceURL, willMoveTo: coordinatedDestinationURL)
-                try FileManager.default.moveItem(at: coordinatedSourceURL, to: coordinatedDestinationURL)
-                coordinator.item(at: coordinatedSourceURL, didMoveTo: coordinatedDestinationURL)
-            }
-        }
-        try unwrap(result, coordinationError)
-    }
-
-    static func delete(at url: URL) throws {
-        try write(at: url, options: .forDeleting) { coordinatedURL in
-            try FileManager.default.removeItem(at: coordinatedURL)
-        }
     }
 
     private static func unwrap<Value>(_ result: Result<Value, Error>?, _ coordinationError: NSError?) throws -> Value {

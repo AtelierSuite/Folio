@@ -26,11 +26,13 @@ extension SearchIndexer {
 
     @concurrent
     private static func readDocuments(for files: [NoteFile]) async -> [SearchDocument] {
-        files.map { file in
+        var documents: [SearchDocument] = []
+        for file in files {
             let text = file.isDownloaded
-                ? try? FileCoordination.read(at: file.url) { try String(contentsOf: $0, encoding: .utf8) }
+                ? try? await FileCoordination.read(at: file.url) { try String(contentsOf: $0, encoding: .utf8) }
                 : nil
-            return SearchDocument(note: file, text: text)
+            documents.append(SearchDocument(note: file, text: text))
         }
+        return documents
     }
 }

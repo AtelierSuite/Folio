@@ -38,4 +38,41 @@ struct NoteFileStoreCoordinationTests {
         held.release()
         releaseTask.cancel()
     }
+
+    @Test func savesOnceAWriterOnTheNoteLetsGo() async throws {
+        let directory = try TemporaryDirectory()
+        let store = NoteFileStore(rootURL: directory.url)
+        let note = try await store.createNote(titled: "Draft", text: "One")
+        let held = HeldFileCoordination(writingAt: note.url)
+        let releaseTask = Task.detached {
+            try? await Task.sleep(for: .milliseconds(500))
+            held.release()
+        }
+
+        let result = try await store.save("Two", over: note)
+
+        #expect(held.hasReleased)
+        guard case .saved(let saved) = result else {
+            Issue.record("Expected a save, got \(result)")
+            return
+        }
+        #expect(saved.text == "Two")
+        #expect(try await store.read(note.url).text == "Two")
+        releaseTask.cancel()
+    }
+
+    @Test func finishesASaveEvenWhenItsTaskIsCancelled() async throws {
+        let directory = try TemporaryDirectory()
+        let store = NoteFileStore(rootURL: directory.url)
+        let note = try await store.createNote(titled: "Draft", text: "One")
+        let held = HeldFileCoordination(writingAt: note.url)
+
+        let saveTask = Task.detached { try await store.save("Two", over: note) }
+        try await Task.sleep(for: .milliseconds(300))
+        saveTask.cancel()
+        held.release()
+        _ = try await saveTask.value
+
+        #expect(try await store.read(note.url).text == "Two")
+    }
 }
