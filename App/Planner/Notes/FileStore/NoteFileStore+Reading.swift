@@ -5,16 +5,16 @@ extension NoteFileStore {
     @concurrent
     public func read(_ url: URL) async throws -> Note {
         try await ensureDownloaded(url)
-        try preserveConflictVersions(of: url)
+        try await preserveConflictVersions(of: url)
         let store = self
-        return try await FileCoordination.readDownloading(at: url) { coordinatedURL in
+        return try await FileCoordination.read(at: url) { coordinatedURL in
             try store.loadNote(at: coordinatedURL, reportedURL: url)
         }
     }
 
     @concurrent
     public func ensureDownloaded(_ url: URL) async throws {
-        try await FileCoordination.readDownloading(at: url) { _ in }
+        try await FileCoordination.read(at: url) { _ in }
     }
 
     func loadNote(at url: URL, reportedURL: URL) throws -> Note {

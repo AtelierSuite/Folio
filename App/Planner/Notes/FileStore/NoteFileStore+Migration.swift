@@ -15,24 +15,24 @@ extension NoteFileStore {
             try await ensureDownloaded(sourceURL)
             let target = destination.rootURL.appending(path: relativePath)
             if NoteFileNaming.exists(target) {
-                if try destination.contentsMatch(of: target, and: sourceURL) {
+                if try await destination.contentsMatch(of: target, and: sourceURL) {
                     summary.skippedDuplicateCount += 1
-                    try removeIfNeeded(sourceURL, removingSource: removingSource)
+                    try await removeIfNeeded(sourceURL, removingSource: removingSource)
                     continue
                 }
                 summary.renamedFileCount += 1
             }
-            try FileCoordination.copy(from: sourceURL, to: NoteFileNaming.uniqueURL(for: target))
+            try await FileCoordination.copy(from: sourceURL, to: NoteFileNaming.uniqueURL(for: target))
             summary.copiedFileCount += 1
-            try removeIfNeeded(sourceURL, removingSource: removingSource)
+            try await removeIfNeeded(sourceURL, removingSource: removingSource)
         }
         if removingSource {
-            removeEmptyFolders()
+            await removeEmptyFolders()
         }
         return summary
     }
 
-    func removeEmptyFolders() {
+    func removeEmptyFolders() async {
         let folders = (FileManager.default.enumerator(at: rootURL, includingPropertiesForKeys: [.isDirectoryKey])?
             .compactMap { $0 as? URL }
             .filter { (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true } ?? [])
@@ -40,7 +40,7 @@ extension NoteFileStore {
         for folder in folders {
             let contents = try? FileManager.default.contentsOfDirectory(atPath: folder.path(percentEncoded: false))
             if contents?.isEmpty == true {
-                try? FileCoordination.delete(at: folder)
+                try? await FileCoordination.delete(at: folder)
             }
         }
     }
@@ -73,18 +73,18 @@ extension NoteFileStore {
         return paths.sorted()
     }
 
-    func contentsMatch(of url: URL, and otherURL: URL) throws -> Bool {
+    func contentsMatch(of url: URL, and otherURL: URL) async throws -> Bool {
         guard FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) else {
             return false
         }
-        let data = try FileCoordination.read(at: url) { try Data(contentsOf: $0) }
-        let otherData = try FileCoordination.read(at: otherURL) { try Data(contentsOf: $0) }
+        let data = try await FileCoordination.read(at: url) { try Data(contentsOf: $0) }
+        let otherData = try await FileCoordination.read(at: otherURL) { try Data(contentsOf: $0) }
         return data == otherData
     }
 
-    private func removeIfNeeded(_ url: URL, removingSource: Bool) throws {
+    private func removeIfNeeded(_ url: URL, removingSource: Bool) async throws {
         if removingSource {
-            try FileCoordination.delete(at: url)
+            try await FileCoordination.delete(at: url)
         }
     }
 }

@@ -12,9 +12,10 @@ extension NoteFileStore {
             return try await read(url)
         }
         try ensureDirectoryExists(url.deletingLastPathComponent())
-        return try FileCoordination.write(at: url, options: .forReplacing) { coordinatedURL in
+        let store = self
+        return try await FileCoordination.write(at: url, options: .forReplacing) { coordinatedURL in
             try Data(text.utf8).write(to: coordinatedURL, options: .withoutOverwriting)
-            return Note(url: url, modifiedDate: modificationDate(of: coordinatedURL), text: text)
+            return Note(url: url, modifiedDate: store.modificationDate(of: coordinatedURL), text: text)
         }
     }
 }

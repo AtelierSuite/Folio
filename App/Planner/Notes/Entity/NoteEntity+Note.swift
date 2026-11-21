@@ -24,7 +24,7 @@ extension NoteFileStore {
     @concurrent
     public func entity(for file: NoteFile) async -> NoteEntity {
         guard file.isDownloaded,
-              let note = try? FileCoordination.read(at: file.url, { coordinatedURL in
+              let note = try? await FileCoordination.read(at: file.url, { [self] coordinatedURL in
                   try loadNote(at: coordinatedURL, reportedURL: file.url)
               }) else {
             return NoteEntity(placeholderFor: file)

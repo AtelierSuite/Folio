@@ -5,8 +5,9 @@ extension NoteFileStore {
     @concurrent
     func readIfDownloaded(_ file: NoteFile) async -> Note? {
         guard file.isDownloaded else { return nil }
-        return try? FileCoordination.read(at: file.url) { coordinatedURL in
-            try loadNote(at: coordinatedURL, reportedURL: file.url)
+        let store = self
+        return try? await FileCoordination.read(at: file.url) { coordinatedURL in
+            try store.loadNote(at: coordinatedURL, reportedURL: file.url)
         }
     }
 
@@ -24,6 +25,6 @@ extension NoteFileStore {
 
     @concurrent
     func deleteAsset(named name: String) async throws {
-        try FileCoordination.delete(at: assetsURL.appending(path: name))
+        try await FileCoordination.delete(at: assetsURL.appending(path: name))
     }
 }

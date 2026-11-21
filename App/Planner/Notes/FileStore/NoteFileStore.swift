@@ -20,9 +20,7 @@ public struct NoteFileStore: Sendable, Hashable {
 
     @concurrent
     public func notes() async throws -> [NoteFile] {
-        try FileCoordination.read(at: rootURL) { coordinatedRootURL in
-            try listNoteFiles(in: coordinatedRootURL, relativeTo: rootURL)
-        }
+        try listNoteFiles(in: rootURL, relativeTo: rootURL)
     }
 
     public func relativePath(of url: URL) -> String? {

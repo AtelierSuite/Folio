@@ -9,9 +9,10 @@ extension NoteFileStore {
         }
         try ensureDirectoryExists(rootURL)
         let url = NoteFileNaming.uniqueURL(for: rootURL.appending(path: "\(name).\(NoteFileNaming.noteExtension)"))
-        return try FileCoordination.write(at: url, options: .forReplacing) { coordinatedURL in
+        let store = self
+        return try await FileCoordination.write(at: url, options: .forReplacing) { coordinatedURL in
             try Data(text.utf8).write(to: coordinatedURL, options: .withoutOverwriting)
-            return Note(url: url, modifiedDate: modificationDate(of: coordinatedURL), text: text)
+            return Note(url: url, modifiedDate: store.modificationDate(of: coordinatedURL), text: text)
         }
     }
 
@@ -19,9 +20,10 @@ extension NoteFileStore {
     /// the edited text is written to a conflicted copy instead of overwriting the other change.
     @concurrent
     public func save(_ text: String, over note: Note) async throws -> NoteSaveResult {
-        try preserveConflictVersions(of: note.url)
-        let current = try FileCoordination.write(at: note.url, options: .forMerging) { coordinatedURL -> Note? in
-            if let diskNote = try? loadNote(at: coordinatedURL, reportedURL: note.url),
+        try await preserveConflictVersions(of: note.url)
+        let store = self
+        let current = try await FileCoordination.write(at: note.url, options: .forMerging) { coordinatedURL -> Note? in
+            if let diskNote = try? store.loadNote(at: coordinatedURL, reportedURL: note.url),
                diskNote.text != note.text, diskNote.text != text {
                 return diskNote
             }
@@ -29,7 +31,10 @@ extension NoteFileStore {
             return nil
         }
         if let current {
-            let copyURL = try writeConflictedCopy(text, besides: note.url, date: .now)
+            let copyURL = conflictedCopyURL(besides: note.url, date: .now)
+            try await FileCoordination.write(at: copyURL, options: .forReplacing) { coordinatedURL in
+                try Data(text.utf8).write(to: coordinatedURL, options: .atomic)
+            }
             return .conflict(current: current, conflictedCopyURL: copyURL)
         }
         return .saved(Note(url: note.url, modifiedDate: modificationDate(of: note.url), text: text))
@@ -48,7 +53,7 @@ extension NoteFileStore {
         }
         let isCaseOnlyChange = target.lastPathComponent.lowercased() == url.lastPathComponent.lowercased()
         let destination = isCaseOnlyChange ? target : NoteFileNaming.uniqueURL(for: target)
-        try FileCoordination.move(from: url, to: destination)
+        try await FileCoordination.move(from: url, to: destination)
         return destination
     }
 }
