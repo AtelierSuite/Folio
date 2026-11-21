@@ -8,7 +8,7 @@ final class MarkdownTextCoordinator: NSObject {
     weak var host: MarkdownTextHost?
     private var lastMarkdown: String?
     private var revealedLines: NSRange?
-    private var imageLoads: [Task<Void, Never>] = []
+    var imageLoads: [ObjectIdentifier: Task<Void, Never>] = [:]
 
     init(text: Binding<String>, baseURL: URL?, controller: MarkdownEditorController) {
         self.text = text
@@ -73,11 +73,14 @@ final class MarkdownTextCoordinator: NSObject {
         guard let host else { return }
         let selection = host.markdownSelection
         let storage = host.markdownStorage
-        storage.setAttributedString(attributedString(fromMarkdown: markdown))
+        let loaded = attributedString(fromMarkdown: markdown)
+        cancelImageLoads()
+        storage.setAttributedString(loaded)
         lastMarkdown = markdown
         host.markdownUndoManager.removeAllActions()
         host.markdownSelection = Self.clamped(selection, to: storage.length)
         restyle()
+        loadImages()
     }
 
     private func publish() {
@@ -90,30 +93,7 @@ final class MarkdownTextCoordinator: NSObject {
     }
 
     isolated deinit {
-        imageLoads.forEach { $0.cancel() }
-    }
-
-    func attributedString(fromMarkdown markdown: String) -> NSAttributedString {
-        MarkdownAttributedText.attributedString(
-            fromMarkdown: markdown, baseURL: baseURL, loads: &imageLoads
-        ) { [weak self] attachment in
-            self?.imageDidLoad(attachment)
-        }
-    }
-
-    /// Lays the image out at its real size and moves the bullets and checkboxes below it along.
-    private func imageDidLoad(_ attachment: MarkdownImageAttachment) {
-        guard let host else { return }
-        let storage = host.markdownStorage
-        let fullRange = NSRange(location: 0, length: storage.length)
-        guard let location = MarkdownAttributedText.attachments(in: storage, range: fullRange)
-            .first(where: { $0.1 === attachment })?.0 else {
-            return
-        }
-        storage.beginEditing()
-        storage.edited(.editedAttributes, range: NSRange(location: location, length: 1), changeInLength: 0)
-        storage.endEditing()
-        restyle()
+        cancelImageLoads()
     }
 
     static func isHidden(_ attributes: [NSAttributedString.Key: Any]) -> Bool {

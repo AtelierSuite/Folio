@@ -46,6 +46,7 @@ extension MarkdownTextCoordinator {
             let caret = selection.location + insertion.length + (needsTrailingBreak ? 0 : 1)
             return NSRange(location: caret, length: 0)
         }
+        loadImages()
         host.focusMarkdownText()
     }
 

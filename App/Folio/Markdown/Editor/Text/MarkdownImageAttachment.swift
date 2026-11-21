@@ -6,14 +6,20 @@ import AppKit
 #endif
 
 /// Shows a note's image inline, and turns back into the Markdown it came from when the note is saved. An image
-/// still downloading keeps a blank space the width of the text until it arrives.
+/// still loading keeps a blank space the width of the text until it arrives.
 nonisolated final class MarkdownImageAttachment: NSTextAttachment {
     let markdown: String
+    let url: URL
 
-    init(markdown: String, image: PlatformImage?) {
+    init(markdown: String, url: URL) {
         self.markdown = markdown
+        self.url = url
         super.init(data: nil, ofType: nil)
-        self.image = image
+    }
+
+    func reuseImage(of other: MarkdownImageAttachment?) {
+        guard let other, other.image != nil else { return }
+        image = other.image
     }
 
     required init?(coder: NSCoder) {

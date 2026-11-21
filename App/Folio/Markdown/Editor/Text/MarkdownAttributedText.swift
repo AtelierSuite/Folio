@@ -10,13 +10,11 @@ import Planner
 enum MarkdownAttributedText {
     private static let attachmentCharacter: unichar = 0xFFFC
 
-    /// Images already on the device load right away; the rest download through file coordination in `loads`
-    /// and call `onImageLoaded` when they arrive.
+    /// Images start blank and are loaded later by the coordinator, except those already decoded in `images`.
     static func attributedString(
         fromMarkdown markdown: String,
         baseURL: URL?,
-        loads: inout [Task<Void, Never>],
-        onImageLoaded: @escaping @MainActor (MarkdownImageAttachment) -> Void
+        reusing images: [URL: MarkdownImageAttachment] = [:]
     ) -> NSAttributedString {
         let result = NSMutableAttributedString(string: markdown)
         let source = markdown as NSString
@@ -25,31 +23,11 @@ enum MarkdownAttributedText {
                   MarkdownImageLoader.exists(url) else {
                 continue
             }
-            let markdown = source.substring(with: reference.range)
-            let image = MarkdownImageLoader.isOnDevice(url) ? MarkdownImageLoader.thumbnail(at: url) : nil
-            let attachment = MarkdownImageAttachment(markdown: markdown, image: image)
-            if image == nil {
-                loads.append(load(url, into: attachment, onImageLoaded: onImageLoaded))
-            }
+            let attachment = MarkdownImageAttachment(markdown: source.substring(with: reference.range), url: url)
+            attachment.reuseImage(of: images[url])
             result.replaceCharacters(in: reference.range, with: NSAttributedString(attachment: attachment))
         }
         return result
-    }
-
-    private static func load(
-        _ url: URL,
-        into attachment: MarkdownImageAttachment,
-        onImageLoaded: @escaping @MainActor (MarkdownImageAttachment) -> Void
-    ) -> Task<Void, Never> {
-        Task { @MainActor in
-            guard let data = try? await NoteFileStore.coordinatedData(at: url),
-                  let image = await MarkdownImageLoader.thumbnail(from: data),
-                  !Task.isCancelled else {
-                return
-            }
-            attachment.image = MarkdownImageLoader.platformImage(from: image)
-            onImageLoaded(attachment)
-        }
     }
 
     static func markdown(from text: NSAttributedString) -> String {
