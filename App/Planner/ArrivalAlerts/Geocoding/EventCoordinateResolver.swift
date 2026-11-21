@@ -1,16 +1,20 @@
 import Foundation
 
-/// Uses the event's own coordinate when it has one, otherwise geocodes its location text once per text.
+/// Uses the event's own coordinate when it has one, otherwise geocodes its location text once per text,
+/// backing off after failures so MapKit doesn't throttle the lookups that matter.
 public struct EventCoordinateResolver: Sendable {
     private let geocoder: any LocationGeocoding
     private let cache: any GeocodeCache
+    private let clock: @Sendable () -> Date
 
     public init(
         geocoder: any LocationGeocoding = MapKitLocationGeocoder(),
-        cache: any GeocodeCache = MetadataGeocodeCache()
+        cache: any GeocodeCache = MetadataGeocodeCache(),
+        clock: @escaping @Sendable () -> Date = { .now }
     ) {
         self.geocoder = geocoder
         self.cache = cache
+        self.clock = clock
     }
 
     public func coordinate(for event: CalendarEvent) async -> PlannerCoordinate? {
@@ -18,7 +22,8 @@ public struct EventCoordinateResolver: Sendable {
             return coordinate
         }
         guard let query = Self.query(for: event) else { return nil }
-        if let cached = cache.geocodedLocation(for: event.reference), cached.query == query {
+        let cached = cache.geocodedLocation(for: event.reference)
+        if let cached, cached.query == query, cached.retryDate.map({ clock() < $0 }) ?? true {
             return cached.coordinate
         }
         do {
@@ -26,6 +31,7 @@ public struct EventCoordinateResolver: Sendable {
             cache.store(GeocodedLocation(query: query, coordinate: coordinate), for: event.reference)
             return coordinate
         } catch {
+            cache.store(.failure(query: query, after: cached, at: clock()), for: event.reference)
             return nil
         }
     }

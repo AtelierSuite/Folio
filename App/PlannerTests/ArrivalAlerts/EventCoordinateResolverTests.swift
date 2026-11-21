@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 @testable import Planner
 
@@ -45,13 +46,41 @@ struct EventCoordinateResolverTests {
         #expect(cache.geocodedLocation(for: event.reference) == GeocodedLocation(query: "Room 4", coordinate: nil))
     }
 
-    @Test func doesNotCacheGeocodingFailures() async {
+    @Test func backsOffAfterGeocodingFailures() async {
         let geocoder = FakeGeocoder(failing: true)
-        let cache = InMemoryGeocodeCache()
-        let resolver = EventCoordinateResolver(geocoder: geocoder, cache: cache)
+        let clock = Mutex(ArrivalFixtures.now)
+        let resolver = EventCoordinateResolver(
+            geocoder: geocoder, cache: InMemoryGeocodeCache(), clock: { clock.withLock { $0 } }
+        )
         let event = freeTextEvent("Shibuya")
         #expect(await resolver.coordinate(for: event) == nil)
-        #expect(cache.geocodedLocation(for: event.reference) == nil)
+        #expect(await resolver.coordinate(for: event) == nil)
+        #expect(geocoder.requestedQueries.count == 1)
+        clock.withLock { $0 = $0.addingTimeInterval(GeocodedLocation.firstRetryDelay) }
+        _ = await resolver.coordinate(for: event)
+        #expect(geocoder.requestedQueries.count == 2)
+        clock.withLock { $0 = $0.addingTimeInterval(GeocodedLocation.firstRetryDelay) }
+        _ = await resolver.coordinate(for: event)
+        #expect(geocoder.requestedQueries.count == 2)
+        clock.withLock { $0 = $0.addingTimeInterval(GeocodedLocation.firstRetryDelay) }
+        _ = await resolver.coordinate(for: event)
+        #expect(geocoder.requestedQueries.count == 3)
+    }
+
+    @Test func retryDelayStopsGrowingAfterADay() {
+        var location: GeocodedLocation?
+        for _ in 0..<12 {
+            location = .failure(query: "Shibuya", after: location, at: ArrivalFixtures.now)
+        }
+        #expect(location?.retryDate == ArrivalFixtures.now.addingTimeInterval(GeocodedLocation.longestRetryDelay))
+    }
+
+    @Test func changedLocationTextIsTriedStraightAway() async {
+        let geocoder = FakeGeocoder(failing: true)
+        let resolver = EventCoordinateResolver(geocoder: geocoder, cache: InMemoryGeocodeCache())
+        _ = await resolver.coordinate(for: freeTextEvent("Shibuya"))
+        _ = await resolver.coordinate(for: freeTextEvent("Shinjuku"))
+        #expect(geocoder.requestedQueries == ["Shibuya", "Shinjuku"])
     }
 
     @Test func skipsEventsWithoutLocationText() async {
