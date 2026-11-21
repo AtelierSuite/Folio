@@ -25,11 +25,15 @@ public final class ArrivalAlertCenter {
     @ObservationIgnored let planner: ArrivalRegionPlanner
     @ObservationIgnored let notifier: any ArrivalNotifying
     @ObservationIgnored let log: ArrivalNotificationLog
+    @ObservationIgnored let regionStore: ArrivalRegionStore
     @ObservationIgnored let leaveBySettings: LeaveBySettings
     @ObservationIgnored let leaveByPlanner: LeaveByPlanner
     @ObservationIgnored let leaveAlertSettings: LeaveAlertSettings
     @ObservationIgnored let estimator: any TravelTimeEstimating
     @ObservationIgnored public var onLeaveByChange: (@MainActor () -> Void)?
+    /// Wraps each arrival, which may have relaunched the app with only a few seconds of background time.
+    @ObservationIgnored public var performBackgroundWork: @MainActor (@MainActor () async -> Void) async -> Void
+        = { work in await work() }
     @ObservationIgnored let clock: @Sendable () -> Date
     @ObservationIgnored private var replanLoop: Task<Void, Never>?
     @ObservationIgnored private var needsReplan = false
@@ -47,6 +51,7 @@ public final class ArrivalAlertCenter {
         planner: ArrivalRegionPlanner = ArrivalRegionPlanner(),
         notifier: any ArrivalNotifying = UserNotificationArrivalNotifier(),
         log: ArrivalNotificationLog = ArrivalNotificationLog(),
+        regionStore: ArrivalRegionStore = ArrivalRegionStore(),
         leaveBySettings: LeaveBySettings = LeaveBySettings(),
         leaveByPlanner: LeaveByPlanner = LeaveByPlanner(),
         leaveAlertSettings: LeaveAlertSettings = LeaveAlertSettings(),
@@ -64,6 +69,7 @@ public final class ArrivalAlertCenter {
         self.planner = planner
         self.notifier = notifier
         self.log = log
+        self.regionStore = regionStore
         self.leaveBySettings = leaveBySettings
         self.leaveByPlanner = leaveByPlanner
         self.leaveAlertSettings = leaveAlertSettings
@@ -131,6 +137,7 @@ public final class ArrivalAlertCenter {
             await regionMonitor.startMonitoring(region)
         }
         monitoredRegions = regions
+        regionStore.save(regions)
         arrivalLog.info("Monitoring \(regions.count) arrival regions")
     }
 

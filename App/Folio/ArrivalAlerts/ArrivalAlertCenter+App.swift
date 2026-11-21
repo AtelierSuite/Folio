@@ -8,6 +8,13 @@ extension ArrivalAlertCenter {
             WidgetCenter.shared.reloadTimelines(ofKind: leaveByWidgetKind)
             WidgetCenter.shared.reloadTimelines(ofKind: "DayLoadWidget")
         }
+        #if os(iOS)
+        center.performBackgroundWork = { work in
+            let backgroundTask = BackgroundTask(name: "ArrivalAlert.Arrival")
+            await work()
+            backgroundTask.end()
+        }
+        #endif
         center.start()
         return center
     }
