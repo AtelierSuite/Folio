@@ -20,13 +20,13 @@ struct TimelinePageGridView: View {
                 .timelineCreationTap(days: layout.days, hourHeight: hourHeight)
             TimelineLayersView(layers: layers.filter { $0.placement == .belowEntries }, context: context)
             TimelineTravelTimeView(
-                layout: layout, hourHeight: hourHeight, draggedEntryIdentifier: drag?.session?.entry.id
+                layout: layout, hourHeight: hourHeight, draggedEntryIdentifier: drag?.draggedEntryID
             )
             TimelineCardsView(
                 layout: layout,
                 hourHeight: hourHeight,
                 minimumCardHeight: minimumCardHeight,
-                draggedEntryIdentifier: drag?.session?.entry.id,
+                draggedEntryIdentifier: drag?.draggedEntryID,
                 onSelectEntry: onSelectEntry
             )
             .environment(\.eventCardsLiftToDrag, drag != nil)

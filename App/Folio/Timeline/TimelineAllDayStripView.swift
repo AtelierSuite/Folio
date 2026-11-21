@@ -78,7 +78,7 @@ struct TimelineAllDayPageView: View {
                             .timelineEntrySelection(placement.entry, onSelect: onSelectEntry)
                     }
                 }
-                .opacity(placement.entry.id == drag?.session?.entry.id ? 0.35 : 1)
+                .opacity(placement.entry.id == drag?.draggedEntryID ? 0.35 : 1)
                 .timelineReminderPlacing(placement.entry, drag: drag)
                 .timelineAllDayPlacement(placement)
             }

@@ -75,7 +75,7 @@ struct TimelineDropHandlingModifier: ViewModifier {
                 guard newHour != nil else { return nil }
                 return oldHour == nil ? .impact(weight: .medium) : .impact(weight: .light)
             }
-            .onChange(of: drag.session?.entry.id) { _, identifier in
+            .onChange(of: drag.draggedEntryID) { _, identifier in
                 if identifier != nil, let entry = drag.session?.entry { onLift(entry) }
             }
             .onChange(of: drag.session?.isDropping) { _, isDropping in
