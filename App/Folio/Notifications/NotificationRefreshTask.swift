@@ -21,7 +21,8 @@ extension Scene {
     ) -> some Scene {
         backgroundTask(.appRefresh(NotificationRefreshTask.identifier)) {
             NotificationRefreshTask.schedule()
-            await scheduler.replan()
+            await scheduler.replan(stopsWhenCancelled: true)
+            guard !Task.isCancelled else { return }
             await countdowns.reconcile()
         }
     }

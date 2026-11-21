@@ -91,21 +91,32 @@ public final class NotificationScheduler {
         calendarSounds = soundSettings.calendarSounds
     }
 
-    public func replan() async {
+    /// With `stopsWhenCancelled`, cancelling the caller stops the replan before the next feature, so a background
+    /// refresh that runs out of time ends instead of being killed.
+    public func replan(stopsWhenCancelled: Bool = false) async {
         needsReplan = true
-        if let replanLoop {
-            await replanLoop.value
+        let loop = replanLoop ?? startReplanLoop()
+        guard stopsWhenCancelled else {
+            await loop.value
             return
         }
+        await withTaskCancellationHandler {
+            await loop.value
+        } onCancel: {
+            loop.cancel()
+        }
+    }
+
+    private func startReplanLoop() -> Task<Void, Never> {
         let loop = Task {
-            while needsReplan {
+            while needsReplan, !Task.isCancelled {
                 needsReplan = false
                 await performReplan()
             }
             replanLoop = nil
         }
         replanLoop = loop
-        await loop.value
+        return loop
     }
 
     private func performReplan() async {
@@ -140,6 +151,7 @@ public final class NotificationScheduler {
             alarmCount: alarmCount,
             nextFireDate: plan.nextFireDate
         )
+        guard !Task.isCancelled else { return }
         await didReplan?()
     }
 
