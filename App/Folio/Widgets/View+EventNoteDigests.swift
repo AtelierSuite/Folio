@@ -24,7 +24,7 @@ private struct EventNoteDigestPublishing: ViewModifier {
                 start: .now,
                 duration: Double(EventNoteDigest.lookAheadDays) * 86_400
             )
-            let events = await store.events(in: interval)
+            let events = await store.backgroundEvents(in: interval)
             if await EventNoteDigestPublisher().publish(events: events, library: library) {
                 WidgetCenter.shared.reloadTimelines(ofKind: "EventNotesWidget")
             }
