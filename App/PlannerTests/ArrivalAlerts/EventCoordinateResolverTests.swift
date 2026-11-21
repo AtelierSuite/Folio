@@ -71,4 +71,24 @@ struct EventCoordinateResolverTests {
         let reloaded = MetadataGeocodeCache(store: CalendarItemMetadataStore(key: "geocodes", defaults: defaults))
         #expect(reloaded.geocodedLocation(for: event.reference) == location)
     }
+
+    @Test func skipsLinksAndVideoCallNames() async {
+        let geocoder = FakeGeocoder()
+        let resolver = EventCoordinateResolver(geocoder: geocoder, cache: InMemoryGeocodeCache())
+        for location in [
+            "https://zoom.us/j/123456", "zoom.us/j/123456", "Zoom", "Microsoft Teams Meeting",
+            "Google Meet", "FaceTime", "Teams", "GoTo Meeting", "Webex Meeting"
+        ] {
+            #expect(await resolver.coordinate(for: freeTextEvent(location)) == nil)
+        }
+        #expect(geocoder.requestedQueries.isEmpty)
+    }
+
+    @Test func stillGeocodesPlacesThatMentionAProvider() async {
+        let geocoder = FakeGeocoder()
+        let resolver = EventCoordinateResolver(geocoder: geocoder, cache: InMemoryGeocodeCache())
+        _ = await resolver.coordinate(for: freeTextEvent("Zoom Cafe, Shibuya"))
+        _ = await resolver.coordinate(for: freeTextEvent("Meeting Room 4"))
+        #expect(geocoder.requestedQueries == ["Zoom Cafe, Shibuya", "Meeting Room 4"])
+    }
 }

@@ -34,7 +34,9 @@ public struct EventCoordinateResolver: Sendable {
         if let coordinate = location.coordinate {
             return PlannerCoordinate(latitude: coordinate.latitude, longitude: coordinate.longitude)
         }
-        return try? await geocoder.coordinate(for: location.text.replacingOccurrences(of: "\n", with: ", "))
+        let query = location.text.replacingOccurrences(of: "\n", with: ", ")
+        guard GeocodeQueryFilter.isPlace(query) else { return nil }
+        return try? await geocoder.coordinate(for: query)
     }
 
     static func query(for event: CalendarEvent) -> String? {
@@ -42,6 +44,7 @@ public struct EventCoordinateResolver: Sendable {
             .split(separator: "\n")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
-        return parts.isEmpty ? nil : parts.joined(separator: ", ")
+        let query = parts.joined(separator: ", ")
+        return parts.isEmpty || !GeocodeQueryFilter.isPlace(query) ? nil : query
     }
 }
