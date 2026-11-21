@@ -41,7 +41,8 @@ final class FakeSleepDataSource: SleepDataSource, @unchecked Sendable {
     }
 
     func samples(in interval: DateInterval) async throws -> [SleepSample] {
-        try lock.withLock {
+        try await Task.sleep(for: .milliseconds(5))
+        return try lock.withLock {
             storedFetchCount += 1
             if storedFailsReads {
                 throw CocoaError(.fileReadNoPermission)

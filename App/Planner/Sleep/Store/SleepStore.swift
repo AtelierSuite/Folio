@@ -12,10 +12,9 @@ public final class SleepStore {
     @ObservationIgnored private let source: (any SleepDataSource)?
     @ObservationIgnored private let preferences: SleepPreferences
     @ObservationIgnored private let now: @Sendable () -> Date
-    @ObservationIgnored private var cachedSamples: [DateInterval: [SleepSample]] = [:]
+    @ObservationIgnored private let cachedBlocks = SharedReadCache<Int, [SleepSample]>(limit: 12)
     @ObservationIgnored private(set) var isObserving = false
     @ObservationIgnored private let observedChanges = CoalescedRefresh()
-    private static let cacheLimit = 12
 
     public init(
         source: (any SleepDataSource)?,
@@ -96,7 +95,7 @@ public final class SleepStore {
     }
 
     public func invalidate() {
-        cachedSamples.removeAll()
+        cachedBlocks.removeAll()
         revision += 1
     }
 
@@ -119,15 +118,16 @@ public final class SleepStore {
     /// the device is locked, keeps what's cached.
     private func reloadCachedSamples() async {
         guard isRead, let source else { return }
-        var intervals = Set(cachedSamples.keys)
-        intervals.insert(SleepWindow.fetchInterval(covering: SleepWindow.lastNight(now: now(), calendar: .current)))
+        let lastNight = SleepWindow.fetchInterval(covering: SleepWindow.lastNight(now: now(), calendar: .current))
+        var blocks = cachedBlocks.keys
+        blocks.append(contentsOf: SleepWindow.blocks(covering: lastNight).filter { !blocks.contains($0) })
         var hasChanged = false
-        for interval in intervals {
-            guard let samples = try? await source.samples(in: interval) else { continue }
-            if let cached = cachedSamples[interval], cached != samples {
+        for block in blocks {
+            guard let samples = try? await source.samples(in: SleepWindow.interval(ofBlock: block)) else { continue }
+            if let cached = cachedBlocks[block], cached != samples {
                 hasChanged = true
             }
-            cachedSamples[interval] = samples
+            cachedBlocks.store(samples, for: block)
         }
         if hasChanged {
             revision += 1
@@ -136,14 +136,18 @@ public final class SleepStore {
 
     private func samples(in interval: DateInterval) async -> [SleepSample] {
         guard isRead, let source else { return [] }
-        if let cached = cachedSamples[interval] {
-            return cached
+        var samples: [SleepSample] = []
+        var seenSamples = Set<SleepSample>()
+        for block in SleepWindow.blocks(covering: interval) {
+            let blockSamples = await cachedBlocks.value(for: block) {
+                try? await source.samples(in: SleepWindow.interval(ofBlock: block))
+            }
+            guard let blockSamples else { return [] }
+            let newSamples = blockSamples.filter {
+                $0.interval.intersects(interval) && seenSamples.insert($0).inserted
+            }
+            samples.append(contentsOf: newSamples)
         }
-        guard let samples = try? await source.samples(in: interval) else { return [] }
-        if cachedSamples.count >= Self.cacheLimit {
-            cachedSamples.removeAll()
-        }
-        cachedSamples[interval] = samples
-        return samples
+        return samples.sorted { $0.interval.start < $1.interval.start }
     }
 }
