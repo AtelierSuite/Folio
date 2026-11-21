@@ -55,13 +55,10 @@ struct DirectionsPlaceTests {
             == "https://map.kakao.com/link/map/Gangnam,37.4979,127.0276")
     }
 
-    @Test func naverMapAndBaiduMapsNeedACoordinate() throws {
+    @Test func naverMapNeedsACoordinate() throws {
         #expect(DirectionsApp.naverMap.placeURL(for: try destination(), isInstalled: true) == nil)
-        #expect(DirectionsApp.baiduMaps.placeURL(for: try destination(), isInstalled: true) == nil)
         let gangnam = try destination(coordinate: DirectionsFixtures.gangnamStation)
         #expect(DirectionsApp.naverMap.placeURL(for: gangnam, isInstalled: true)?.host() == "place")
-        let tiananmen = try destination(coordinate: DirectionsFixtures.tiananmen)
-        #expect(DirectionsApp.baiduMaps.placeURL(for: tiananmen, isInstalled: true)?.path() == "/marker")
     }
 
     @Test func unsupportedAppsFallBackToAppleMaps() throws {

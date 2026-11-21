@@ -24,13 +24,17 @@ public extension DirectionsApp {
         return queryScheme == nil || isInstalled || hasWebLink
     }
 
+    func isListed(for locale: Locale) -> Bool {
+        audience?.includes(locale) ?? true
+    }
+
     /// The stored app, or Apple Maps when it's gone or can't take this role.
     static func app(id: String?, for role: DirectionsAppRole) -> DirectionsApp {
         guard let app = id.flatMap(app(id:)), app.supports(role) else { return .appleMaps }
         return app
     }
 
-    static func apps(for role: DirectionsAppRole) -> [DirectionsApp] {
-        all.filter { $0.supports(role) }
+    static func apps(for role: DirectionsAppRole, locale: Locale) -> [DirectionsApp] {
+        all.filter { $0.supports(role) && $0.isListed(for: locale) }
     }
 }

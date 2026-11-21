@@ -17,7 +17,7 @@ enum DirectionsAppInstallation {
     }
 
     static func availableApps(for role: DirectionsAppRole) -> [DirectionsApp] {
-        DirectionsApp.apps(for: role).filter {
+        DirectionsApp.apps(for: role, locale: .current).filter {
             $0.isAvailable(for: role, isInstalled: isInstalled($0))
         }
     }

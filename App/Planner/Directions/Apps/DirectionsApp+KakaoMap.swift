@@ -5,6 +5,7 @@ public extension DirectionsApp {
         id: "kakaoMap",
         queryScheme: "kakaomap",
         servedArea: .korea,
+        audience: .korean,
         appLink: { request in
             kakaoMapRoute("kakaomap://route", request)
         },
