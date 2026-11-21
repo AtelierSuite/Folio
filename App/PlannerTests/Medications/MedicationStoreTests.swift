@@ -201,6 +201,32 @@ struct MedicationStoreTests {
         #expect(reminders.reminders.isEmpty)
     }
 
+    @Test func pagingReadsTheHistoryOncePerRevision() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        let reads = source.readCount
+        for day in 8...20 {
+            _ = await store.doses(in: DateInterval(start: date(day: day, hour: 0), duration: 86_400))
+        }
+        #expect(source.readCount == reads + 1)
+        await store.refresh()
+        _ = await store.doses(in: DateInterval(start: date(day: 13, hour: 0), duration: 86_400))
+        #expect(source.readCount == reads + 2)
+    }
+
+    @Test func concurrentLoadsShareOneRead() async {
+        let source = FakeMedicationDataSource(medications: [Self.vitamin], records: records(Self.vitamin, hour: 8))
+        let store = makeStore(source: source)
+        await store.setShownOnTimeline(true)
+        let reads = source.readCount
+        async let today = store.doses(in: DateInterval(start: date(day: 13, hour: 0), duration: 86_400))
+        async let tomorrow = store.doses(in: DateInterval(start: date(day: 14, hour: 0), duration: 86_400))
+        let doses = await (today, tomorrow)
+        #expect(doses.0.count == 1 && doses.1.count == 1)
+        #expect(source.readCount == reads + 1)
+    }
+
     @Test func remindersStayWithinTheirLimit() {
         let start = date(day: 13, hour: 0)
         let doses = (0..<40).map {

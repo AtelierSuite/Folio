@@ -24,23 +24,27 @@ public final class HealthKitMedicationDataSource: MedicationDataSource {
         try await annotatedMedications().map(Medication.init(healthKitMedication:))
     }
 
-    public func doseRecords(in interval: DateInterval) async throws -> [MedicationDoseRecord] {
-        let medications = Dictionary(
-            try await annotatedMedications().map {
-                ($0.medication.identifier, Medication(healthKitMedication: $0))
-            },
+    public func records(loggedIn intervals: [DateInterval]) async throws -> MedicationRecords {
+        let annotated = try await annotatedMedications()
+        let medications = annotated.map(Medication.init(healthKitMedication:))
+        guard !intervals.isEmpty else { return MedicationRecords(medications: medications, doseRecords: []) }
+        let medicationsByConcept = Dictionary(
+            zip(annotated.map(\.medication.identifier), medications),
             uniquingKeysWith: { first, _ in first }
         )
-        let predicate = HKQuery.predicateForSamples(withStart: interval.start, end: interval.end)
+        let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: intervals.map {
+            HKQuery.predicateForSamples(withStart: $0.start, end: $0.end)
+        })
         let descriptor = HKSampleQueryDescriptor(
             predicates: [.sample(type: Self.doseType, predicate: predicate)],
             sortDescriptors: [SortDescriptor(\.startDate)]
         )
-        return try await descriptor.result(for: store).compactMap { sample in
+        let doseRecords = try await descriptor.result(for: store).compactMap { sample -> MedicationDoseRecord? in
             guard let event = sample as? HKMedicationDoseEvent,
-                  let medication = medications[event.medicationConceptIdentifier] else { return nil }
+                  let medication = medicationsByConcept[event.medicationConceptIdentifier] else { return nil }
             return MedicationDoseRecord(healthKitEvent: event, medication: medication)
         }
+        return MedicationRecords(medications: medications, doseRecords: doseRecords)
     }
 
     public func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {

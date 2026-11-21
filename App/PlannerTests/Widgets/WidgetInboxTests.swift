@@ -81,8 +81,12 @@ struct WidgetMedicationReaderTests {
             return medications
         }
 
-        func doseRecords(in interval: DateInterval) async throws -> [MedicationDoseRecord] {
-            records.filter { interval.contains($0.loggedDate) }
+        func records(loggedIn intervals: [DateInterval]) async throws -> MedicationRecords {
+            if failsReading { throw CancellationError() }
+            return MedicationRecords(
+                medications: medications,
+                doseRecords: records.filter { record in intervals.contains { $0.contains(record.loggedDate) } }
+            )
         }
 
         func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}

@@ -25,7 +25,7 @@ public struct SampleMedicationDataSource: MedicationDataSource {
         [Self.vitamin, Self.allergy]
     }
 
-    public func doseRecords(in interval: DateInterval) async throws -> [MedicationDoseRecord] {
+    public func records(loggedIn intervals: [DateInterval]) async throws -> MedicationRecords {
         let today = calendar.startOfDay(for: Date())
         let doses = (1...MedicationDoseForecast.historyDays).flatMap { offset -> [MedicationDoseRecord] in
             let day = calendar.date(byAdding: .day, value: -offset, to: today) ?? today
@@ -34,7 +34,10 @@ public struct SampleMedicationDataSource: MedicationDataSource {
                 record(Self.allergy, day: day, hour: 21, status: offset == 1 ? .notLogged : .taken)
             ]
         }
-        return doses.filter { interval.contains($0.loggedDate) }
+        return MedicationRecords(
+            medications: [Self.vitamin, Self.allergy],
+            doseRecords: doses.filter { record in intervals.contains { $0.contains(record.loggedDate) } }
+        )
     }
 
     public func startObservingChanges(_ onChange: @escaping @Sendable () async -> Void) {}

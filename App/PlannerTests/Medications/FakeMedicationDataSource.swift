@@ -7,6 +7,7 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
     private var storedRecords: [MedicationDoseRecord]
     private var storedFailsReads = false
     private var storedRequestCount = 0
+    private var storedReadCount = 0
     private var storedOnChange: (@Sendable () async -> Void)?
 
     init(medications: [Medication] = [], records: [MedicationDoseRecord] = []) {
@@ -30,6 +31,7 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
     }
 
     var requestCount: Int { lock.withLock { storedRequestCount } }
+    var readCount: Int { lock.withLock { storedReadCount } }
     var isObserving: Bool { lock.withLock { storedOnChange != nil } }
 
     func requestAuthorization() async throws {
@@ -43,10 +45,13 @@ final class FakeMedicationDataSource: MedicationDataSource, @unchecked Sendable 
         }
     }
 
-    func doseRecords(in interval: DateInterval) async throws -> [MedicationDoseRecord] {
-        try lock.withLock {
+    func records(loggedIn intervals: [DateInterval]) async throws -> MedicationRecords {
+        try await Task.sleep(for: .milliseconds(5))
+        return try lock.withLock {
+            storedReadCount += 1
             if storedFailsReads { throw CocoaError(.fileReadNoPermission) }
-            return storedRecords.filter { interval.contains($0.loggedDate) }
+            let doseRecords = storedRecords.filter { record in intervals.contains { $0.contains(record.loggedDate) } }
+            return MedicationRecords(medications: storedMedications, doseRecords: doseRecords)
         }
     }
 
