@@ -56,7 +56,7 @@ struct NoteEventPickerSheet: View {
                     events = []
                     return
                 }
-                events = await calendarStore.events(in: day).sorted { $0.startDate < $1.startDate }
+                events = await calendarStore.backgroundEvents(in: day).sorted { $0.startDate < $1.startDate }
             }
         }
         #if os(macOS)

@@ -56,7 +56,7 @@ final class MenuBarAgenda {
     private func reload(from store: CalendarStore) async {
         let start = calendar.startOfDay(for: .now)
         let end = calendar.date(byAdding: .day, value: 2, to: start) ?? start.addingTimeInterval(2 * 86_400)
-        events = await store.events(in: DateInterval(start: start, end: end))
+        events = await store.backgroundEvents(in: DateInterval(start: start, end: end))
         refreshUpNext()
     }
 

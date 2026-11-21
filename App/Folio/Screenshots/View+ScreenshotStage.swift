@@ -71,7 +71,7 @@ private struct ScreenshotStageModifier: ViewModifier {
         let title = ScreenshotSamples.current.countdown.title
         let now = Date.now
         for _ in 0..<50 {
-            let events = await calendarStore.events(in: DateInterval(start: now, duration: 2 * 3600))
+            let events = await calendarStore.backgroundEvents(in: DateInterval(start: now, duration: 2 * 3600))
             if let event = events.first(where: { $0.title == title }) {
                 try? countdowns.start(event)
                 return
