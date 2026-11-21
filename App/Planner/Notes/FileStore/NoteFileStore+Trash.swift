@@ -3,9 +3,7 @@ import Foundation
 extension NoteFileStore {
     @concurrent
     public func trashedNotes() async throws -> [NoteFile] {
-        try FileCoordination.read(at: trashURL) { coordinatedTrashURL in
-            try listNoteFiles(in: coordinatedTrashURL, relativeTo: trashURL, includingHidden: true)
-        }
+        try listNoteFiles(in: trashURL, relativeTo: trashURL, includingHidden: true)
     }
 
     @concurrent
