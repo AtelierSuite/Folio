@@ -42,6 +42,11 @@ final class CalendarDropHandler {
         spanContinuation = nil
     }
 
+    func cancelSpanChoice() {
+        isChoosingSpan = false
+        chooseSpan(nil)
+    }
+
     /// The dialog's binding turns false before or after its button runs, so dismissing waits a turn
     /// to let a chosen span win over a cancel.
     func spanDialogDismissed() {
@@ -75,6 +80,7 @@ extension View {
                 handler.chooseSpan(span)
             }
         }
+        .onDisappear { handler.cancelSpanChoice() }
         .alert(
             String(localized: "Drop.Failed", table: "Drag"),
             isPresented: Binding(
