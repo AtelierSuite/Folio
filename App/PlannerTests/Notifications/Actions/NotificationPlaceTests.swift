@@ -24,16 +24,25 @@ struct NotificationPlaceTests {
         let place = try #require(
             NotificationPlace(name: "Tokyo Station", coordinate: NotificationActionFixtures.office)
         )
-        let url = try #require(place.directionsURL)
+        let url = try #require(place.directionsURL(settings: DirectionsFixtures.settings()))
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         #expect(url.host() == "maps.apple.com")
         #expect(items.first { $0.name == "daddr" }?.value == "35.6812,139.7671")
         #expect(items.first { $0.name == "q" }?.value == "Tokyo Station")
     }
 
+    @Test func directionsOpenTheChosenApp() throws {
+        let settings = DirectionsFixtures.settings()
+        settings.app = .googleMaps
+        let place = try #require(
+            NotificationPlace(name: "Tokyo Station", coordinate: NotificationActionFixtures.office)
+        )
+        #expect(place.directionsURL(settings: settings)?.host() == "www.google.com")
+    }
+
     @Test func directionsFallBackToTheAddress() throws {
         let place = try #require(NotificationPlace(name: "1 Infinite Loop, Cupertino", coordinate: nil))
-        let url = try #require(place.directionsURL)
+        let url = try #require(place.directionsURL(settings: DirectionsFixtures.settings()))
         let items = try #require(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems)
         #expect(items == [URLQueryItem(name: "daddr", value: "1 Infinite Loop, Cupertino")])
     }

@@ -18,6 +18,10 @@ enum DirectionsFixtures {
         )
     }
 
+    static func settings() -> DirectionsSettings {
+        DirectionsSettings(defaults: UserDefaults(suiteName: "DirectionsFixtures.\(UUID().uuidString)") ?? .standard)
+    }
+
     static func queryItems(_ url: URL?) -> [URLQueryItem] {
         url.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false)?.queryItems } ?? []
     }

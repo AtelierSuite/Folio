@@ -17,9 +17,9 @@ public struct NotificationPlace: Sendable, Hashable {
         self.init(name: event.location, coordinate: event.coordinate)
     }
 
-    public var directionsURL: URL? {
+    public func directionsURL(settings: DirectionsSettings = DirectionsSettings()) -> URL? {
         guard let destination = DirectionsDestination(name: name, coordinate: coordinate) else { return nil }
-        return DirectionsApp.appleMaps.url(for: DirectionsRequest(destination: destination), isInstalled: true)
+        return settings.url(for: DirectionsRequest(destination: destination))
     }
 
     var fingerprint: [String] {
