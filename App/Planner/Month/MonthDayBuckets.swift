@@ -13,10 +13,11 @@ public struct MonthDayBuckets: Sendable, Equatable {
         let resolver = TimelineEntryResolver(
             calendar: grid.calendar, floatingSourceTimeZone: floatingSourceTimeZone ?? grid.calendar.timeZone
         )
+        let days = grid.days
         var itemsByDay: [Date: [MonthDayItem]] = [:]
         for entry in entries {
             let interval = resolver.interval(for: entry)
-            for day in grid.days where Self.interval(interval, touches: day.interval) {
+            for day in days where Self.interval(interval, touches: day.interval) {
                 itemsByDay[day.date, default: []].append(MonthDayItem(
                     entry: entry,
                     continuesFromPreviousDay: interval.start < day.interval.start,
