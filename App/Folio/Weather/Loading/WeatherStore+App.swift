@@ -18,6 +18,10 @@ extension WeatherStore {
             )
         }
         #endif
-        return WeatherStore(repository: WeatherRepository(provider: WeatherKitProvider()))
+        let cache = WeatherCache()
+        Task.detached(priority: .background) {
+            cache.removeLocations(unusedSince: .now.addingTimeInterval(-WeatherCache.unusedLocationLifetime))
+        }
+        return WeatherStore(repository: WeatherRepository(provider: WeatherKitProvider(), cache: cache))
     }
 }
