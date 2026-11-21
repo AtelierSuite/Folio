@@ -11,6 +11,9 @@ public struct DirectionsApp: Sendable, Identifiable {
     /// `nil` for apps that are always there, such as Apple Maps.
     public let queryScheme: String?
     public let transports: Set<TravelTransport>
+    public let servedArea: DirectionsServedArea?
+    /// `nil` lists the app for everyone.
+    public let audience: DirectionsAudience?
     /// Opens the installed app. Returns `nil` when the app can't route to this destination.
     let appLink: Link?
     /// Opens the website, or the app through a universal link, when the app isn't installed.
@@ -23,6 +26,8 @@ public struct DirectionsApp: Sendable, Identifiable {
         id: String,
         queryScheme: String?,
         transports: Set<TravelTransport> = Set(TravelTransport.allCases),
+        servedArea: DirectionsServedArea? = nil,
+        audience: DirectionsAudience? = nil,
         appLink: Link? = nil,
         webLink: Link? = nil,
         appPlaceLink: PlaceLink? = nil,
@@ -31,14 +36,12 @@ public struct DirectionsApp: Sendable, Identifiable {
         self.id = id
         self.queryScheme = queryScheme
         self.transports = transports
+        self.servedArea = servedArea
+        self.audience = audience
         self.appLink = appLink
         self.webLink = webLink
         self.appPlaceLink = appPlaceLink
         self.webPlaceLink = webPlaceLink
-    }
-
-    public func isAvailable(isInstalled: Bool) -> Bool {
-        queryScheme == nil || isInstalled || webLink != nil
     }
 
     public func url(for request: DirectionsRequest, isInstalled: Bool) -> URL? {

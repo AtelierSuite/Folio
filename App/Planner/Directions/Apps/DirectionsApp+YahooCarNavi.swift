@@ -5,6 +5,8 @@ public extension DirectionsApp {
         id: "yahooCarNavi",
         queryScheme: "yjcarnavi",
         transports: [.driving],
+        servedArea: .japan,
+        audience: .japanese,
         appLink: { request in
             guard let coordinate = request.destination.coordinate,
                   DirectionsRegion.japan.contains(coordinate) else { return nil }

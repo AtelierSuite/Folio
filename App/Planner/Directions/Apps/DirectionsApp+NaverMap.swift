@@ -4,6 +4,8 @@ public extension DirectionsApp {
     static let naverMap = DirectionsApp(
         id: "naverMap",
         queryScheme: "nmap",
+        servedArea: .korea,
+        audience: .korean,
         appLink: { request in
             guard let coordinate = request.destination.coordinate,
                   DirectionsRegion.korea.contains(coordinate) else { return nil }

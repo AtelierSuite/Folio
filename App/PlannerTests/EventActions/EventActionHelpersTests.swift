@@ -24,7 +24,7 @@ struct EventActionHelpersTests {
 
     @Test func directionsOpenTheChosenApp() throws {
         let settings = DirectionsFixtures.settings()
-        settings.app = .googleMaps
+        settings.setApp(.googleMaps, for: .navigation)
         let url = EventDirections.url(for: event(location: "1-1 Marunouchi, Tokyo"), settings: settings)
         #expect(url?.host() == "www.google.com")
     }

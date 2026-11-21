@@ -5,6 +5,8 @@ public extension DirectionsApp {
     static let yahooMap = DirectionsApp(
         id: "yahooMap",
         queryScheme: nil,
+        servedArea: .japan,
+        audience: .japanese,
         webLink: { request in
             let destination = request.destination
             guard destination.mayBe(in: .japan) else { return nil }

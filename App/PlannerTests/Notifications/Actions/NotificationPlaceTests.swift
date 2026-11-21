@@ -33,7 +33,7 @@ struct NotificationPlaceTests {
 
     @Test func directionsOpenTheChosenApp() throws {
         let settings = DirectionsFixtures.settings()
-        settings.app = .googleMaps
+        settings.setApp(.googleMaps, for: .navigation)
         let place = try #require(
             NotificationPlace(name: "Tokyo Station", coordinate: NotificationActionFixtures.office)
         )

@@ -16,15 +16,19 @@ enum DirectionsAppInstallation {
         #endif
     }
 
-    static var availableApps: [DirectionsApp] {
-        DirectionsApp.all.filter { $0.isAvailable(isInstalled: isInstalled($0)) }
+    static func availableApps(for role: DirectionsAppRole) -> [DirectionsApp] {
+        DirectionsApp.apps(for: role, locale: .current).filter {
+            $0.isAvailable(for: role, isInstalled: isInstalled($0))
+        }
     }
 
-    /// Records whether the chosen app is still installed, for extensions that can't check.
+    /// Records whether the chosen apps are still installed, for extensions that can't check.
     static func refresh(_ settings: DirectionsSettings = DirectionsSettings()) {
-        let isInstalled = isInstalled(settings.app)
-        if settings.appIsInstalled != isInstalled {
-            settings.appIsInstalled = isInstalled
+        for role in DirectionsAppRole.allCases {
+            let isInstalled = isInstalled(settings.app(for: role))
+            if settings.appIsInstalled(for: role) != isInstalled {
+                settings.setAppIsInstalled(isInstalled, for: role)
+            }
         }
     }
 }

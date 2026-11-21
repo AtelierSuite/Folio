@@ -61,9 +61,9 @@ struct DirectionsAppTests {
 
     @Test func appsWithoutAWebLinkNeedToBeInstalled() throws {
         #expect(drivingOnly.url(for: try request(), isInstalled: false) == nil)
-        #expect(!drivingOnly.isAvailable(isInstalled: false))
-        #expect(appOrWeb.isAvailable(isInstalled: false))
-        #expect(DirectionsApp.appleMaps.isAvailable(isInstalled: false))
+        #expect(!drivingOnly.isAvailable(for: .navigation, isInstalled: false))
+        #expect(appOrWeb.isAvailable(for: .navigation, isInstalled: false))
+        #expect(DirectionsApp.appleMaps.isAvailable(for: .navigation, isInstalled: false))
     }
 
     @Test func unsupportedTransportFallsBackToAppleMaps() throws {
@@ -80,5 +80,36 @@ struct DirectionsAppTests {
     @Test func catalogFindsAppsByIdentifier() {
         #expect(DirectionsApp.app(id: "appleMaps") == .appleMaps)
         #expect(DirectionsApp.app(id: "unknown") == nil)
+    }
+
+    @Test func navigationOnlyAppsAreNotMapsApps() {
+        #expect(!DirectionsApp.yahooCarNavi.supports(.maps))
+        #expect(!DirectionsApp.baiduMaps.supports(.maps))
+        #expect(DirectionsApp.baiduMaps.supports(.navigation))
+        #expect(DirectionsApp.app(id: "baiduMaps", for: .maps) == .appleMaps)
+        #expect(DirectionsApp.app(id: "baiduMaps", for: .navigation) == .baiduMaps)
+    }
+
+    @Test func regionalAppsAreListedOnlyForTheirAudience() {
+        let unitedStates = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "en_US"))
+        #expect(!unitedStates.contains(.kakaoMap))
+        #expect(!unitedStates.contains(.naverMap))
+        #expect(!unitedStates.contains(.baiduMaps))
+        #expect(!unitedStates.contains(.yahooMap))
+        #expect(!unitedStates.contains(.yahooCarNavi))
+        let japan = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "en_JP"))
+        #expect(japan.contains(.yahooMap) && japan.contains(.yahooCarNavi) && !japan.contains(.kakaoMap))
+        let japanese = DirectionsApp.apps(for: .maps, locale: Locale(identifier: "ja_US"))
+        #expect(japanese.contains(.yahooMap))
+        let korea = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "en_KR"))
+        #expect(korea.contains(.kakaoMap) && korea.contains(.naverMap) && !korea.contains(.baiduMaps))
+        let korean = DirectionsApp.apps(for: .maps, locale: Locale(identifier: "ko_JP"))
+        #expect(korean.contains(.kakaoMap))
+        let china = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "en_CN"))
+        #expect(china.contains(.baiduMaps))
+        let simplifiedChinese = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "zh-Hans_SG"))
+        #expect(simplifiedChinese.contains(.baiduMaps))
+        let traditionalChinese = DirectionsApp.apps(for: .navigation, locale: Locale(identifier: "zh-Hant_TW"))
+        #expect(!traditionalChinese.contains(.baiduMaps))
     }
 }
