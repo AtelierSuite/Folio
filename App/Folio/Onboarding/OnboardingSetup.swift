@@ -37,7 +37,7 @@ struct OnboardingSetup {
         switch step {
         case .calendar, .reminders, .alarms: isGranted(step)
         case .alerts: scheduler.isEnabled
-        case .weather: weather.isEnabled
+        case .weather: weather.isEnabled && isGranted(step)
         }
     }
 }
