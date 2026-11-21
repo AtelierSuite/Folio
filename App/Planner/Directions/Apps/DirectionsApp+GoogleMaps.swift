@@ -16,6 +16,18 @@ public extension DirectionsApp {
                 "destination": request.destination.googleMapsQuery,
                 "travelmode": request.transport?.googleMapsMode
             ])
+        },
+        appPlaceLink: { destination in
+            DirectionsURL.make("comgooglemaps://", [
+                "q": destination.googleMapsQuery,
+                "center": destination.coordinate?.latitudeLongitude
+            ])
+        },
+        webPlaceLink: { destination in
+            DirectionsURL.make("https://www.google.com/maps/search/", [
+                "api": "1",
+                "query": destination.googleMapsQuery
+            ])
         }
     )
 }

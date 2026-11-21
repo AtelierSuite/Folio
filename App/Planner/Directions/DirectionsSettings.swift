@@ -26,4 +26,9 @@ public struct DirectionsSettings: @unchecked Sendable {
     public func url(for request: DirectionsRequest) -> URL? {
         DirectionsApp.url(for: request, preferring: app, isInstalled: appIsInstalled)
     }
+
+    /// The place in the chosen app, or in Apple Maps when it can't show it.
+    public func placeURL(for destination: DirectionsDestination) -> URL? {
+        DirectionsApp.placeURL(for: destination, preferring: app, isInstalled: appIsInstalled)
+    }
 }

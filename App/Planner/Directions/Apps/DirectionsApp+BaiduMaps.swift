@@ -1,16 +1,29 @@
 import Foundation
 
 public extension DirectionsApp {
-    static let baiduMaps = DirectionsApp(id: "baiduMaps", queryScheme: "baidumap", appLink: { request in
-        guard let destination = request.destination.baiduMapsDestination else { return nil }
-        return DirectionsURL.make("baidumap://map/direction", [
-            "destination": destination,
-            "mode": request.transport?.baiduMapsMode ?? "transit",
-            // Baidu assumes its own BD-09 coordinates unless told otherwise.
-            "coord_type": "wgs84",
-            "src": "ios.tsubuzaki.Folio"
-        ])
-    })
+    static let baiduMaps = DirectionsApp(
+        id: "baiduMaps",
+        queryScheme: "baidumap",
+        appLink: { request in
+            guard let destination = request.destination.baiduMapsDestination else { return nil }
+            return DirectionsURL.make("baidumap://map/direction", [
+                "destination": destination,
+                "mode": request.transport?.baiduMapsMode ?? "transit",
+                // Baidu assumes its own BD-09 coordinates unless told otherwise.
+                "coord_type": "wgs84",
+                "src": "ios.tsubuzaki.Folio"
+            ])
+        },
+        appPlaceLink: { destination in
+            guard let coordinate = destination.coordinate else { return nil }
+            return DirectionsURL.make("baidumap://map/marker", [
+                "location": coordinate.latitudeLongitude,
+                "title": destination.name ?? coordinate.latitudeLongitude,
+                "coord_type": "wgs84",
+                "src": "ios.tsubuzaki.Folio"
+            ])
+        }
+    )
 }
 
 private extension DirectionsDestination {

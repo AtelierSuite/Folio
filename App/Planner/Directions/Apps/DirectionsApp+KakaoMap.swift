@@ -9,6 +9,21 @@ public extension DirectionsApp {
         },
         webLink: { request in
             kakaoMapRoute("https://m.map.kakao.com/scheme/route", request)
+        },
+        appPlaceLink: { destination in
+            guard let coordinate = destination.coordinate, DirectionsRegion.korea.contains(coordinate) else {
+                return nil
+            }
+            return DirectionsURL.make("kakaomap://look", ["p": coordinate.latitudeLongitude])
+        },
+        webPlaceLink: { destination in
+            guard let coordinate = destination.coordinate, DirectionsRegion.korea.contains(coordinate) else {
+                return nil
+            }
+            let name = (destination.name ?? coordinate.latitudeLongitude).replacingOccurrences(of: ",", with: " ")
+            let path = "\(name),\(coordinate.latitude),\(coordinate.longitude)"
+                .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+            return URL(string: "https://map.kakao.com/link/map/\(path)")
         }
     )
 
