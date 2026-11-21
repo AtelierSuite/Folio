@@ -42,6 +42,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
     @State private var weather = WeatherSnapshot.empty
     @State private var travelEstimates: [String: TravelEstimate] = [:]
     @State var zoom: TimelineZoomController
+    @State var loadedRevision: Int?
 
     init(
         unit: TimelineStrip.Unit,
@@ -138,9 +139,10 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         openedReminder = remindersByEntryIdentifier[entry.id]
     }
 
-    func load() async {
+    private func load() async {
         guard let span = strip.days.span else { return }
         let calendar = strip.calendar
+        let revision = store.contentRevision
         async let events = store.events(in: span)
         async let reminders = store.reminders(in: span, calendar: calendar)
         async let doses = medicationStore.doses(in: span)
@@ -161,6 +163,7 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         self.events = shownEvents
         entries = contents.entries
         stripLayout = contents.layout
+        loadedRevision = revision
     }
 
     func relayout() {
