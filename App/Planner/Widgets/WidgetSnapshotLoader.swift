@@ -59,20 +59,22 @@ public struct WidgetSnapshotLoader: Sendable {
         let eventNotes = request.includesEventNotes ? eventNoteStore.digests : [:]
         let leaveByPlan = request.includesLeaveBy ? leaveBySettings.plan : nil
         let doses = request.includesMedications ? await medicationReader.dosesAwaitingAction(at: now) : []
-        return WidgetSnapshot(
+        var snapshot = WidgetSnapshot(
             eventAuthorization: source.authorizationStatus(for: .event),
             reminderAuthorization: source.authorizationStatus(for: .reminder),
             events: visibleEvents,
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
             alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
-            medicationDoses: doses,
+            medicationDoses: doses ?? [],
             leaveByPlan: leaveByPlan,
             leaveByStatus: request.includesLeaveBy ? leaveBySettings.status : .off,
             leaveByRainChance: leaveByPlan.flatMap { rainChance(for: $0, in: visibleEvents, calendar: calendar) },
             eventNotes: eventNotes,
             contactBadges: badges(for: visibleEvents, withNotes: eventNotes, after: now)
         )
+        snapshot.couldNotReadMedications = doses == nil
+        return snapshot
     }
 
     private func rainChance(

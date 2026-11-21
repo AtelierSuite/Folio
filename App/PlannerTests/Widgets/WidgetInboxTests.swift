@@ -118,21 +118,33 @@ struct WidgetMedicationReaderTests {
 
     @Test func aDoseWithNoRecordYetAwaitsAction() async {
         let doses = await reader(history).dosesAwaitingAction(at: now)
-        #expect(doses.map(\.date) == [Fixtures.date(2026, 11, 6, hour: 8)])
+        #expect(doses?.map(\.date) == [Fixtures.date(2026, 11, 6, hour: 8)])
     }
 
     @Test func aTakenDoseNoLongerAwaitsAction() async {
         let doses = await reader(history + [record(day: 6, status: .taken)]).dosesAwaitingAction(at: now)
-        #expect(doses.isEmpty)
+        #expect(doses?.isEmpty == true)
     }
 
     @Test func aDoseMarkedNotLoggedAwaitsAction() async {
         let doses = await reader(history + [record(day: 6, status: .notLogged)]).dosesAwaitingAction(at: now)
-        #expect(doses.map(\.status) == [.notLogged])
+        #expect(doses?.map(\.status) == [.notLogged])
     }
 
     @Test func aLockedDeviceHasNothingToShow() async {
-        #expect(await reader(history, failsReading: true).dosesAwaitingAction(at: now).isEmpty)
+        #expect(await reader(history, failsReading: true).dosesAwaitingAction(at: now) == nil)
+    }
+
+    @Test func theSnapshotNotesAnUnreadableHealthStore() async {
+        let request = WidgetSnapshotRequest.inbox(from: now, calendar: Fixtures.calendar, includesMedications: true)
+        let lockedReader = reader(history, failsReading: true)
+        let locked = await WidgetSnapshotLoader(source: FakeCalendarDataSource(), medicationReader: lockedReader)
+            .load(request, at: now, calendar: Fixtures.calendar)
+        let unlocked = await WidgetSnapshotLoader(source: FakeCalendarDataSource(), medicationReader: reader(history))
+            .load(request, at: now, calendar: Fixtures.calendar)
+        #expect(locked.couldNotReadMedications)
+        #expect(!unlocked.couldNotReadMedications)
+        #expect(unlocked.medicationDoses.count == 1)
     }
 
     @Test func otherDevicesNeverReadHealth() async {
@@ -141,6 +153,6 @@ struct WidgetMedicationReaderTests {
             capabilities: PlatformCapabilities(platform: .iPad, areLiveActivitiesSupported: true),
             calendar: Fixtures.calendar
         )
-        #expect(await reader.dosesAwaitingAction(at: now).isEmpty)
+        #expect(await reader.dosesAwaitingAction(at: now)?.isEmpty == true)
     }
 }

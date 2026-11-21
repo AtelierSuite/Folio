@@ -6,6 +6,8 @@ public struct WidgetTimelinePlan: Sendable, Equatable {
     public static let defaultRefreshInterval: TimeInterval = 6 * 60 * 60
     /// Changes made outside Folio can't reach a widget, so Lock Screen counts are re-read this often.
     public static let lockScreenRefreshInterval: TimeInterval = 60 * 60
+    /// Health can't be read while the device is locked, so a failed read is tried again soon after.
+    public static let unreadableDataRetryInterval: TimeInterval = 15 * 60
     public static let defaultEntryLimit = 40
 
     public let entryDates: [Date]

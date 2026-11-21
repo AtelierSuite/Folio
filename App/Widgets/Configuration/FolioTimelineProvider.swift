@@ -29,9 +29,7 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
             events: snapshot.events,
             from: now,
             calendar: calendar,
-            refreshInterval: context.family.isSystem
-                ? WidgetTimelinePlan.defaultRefreshInterval
-                : WidgetTimelinePlan.lockScreenRefreshInterval,
+            refreshInterval: refreshInterval(for: snapshot, in: context),
             tickInterval: configuration.timelineTickInterval,
             additionalBoundaries: configuration.timelineBoundaries(in: snapshot, at: now, calendar: calendar)
         )
@@ -44,5 +42,14 @@ nonisolated struct FolioTimelineProvider<Intent: FolioWidgetIntent>: AppIntentTi
             )
         }
         return Timeline(entries: entries, policy: .after(plan.reloadDate))
+    }
+
+    private func refreshInterval(for snapshot: WidgetSnapshot, in context: Context) -> TimeInterval {
+        if snapshot.couldNotReadMedications {
+            return WidgetTimelinePlan.unreadableDataRetryInterval
+        }
+        return context.family.isSystem
+            ? WidgetTimelinePlan.defaultRefreshInterval
+            : WidgetTimelinePlan.lockScreenRefreshInterval
     }
 }
