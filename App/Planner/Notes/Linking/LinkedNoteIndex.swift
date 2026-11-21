@@ -4,13 +4,23 @@ import Foundation
 /// note or a day's note never reads files.
 public struct LinkedNoteIndex: Sendable, Equatable {
     public private(set) var notes: Set<LinkedNote> = []
+    private var dailyNotesByDayKey: [String: [LinkedNote]] = [:]
 
     public init(notes: [LinkedNote] = []) {
-        self.notes = Set(notes)
+        for note in notes {
+            insert(note)
+        }
     }
 
     public mutating func insert(_ note: LinkedNote) {
-        notes.insert(note)
+        guard notes.insert(note).inserted else { return }
+        if let dayKey = DailyNoteNaming.dayKey(ofRelativePath: note.file.relativePath) {
+            dailyNotesByDayKey[dayKey, default: []].append(note)
+        }
+    }
+
+    public static func == (lhs: LinkedNoteIndex, rhs: LinkedNoteIndex) -> Bool {
+        lhs.notes == rhs.notes
     }
 
     public func note(linkedTo reference: CalendarItemReference) -> LinkedNote? {
@@ -30,9 +40,7 @@ public struct LinkedNoteIndex: Sendable, Equatable {
     /// The note at `Daily/yyyy-MM-dd.md`.
     public func dailyNote(on date: Date, timeZone: TimeZone = .current) -> LinkedNote? {
         let dayKey = DailyNoteNaming.dayKey(for: date, timeZone: timeZone)
-        return Self.newest(notes.filter {
-            DailyNoteNaming.dayKey(ofRelativePath: $0.file.relativePath) == dayKey
-        })
+        return Self.newest(dailyNotesByDayKey[dayKey] ?? [])
     }
 
     private static func newest(_ notes: some Sequence<LinkedNote>) -> LinkedNote? {

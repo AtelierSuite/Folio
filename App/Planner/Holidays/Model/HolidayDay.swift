@@ -13,9 +13,7 @@ public struct HolidayDay: Codable, Hashable, Comparable, Sendable {
     }
 
     public init(date: Date, timeZone: TimeZone) {
-        var gregorian = Calendar(identifier: .gregorian)
-        gregorian.timeZone = timeZone
-        let components = gregorian.dateComponents([.year, .month, .day], from: date)
+        let components = FixedCalendars.gregorian(in: timeZone).dateComponents([.year, .month, .day], from: date)
         self.init(year: components.year ?? 0, month: components.month ?? 0, day: components.day ?? 0)
     }
 
