@@ -25,6 +25,7 @@ public final class ArrivalAlertCenter {
     @ObservationIgnored let planner: ArrivalRegionPlanner
     @ObservationIgnored let notifier: any ArrivalNotifying
     @ObservationIgnored let log: ArrivalNotificationLog
+    @ObservationIgnored let regionStore: ArrivalRegionStore
     @ObservationIgnored let leaveBySettings: LeaveBySettings
     @ObservationIgnored let leaveByPlanner: LeaveByPlanner
     @ObservationIgnored let leaveAlertSettings: LeaveAlertSettings
@@ -50,6 +51,7 @@ public final class ArrivalAlertCenter {
         planner: ArrivalRegionPlanner = ArrivalRegionPlanner(),
         notifier: any ArrivalNotifying = UserNotificationArrivalNotifier(),
         log: ArrivalNotificationLog = ArrivalNotificationLog(),
+        regionStore: ArrivalRegionStore = ArrivalRegionStore(),
         leaveBySettings: LeaveBySettings = LeaveBySettings(),
         leaveByPlanner: LeaveByPlanner = LeaveByPlanner(),
         leaveAlertSettings: LeaveAlertSettings = LeaveAlertSettings(),
@@ -67,6 +69,7 @@ public final class ArrivalAlertCenter {
         self.planner = planner
         self.notifier = notifier
         self.log = log
+        self.regionStore = regionStore
         self.leaveBySettings = leaveBySettings
         self.leaveByPlanner = leaveByPlanner
         self.leaveAlertSettings = leaveAlertSettings
@@ -134,6 +137,7 @@ public final class ArrivalAlertCenter {
             await regionMonitor.startMonitoring(region)
         }
         monitoredRegions = regions
+        regionStore.save(regions)
         arrivalLog.info("Monitoring \(regions.count) arrival regions")
     }
 

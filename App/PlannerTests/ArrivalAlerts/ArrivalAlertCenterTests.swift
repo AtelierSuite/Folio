@@ -8,6 +8,7 @@ struct ArrivalAlertCenterTests {
         let center: ArrivalAlertCenter
         let monitor: FakeRegionMonitor?
         let notifier: RecordingArrivalNotifier
+        let source: FakeCalendarDataSource
         let clock: TestClock
     }
 
@@ -20,9 +21,10 @@ struct ArrivalAlertCenterTests {
         platform: DevicePlatform = .iPhone,
         isEnabled: Bool = true,
         authorization: ArrivalAuthorization = .always,
-        enabledEvents: [CalendarEvent]? = nil
+        enabledEvents: [CalendarEvent]? = nil,
+        suiteName: String = "ArrivalAlertCenterTests.\(UUID().uuidString)"
     ) throws -> Harness {
-        let defaults = try #require(UserDefaults(suiteName: "ArrivalAlertCenterTests.\(UUID().uuidString)"))
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
         let settings = ArrivalAlertSettings(defaults: defaults)
         settings.isEnabled = isEnabled
         let notificationSettings = NotificationSettings(defaults: defaults)
@@ -30,6 +32,7 @@ struct ArrivalAlertCenterTests {
         var monitor: FakeRegionMonitor?
         let notifier = RecordingArrivalNotifier()
         let clock = TestClock()
+        let source = FakeCalendarDataSource(events: events)
         let center = ArrivalAlertCenter(
             capabilities: PlatformCapabilities(platform: platform, areLiveActivitiesSupported: false),
             makeRegionMonitor: {
@@ -37,7 +40,7 @@ struct ArrivalAlertCenterTests {
                 monitor = fake
                 return fake
             },
-            source: FakeCalendarDataSource(events: events),
+            source: source,
             settings: settings,
             notificationSettings: notificationSettings,
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
@@ -47,9 +50,10 @@ struct ArrivalAlertCenterTests {
             resolver: EventCoordinateResolver(geocoder: FakeGeocoder(), cache: InMemoryGeocodeCache()),
             notifier: notifier,
             log: ArrivalNotificationLog(defaults: defaults),
+            regionStore: ArrivalRegionStore(defaults: defaults),
             clock: { clock.now }
         )
-        return Harness(center: center, monitor: monitor, notifier: notifier, clock: clock)
+        return Harness(center: center, monitor: monitor, notifier: notifier, source: source, clock: clock)
     }
 
     private func spreadEvents(_ count: Int) -> [CalendarEvent] {
@@ -157,5 +161,31 @@ struct ArrivalAlertCenterTests {
             identifier: ArrivalRegion.identifier(for: ArrivalFixtures.office), date: ArrivalFixtures.now
         ))
         #expect(harness.notifier.notifiedTitles == ["Meeting"])
+    }
+
+    @Test func arrivalAfterRelaunchAlertsFromSavedRegionsBeforeReplanning() async throws {
+        let meeting = ArrivalFixtures.event("Meeting", start: ArrivalFixtures.hours(1))
+        let suiteName = "ArrivalAlertCenterTests.\(UUID().uuidString)"
+        try await makeHarness(events: [meeting], suiteName: suiteName).center.replan()
+        let relaunched = try makeHarness(events: [meeting], suiteName: suiteName)
+        await relaunched.center.handle(RegionArrival(
+            identifier: ArrivalRegion.identifier(for: ArrivalFixtures.office), date: ArrivalFixtures.now
+        ))
+        let window = try #require(ArrivalFixtures.candidate(meeting)?.window)
+        #expect(relaunched.notifier.notifiedTitles == ["Meeting"])
+        #expect(relaunched.source.eventFetchIntervals.first == window)
+        #expect(relaunched.center.monitoredRegions.count == 1)
+    }
+
+    @Test func savedRegionsSkipEventsThatWereDeleted() async throws {
+        let meeting = ArrivalFixtures.event("Meeting", start: ArrivalFixtures.hours(1))
+        let suiteName = "ArrivalAlertCenterTests.\(UUID().uuidString)"
+        try await makeHarness(events: [meeting], suiteName: suiteName).center.replan()
+        let relaunched = try makeHarness(events: [], enabledEvents: [meeting], suiteName: suiteName)
+        await relaunched.center.handle(RegionArrival(
+            identifier: ArrivalRegion.identifier(for: ArrivalFixtures.office), date: ArrivalFixtures.now
+        ))
+        #expect(relaunched.notifier.notifiedTitles.isEmpty)
+        #expect(relaunched.center.monitoredRegions.isEmpty)
     }
 }
