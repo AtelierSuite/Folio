@@ -29,6 +29,7 @@ public struct UserNotificationCenterClient: NotificationCenterClient {
         await center.pendingNotificationRequests().map(\.identifier)
     }
 
+    @concurrent
     public func add(_ notification: PlannedNotification) async throws {
         let interval = notification.triggerInterval(from: .now)
         let request = UNNotificationRequest(

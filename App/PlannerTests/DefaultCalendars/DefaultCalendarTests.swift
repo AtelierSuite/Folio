@@ -17,8 +17,10 @@ struct DefaultCalendarTests {
         try #require(UserDefaults(suiteName: "DefaultCalendarTests.\(UUID().uuidString)"))
     }
 
-    private func makeStore(defaults: UserDefaults, source: FakeCalendarDataSource? = nil) -> CalendarStore {
-        CalendarStore(source: source ?? makeSource(), visibilityStorage: CalendarVisibilityStorage(defaults: defaults))
+    private func makeStore(defaults: UserDefaults, source: FakeCalendarDataSource? = nil) async -> CalendarStore {
+        await CalendarStore(
+            source: source ?? makeSource(), visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
+        ).loaded()
     }
 
     private func makeSource() -> FakeCalendarDataSource {
@@ -27,8 +29,8 @@ struct DefaultCalendarTests {
         return source
     }
 
-    @Test func chosenDefaultsWinOverTheSystemDefaults() throws {
-        let store = makeStore(defaults: try makeDefaults())
+    @Test func chosenDefaultsWinOverTheSystemDefaults() async throws {
+        let store = await makeStore(defaults: try makeDefaults())
         #expect(store.defaultEventCalendarIdentifier == "home")
         #expect(store.defaultReminderListIdentifier == "errands")
         store.setDefault(work)
@@ -39,24 +41,24 @@ struct DefaultCalendarTests {
         #expect(store.isDefault(groceries) && !store.isDefault(errands))
     }
 
-    @Test func chosenDefaultsPersist() throws {
+    @Test func chosenDefaultsPersist() async throws {
         let defaults = try makeDefaults()
         let source = makeSource()
-        makeStore(defaults: defaults, source: source).setDefault(work)
-        let reopened = makeStore(defaults: defaults, source: source)
+        await makeStore(defaults: defaults, source: source).setDefault(work)
+        let reopened = await makeStore(defaults: defaults, source: source)
         #expect(reopened.defaultEventCalendarIdentifier == "work")
     }
 
-    @Test func readOnlyCalendarsCannotBecomeDefault() throws {
-        let store = makeStore(defaults: try makeDefaults())
+    @Test func readOnlyCalendarsCannotBecomeDefault() async throws {
+        let store = await makeStore(defaults: try makeDefaults())
         store.setDefault(holidays)
         #expect(store.defaultEventCalendarIdentifier == "home")
     }
 
-    @Test func missingChosenDefaultFallsBackToTheSystemDefault() throws {
+    @Test func missingChosenDefaultFallsBackToTheSystemDefault() async throws {
         let defaults = try makeDefaults()
         CalendarVisibilityStorage(defaults: defaults).defaultEventCalendarIdentifier = "deleted"
-        let store = makeStore(defaults: defaults)
+        let store = await makeStore(defaults: defaults)
         #expect(store.defaultEventCalendarIdentifier == "home")
     }
 }

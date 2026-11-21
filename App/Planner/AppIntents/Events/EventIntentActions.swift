@@ -13,7 +13,7 @@ public struct EventIntentActions {
     }
 
     public func createEvent(_ request: NewEventRequest) async throws -> CalendarEvent {
-        try requireAccess()
+        try await prepareStore()
         let title = request.title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !title.isEmpty else { throw PlannerIntentError.emptyTitle }
         guard let calendarIdentifier = request.calendarIdentifier ?? store.defaultEventCalendarIdentifier else {
@@ -27,7 +27,7 @@ public struct EventIntentActions {
     }
 
     public func editEvent(_ entity: EventEntity, with changes: EventChanges) async throws -> CalendarEvent {
-        try requireAccess()
+        try await prepareStore()
         let event = try await event(for: entity)
         guard !event.isReadOnly else { throw PlannerIntentError.readOnly }
         let draft = try await PlannerIntentError.rewording(notFound: .eventNotFound) {
@@ -40,7 +40,7 @@ public struct EventIntentActions {
     }
 
     public func deleteEvent(_ entity: EventEntity) async throws {
-        try requireAccess()
+        try await prepareStore()
         let event = try await event(for: entity)
         try await PlannerIntentError.rewording(notFound: .eventNotFound) {
             try await store.deleteEvent(event, span: .thisEvent)
@@ -48,12 +48,13 @@ public struct EventIntentActions {
     }
 
     public func event(for entity: EventEntity) async throws -> CalendarEvent {
-        try requireAccess()
+        try await prepareStore()
         return try await savedEvent(entity.reference, near: entity.startDate)
     }
 
-    private func requireAccess() throws {
+    private func prepareStore() async throws {
         guard store.eventAuthorization.allowsReading else { throw PlannerIntentError.noCalendarAccess }
+        await store.loadCalendarsIfNeeded()
     }
 
     private func newDraft(for request: NewEventRequest, title: String, calendarIdentifier: String) -> EventDraft {

@@ -32,14 +32,14 @@ extension FakeCalendarDataSource {
         state.withLock { $0.eventWriting.defaultCalendarIdentifier }
     }
 
-    func eventDraft(for reference: CalendarItemReference) async throws -> EventDraft {
+    @concurrent func eventDraft(for reference: CalendarItemReference) async throws -> EventDraft {
         guard let draft = state.withLock({ $0.eventWriting.drafts[reference.localIdentifier] }) else {
             throw CalendarDataSourceError.itemNotFound
         }
         return draft
     }
 
-    func firstOccurrence(of reference: CalendarItemReference) async throws -> CalendarEvent {
+    @concurrent func firstOccurrence(of reference: CalendarItemReference) async throws -> CalendarEvent {
         let series = state.withLock { $0.events }.filter { $0.reference.localIdentifier == reference.localIdentifier }
         guard let first = series.min(by: { $0.startDate < $1.startDate }) else {
             throw CalendarDataSourceError.itemNotFound
@@ -47,7 +47,7 @@ extension FakeCalendarDataSource {
         return first
     }
 
-    func createEvent(_ draft: EventDraft) async throws -> CalendarItemReference {
+    @concurrent func createEvent(_ draft: EventDraft) async throws -> CalendarItemReference {
         state.withLock { state in
             state.eventWriting.calls.append(.create(draft))
             state.eventWriting.createdCount += 1
@@ -59,7 +59,7 @@ extension FakeCalendarDataSource {
         }
     }
 
-    func updateEvent(
+    @concurrent func updateEvent(
         _ reference: CalendarItemReference,
         with draft: EventDraft,
         span: EventEditSpan
@@ -85,7 +85,7 @@ extension FakeCalendarDataSource {
         }
     }
 
-    func deleteEvent(_ reference: CalendarItemReference, span: EventEditSpan) async throws {
+    @concurrent func deleteEvent(_ reference: CalendarItemReference, span: EventEditSpan) async throws {
         state.withLock { state in
             state.eventWriting.calls.append(.delete(reference, span))
             state.events.removeAll { Self.isAffected($0, by: reference, span: span) }

@@ -6,13 +6,13 @@ public protocol CalendarDataSource: EventWritingDataSource {
     func calendars(for kind: CalendarItemKind) -> [PlannerCalendar]
     @concurrent func events(in interval: DateInterval) async -> [CalendarEvent]
     @concurrent func reminders(completedIn interval: DateInterval) async -> [ReminderItem]
-    func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws
+    @concurrent func setCompleted(_ isCompleted: Bool, reminderIdentifier: String) async throws
     func changes() -> AsyncStream<Void>
     func defaultReminderListIdentifier() -> String?
-    func createReminder(_ draft: ReminderDraft) async throws -> String
-    func updateReminder(identifier: String, with draft: ReminderDraft) async throws
-    func deleteReminder(identifier: String) async throws
-    func createReminderList(_ draft: ReminderListDraft) async throws -> String
+    @concurrent func createReminder(_ draft: ReminderDraft) async throws -> String
+    @concurrent func updateReminder(identifier: String, with draft: ReminderDraft) async throws
+    @concurrent func deleteReminder(identifier: String) async throws
+    @concurrent func createReminderList(_ draft: ReminderListDraft) async throws -> String
     /// Whether the event still exists in any calendar, hidden ones included, or `nil` when it can't be told.
     @concurrent func containsEvent(matching reference: CalendarItemReference) async -> Bool?
 }

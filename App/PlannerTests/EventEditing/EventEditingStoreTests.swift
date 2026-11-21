@@ -10,13 +10,13 @@ struct EventEditingStoreTests {
         sourceIdentifier: "source", sourceTitle: "Subscribed", sourceType: .subscription, isReadOnly: true
     )
 
-    private func makeStore(_ source: FakeCalendarDataSource) throws -> CalendarStore {
+    private func makeStore(_ source: FakeCalendarDataSource) async throws -> CalendarStore {
         let defaults = try #require(UserDefaults(suiteName: "EventEditingStoreTests.\(UUID().uuidString)"))
-        return CalendarStore(
+        return await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
-        )
+        ).loaded()
     }
 
     private func dailySeries(days: ClosedRange<Int>) -> [CalendarEvent] {
@@ -43,10 +43,10 @@ struct EventEditingStoreTests {
         )
     }
 
-    @Test func defaultCalendarSkipsReadOnlyCalendars() throws {
+    @Test func defaultCalendarSkipsReadOnlyCalendars() async throws {
         let source = FakeCalendarDataSource(calendars: [holidays, work])
         source.setDefaultEventCalendarIdentifier("holidays")
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         #expect(store.writableEventCalendars.map(\.id) == ["work"])
         #expect(store.defaultEventCalendarIdentifier == "work")
         source.setDefaultEventCalendarIdentifier("work")
@@ -55,7 +55,7 @@ struct EventEditingStoreTests {
 
     @Test func createAddsEventAndBumpsRevision() async throws {
         let source = FakeCalendarDataSource(calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let revision = store.contentRevision
         let draft = EventDraft(
             title: "Dentist", calendarIdentifier: "work",
@@ -72,7 +72,7 @@ struct EventEditingStoreTests {
 
     @Test func createRejectsInvalidDatesAndReadOnlyCalendars() async throws {
         let source = FakeCalendarDataSource(calendars: [work, holidays])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let backwards = EventDraft(
             calendarIdentifier: "work",
             startDate: Fixtures.date(2026, 10, 29, hour: 16), endDate: Fixtures.date(2026, 10, 29, hour: 15)
@@ -93,7 +93,7 @@ struct EventEditingStoreTests {
             isAllDay: true, isReadOnly: true
         )
         let source = FakeCalendarDataSource(events: [event], calendars: [work, holidays])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let draft = EventDraft(calendarIdentifier: "work", startDate: event.startDate, endDate: event.endDate)
         await #expect(throws: EventEditingError.readOnly) { try await store.updateEvent(event, with: draft) }
         await #expect(throws: EventEditingError.readOnly) { try await store.deleteEvent(event) }
@@ -103,7 +103,7 @@ struct EventEditingStoreTests {
     @Test func thisEventOnlyChangesOneOccurrence() async throws {
         let series = dailySeries(days: 27...31)
         let source = FakeCalendarDataSource(events: series, calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let draft = editedDraft(of: series[2], title: "Moved", hourShift: 1)
         try await store.updateEvent(series[2], with: draft, span: .thisEvent)
         #expect(source.currentEvents.map(\.title) == ["Standup", "Standup", "Moved", "Standup", "Standup"])
@@ -113,7 +113,7 @@ struct EventEditingStoreTests {
     @Test func futureEventsChangesThisAndLaterOccurrences() async throws {
         let series = dailySeries(days: 27...31)
         let source = FakeCalendarDataSource(events: series, calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let draft = editedDraft(of: series[2], title: "Sync")
         try await store.updateEvent(series[2], with: draft, span: .futureEvents)
         #expect(source.currentEvents.map(\.title) == ["Standup", "Standup", "Sync", "Sync", "Sync"])
@@ -123,7 +123,7 @@ struct EventEditingStoreTests {
     @Test func allEventsEditsTheFirstOccurrenceWithFutureEvents() async throws {
         let series = dailySeries(days: 27...31)
         let source = FakeCalendarDataSource(events: series, calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let draft = editedDraft(of: series[3], title: "Daily Sync", hourShift: 1)
         try await store.updateEvent(series[3], with: draft, span: .allEvents, calendar: Fixtures.calendar)
         guard case let .update(reference, seriesDraft, span) = try #require(source.eventWriteCalls.first) else {
@@ -141,7 +141,7 @@ struct EventEditingStoreTests {
     @Test func deleteSpansRemoveTheRightOccurrences() async throws {
         let series = dailySeries(days: 27...31)
         let source = FakeCalendarDataSource(events: series, calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
 
         try await store.deleteEvent(series[1], span: .thisEvent)
         #expect(source.currentEvents.map(\.startDate) == [series[0], series[2], series[3], series[4]].map(\.startDate))
@@ -159,7 +159,7 @@ struct EventEditingStoreTests {
             local: "lunch", calendarIdentifier: "work", start: Fixtures.date(2026, 10, 29, hour: 12)
         )
         let source = FakeCalendarDataSource(events: [event], calendars: [work])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         try await store.deleteEvent(event, span: .allEvents)
         #expect(source.eventWriteCalls == [.delete(event.reference, .thisEvent)])
         #expect(source.currentEvents.isEmpty)

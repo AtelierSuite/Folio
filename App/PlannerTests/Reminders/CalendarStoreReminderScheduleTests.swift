@@ -10,14 +10,14 @@ struct CalendarStoreReminderScheduleTests {
         try #require(UserDefaults(suiteName: "ReminderScheduleTests.\(UUID().uuidString)"))
     }
 
-    private func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) -> CalendarStore {
-        CalendarStore(
+    private func makeStore(source: FakeCalendarDataSource, defaults: UserDefaults) async -> CalendarStore {
+        await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
             reminderSettings: ReminderSettings(defaults: defaults),
             now: { Fixtures.date(2026, 10, 29, hour: 12) }
-        )
+        ).loaded()
     }
 
     private func makeSource() -> FakeCalendarDataSource {
@@ -36,7 +36,7 @@ struct CalendarStoreReminderScheduleTests {
     }
 
     @Test func carriesOverdueRemindersForwardByDefault() async throws {
-        let store = makeStore(source: makeSource(), defaults: try makeDefaults())
+        let store = await makeStore(source: makeSource(), defaults: try makeDefaults())
         #expect(store.overdueReminderPolicy == .carryForward)
         let titles = await store.reminders(in: today, calendar: Fixtures.calendar).map(\.title)
         #expect(titles == ["overdue", "today"])
@@ -45,15 +45,15 @@ struct CalendarStoreReminderScheduleTests {
     @Test func changingPolicyPersistsAndRefreshes() async throws {
         let defaults = try makeDefaults()
         let source = makeSource()
-        let store = makeStore(source: source, defaults: defaults)
+        let store = await makeStore(source: source, defaults: defaults)
         store.setOverdueReminderPolicy(.keepOnDueDate)
         #expect(store.contentRevision == 1)
         #expect(await store.reminders(in: today, calendar: Fixtures.calendar).map(\.title) == ["today"])
-        #expect(makeStore(source: source, defaults: defaults).overdueReminderPolicy == .keepOnDueDate)
+        #expect(await makeStore(source: source, defaults: defaults).overdueReminderPolicy == .keepOnDueDate)
     }
 
     @Test func undatedRemindersSkipHiddenLists() async throws {
-        let store = makeStore(source: makeSource(), defaults: try makeDefaults())
+        let store = await makeStore(source: makeSource(), defaults: try makeDefaults())
         #expect(await store.undatedReminders(calendar: Fixtures.calendar).map(\.title) == ["hidden undated", "undated"])
         let hidden = try #require(store.reminderLists.first { $0.id == "hidden" })
         store.setVisible(false, for: hidden)

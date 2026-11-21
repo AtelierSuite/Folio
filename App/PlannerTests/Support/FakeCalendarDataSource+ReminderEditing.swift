@@ -7,7 +7,7 @@ extension FakeCalendarDataSource {
         state.withLock { $0.calendars.first { $0.kind == .reminder }?.id }
     }
 
-    func createReminder(_ draft: ReminderDraft) async throws -> String {
+    @concurrent func createReminder(_ draft: ReminderDraft) async throws -> String {
         let identifier = "created-\(UUID().uuidString)"
         let template = ReminderItem(
             reference: CalendarItemReference(
@@ -23,7 +23,7 @@ extension FakeCalendarDataSource {
         return identifier
     }
 
-    func updateReminder(identifier: String, with draft: ReminderDraft) async throws {
+    @concurrent func updateReminder(identifier: String, with draft: ReminderDraft) async throws {
         try state.withLock { state in
             guard let index = state.reminders.firstIndex(where: { $0.id == identifier }) else {
                 throw CalendarDataSourceError.itemNotFound
@@ -32,7 +32,7 @@ extension FakeCalendarDataSource {
         }
     }
 
-    func deleteReminder(identifier: String) async throws {
+    @concurrent func deleteReminder(identifier: String) async throws {
         try state.withLock { state in
             guard state.reminders.contains(where: { $0.id == identifier }) else {
                 throw CalendarDataSourceError.itemNotFound

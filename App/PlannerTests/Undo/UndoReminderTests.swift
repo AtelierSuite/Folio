@@ -7,7 +7,7 @@ struct UndoReminderTests {
     private let groceries = Fixtures.reminder(local: "Groceries", due: Fixtures.date(2026, 10, 29, hour: 17))
 
     @Test func deleteHidesTheReminderUntilTheToastExpires() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         try await context.coordinator.deleteReminder(groceries)
 
         #expect(await context.visibleReminderTitles().isEmpty)
@@ -18,7 +18,7 @@ struct UndoReminderTests {
     }
 
     @Test func undoingADeleteKeepsTheSameReminder() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         try await context.coordinator.deleteReminder(groceries)
         context.coordinator.undoToast()
         await context.coordinator.commitPending()
@@ -28,7 +28,7 @@ struct UndoReminderTests {
     }
 
     @Test func editsSaveImmediatelyAndUndoSavesTheOldValues() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         var draft = ReminderDraft(groceries)
         draft.title = "Groceries and flowers"
         try await context.coordinator.updateReminder(groceries, with: draft)
@@ -41,7 +41,7 @@ struct UndoReminderTests {
     }
 
     @Test func completingCanBeUndone() async throws {
-        let context = try UndoTestContext(reminders: [groceries])
+        let context = try await UndoTestContext(reminders: [groceries])
         try await context.coordinator.setCompleted(true, for: groceries)
 
         #expect(context.source.completedReminderIdentifiers["Groceries"] == true)

@@ -6,13 +6,13 @@ import Testing
 struct CalendarStoreNoteLinkTests {
     private let link = URL(string: "folio://note/Standup%202026-10-29.md")
 
-    private func makeStore(_ source: FakeCalendarDataSource) throws -> CalendarStore {
+    private func makeStore(_ source: FakeCalendarDataSource) async throws -> CalendarStore {
         let defaults = try #require(UserDefaults(suiteName: "CalendarStoreNoteLinkTests.\(UUID().uuidString)"))
-        return CalendarStore(
+        return await CalendarStore(
             source: source,
             policy: CacheWindowPolicy(paddingWeeks: 1, calendar: Fixtures.calendar),
             visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
-        )
+        ).loaded()
     }
 
     private func createEvent(in store: CalendarStore, url: URL? = nil) async throws -> CalendarEvent {
@@ -26,7 +26,7 @@ struct CalendarStoreNoteLinkTests {
 
     @Test func writesTheLinkIntoAnEmptyURLField() async throws {
         let source = FakeCalendarDataSource(calendars: [Fixtures.plannerCalendar("work")])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let event = try await createEvent(in: store)
         let link = try #require(link)
 
@@ -36,7 +36,7 @@ struct CalendarStoreNoteLinkTests {
 
     @Test func keepsAnExistingURL() async throws {
         let source = FakeCalendarDataSource(calendars: [Fixtures.plannerCalendar("work")])
-        let store = try makeStore(source)
+        let store = try await makeStore(source)
         let existing = try #require(URL(string: "https://example.com"))
         let event = try await createEvent(in: store, url: existing)
 
