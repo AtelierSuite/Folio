@@ -47,6 +47,7 @@ struct CalendarRepositoryTests {
         let repository = CalendarRepository(source: source, policy: policy)
         #expect(await repository.reminders(in: today).map(\.title) == ["today"])
         #expect(await repository.reminders(in: tomorrow).isEmpty)
-        #expect(source.reminderFetchCount == 1)
+        #expect(source.incompleteReminderFetchCount == 1)
+        #expect(source.completedReminderFetchIntervals.count == 1)
     }
 }
