@@ -61,9 +61,9 @@ struct DirectionsAppTests {
 
     @Test func appsWithoutAWebLinkNeedToBeInstalled() throws {
         #expect(drivingOnly.url(for: try request(), isInstalled: false) == nil)
-        #expect(!drivingOnly.isAvailable(isInstalled: false))
-        #expect(appOrWeb.isAvailable(isInstalled: false))
-        #expect(DirectionsApp.appleMaps.isAvailable(isInstalled: false))
+        #expect(!drivingOnly.isAvailable(for: .navigation, isInstalled: false))
+        #expect(appOrWeb.isAvailable(for: .navigation, isInstalled: false))
+        #expect(DirectionsApp.appleMaps.isAvailable(for: .navigation, isInstalled: false))
     }
 
     @Test func unsupportedTransportFallsBackToAppleMaps() throws {
@@ -80,5 +80,11 @@ struct DirectionsAppTests {
     @Test func catalogFindsAppsByIdentifier() {
         #expect(DirectionsApp.app(id: "appleMaps") == .appleMaps)
         #expect(DirectionsApp.app(id: "unknown") == nil)
+    }
+
+    @Test func navigationOnlyAppsAreNotMapsApps() {
+        #expect(!DirectionsApp.yahooCarNavi.supports(.maps))
+        #expect(DirectionsApp.app(id: "yahooCarNavi", for: .maps) == .appleMaps)
+        #expect(DirectionsApp.app(id: "yahooCarNavi", for: .navigation) == .yahooCarNavi)
     }
 }

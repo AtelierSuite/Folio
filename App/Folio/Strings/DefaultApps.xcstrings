@@ -456,6 +456,136 @@
         }
       }
     },
+    "Settings.Footer.Japan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ only works in Japan. Elsewhere, Folio uses %2$@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@は日本国内でのみ使えます。それ以外の場所では%2$@を使います。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 仅适用于日本境内。其他地区将使用 %2$@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 僅適用於日本境內。其他地區將使用 %2$@。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@은(는) 일본 내에서만 사용할 수 있습니다. 그 외 지역에서는 %2$@을(를) 사용합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ne fonctionne qu’au Japon. Ailleurs, Folio utilise %2$@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ funktioniert nur in Japan. Anderswo verwendet Folio %2$@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ funziona solo in Giappone. Altrove, Folio usa %2$@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ werkt alleen in Japan. Elders gebruikt Folio %2$@."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ chỉ hoạt động tại Nhật Bản. Ở nơi khác, Folio dùng %2$@."
+          }
+        }
+      }
+    },
+    "Settings.Footer.Korea": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ only works in South Korea. Elsewhere, Folio uses %2$@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@は韓国国内でのみ使えます。それ以外の場所では%2$@を使います。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 仅适用于韩国境内。其他地区将使用 %2$@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 僅適用於韓國境內。其他地區將使用 %2$@。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@은(는) 한국 내에서만 사용할 수 있습니다. 그 외 지역에서는 %2$@을(를) 사용합니다."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ ne fonctionne qu’en Corée du Sud. Ailleurs, Folio utilise %2$@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ funktioniert nur in Südkorea. Anderswo verwendet Folio %2$@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ funziona solo in Corea del Sud. Altrove, Folio usa %2$@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ werkt alleen in Zuid-Korea. Elders gebruikt Folio %2$@."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ chỉ hoạt động tại Hàn Quốc. Ở nơi khác, Folio dùng %2$@."
+          }
+        }
+      }
+    },
     "Settings.Header": {
       "extractionState": "manual",
       "localizations": {
@@ -582,6 +712,71 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bản đồ"
+          }
+        }
+      }
+    },
+    "Settings.Navigation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ナビ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导航"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "導航"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "길찾기"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigazione"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigatie"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ đường"
           }
         }
       }

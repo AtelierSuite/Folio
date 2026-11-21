@@ -4,6 +4,7 @@ public extension DirectionsApp {
     static let kakaoMap = DirectionsApp(
         id: "kakaoMap",
         queryScheme: "kakaomap",
+        servedArea: .korea,
         appLink: { request in
             kakaoMapRoute("kakaomap://route", request)
         },
