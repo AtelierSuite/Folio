@@ -148,14 +148,19 @@ struct CalendarTimelineContainer<Accessory: View>: View {
         let shownReminders = await reminders.filter { !excludedCalendarIdentifiers.contains($0.listIdentifier) }
         let medicationMarkers = await MedicationDoseMarker.markers(for: doses)
         guard !Task.isCancelled else { return }
+        let days = strip.days
+        let contents = await TimelineLayoutEngine(days: days).contents(
+            events: shownEvents,
+            otherEntries: shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
+                + medicationMarkers.map { $0.timelineEntry(in: calendar.timeZone) }
+        )
+        guard !Task.isCancelled, days == strip.days else { return }
         eventsByEntryIdentifier = Dictionary(shownEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         remindersByEntryIdentifier = Dictionary(timelineEntriesFor: shownReminders)
         medicationMarkersByEntryIdentifier = Dictionary(uniqueKeysWithValues: medicationMarkers.map { ($0.id, $0) })
         self.events = shownEvents
-        entries = EventDuplicateDetector(calendar: calendar).groups(in: shownEvents).map(TimelineEntry.init(group:))
-            + shownReminders.compactMap { TimelineEntry(reminder: $0, calendar: calendar) }
-            + medicationMarkers.map { $0.timelineEntry(in: calendar.timeZone) }
-        relayout()
+        entries = contents.entries
+        stripLayout = contents.layout
     }
 
     func relayout() {
