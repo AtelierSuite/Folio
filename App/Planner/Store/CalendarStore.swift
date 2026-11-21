@@ -30,6 +30,8 @@ public final class CalendarStore {
     @ObservationIgnored let now: @Sendable () -> Date
     @ObservationIgnored var visibleInterval: DateInterval?
     @ObservationIgnored private var changeObservation: Task<Void, Never>?
+    @ObservationIgnored var ownChangeNoticeDeadline: ContinuousClock.Instant?
+    @ObservationIgnored var storeChangeReload: Task<Void, Never>?
 
     public init(
         source: any CalendarDataSource = EventKitDataSource.shared,
@@ -63,7 +65,7 @@ public final class CalendarStore {
         let changes = source.changes()
         changeObservation = Task { [weak self] in
             for await _ in changes {
-                await self?.handleExternalChange()
+                self?.noteStoreChange()
             }
         }
     }
@@ -71,6 +73,8 @@ public final class CalendarStore {
     public func stopObservingChanges() {
         changeObservation?.cancel()
         changeObservation = nil
+        storeChangeReload?.cancel()
+        storeChangeReload = nil
     }
 
     public func events(in interval: DateInterval) async -> [CalendarEvent] {

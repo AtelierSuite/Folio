@@ -81,7 +81,7 @@ final class FakeCalendarDataSource: CalendarDataSource {
     }
 
     func changes() -> AsyncStream<Void> {
-        let (stream, continuation) = AsyncStream.makeStream(of: Void.self)
+        let (stream, continuation) = AsyncStream.makeStream(of: Void.self, bufferingPolicy: .bufferingNewest(1))
         state.withLock { $0.changeContinuation = continuation }
         return stream
     }
