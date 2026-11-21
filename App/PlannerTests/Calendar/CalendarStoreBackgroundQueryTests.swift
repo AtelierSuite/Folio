@@ -13,7 +13,8 @@ struct CalendarStoreBackgroundQueryTests {
         return CalendarStore(
             source: source,
             policy: policy,
-            visibilityStorage: CalendarVisibilityStorage(defaults: defaults)
+            visibilityStorage: CalendarVisibilityStorage(defaults: defaults),
+            now: { Fixtures.date(2026, 10, 29, hour: 12) }
         )
     }
 
@@ -52,5 +53,24 @@ struct CalendarStoreBackgroundQueryTests {
         let fetchCount = source.eventFetchIntervals.count
         #expect(await store.events(in: page).map(\.title) == ["new"])
         #expect(source.eventFetchIntervals.count == fetchCount)
+    }
+
+    @Test func aReminderCompletedWhileAPageIsAheadStaysInItsList() async throws {
+        let open = Fixtures.reminder(local: "milk", due: Fixtures.date(2026, 12, 29, hour: 12))
+        let source = FakeCalendarDataSource(reminders: [open])
+        let store = try makeStore(source: source)
+        _ = await store.reminders(in: page, calendar: Fixtures.calendar)
+        #expect(await store.reminders(inList: "list-1", calendar: Fixtures.calendar).map(\.isCompleted) == [false])
+        source.replaceReminders([ReminderItem(
+            reference: open.reference,
+            listIdentifier: open.listIdentifier,
+            title: open.title,
+            dueDate: open.dueDate,
+            isCompleted: true,
+            completionDate: Fixtures.date(2026, 10, 29, hour: 12)
+        )])
+        try await store.setCompleted(true, for: open)
+        #expect(await store.reminders(inList: "list-1", calendar: Fixtures.calendar).map(\.isCompleted) == [true])
+        #expect(await store.openReminderCounts(calendar: Fixtures.calendar).isEmpty)
     }
 }
