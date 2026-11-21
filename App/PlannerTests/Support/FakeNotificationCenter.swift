@@ -82,7 +82,7 @@ final class FakeNotificationCenter: NotificationCenterClient {
         state.withLock { Array($0.pending.keys) }
     }
 
-    func add(_ notification: PlannedNotification) async throws {
+    @concurrent func add(_ notification: PlannedNotification) async throws {
         try state.withLock { state in
             if state.pending[notification.id] == nil, state.pending.count >= Self.limit {
                 throw FakeNotificationCenterError.limitExceeded

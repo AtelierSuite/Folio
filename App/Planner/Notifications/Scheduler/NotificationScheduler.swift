@@ -135,10 +135,7 @@ public final class NotificationScheduler {
         let notifications = plan.notifications(adding: alarms.fallbacks, budget: budget)
         let diff = NotificationPlanDiff(planned: notifications, pendingIdentifiers: pendingIdentifiers)
         await center.removePending(withIdentifiers: diff.identifiersToRemove)
-        var addedCount = 0
-        for notification in diff.notificationsToAdd where (try? await center.add(notification)) != nil {
-            addedCount += 1
-        }
+        let addedCount = await Self.add(diff.notificationsToAdd, to: center)
         let alarmCount = alarms.count
         let scheduledCount = notifications.count - diff.notificationsToAdd.count + addedCount
         lastReport = NotificationReplanReport(
