@@ -52,6 +52,14 @@ public actor CalendarRepository {
         incompleteRemindersFetch = nil
     }
 
+    public func reloadReminders(visible interval: DateInterval?) async {
+        completedReminderWindows.removeAll()
+        incompleteReminders = nil
+        incompleteRemindersFetch = nil
+        guard let interval else { return }
+        _ = await reminders(around: interval)
+    }
+
     public func reload(visible interval: DateInterval) async {
         invalidate()
         async let events = events(in: interval)

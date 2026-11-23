@@ -5,12 +5,26 @@ extension CalendarStore {
     public func reminders(inList listIdentifier: String, calendar: Calendar = .current) async -> [ReminderItem] {
         let startOfToday = calendar.startOfDay(for: now())
         let reminders = await allReminders(around: startOfToday)
-        return ReminderListContents.reminders(from: reminders, inList: listIdentifier, completedSince: startOfToday)
+        return await Self.listContents(of: reminders, inList: listIdentifier, completedSince: startOfToday)
     }
 
     public func openReminderCounts(calendar: Calendar = .current) async -> [String: Int] {
         let startOfToday = calendar.startOfDay(for: now())
-        return ReminderListContents.openCounts(from: await allReminders(around: startOfToday))
+        return await Self.openCounts(of: await allReminders(around: startOfToday))
+    }
+
+    @concurrent
+    nonisolated private static func listContents(
+        of reminders: [ReminderItem],
+        inList listIdentifier: String,
+        completedSince startOfToday: Date
+    ) async -> [ReminderItem] {
+        ReminderListContents.reminders(from: reminders, inList: listIdentifier, completedSince: startOfToday)
+    }
+
+    @concurrent
+    nonisolated private static func openCounts(of reminders: [ReminderItem]) async -> [String: Int] {
+        ReminderListContents.openCounts(from: reminders)
     }
 
     private func allReminders(around startOfToday: Date) async -> [ReminderItem] {
