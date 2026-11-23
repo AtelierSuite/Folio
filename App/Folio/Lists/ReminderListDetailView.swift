@@ -29,9 +29,11 @@ struct ReminderListDetailView: View {
             .sheet(isPresented: $isComposing) {
                 ReminderEditorView(initialDate: nil, listIdentifier: list.id)
             }
-            .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
-                let loaded = await store.reminders(inList: list.id, calendar: systemTime.calendar)
-                guard !Task.isCancelled else { return }
+            .task(id: loadKey) {
+                let key = loadKey
+                let loaded = await store.reminders(inList: list.id, calendar: key.calendar)
+                // Reopening a list in a collapsed split view cancels this task without restarting it.
+                guard key == loadKey else { return }
                 reminders = loaded
                 hasLoaded = true
             }
@@ -52,6 +54,10 @@ struct ReminderListDetailView: View {
             }
             .listStyle(.inset)
         }
+    }
+
+    private var loadKey: LoadKey {
+        LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)
     }
 
     private struct LoadKey: Equatable {
