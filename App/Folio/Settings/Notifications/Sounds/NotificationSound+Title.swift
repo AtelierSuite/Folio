@@ -5,6 +5,7 @@ extension NotificationSound {
     var title: String {
         switch self {
         case .system: String(localized: "Sound.System", table: "NotificationSounds")
+        case .silent: String(localized: "Sound.Silent", table: "NotificationSounds")
         case .furin: String(localized: "Sound.Furin", table: "NotificationSounds")
         case .asahi: String(localized: "Sound.Asahi", table: "NotificationSounds")
         case .sakura: String(localized: "Sound.Sakura", table: "NotificationSounds")

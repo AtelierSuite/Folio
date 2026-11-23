@@ -3,6 +3,7 @@ import Foundation
 /// Listed from the gentlest to the most urgent.
 public enum AlarmSound: String, Sendable, Hashable, CaseIterable, Codable, Identifiable {
     case system
+    case silent = "Alarm-Silent"
     case yoake = "Alarm-Yoake"
     case komorebi = "Alarm-Komorebi"
     case hibari = "Alarm-Hibari"
