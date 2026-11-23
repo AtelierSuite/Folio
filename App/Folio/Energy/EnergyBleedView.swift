@@ -43,16 +43,20 @@ private struct EnergyDayBleedView: View {
     var body: some View {
         Canvas { graphics, size in
             let reach = min(48, size.width * 0.3)
-            let shading = EnergyGlowStyle.peakShading(curve, hourHeight: hourHeight)
-            graphics.drawSoftened { fraction in
-                outline(reach: reach * fraction, strength: curve.peakStrength(atHour:))
-            } draw: { layer, area in
-                layer.fill(area, with: shading)
+            let bounds = CGRect(origin: .zero, size: size)
+            graphics.drawTinted(with: EnergyGlowStyle.peakShading(curve, hourHeight: hourHeight), in: bounds) { layer in
+                layer.drawSoftened { fraction in
+                    outline(reach: reach * fraction, strength: curve.peakStrength(atHour:))
+                } draw: { copy, area in
+                    copy.fill(area, with: .color(.white))
+                }
             }
-            graphics.drawSoftened { fraction in
-                outline(reach: reach * 0.65 * fraction, strength: curve.lowStrength(atHour:))
-            } draw: { layer, area in
-                layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor)
+            graphics.drawTinted(with: EnergyGlowStyle.lowShading(curve, hourHeight: hourHeight), in: bounds) { layer in
+                layer.drawSoftened { fraction in
+                    outline(reach: reach * 0.65 * fraction, strength: curve.lowStrength(atHour:))
+                } draw: { copy, area in
+                    copy.drawEnergyStripes(in: area, color: .white, opacity: 1)
+                }
             }
         }
     }

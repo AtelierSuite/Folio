@@ -3,7 +3,7 @@ import SwiftUI
 public enum EnergyGlowStyle {
     public static let peakColor = Color.orange
     public static let lowColor = Color.indigo
-    public static let peakOpacity = 0.16
+    public static let peakOpacity = 0.09
     public static let stripeOpacity = 0.32
     public static let stripeSpacing: CGFloat = 5
     public static let stripeWidth: CGFloat = 1.2
@@ -17,6 +17,24 @@ public enum EnergyGlowStyle {
         let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
             Gradient.Stop(
                 color: peakColor.opacity(opacity * min(curve.peakStrength(atHour: hour) * 1.8, 1)),
+                location: hour / 24
+            )
+        }
+        return .linearGradient(
+            Gradient(stops: stops),
+            startPoint: .zero,
+            endPoint: CGPoint(x: 0, y: 24 * hourHeight)
+        )
+    }
+
+    /// The low stripes' colour down the day, so a dip fades in and out instead of switching on.
+    public static func lowShading(
+        _ curve: EnergyCurve, hourHeight: CGFloat, boost: Double = 1, opacity: Double = stripeOpacity
+    ) -> GraphicsContext.Shading {
+        let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
+            let strength = min(curve.lowStrength(atHour: hour) * boost, 1)
+            return Gradient.Stop(
+                color: lowColor.opacity(opacity * strength * strength * (3 - 2 * strength)),
                 location: hour / 24
             )
         }

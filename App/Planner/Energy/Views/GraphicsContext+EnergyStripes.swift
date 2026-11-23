@@ -18,6 +18,16 @@ extension GraphicsContext {
         CGFloat(0.5 - sin(asin(1 - 2 * fraction) / 3))
     }
 
+    /// Builds up coverage in a layer, then colours it once with `tint`. Colouring each faint softened
+    /// copy instead rounds away at 8 bits per channel, shifting the hue and leaving hard bands.
+    public func drawTinted(with tint: Shading, in bounds: CGRect, coverage: (inout GraphicsContext) -> Void) {
+        drawLayer { layer in
+            coverage(&layer)
+            layer.blendMode = .sourceIn
+            layer.fill(Path(bounds), with: tint)
+        }
+    }
+
     /// Diagonal stripes inside `area`.
     public func drawEnergyStripes(in area: Path, color: Color, opacity: Double = EnergyGlowStyle.stripeOpacity) {
         let bounds = area.boundingRect
