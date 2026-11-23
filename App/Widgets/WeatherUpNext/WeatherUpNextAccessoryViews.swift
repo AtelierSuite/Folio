@@ -80,11 +80,14 @@ struct WeatherUpNextInlineView: View {
             return [.init(weather: "\(weather.highLowText) · \(empty)"), .init(weather: weather.highLowText)]
         }
         let summary = upNext.timing(on: date, calendar: .current).summary
-        let event = showsDetails ? "\(summary) \(upNext.event.title)" : summary
+        guard showsDetails else {
+            return [.init(weather: weather.highLowText, event: summary), .init(weather: temperature, event: summary)]
+        }
+        let event = "\(summary) \(upNext.event.title)"
         return [
             .init(weather: weather.highLowText, event: event),
             .init(weather: temperature, event: event),
-            .init(weather: temperature, event: summary)
+            .init(weather: temperature, event: upNext.event.title)
         ]
     }
 }
