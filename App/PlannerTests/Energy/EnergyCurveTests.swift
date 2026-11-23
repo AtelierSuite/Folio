@@ -61,4 +61,23 @@ struct EnergyCurveTests {
         #expect(rested.gaugeSegments(forHourStarting: dipStarts[0]) ?? 0 < EnergyCurve.gaugeSegmentCount)
         #expect(dipStarts[1] > peaks[1])
     }
+
+    @Test func levelIsNilBeforeWakingAndFollowsTheCurveAfter() throws {
+        #expect(rested.level(atHour: 6.5) == nil)
+        #expect(abs((rested.wakeHour ?? 0) - 7) <= EnergyCurve.sampleStep)
+        let peak = try #require(rested.markers.first { $0.kind == .peak })
+        let dip = try #require(rested.markers.first { $0.kind == .dip })
+        let peakLevel = try #require(rested.level(atHour: peak.hour))
+        let dipLevel = try #require(rested.level(atHour: dip.hour))
+        #expect(peakLevel > dipLevel)
+        #expect(EnergyCurve.gaugeSegments(forLevel: peakLevel) == EnergyCurve.gaugeSegmentCount)
+    }
+
+    @Test func levelBlendsBetweenSamples() throws {
+        let hour = 10 + EnergyCurve.sampleStep / 2
+        let before = try #require(rested.level(atHour: 10))
+        let after = try #require(rested.level(atHour: 10 + EnergyCurve.sampleStep))
+        let between = try #require(rested.level(atHour: hour))
+        #expect(between >= min(before, after) && between <= max(before, after))
+    }
 }

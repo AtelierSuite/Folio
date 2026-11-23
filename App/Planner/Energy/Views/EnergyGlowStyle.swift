@@ -1,21 +1,22 @@
-import Planner
 import SwiftUI
 
-enum EnergyGlowStyle {
-    static let peakColor = Color.orange
-    static let lowColor = Color.indigo
-    static let peakOpacity = 0.16
-    static let stripeOpacity = 0.32
-    static let stripeSpacing: CGFloat = 5
-    static let stripeWidth: CGFloat = 1.2
-    static let outlineStepHours = 1.0 / 12
-    static let softeningLevels = 40
+public enum EnergyGlowStyle {
+    public static let peakColor = Color.orange
+    public static let lowColor = Color.indigo
+    public static let peakOpacity = 0.16
+    public static let stripeOpacity = 0.32
+    public static let stripeSpacing: CGFloat = 5
+    public static let stripeWidth: CGFloat = 1.2
+    public static let outlineStepHours = 1.0 / 12
+    public static let softeningLevels = 40
 
     /// The peak glow's opacity down the day, so it fades in and out with the curve.
-    static func peakShading(_ curve: EnergyCurve, hourHeight: CGFloat) -> GraphicsContext.Shading {
+    public static func peakShading(
+        _ curve: EnergyCurve, hourHeight: CGFloat, opacity: Double = peakOpacity
+    ) -> GraphicsContext.Shading {
         let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
             Gradient.Stop(
-                color: peakColor.opacity(peakOpacity * min(curve.peakStrength(atHour: hour) * 1.8, 1)),
+                color: peakColor.opacity(opacity * min(curve.peakStrength(atHour: hour) * 1.8, 1)),
                 location: hour / 24
             )
         }
@@ -27,7 +28,7 @@ enum EnergyGlowStyle {
     }
 
     /// A shape whose edge sits `reach × strength` away from `edgeX`, growing towards `direction`.
-    static func outline(
+    public static func outline(
         edgeX: CGFloat, reach: CGFloat, direction: CGFloat, hourHeight: CGFloat, strength: (Double) -> Double
     ) -> Path {
         var path = Path()

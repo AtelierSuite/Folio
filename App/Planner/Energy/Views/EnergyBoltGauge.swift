@@ -1,13 +1,18 @@
-import Planner
 import SwiftUI
 
 /// A bolt cut into bands that fill from the bottom, so the level reads without relying on color.
-struct EnergyBoltGauge: View {
+public struct EnergyBoltGauge: View {
     let filledSegments: Int
+    let size: CGFloat
 
     private let segmentCount = EnergyCurve.gaugeSegmentCount
 
-    var body: some View {
+    public init(filledSegments: Int, size: CGFloat = 12) {
+        self.filledSegments = filledSegments
+        self.size = size
+    }
+
+    public var body: some View {
         // The outline is masked to the empty bands so it never sits under the fill,
         // where a translucent .secondary would double up and draw a lighter inner bolt.
         ZStack {
@@ -16,7 +21,7 @@ struct EnergyBoltGauge: View {
             Image(systemName: "bolt.fill")
                 .mask { bands(filled: true) }
         }
-        .font(.system(size: 12, weight: .semibold))
+        .font(.system(size: size, weight: .semibold))
         .foregroundStyle(filledSegments == segmentCount ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
     }
 

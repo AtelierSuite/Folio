@@ -4,10 +4,10 @@ extension GraphicsContext {
     /// Draws nested copies of a shape from its edge outwards at low opacity, so it fades to nothing
     /// at its outer edge instead of ending in a hard line. The copies are spaced so the opacity eases
     /// out along a smoothstep curve, flattening at both ends rather than falling off in a straight line.
-    func drawSoftened(_ outline: (CGFloat) -> Path, draw: (GraphicsContext, Path) -> Void) {
+    public func drawSoftened(_ outline: (CGFloat) -> Path, draw: (GraphicsContext, Path) -> Void) {
         var context = self
         let levels = EnergyGlowStyle.softeningLevels
-        context.opacity = 1.0 / Double(levels) * 1.6
+        context.opacity *= 1.0 / Double(levels) * 1.6
         for level in 1...levels {
             draw(context, outline(Self.inverseSmoothstep(Double(level) / Double(levels))))
         }
@@ -19,7 +19,7 @@ extension GraphicsContext {
     }
 
     /// Diagonal stripes inside `area`.
-    func drawEnergyStripes(in area: Path, color: Color) {
+    public func drawEnergyStripes(in area: Path, color: Color, opacity: Double = EnergyGlowStyle.stripeOpacity) {
         let bounds = area.boundingRect
         guard !bounds.isEmpty else { return }
         var context = self
@@ -33,7 +33,7 @@ extension GraphicsContext {
         }
         context.stroke(
             stripes,
-            with: .color(color.opacity(EnergyGlowStyle.stripeOpacity)),
+            with: .color(color.opacity(opacity)),
             lineWidth: EnergyGlowStyle.stripeWidth
         )
     }
