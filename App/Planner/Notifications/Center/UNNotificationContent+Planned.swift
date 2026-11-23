@@ -27,7 +27,8 @@ extension UNNotificationContent {
         }
     }
 
-    static func sound(for sound: NotificationSound) -> UNNotificationSound {
+    static func sound(for sound: NotificationSound) -> UNNotificationSound? {
+        if sound == .silent { return nil }
         #if os(watchOS)
         return .default
         #elseif os(macOS)

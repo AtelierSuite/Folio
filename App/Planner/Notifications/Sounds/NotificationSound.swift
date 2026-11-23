@@ -2,6 +2,7 @@ import Foundation
 
 public enum NotificationSound: String, Sendable, Hashable, CaseIterable, Codable, Identifiable {
     case system
+    case silent = "Silent"
     case furin = "Calendar-Furin"
     case asahi = "Calendar-Asahi"
     case sakura = "Calendar-Sakura"
@@ -28,11 +29,11 @@ public enum NotificationSound: String, Sendable, Hashable, CaseIterable, Codable
     public var id: String { rawValue }
 
     public var fileName: String? {
-        self == .system ? nil : "\(rawValue).\(Self.fileExtension)"
+        self == .system || self == .silent ? nil : "\(rawValue).\(Self.fileExtension)"
     }
 
     public static func choices(for kind: CalendarItemKind) -> [NotificationSound] {
         let prefix = kind == .event ? "Calendar-" : "Reminder-"
-        return [.system] + allCases.filter { $0.rawValue.hasPrefix(prefix) }
+        return [.system, .silent] + allCases.filter { $0.rawValue.hasPrefix(prefix) }
     }
 }

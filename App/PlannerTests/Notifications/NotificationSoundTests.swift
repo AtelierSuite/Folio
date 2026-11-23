@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import UserNotifications
 @testable import Planner
 
 @MainActor
@@ -25,13 +26,15 @@ struct NotificationSoundTests {
         )
     }
 
-    @Test func eachKindOffersTheSystemSoundAndItsOwnTen() {
+    @Test func eachKindOffersTheSystemSoundSilenceAndItsOwnTen() {
         let eventChoices = NotificationSound.choices(for: .event)
         let reminderChoices = NotificationSound.choices(for: .reminder)
-        #expect(eventChoices.count == 11 && reminderChoices.count == 11)
+        #expect(eventChoices.count == 12 && reminderChoices.count == 12)
         #expect(eventChoices.first == .system && reminderChoices.first == .system)
-        #expect(Set(eventChoices).intersection(reminderChoices) == [.system])
+        #expect(Set(eventChoices).intersection(reminderChoices) == [.system, .silent])
         #expect(NotificationSound.system.fileName == nil)
+        #expect(NotificationSound.silent.fileName == nil)
+        #expect(UNNotificationContent.sound(for: .silent) == nil)
         #expect(NotificationSound.furin.fileName == "Calendar-Furin.caf")
     }
 
