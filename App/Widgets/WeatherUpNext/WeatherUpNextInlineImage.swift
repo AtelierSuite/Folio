@@ -4,7 +4,7 @@ import UIKit
 /// Inline widgets only allow one line of text, but they keep template images, so the event's two lines
 /// and the temperature beside them are drawn into one image, which the Lock Screen centres on the date.
 enum WeatherUpNextInlineImage {
-    static let eventWidth: CGFloat = 140
+    static let maximumEventWidth: CGFloat = 140
     private static let spacing: CGFloat = 5
     /// Without it the image centres a little above the date's text.
     private static let topPadding: CGFloat = 5.5
@@ -21,6 +21,10 @@ enum WeatherUpNextInlineImage {
         let weatherImage = symbol(named: "\(weatherSymbol).fill") ?? symbol(named: weatherSymbol)
         let calendarImage = symbol(named: "calendar")
         let eventLineHeight = ceil(eventFont.lineHeight)
+        let widestLine = [top, bottom]
+            .map { ($0 as NSString).size(withAttributes: eventAttributes(eventFont)).width }
+            .max()
+        let eventWidth = min(ceil(widestLine ?? 0), maximumEventWidth)
         let contentHeight = max(eventLineHeight * 2, temperatureSize.height)
         let padding = topPadding
         let height = contentHeight + padding
@@ -43,7 +47,8 @@ enum WeatherUpNextInlineImage {
                 xPosition += calendarImage.size.width + spacing
             }
             let eventOrigin = CGPoint(x: xPosition, y: centredY(eventLineHeight * 2))
-            drawEvent(top: top, bottom: bottom, font: eventFont, at: eventOrigin)
+            let eventFrame = CGRect(origin: eventOrigin, size: CGSize(width: eventWidth, height: eventLineHeight * 2))
+            drawEvent([top, bottom], font: eventFont, in: eventFrame)
         }
         return image.withRenderingMode(.alwaysTemplate)
     }
@@ -55,19 +60,18 @@ enum WeatherUpNextInlineImage {
         )?.withTintColor(.white, renderingMode: .alwaysOriginal)
     }
 
-    private static func drawEvent(top: String, bottom: String, font: UIFont, at origin: CGPoint) {
+    private static func eventAttributes(_ font: UIFont) -> [NSAttributedString.Key: Any] {
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byTruncatingTail
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: UIColor.white,
-            .paragraphStyle: paragraph
-        ]
+        return [.font: font, .foregroundColor: UIColor.white, .paragraphStyle: paragraph]
+    }
+
+    private static func drawEvent(_ lines: [String], font: UIFont, in frame: CGRect) {
         let lineHeight = ceil(font.lineHeight)
-        for (index, line) in [top, bottom].enumerated() {
-            let lineOrigin = CGPoint(x: origin.x, y: origin.y + lineHeight * CGFloat(index))
-            let lineRect = CGRect(origin: lineOrigin, size: CGSize(width: eventWidth, height: lineHeight))
-            (line as NSString).draw(in: lineRect, withAttributes: attributes)
+        for (index, line) in lines.enumerated() {
+            let lineOrigin = CGPoint(x: frame.minX, y: frame.minY + lineHeight * CGFloat(index))
+            let lineRect = CGRect(origin: lineOrigin, size: CGSize(width: frame.width, height: lineHeight))
+            (line as NSString).draw(in: lineRect, withAttributes: eventAttributes(font))
         }
     }
 }
