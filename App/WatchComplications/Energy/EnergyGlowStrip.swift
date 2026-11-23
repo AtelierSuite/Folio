@@ -7,6 +7,7 @@ struct EnergyGlowStrip: View {
     private static let futureOpacity = 0.45
     private static let peakReach = 0.85
     private static let lowReach = 0.6
+    private static let blurRadius: CGFloat = 5
 
     let curve: EnergyCurve
     let hour: Double
@@ -40,28 +41,58 @@ struct EnergyGlowStrip: View {
     }
 
     /// Draws the app's vertical glow rotated so the day runs left to right and the glow reaches upwards.
+    /// Each glow is masked by its blurred outline, fading upwards, so it softens without the banding
+    /// that stacked translucent copies leave at full strength.
     private func drawGlow(in graphics: GraphicsContext, size: CGSize, startHour: Double, hourWidth: CGFloat) {
         var day = graphics
         day.translateBy(x: 0, y: size.height)
         day.rotate(by: .degrees(-90))
         day.translateBy(x: 0, y: -startHour * hourWidth)
+        let dayArea = Path(CGRect(x: -size.height, y: 0, width: size.height * 3, height: 24 * hourWidth))
         let peak = SmoothedEnergyStrength(curve.peakStrength(atHour:))
         let low = SmoothedEnergyStrength(curve.lowStrength(atHour:))
-        let shading = EnergyGlowStyle.peakShading(curve, hourHeight: hourWidth, opacity: 1)
-        day.drawSoftened { fraction in
-            outline(reach: size.height * Self.peakReach * fraction, hourWidth: hourWidth) { hour in
-                Self.dome(peak(hour))
-            }
-        } draw: { layer, area in
-            layer.fill(area, with: shading)
+
+        var peakLayer = day
+        peakLayer.clipToLayer { mask in
+            fillFadingMask(mask, reach: size.height * Self.peakReach, hourWidth: hourWidth) { Self.dome(peak($0)) }
         }
-        day.drawSoftened { fraction in
-            outline(
-                reach: size.height * Self.lowReach * fraction, hourWidth: hourWidth
-            ) { low($0) }
-        } draw: { layer, area in
-            layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor, opacity: 1)
+        peakLayer.fill(dayArea, with: peakShading(peak, hourWidth: hourWidth))
+
+        var lowLayer = day
+        lowLayer.clipToLayer { mask in
+            fillFadingMask(mask, reach: size.height * Self.lowReach, hourWidth: hourWidth) { low($0) }
         }
+        lowLayer.drawEnergyStripes(in: dayArea, color: EnergyGlowStyle.lowColor, opacity: 0.9)
+    }
+
+    private func fillFadingMask(
+        _ mask: GraphicsContext, reach: CGFloat, hourWidth: CGFloat, strength: (Double) -> Double
+    ) {
+        var mask = mask
+        mask.addFilter(.blur(radius: Self.blurRadius))
+        let overhang = Self.blurRadius * 2
+        let area = EnergyGlowStyle.outline(
+            edgeX: -overhang, reach: reach + overhang, direction: 1, hourHeight: hourWidth, strength: strength
+        )
+        mask.fill(area, with: .linearGradient(
+            Gradient(colors: [.white, .white.opacity(0.15)]),
+            startPoint: .zero,
+            endPoint: CGPoint(x: reach, y: 0)
+        ))
+    }
+
+    private func peakShading(_ peak: SmoothedEnergyStrength, hourWidth: CGFloat) -> GraphicsContext.Shading {
+        let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
+            Gradient.Stop(
+                color: EnergyGlowStyle.peakColor.opacity(peak.intensity(hour)),
+                location: hour / 24
+            )
+        }
+        return .linearGradient(
+            Gradient(stops: stops),
+            startPoint: .zero,
+            endPoint: CGPoint(x: 0, y: 24 * hourWidth)
+        )
     }
 
     /// Eases the strength out so a peak's top rounds over instead of coming to a point.
@@ -69,7 +100,4 @@ struct EnergyGlowStrip: View {
         1 - pow(1 - min(strength, 1), 2)
     }
 
-    private func outline(reach: CGFloat, hourWidth: CGFloat, strength: (Double) -> Double) -> Path {
-        EnergyGlowStyle.outline(edgeX: 0, reach: reach, direction: 1, hourHeight: hourWidth, strength: strength)
-    }
 }

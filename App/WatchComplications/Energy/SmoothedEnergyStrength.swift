@@ -25,6 +25,12 @@ nonisolated struct SmoothedEnergyStrength {
         }
     }
 
+    /// The strength boosted and eased into full, so the color has no crease where it tops out.
+    func intensity(_ hour: Double) -> Double {
+        let boosted = min(self(hour) * 1.8, 1)
+        return boosted * boosted * (3 - 2 * boosted)
+    }
+
     func callAsFunction(_ hour: Double) -> Double {
         let position = min(max(hour, 0), 24) / EnergyCurve.sampleStep
         let lower = Int(position.rounded(.down))
