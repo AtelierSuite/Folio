@@ -38,11 +38,28 @@ struct EnergyGlowStrip: View {
                 )
             }
             if curve.level(atHour: hour) != nil {
-                graphics.fill(
-                    Path(roundedRect: CGRect(x: nowX - 1, y: 0, width: 2, height: size.height), cornerRadius: 1),
-                    with: .color(.primary)
-                )
+                drawNowMarker(in: graphics, x: nowX, height: size.height)
             }
+        }
+    }
+
+    /// A hairline that fades out upwards, rising from a dot on the baseline.
+    private func drawNowMarker(in graphics: GraphicsContext, x nowX: CGFloat, height: CGFloat) {
+        let dotSize: CGFloat = showsBaseline ? 5 : 0
+        let lineBottom = height - dotSize / 2
+        graphics.fill(
+            Path(roundedRect: CGRect(x: nowX - 0.75, y: 0, width: 1.5, height: lineBottom), cornerRadius: 0.75),
+            with: .linearGradient(
+                Gradient(colors: [.primary.opacity(0), .primary.opacity(0.9)]),
+                startPoint: CGPoint(x: nowX, y: height * 0.1),
+                endPoint: CGPoint(x: nowX, y: lineBottom)
+            )
+        )
+        if dotSize > 0 {
+            graphics.fill(
+                Path(ellipseIn: CGRect(x: nowX - dotSize / 2, y: height - dotSize, width: dotSize, height: dotSize)),
+                with: .color(.primary)
+            )
         }
     }
 
