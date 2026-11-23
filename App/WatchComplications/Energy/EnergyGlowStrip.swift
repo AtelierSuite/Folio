@@ -1,8 +1,9 @@
 import Planner
 import SwiftUI
 
-/// Today's energy glow from waking to midnight, laid on its side: the app's orange peak glow rises
-/// from the bottom edge and the indigo stripes mark the dip and wind-down. The rest of the day is dimmed.
+/// Today's energy glow, laid on its side: the app's orange peak glow rises from the bottom edge and
+/// the indigo stripes mark the dip and wind-down. The rest of the day is dimmed. It spans from waking
+/// to midnight unless given a window of hours.
 struct EnergyGlowStrip: View {
     private static let futureOpacity = 0.45
     private static let peakReach = 0.85
@@ -11,11 +12,14 @@ struct EnergyGlowStrip: View {
 
     let curve: EnergyCurve
     let hour: Double
+    var window: ClosedRange<Double>?
+    var showsBaseline = true
 
     var body: some View {
         Canvas { graphics, size in
-            let startHour = curve.wakeHour ?? 0
-            let hourWidth = size.width / max(24 - startHour, 1)
+            let startHour = window?.lowerBound ?? curve.wakeHour ?? 0
+            let endHour = window?.upperBound ?? 24
+            let hourWidth = size.width / max(endHour - startHour, 1)
             let nowX = min(max((hour - startHour) * hourWidth, 0), size.width)
 
             var past = graphics
@@ -27,11 +31,13 @@ struct EnergyGlowStrip: View {
             future.opacity = Self.futureOpacity
             drawGlow(in: future, size: size, startHour: startHour, hourWidth: hourWidth)
 
-            graphics.fill(
-                Path(CGRect(x: 0, y: size.height - 1, width: size.width, height: 1)),
-                with: .color(.secondary.opacity(0.5))
-            )
-            if hour >= startHour {
+            if showsBaseline {
+                graphics.fill(
+                    Path(CGRect(x: 0, y: size.height - 1, width: size.width, height: 1)),
+                    with: .color(.secondary.opacity(0.5))
+                )
+            }
+            if curve.level(atHour: hour) != nil {
                 graphics.fill(
                     Path(roundedRect: CGRect(x: nowX - 1, y: 0, width: 2, height: size.height), cornerRadius: 1),
                     with: .color(.primary)

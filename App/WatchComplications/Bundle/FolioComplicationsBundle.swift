@@ -8,5 +8,6 @@ struct FolioComplicationsBundle: WidgetBundle {
         TimelineComplication()
         TodayComplication()
         EnergyComplication()
+        EnergyCurveComplication()
     }
 }

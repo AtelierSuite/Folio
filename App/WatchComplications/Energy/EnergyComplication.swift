@@ -9,7 +9,9 @@ struct EnergyComplication: Widget {
         AppIntentConfiguration(
             kind: Self.kind,
             intent: ComplicationConfigurationIntent.self,
-            provider: EnergyComplicationProvider()
+            provider: EnergyComplicationProvider(
+                recommendationTitle: String(localized: "Energy.Name", table: "Complications")
+            )
         ) { entry in
             EnergyComplicationView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)

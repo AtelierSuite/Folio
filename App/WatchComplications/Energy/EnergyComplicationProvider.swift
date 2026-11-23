@@ -5,11 +5,11 @@ import WidgetKit
 nonisolated struct EnergyComplicationProvider: AppIntentTimelineProvider {
     private static let tickInterval: TimeInterval = 15 * 60
 
+    /// Shown as the complication's name in the watch face editor.
+    let recommendationTitle: String
+
     func recommendations() -> [AppIntentRecommendation<ComplicationConfigurationIntent>] {
-        [AppIntentRecommendation(
-            intent: ComplicationConfigurationIntent(),
-            description: String(localized: "Energy.Name", table: "Complications")
-        )]
+        [AppIntentRecommendation(intent: ComplicationConfigurationIntent(), description: recommendationTitle)]
     }
 
     func placeholder(in context: Context) -> EnergyComplicationEntry {
