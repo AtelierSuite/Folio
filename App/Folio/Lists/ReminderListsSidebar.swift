@@ -27,9 +27,10 @@ struct ReminderListsSidebar: View {
                     }
                 }
             }
-            .task(id: LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)) {
-                let counts = await store.openReminderCounts(calendar: systemTime.calendar)
-                guard !Task.isCancelled else { return }
+            .task(id: loadKey) {
+                let key = loadKey
+                let counts = await store.openReminderCounts(calendar: key.calendar)
+                guard key == loadKey else { return }
                 openCounts = counts
             }
     }
@@ -58,6 +59,10 @@ struct ReminderListsSidebar: View {
             .listStyle(.sidebar)
             .accessibilityIdentifier("ReminderListsSidebar")
         }
+    }
+
+    private var loadKey: LoadKey {
+        LoadKey(revision: store.contentRevision, calendar: systemTime.calendar)
     }
 
     private struct LoadKey: Equatable {
