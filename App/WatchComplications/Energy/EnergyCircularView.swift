@@ -14,11 +14,13 @@ struct EnergyCircularView: View {
         ZStack {
             AccessoryWidgetBackground()
             ring(.secondary.opacity(0.35))
+            let peak = SmoothedEnergyStrength(entry.curve.peakStrength(atHour:))
+            let low = SmoothedEnergyStrength(entry.curve.lowStrength(atHour:))
             ring(AngularGradient(stops: stops(color: EnergyGlowStyle.peakColor) { hour in
-                min(entry.curve.peakStrength(atHour: hour) * 1.8, 1)
+                min(peak(hour) * 1.8, 1)
             }, center: .center, startAngle: .degrees(-90), endAngle: .degrees(270)))
             ring(AngularGradient(stops: stops(color: EnergyGlowStyle.lowColor) { hour in
-                entry.curve.lowStrength(atHour: hour)
+                low(hour)
             }, center: .center, startAngle: .degrees(-90), endAngle: .degrees(270)))
             if entry.level != nil {
                 nowDot

@@ -5,7 +5,8 @@ import SwiftUI
 /// from the bottom edge and the indigo stripes mark the dip and wind-down. The rest of the day is dimmed.
 struct EnergyGlowStrip: View {
     private static let futureOpacity = 0.45
-    private static let lowReach = 0.65
+    private static let peakReach = 0.85
+    private static let lowReach = 0.6
 
     let curve: EnergyCurve
     let hour: Double
@@ -44,20 +45,28 @@ struct EnergyGlowStrip: View {
         day.translateBy(x: 0, y: size.height)
         day.rotate(by: .degrees(-90))
         day.translateBy(x: 0, y: -startHour * hourWidth)
+        let peak = SmoothedEnergyStrength(curve.peakStrength(atHour:))
+        let low = SmoothedEnergyStrength(curve.lowStrength(atHour:))
         let shading = EnergyGlowStyle.peakShading(curve, hourHeight: hourWidth, opacity: 1)
         day.drawSoftened { fraction in
-            outline(reach: size.height * fraction, hourWidth: hourWidth, strength: curve.peakStrength(atHour:))
+            outline(reach: size.height * Self.peakReach * fraction, hourWidth: hourWidth) { hour in
+                Self.dome(peak(hour))
+            }
         } draw: { layer, area in
             layer.fill(area, with: shading)
         }
         day.drawSoftened { fraction in
             outline(
-                reach: size.height * Self.lowReach * fraction, hourWidth: hourWidth,
-                strength: curve.lowStrength(atHour:)
-            )
+                reach: size.height * Self.lowReach * fraction, hourWidth: hourWidth
+            ) { low($0) }
         } draw: { layer, area in
             layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor, opacity: 1)
         }
+    }
+
+    /// Eases the strength out so a peak's top rounds over instead of coming to a point.
+    private static func dome(_ strength: Double) -> Double {
+        1 - pow(1 - min(strength, 1), 2)
     }
 
     private func outline(reach: CGFloat, hourWidth: CGFloat, strength: (Double) -> Double) -> Path {
