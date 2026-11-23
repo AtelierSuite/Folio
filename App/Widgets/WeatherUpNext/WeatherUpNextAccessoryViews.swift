@@ -100,7 +100,7 @@ private struct WeatherUpNextInlineText: View {
     var body: some View {
         if let event = line.event {
             let weather = Text(verbatim: line.weather)
-            let next = Image(systemName: "arrow.forward")
+            let next = Image(systemName: "calendar")
             Text("WeatherUpNext.Inline \(weather) \(next) \(Text(verbatim: event))", tableName: "Widgets")
         } else {
             Text(verbatim: line.weather)
