@@ -60,6 +60,15 @@ struct WeatherUpNextInlineView: View {
     let showsDetails: Bool
 
     var body: some View {
+        if showsDetails, let upNext {
+            WeatherUpNextTwoLineInline(weather: weather, upNext: upNext, date: date)
+                .privacySensitive()
+        } else {
+            oneLine
+        }
+    }
+
+    private var oneLine: some View {
         ViewThatFits {
             ForEach(lines, id: \.self) { line in
                 Label {
@@ -70,7 +79,6 @@ struct WeatherUpNextInlineView: View {
                 }
             }
         }
-        .privacySensitive(showsDetails && upNext != nil)
     }
 
     private var lines: [WeatherUpNextInlineLine] {
@@ -89,6 +97,32 @@ struct WeatherUpNextInlineView: View {
             .init(weather: temperature, event: event),
             .init(weather: temperature, event: upNext.event.title)
         ]
+    }
+}
+
+private struct WeatherUpNextTwoLineInline: View {
+    let weather: DailyWeather
+    let upNext: WidgetUpNext
+    let date: Date
+
+    var body: some View {
+        let temperature = WidgetWeatherSlot.temperature(weather.highCelsius)
+        let summary = upNext.timing(on: date, calendar: .current).summary
+        let image = WeatherUpNextInlineImage.make(
+            weatherSymbol: weather.symbolName,
+            temperature: temperature,
+            top: summary,
+            bottom: upNext.event.title
+        )
+        Text(Image(uiImage: image))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(verbatim: accessibilityText(temperature: temperature, summary: summary)))
+    }
+}
+
+extension WeatherUpNextTwoLineInline {
+    private func accessibilityText(temperature: String, summary: String) -> String {
+        [weather.conditionDescription, temperature, summary, upNext.event.title].joined(separator: ", ")
     }
 }
 
