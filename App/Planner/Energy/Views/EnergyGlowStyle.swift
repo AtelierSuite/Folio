@@ -27,14 +27,14 @@ public enum EnergyGlowStyle {
         )
     }
 
-    /// A mask that fades the low stripes in and out with the curve instead of switching them on.
-    public static func lowMask(
-        _ curve: EnergyCurve, hourHeight: CGFloat, boost: Double = 1
+    /// The low stripes' colour down the day, so a dip fades in and out instead of switching on.
+    public static func lowShading(
+        _ curve: EnergyCurve, hourHeight: CGFloat, boost: Double = 1, opacity: Double = stripeOpacity
     ) -> GraphicsContext.Shading {
         let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
             let strength = min(curve.lowStrength(atHour: hour) * boost, 1)
             return Gradient.Stop(
-                color: .white.opacity(strength * strength * (3 - 2 * strength)),
+                color: lowColor.opacity(opacity * strength * strength * (3 - 2 * strength)),
                 location: hour / 24
             )
         }

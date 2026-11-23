@@ -18,13 +18,13 @@ extension GraphicsContext {
         CGFloat(0.5 - sin(asin(1 - 2 * fraction) / 3))
     }
 
-    /// Draws into a layer, then keeps only as much of it as `mask`'s alpha allows across `bounds`.
-    /// Stroking the stripes with a gradient directly leaves hard-edged boxes, so they are faded this way.
-    public func drawMasked(by mask: Shading, in bounds: CGRect, draw: (inout GraphicsContext) -> Void) {
+    /// Builds up coverage in a layer, then colours it once with `tint`. Colouring each faint softened
+    /// copy instead rounds away at 8 bits per channel, shifting the hue and leaving hard bands.
+    public func drawTinted(with tint: Shading, in bounds: CGRect, coverage: (inout GraphicsContext) -> Void) {
         drawLayer { layer in
-            draw(&layer)
-            layer.blendMode = .destinationIn
-            layer.fill(Path(bounds), with: mask)
+            coverage(&layer)
+            layer.blendMode = .sourceIn
+            layer.fill(Path(bounds), with: tint)
         }
     }
 

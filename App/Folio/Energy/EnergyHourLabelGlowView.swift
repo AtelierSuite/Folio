@@ -13,15 +13,15 @@ struct EnergyHourLabelGlowView: View {
                     Path(CGRect(origin: .zero, size: size)),
                     with: EnergyGlowStyle.peakShading(curve, hourHeight: context.hourHeight)
                 )
-                let lowMask = EnergyGlowStyle.lowMask(curve, hourHeight: context.hourHeight, boost: 1.6)
-                graphics.drawMasked(by: lowMask, in: CGRect(origin: .zero, size: size)) { masked in
-                    masked.drawSoftened { fraction in
+                let lowShading = EnergyGlowStyle.lowShading(curve, hourHeight: context.hourHeight, boost: 1.6)
+                graphics.drawTinted(with: lowShading, in: CGRect(origin: .zero, size: size)) { layer in
+                    layer.drawSoftened { fraction in
                         EnergyGlowStyle.outline(
                             edgeX: size.width, reach: size.width * fraction, direction: -1,
                             hourHeight: context.hourHeight
                         ) { min(curve.lowStrength(atHour: $0) * 1.6, 1) }
-                    } draw: { layer, area in
-                        layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor)
+                    } draw: { copy, area in
+                        copy.drawEnergyStripes(in: area, color: .white, opacity: 1)
                     }
                 }
             }
