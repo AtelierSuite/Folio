@@ -110,8 +110,12 @@ public final class CalendarStore {
         let generation = calendarLoadGeneration
         let calendars = await Self.fetchCalendars(from: source)
         guard generation == calendarLoadGeneration else { return }
-        eventCalendars = calendars.events
-        reminderLists = calendars.reminders
+        if eventCalendars != calendars.events {
+            eventCalendars = calendars.events
+        }
+        if reminderLists != calendars.reminders {
+            reminderLists = calendars.reminders
+        }
     }
 
     @concurrent
