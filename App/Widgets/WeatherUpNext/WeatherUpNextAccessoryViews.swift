@@ -63,7 +63,7 @@ struct WeatherUpNextInlineView: View {
         ViewThatFits {
             ForEach(lines, id: \.self) { line in
                 Label {
-                    Text(verbatim: line)
+                    WeatherUpNextInlineText(line: line)
                 } icon: {
                     Image(systemName: weather.symbolName)
                         .symbolVariant(.fill)
@@ -73,15 +73,38 @@ struct WeatherUpNextInlineView: View {
         .privacySensitive(showsDetails && upNext != nil)
     }
 
-    private var lines: [String] {
+    private var lines: [WeatherUpNextInlineLine] {
         let temperature = WidgetWeatherSlot.temperature(weather.highCelsius)
         guard let upNext else {
             let empty = String(localized: "UpNext.Empty", table: "Widgets")
-            return ["\(weather.highLowText) · \(empty)", weather.highLowText]
+            return [.init(weather: "\(weather.highLowText) · \(empty)"), .init(weather: weather.highLowText)]
         }
         let summary = upNext.timing(on: date, calendar: .current).summary
         let event = showsDetails ? "\(summary) \(upNext.event.title)" : summary
-        return ["\(weather.highLowText) · \(event)", "\(temperature) · \(event)", "\(temperature) · \(summary)"]
+        return [
+            .init(weather: weather.highLowText, event: event),
+            .init(weather: temperature, event: event),
+            .init(weather: temperature, event: summary)
+        ]
+    }
+}
+
+struct WeatherUpNextInlineLine: Hashable {
+    let weather: String
+    var event: String?
+}
+
+private struct WeatherUpNextInlineText: View {
+    let line: WeatherUpNextInlineLine
+
+    var body: some View {
+        if let event = line.event {
+            let weather = Text(verbatim: line.weather)
+            let next = Image(systemName: "arrow.forward")
+            Text("WeatherUpNext.Inline \(weather) \(next) \(Text(verbatim: event))", tableName: "Widgets")
+        } else {
+            Text(verbatim: line.weather)
+        }
     }
 }
 
