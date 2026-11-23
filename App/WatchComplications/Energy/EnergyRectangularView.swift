@@ -1,15 +1,13 @@
 import SwiftUI
 import WidgetKit
 
-/// Today's energy as a line, brighter up to now, with a dot on the current level.
 struct EnergyRectangularView: View {
     let entry: EnergyComplicationEntry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 4) {
-                Image(systemName: "bolt.fill")
-                    .foregroundStyle(.orange)
+                EnergyLevelIcon(filledSegments: entry.filledSegments, size: 15)
                     .widgetAccentable()
                 Text(String(localized: "Energy.Title", table: "Complications"))
                     .font(.headline)
@@ -19,7 +17,7 @@ struct EnergyRectangularView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
             }
-            EnergyLineGraph(curve: entry.curve, hour: entry.hour)
+            EnergyGlowStrip(curve: entry.curve, hour: entry.hour)
                 .frame(maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -18,9 +18,13 @@ nonisolated struct EnergyComplicationEntry: WidgetKit.TimelineEntry {
         curve.level(atHour: hour)
     }
 
+    var filledSegments: Int? {
+        level.map(EnergyCurve.gaugeSegments(forLevel:))
+    }
+
     var levelName: String {
-        guard let level else { return String(localized: "Energy.Level.Resting", table: "Complications") }
-        switch EnergyCurve.gaugeSegments(forLevel: level) {
+        guard let filledSegments else { return String(localized: "Energy.Level.Resting", table: "Complications") }
+        switch filledSegments {
         case 0: return String(localized: "Energy.Level.Low", table: "Complications")
         case 1: return String(localized: "Energy.Level.Steady", table: "Complications")
         case 2: return String(localized: "Energy.Level.High", table: "Complications")
