@@ -27,6 +27,24 @@ public enum EnergyGlowStyle {
         )
     }
 
+    /// A mask that fades the low stripes in and out with the curve instead of switching them on.
+    public static func lowMask(
+        _ curve: EnergyCurve, hourHeight: CGFloat, boost: Double = 1
+    ) -> GraphicsContext.Shading {
+        let stops = stride(from: 0.0, through: 24, by: 0.25).map { hour in
+            let strength = min(curve.lowStrength(atHour: hour) * boost, 1)
+            return Gradient.Stop(
+                color: .white.opacity(strength * strength * (3 - 2 * strength)),
+                location: hour / 24
+            )
+        }
+        return .linearGradient(
+            Gradient(stops: stops),
+            startPoint: .zero,
+            endPoint: CGPoint(x: 0, y: 24 * hourHeight)
+        )
+    }
+
     /// A shape whose edge sits `reach × strength` away from `edgeX`, growing towards `direction`.
     public static func outline(
         edgeX: CGFloat, reach: CGFloat, direction: CGFloat, hourHeight: CGFloat, strength: (Double) -> Double

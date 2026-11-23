@@ -49,10 +49,13 @@ private struct EnergyDayBleedView: View {
             } draw: { layer, area in
                 layer.fill(area, with: shading)
             }
-            graphics.drawSoftened { fraction in
-                outline(reach: reach * 0.65 * fraction, strength: curve.lowStrength(atHour:))
-            } draw: { layer, area in
-                layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor)
+            let lowMask = EnergyGlowStyle.lowMask(curve, hourHeight: hourHeight)
+            graphics.drawMasked(by: lowMask, in: CGRect(origin: .zero, size: size)) { masked in
+                masked.drawSoftened { fraction in
+                    outline(reach: reach * 0.65 * fraction, strength: curve.lowStrength(atHour:))
+                } draw: { layer, area in
+                    layer.drawEnergyStripes(in: area, color: EnergyGlowStyle.lowColor)
+                }
             }
         }
     }

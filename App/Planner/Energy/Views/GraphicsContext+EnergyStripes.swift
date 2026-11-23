@@ -18,6 +18,16 @@ extension GraphicsContext {
         CGFloat(0.5 - sin(asin(1 - 2 * fraction) / 3))
     }
 
+    /// Draws into a layer, then keeps only as much of it as `mask`'s alpha allows across `bounds`.
+    /// Stroking the stripes with a gradient directly leaves hard-edged boxes, so they are faded this way.
+    public func drawMasked(by mask: Shading, in bounds: CGRect, draw: (inout GraphicsContext) -> Void) {
+        drawLayer { layer in
+            draw(&layer)
+            layer.blendMode = .destinationIn
+            layer.fill(Path(bounds), with: mask)
+        }
+    }
+
     /// Diagonal stripes inside `area`.
     public func drawEnergyStripes(in area: Path, color: Color, opacity: Double = EnergyGlowStyle.stripeOpacity) {
         let bounds = area.boundingRect
