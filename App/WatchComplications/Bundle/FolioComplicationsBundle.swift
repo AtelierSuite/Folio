@@ -7,5 +7,6 @@ struct FolioComplicationsBundle: WidgetBundle {
         UpNextComplication()
         TimelineComplication()
         TodayComplication()
+        EnergyComplication()
     }
 }
