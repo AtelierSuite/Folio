@@ -3,7 +3,7 @@ import SwiftUI
 public enum EnergyGlowStyle {
     public static let peakColor = Color.orange
     public static let lowColor = Color.indigo
-    public static let peakOpacity = 0.16
+    public static let peakOpacity = 0.09
     public static let stripeOpacity = 0.32
     public static let stripeSpacing: CGFloat = 5
     public static let stripeWidth: CGFloat = 1.2
