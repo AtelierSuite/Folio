@@ -28,6 +28,7 @@ struct FolioWidgetsBundle: WidgetBundle {
         #if os(iOS)
         RemainingRemindersWidget()
         LeaveByWidget()
+        WeatherUpNextWidget()
         EventCountdownLiveActivity()
         #endif
         #if canImport(AlarmKit) && os(iOS)

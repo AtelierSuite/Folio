@@ -19,9 +19,23 @@ nonisolated extension WidgetSnapshot {
         return WidgetSnapshot(
             events: events,
             reminders: reminders,
+            weather: [Calendar.current.startOfDay(for: now): sampleWeather(on: now)],
             leaveByPlan: LeaveByPlan(eventKey: review.reference.storageKey, travelTime: 1_500, transport: .driving),
             leaveByStatus: .tracking,
             eventNotes: [review.reference.storageKey: sampleNote(title: review.title)]
+        )
+    }
+
+    private static func sampleWeather(on date: Date) -> DailyWeather {
+        DailyWeather(
+            date: Calendar.current.startOfDay(for: date),
+            symbolName: "cloud.sun",
+            conditionDescription: String(localized: "Placeholder.Weather.Condition", table: "Widgets"),
+            highCelsius: 21,
+            lowCelsius: 13,
+            precipitationChance: 0.1,
+            sunrise: nil,
+            sunset: nil
         )
     }
 
