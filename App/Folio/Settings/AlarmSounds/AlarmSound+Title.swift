@@ -5,6 +5,7 @@ extension AlarmSound {
     var title: String {
         switch self {
         case .system: String(localized: "Sound.System", table: "AlarmSounds")
+        case .silent: String(localized: "Sound.Silent", table: "AlarmSounds")
         case .yoake: String(localized: "Sound.Yoake", table: "AlarmSounds")
         case .komorebi: String(localized: "Sound.Komorebi", table: "AlarmSounds")
         case .hibari: String(localized: "Sound.Hibari", table: "AlarmSounds")

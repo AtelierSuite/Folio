@@ -39,7 +39,7 @@ final class AlarmSoundPreviewPlayer: SoundPreviewing {
 }
 
 extension AlarmSound {
-    var isPreviewable: Bool { fileName != nil }
+    var isPreviewable: Bool { fileName != nil && self != .silent }
 }
 
 private extension AlarmSound {

@@ -3,10 +3,11 @@ import Testing
 @testable import Planner
 
 struct AlarmSoundTests {
-    @Test func offersTheSystemSoundAndTenOfFolios() {
-        #expect(AlarmSound.allCases.count == 11)
+    @Test func offersTheSystemSoundSilenceAndTenOfFolios() {
+        #expect(AlarmSound.allCases.count == 12)
         #expect(AlarmSound.allCases.first == .system)
         #expect(AlarmSound.system.fileName == nil)
+        #expect(AlarmSound.silent.fileName == "Alarm-Silent.caf")
         #expect(AlarmSound.kaminari.fileName == "Alarm-Kaminari.caf")
     }
 
