@@ -37,7 +37,26 @@ public struct EnergyCurve: Sendable, Equatable {
     public func gaugeSegments(forHourStarting hour: Int) -> Int? {
         let position = Int(((Double(hour) + 0.5) / Self.sampleStep).rounded())
         guard levels.indices.contains(position), let level = levels[position] else { return nil }
-        return Self.gaugeThresholds.filter { level >= $0 }.count
+        return Self.gaugeSegments(forLevel: level)
+    }
+
+    public static func gaugeSegments(forLevel level: Double) -> Int {
+        gaugeThresholds.filter { level >= $0 }.count
+    }
+
+    /// The level at any moment of the day, or nil before waking.
+    public func level(atHour hour: Double) -> Double? {
+        let position = min(max(hour, 0), 24) / Self.sampleStep
+        let lower = Int(position.rounded(.down))
+        guard let lowerLevel = levels[lower] else { return nil }
+        let upper = min(lower + 1, levels.count - 1)
+        guard let upperLevel = levels[upper] else { return lowerLevel }
+        let fraction = position - Double(lower)
+        return lowerLevel * (1 - fraction) + upperLevel * fraction
+    }
+
+    public var wakeHour: Double? {
+        levels.firstIndex { $0 != nil }.map { Double($0) * Self.sampleStep }
     }
 
     private static let gaugeThresholds = [0.5, 0.78, 0.88]
