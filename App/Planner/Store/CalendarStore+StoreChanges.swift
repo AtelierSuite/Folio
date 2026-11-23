@@ -11,6 +11,13 @@ extension CalendarStore {
         await handleExternalChange()
     }
 
+    /// Reminder writes leave calendars and events untouched, so only reminders are fetched again.
+    func reloadAfterOwnReminderChange() async {
+        ownChangeNoticeDeadline = .now + Self.ownChangeNoticeWindow
+        await repository.reloadReminders(visible: visibleInterval)
+        contentRevision += 1
+    }
+
     /// Notices that arrive while a reload is waiting share it, so a burst of iCloud changes costs one reload.
     func noteStoreChange() {
         if let deadline = ownChangeNoticeDeadline {
