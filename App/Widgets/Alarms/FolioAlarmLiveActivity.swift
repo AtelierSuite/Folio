@@ -10,8 +10,19 @@ struct FolioAlarmLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: AlarmAttributes<FolioAlarmMetadata>.self) { context in
             AlarmLockScreenView(
-                title: title(of: context), mode: context.state.mode, tint: context.attributes.tintColor
+                title: title(of: context),
+                mode: context.state.mode,
+                tint: context.attributes.tintColor,
+                alarmIdentifier: context.state.alarmID
             )
+            .background {
+                LinearGradient(
+                    colors: [context.attributes.tintColor.opacity(0.1), .clear],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            }
+            .activityBackgroundTint(.clear)
             .widgetURL(context.attributes.metadata?.link)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -22,10 +33,13 @@ struct FolioAlarmLiveActivity: Widget {
                         .padding(.leading, 4)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    AlarmCountdownText(mode: context.state.mode)
-                        .font(.title2.weight(.semibold))
-                        .frame(maxWidth: 110, alignment: .trailing)
-                        .padding(.trailing, 4)
+                    HStack(spacing: 8) {
+                        AlarmCountdownText(mode: context.state.mode)
+                            .font(.title2.weight(.semibold))
+                            .frame(maxWidth: 110, alignment: .trailing)
+                        AlarmStopButton(alarmIdentifier: context.state.alarmID, tint: context.attributes.tintColor)
+                    }
+                    .padding(.trailing, 4)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     Text(title(of: context))

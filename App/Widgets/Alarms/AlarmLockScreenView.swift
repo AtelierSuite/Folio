@@ -6,6 +6,7 @@ struct AlarmLockScreenView: View {
     let title: String
     let mode: AlarmPresentationState.Mode
     let tint: Color
+    let alarmIdentifier: UUID
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -24,6 +25,7 @@ struct AlarmLockScreenView: View {
             AlarmCountdownText(mode: mode)
                 .font(.title.weight(.semibold))
                 .frame(maxWidth: 140, alignment: .trailing)
+            AlarmStopButton(alarmIdentifier: alarmIdentifier, tint: tint)
         }
         .padding(16)
     }
