@@ -15,6 +15,14 @@ struct FolioAlarmLiveActivity: Widget {
                 tint: context.attributes.tintColor,
                 alarmIdentifier: context.state.alarmID
             )
+            .background {
+                LinearGradient(
+                    colors: [context.attributes.tintColor.opacity(0.1), .clear],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            }
+            .activityBackgroundTint(.clear)
             .widgetURL(context.attributes.metadata?.link)
         } dynamicIsland: { context in
             DynamicIsland {
