@@ -29,6 +29,7 @@ struct WeatherUpNextWidgetView: View {
             case .accessoryInline:
                 WeatherUpNextInlineView(
                     weather: weather,
+                    current: entry.snapshot.currentWeather(at: entry.date),
                     upNext: upNext,
                     date: entry.date,
                     showsDetails: entry.showsDetails

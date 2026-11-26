@@ -18,6 +18,8 @@ struct WeatherUpNextConfigurationIntent: FolioWidgetIntent {
 
     nonisolated var showsDetails: Bool { showsEventDetails }
 
+    nonisolated var timelineTickInterval: TimeInterval? { 60 * 60 }
+
     nonisolated func snapshotRequest(at now: Date, calendar: Calendar) -> WidgetSnapshotRequest {
         .upcoming(from: now, calendar: calendar, calendars: calendars?.identifierSet, includesWeather: true)
     }

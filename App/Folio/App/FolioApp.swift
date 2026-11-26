@@ -144,6 +144,7 @@ struct FolioApp: App {
                 .environment(undoCoordinator)
                 .environment(undoToastHosts)
                 .reloadsWidgets(on: calendarStore)
+                .schedulesWeatherRefresh(weatherStore)
                 .publishesEventNoteDigests(from: notesLibrary, events: calendarStore)
                 .environment(countdowns)
                 .reconcilesCountdowns(countdowns, with: calendarStore)
@@ -165,6 +166,7 @@ struct FolioApp: App {
         .defaultSize(width: 1100, height: 760)
         #endif
         .notificationRefreshTask(notificationScheduler, countdowns: countdowns)
+        .weatherRefreshTask(weatherStore)
         .commands {
             if PlatformCapabilities.current.supports(.calendarViewMenuCommands) {
                 CalendarViewCommands()

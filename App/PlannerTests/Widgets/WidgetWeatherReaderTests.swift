@@ -14,6 +14,15 @@ struct WidgetWeatherReaderTests {
         return settings
     }
 
+    private var hours: [HourlyWeather] {
+        (0..<24).map { hour in
+            HourlyWeather(
+                date: today.addingTimeInterval(TimeInterval(hour) * 3600), symbolName: "cloud",
+                temperatureCelsius: Double(hour), precipitationChance: 0, isDaylight: true
+            )
+        }
+    }
+
     private func makeCache(in directory: TemporaryDirectory) -> WeatherCache {
         let cache = WeatherCache(directory: directory.url)
         let daily = DailyWeather(
@@ -21,7 +30,7 @@ struct WidgetWeatherReaderTests {
             highCelsius: 21, lowCelsius: 12, precipitationChance: 0, sunrise: nil, sunset: nil
         )
         let entry = WeatherCacheEntry(
-            day: WeatherDay(dayStart: today, daily: daily, hourly: []), fetchedAt: today, includesHourly: false
+            day: WeatherDay(dayStart: today, daily: daily, hourly: hours), fetchedAt: today, includesHourly: true
         )
         cache.store(entry, for: WeatherLocationKey(WeatherFixtures.tokyo), calendar: Fixtures.calendar)
         return cache
@@ -56,7 +65,9 @@ struct WidgetWeatherReaderTests {
         let request = WidgetSnapshotRequest.upcoming(from: now, calendar: Fixtures.calendar, includesWeather: true)
         let snapshot = await loader.load(request, at: now, calendar: Fixtures.calendar)
         #expect(snapshot.weather(on: now, calendar: Fixtures.calendar)?.highCelsius == 21)
+        #expect(snapshot.currentWeather(at: now.addingTimeInterval(1_800))?.temperatureCelsius == 9)
         let withoutWeather = await loader.load(.reminders(), at: now, calendar: Fixtures.calendar)
         #expect(withoutWeather.weather.isEmpty)
+        #expect(withoutWeather.hourlyWeather.isEmpty)
     }
 }

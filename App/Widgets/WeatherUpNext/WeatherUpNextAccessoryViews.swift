@@ -55,14 +55,21 @@ private struct WeatherUpNextConditionRow: View {
 
 struct WeatherUpNextInlineView: View {
     let weather: DailyWeather
+    let current: HourlyWeather?
     let upNext: WidgetUpNext?
     let date: Date
     let showsDetails: Bool
 
     var body: some View {
         if showsDetails, let upNext {
-            WeatherUpNextTwoLineInline(weather: weather, upNext: upNext, date: date)
-                .privacySensitive()
+            WeatherUpNextTwoLineInline(
+                symbolName: symbolName,
+                temperature: shortWeather,
+                condition: weather.conditionDescription,
+                upNext: upNext,
+                date: date
+            )
+            .privacySensitive()
         } else {
             oneLine
         }
@@ -74,55 +81,72 @@ struct WeatherUpNextInlineView: View {
                 Label {
                     WeatherUpNextInlineText(line: line)
                 } icon: {
-                    Image(systemName: weather.symbolName)
+                    Image(systemName: symbolName)
                         .symbolVariant(.fill)
                 }
             }
         }
     }
 
+    private var symbolName: String {
+        current?.symbolName ?? weather.symbolName
+    }
+
+    private var longWeather: String {
+        current.map { WidgetWeatherSlot.temperature($0.temperatureCelsius) } ?? weather.highLowText
+    }
+
+    private var shortWeather: String {
+        WidgetWeatherSlot.temperature(current?.temperatureCelsius ?? weather.highCelsius)
+    }
+
     private var lines: [WeatherUpNextInlineLine] {
-        let temperature = WidgetWeatherSlot.temperature(weather.highCelsius)
-        guard let upNext else {
+        var candidates: [WeatherUpNextInlineLine]
+        if let upNext {
+            let summary = upNext.timing(on: date, calendar: .current).summary
+            if showsDetails {
+                let event = "\(summary) \(upNext.event.title)"
+                candidates = [
+                    .init(weather: longWeather, event: event),
+                    .init(weather: shortWeather, event: event),
+                    .init(weather: shortWeather, event: upNext.event.title)
+                ]
+            } else {
+                candidates = [.init(weather: longWeather, event: summary), .init(weather: shortWeather, event: summary)]
+            }
+        } else {
             let empty = String(localized: "UpNext.Empty", table: "Widgets")
-            return [.init(weather: "\(weather.highLowText) · \(empty)"), .init(weather: weather.highLowText)]
+            candidates = [.init(weather: "\(longWeather) · \(empty)"), .init(weather: longWeather)]
         }
-        let summary = upNext.timing(on: date, calendar: .current).summary
-        guard showsDetails else {
-            return [.init(weather: weather.highLowText, event: summary), .init(weather: temperature, event: summary)]
-        }
-        let event = "\(summary) \(upNext.event.title)"
-        return [
-            .init(weather: weather.highLowText, event: event),
-            .init(weather: temperature, event: event),
-            .init(weather: temperature, event: upNext.event.title)
-        ]
+        var seen = Set<WeatherUpNextInlineLine>()
+        return candidates.filter { seen.insert($0).inserted }
     }
 }
 
 private struct WeatherUpNextTwoLineInline: View {
-    let weather: DailyWeather
+    let symbolName: String
+    let temperature: String
+    let condition: String
     let upNext: WidgetUpNext
     let date: Date
 
     var body: some View {
-        let temperature = WidgetWeatherSlot.temperature(weather.highCelsius)
         let summary = upNext.timing(on: date, calendar: .current).summary
         let image = WeatherUpNextInlineImage.make(
-            weatherSymbol: weather.symbolName,
+            weatherSymbol: symbolName,
             temperature: temperature,
             top: summary,
             bottom: upNext.event.title
         )
         Text(Image(uiImage: image))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(verbatim: accessibilityText(temperature: temperature, summary: summary)))
+        .accessibilityLabel(Text(verbatim: accessibilityText(summary: summary)))
     }
 }
 
 extension WeatherUpNextTwoLineInline {
-    private func accessibilityText(temperature: String, summary: String) -> String {
-        [weather.conditionDescription, temperature, summary, upNext.event.title].joined(separator: ", ")
+    private func accessibilityText(summary: String) -> String {
+        [condition, temperature, summary, upNext.event.title].joined(separator: ", ")
     }
 }
 

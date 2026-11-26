@@ -5,6 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.tsubuzaki.Folio.notifications.refresh</string>
+		<string>com.tsubuzaki.Folio.weather.refresh</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>

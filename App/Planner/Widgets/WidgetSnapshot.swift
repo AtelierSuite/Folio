@@ -8,6 +8,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
     public var reminders: [ReminderItem]
     /// Cached daily weather keyed by the start of each day.
     public var weather: [Date: DailyWeather]
+    public var hourlyWeather: [HourlyWeather]
     public var alarmDates: [Date]
     /// Today's doses still waiting on the user, read from Health for this snapshot and never stored.
     public var medicationDoses: [MedicationDose]
@@ -27,6 +28,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
         events: [CalendarEvent] = [],
         reminders: [ReminderItem] = [],
         weather: [Date: DailyWeather] = [:],
+        hourlyWeather: [HourlyWeather] = [],
         alarmDates: [Date] = [],
         medicationDoses: [MedicationDose] = [],
         leaveByPlan: LeaveByPlan? = nil,
@@ -40,6 +42,7 @@ public struct WidgetSnapshot: Sendable, Hashable {
         self.events = events.sorted { ($0.startDate, $0.title) < ($1.startDate, $1.title) }
         self.reminders = reminders.filter { !$0.isCompleted }
         self.weather = weather
+        self.hourlyWeather = hourlyWeather.sorted { $0.date < $1.date }
         self.alarmDates = alarmDates.sorted()
         self.medicationDoses = medicationDoses
         self.leaveByPlan = leaveByPlan
@@ -51,6 +54,10 @@ public struct WidgetSnapshot: Sendable, Hashable {
 
     public func weather(on date: Date, calendar: Calendar) -> DailyWeather? {
         weather[calendar.startOfDay(for: date)]
+    }
+
+    public func currentWeather(at date: Date) -> HourlyWeather? {
+        hourlyWeather.last { $0.date <= date && date < $0.date.addingTimeInterval(3600) }
     }
 
     public var canReadEvents: Bool {
