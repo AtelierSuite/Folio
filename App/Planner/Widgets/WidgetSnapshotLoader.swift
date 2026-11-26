@@ -65,6 +65,7 @@ public struct WidgetSnapshotLoader: Sendable {
             events: visibleEvents,
             reminders: reminders.filter { listFilter.includes($0.listIdentifier) },
             weather: request.includesWeather ? weather(around: now, calendar: calendar) : [:],
+            hourlyWeather: request.includesWeather ? hourlyWeather(around: now, calendar: calendar) : [],
             alarmDates: request.includesAlarms ? alarmDates(after: now) : [],
             medicationDoses: doses ?? [],
             leaveByPlan: leaveByPlan,
@@ -106,8 +107,16 @@ public struct WidgetSnapshotLoader: Sendable {
     }
 
     private func weather(around now: Date, calendar: Calendar) -> [Date: DailyWeather] {
+        weatherReader.dailyWeather(forDaysStarting: dayStarts(around: now, calendar: calendar), calendar: calendar)
+    }
+
+    private func hourlyWeather(around now: Date, calendar: Calendar) -> [HourlyWeather] {
+        weatherReader.hourlyWeather(forDaysStarting: dayStarts(around: now, calendar: calendar), calendar: calendar)
+    }
+
+    private func dayStarts(around now: Date, calendar: Calendar) -> [Date] {
         let today = calendar.startOfDay(for: now)
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today.addingTimeInterval(86_400)
-        return weatherReader.dailyWeather(forDaysStarting: [today, tomorrow], calendar: calendar)
+        return [today, tomorrow]
     }
 }
